@@ -274,7 +274,7 @@
           {{ post.description }}
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="{{ url_for(post.path) }}">
+            <a class="btn" href="{{ url_for(post.path) }}">
               {{ __('post.read_more') }} &raquo;
             </a>
           </div>
