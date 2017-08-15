@@ -306,7 +306,7 @@ public delegate void EventHandler<TEventArgs>(object sender, TEventArgs e);
 
 由於event不用給予初始的委派方法，因此在事件通知時，我們必須先檢查定義的事件物件是否為null，以免沒人觀察時出錯了。
 
-{% note info %}
+{% endnote %}
 
 為了維持我們前面的設計思維，我們另外建立了一個自訂事件方法的行為介面
 
