@@ -1,6 +1,7 @@
 ---
 title: "[React速成班]從TodoList範例學習React(2)-透過實作TodoItems學習props"
 date: 2016-03-18 16:44:21
+category: "React速成班"
 tags:
     - React
     - props
