@@ -76,7 +76,7 @@ theme: next-md-lite
 
 # Search
 search:
-  path: search.xml
+  path: search.json
   field: post
   format: html
   limit: 10000
