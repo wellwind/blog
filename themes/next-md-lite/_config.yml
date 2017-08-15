@@ -450,7 +450,7 @@ busuanzi_count:
   # custom pv span for one page only
   page_pv: true
   page_pv_header: <i class="fa fa-file-o"></i>
-  page_pv_footer:
+  page_pv_footer: 'Views'
 
 
 # Tencent analytics ID
