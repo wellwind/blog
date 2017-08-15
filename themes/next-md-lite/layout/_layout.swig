@@ -51,7 +51,9 @@
 
     {% if not theme.sidebar.b2t %}
       <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
         {% if theme.sidebar.scrollpercent %}
           <span id="scrollpercent"><span>0</span>%</span>
         {% endif %}
