@@ -5,6 +5,9 @@ tags:
     - React
     - IDE
     - Visual Studio
+    - Visual Studio Code
+    - Sublime
+    - Atom
 ---
 
 俗話說得好，**好的IDE帶你上天堂，壞的IDE讓你deat line delay住套房**。在寫todo list練習之前，先讓我用幾篇文章來介紹一下IDE的部分。React雖然熱門，但畢竟還算是比較新的東西，所以許多常見編輯器或IDE針對React的支援度都還是有限，最常見的問題就是把JSX程式碼存成.js檔時，由於一般都會在裡面插入類似HTML的JSX語法，結果就導致了大部分編輯器語法highlight出錯。不過畢竟React可是當今世上最熱門的library啊，當然許多主流的編輯器還是多少都有支援的。今天就在不要太貪心，只要求語法highlight不要出錯、不管是否有autocomplete、intellisense等其他酷炫功能的條件下，來比較幾款常見的程式編輯器。
