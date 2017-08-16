@@ -18,5 +18,6 @@
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.{{ theme.scheme }}
   </a>
+  (With Material Design)
 </div>
 {% endif %}
