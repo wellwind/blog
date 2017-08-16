@@ -1,5 +1,5 @@
 ---
-title: [Angular2速成班]用Angular CLI節省你的開發時間
+title: "[Angular2速成班]用Angular CLI節省你的開發時間"
 date: 2016-10-01 21:45:02
 category: Angular速成班
 tags:
