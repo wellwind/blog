@@ -180,11 +180,10 @@ export class UserProfileComponent implements ControlValueAccessor {
 
 [https://angular.io/docs/ts/latest/api/forms/index/ControlValueAccessor-interface.html](https://angular.io/docs/ts/latest/api/forms/index/ControlValueAccessor-interface.html)
 
-* * *
-
+{% note info %}
 2017/08/15補充：實作ControlValueAccessor的方式可以讓我們的Component被當作表單控制項，因此會有disabled的功能，再內容異動時，Angular也會幫我們加上touched、dirty等屬性，非常方便。不過若不需要這些功能的話，有更簡單達到two way binding的方法，可以參考以下文章：
 
 [[Angular] 自訂雙向繫結 - 簡易版](https://blog.kevinyang.net/2017/08/15/angular-custom-two-way-binding/)
 
 [[Angular] Two-way Binding 的運作方式](https://blog.kevinyang.net/2017/08/14/angular-two-way-binding/) (上一篇文章的原理解釋)
-      
+{% endnote %}
