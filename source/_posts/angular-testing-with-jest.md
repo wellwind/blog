@@ -33,7 +33,7 @@ yarn add --dev jest jest-preset-angular @types/jest
 ```json
 "jest": {
   "preset": "jest-preset-angular",
-  "setupTestFrameworkScriptFile": "/src/setupJest.ts"
+  "setupTestFrameworkScriptFile": "<rootdir>/src/setupJest.ts"
 }
 ```
 
