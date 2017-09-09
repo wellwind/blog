@@ -88,3 +88,7 @@ deploy:
   type: git
   repo: https://github.com/wellwind/blog.git
   branch: gh-pages
+
+# Sitemap
+sitemap:
+    path: sitemap.xml
