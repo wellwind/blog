@@ -1,16 +1,16 @@
 ---
-title: "[OneTimePassword] 一次性密碼演算法：簡介HOPT、TOPT和Google Authenticator"
+title: "[OneTimePassword] 一次性密碼演算法：簡介HOTP、TOTP和Google Authenticator"
 date: 2017-09-07 23:36:41
 tags:
 	- One Time Password
 	- OTP
 	- HOTP
-	- TOPT
+	- TOTP
 	- JavaScript
-	- optlib
+	- otplib
 ---
 
-One Time Pass(OTP、一次性密碼)主要用於實現雙因素認證（two-factor authentication）的功能，在使用者一般透過帳號密碼登入後，再透過輸入一組只能使用一次的密碼，完成相對比較安全的登入機制；或是在需要執行特定某些功能時，再次要求使用者輸入一次性的密碼，保護使用者資料不會被他人直接使用，這樣的情境在很多網路銀行線上交易都可以看到。今天就來簡單介紹兩個常見的OTP演算法－HOTP和TOPT
+One Time Pass(OTP、一次性密碼)主要用於實現雙因素認證（two-factor authentication）的功能，在使用者一般透過帳號密碼登入後，再透過輸入一組只能使用一次的密碼，完成相對比較安全的登入機制；或是在需要執行特定某些功能時，再次要求使用者輸入一次性的密碼，保護使用者資料不會被他人直接使用，這樣的情境在很多網路銀行線上交易都可以看到。今天就來簡單介紹兩個常見的OTP演算法－HOTP和TOTP
 
 <!-- more -->
 
@@ -60,7 +60,7 @@ Google也提供了[Google Authenticator](https://github.com/google/google-authen
 
 關於HOTP和TOTP演算法，在網路上很容易可以找到各種語言的實作，為了方便介紹，今天要使用[otplib](https://www.npmjs.com/package/otplib)這個JavaScript套件，使用這個套件主要是因為他的文件很清楚，而且都在client和server端都可以執行，相對用於demo也比較方便。
 
-以下是使用optlib做的一個簡單DEMO
+以下是使用otplib做的一個簡單DEMO
 
 [DEMO網址](http://wellwind.idv.tw/OneTimePasswordDemo/) | [GitHub](https://github.com/wellwind/OneTimePasswordDemo)
 
@@ -70,7 +70,7 @@ Google也提供了[Google Authenticator](https://github.com/google/google-authen
 
 ## 安裝otplib
 
-optlib可以很簡單的透過npm進行安裝，適合在server端產生和驗證密碼的情境
+otplib可以很簡單的透過npm進行安裝，適合在server端產生和驗證密碼的情境
 
 ```shell	
 npm install otplib --save
@@ -110,7 +110,7 @@ otplib.hotp.verify({
 
 ## 使用TOTP
 
-我們可以使用`optlib.totp`來產生TOTP密碼，不過參數不能調整，所以可以直接使用`otplib.authenticator`來設定一些近些的參數，例如一般預設30秒重新產生密碼，但我希望把時間延長
+我們可以使用`otplib.totp`來產生TOTP密碼，不過參數不能調整，所以可以直接使用`otplib.authenticator`來設定一些近些的參數，例如一般預設30秒重新產生密碼，但我希望把時間延長
 
 ```javascript
 otplib.authenticator.options = {
