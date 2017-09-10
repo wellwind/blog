@@ -114,6 +114,8 @@ data.Name = "Welwid";
 
 ExpandoObject幫助我們簡化了部分情境需要使用Dictionary的麻煩，也提供了比較多的擴充，讓我們在使用時更加方便，寫出來的程式碼也比較好理解；在一些物件資料傳遞時，使用ExpandoObject也可以減少我們建立DTO物件的麻煩，但畢竟不是強型別的資料，在使用上還是需要謹慎對待！
 
+程式碼範例：https://github.com/wellwind/ExpandoObjectDemo
+
 # 參考資料
 
 -   https://msdn.microsoft.com/zh-tw/library/system.dynamic.expandoobject(v=vs.110).aspx
