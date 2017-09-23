@@ -257,9 +257,9 @@ export const USER_PROFILE_VALIDATORS: any = {
 
 大功告成！立刻看看結果囉：
 
-{% asset_img 08.png %}
+{% asset_img 08.gif %}
 
-成果一切如我們預期，不會再有NgModel慢一拍的問題了！接著只要把這個Component拿給別人使用，其他人只要知道整個Component的狀態是valid還是invalid就好，超級方便的啦！！
+成果一切如我們預期，不會再有NgModel慢一拍的問題了！接著就能把這個Component拿給別人使用，其他人只要知道整個Component的狀態是valid還是invalid就好，超級方便的啦！！
 
 # 小結
 
