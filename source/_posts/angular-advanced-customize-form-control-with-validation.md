@@ -269,6 +269,8 @@ export const USER_PROFILE_VALIDATORS: any = {
 
 透過這些技巧，我們可以把複雜但具有共用性的表單拆成數個子表單控制項，並且各自有其驗證功能，最後在檢查每個Component的valid或invalid狀態就可以了，減輕其他開發人員的負擔！
 
+今天程式碼的ＧitHub：https://github.com/wellwind/angular-advanced-topic-demo/tree/master/customize-component-with-validator
+
 {% note info %}  
 
 以上文章的內容適用於所有Angular2以上的版本，不過Angular4以上有加入額外的interface來幫助我們不要把程式寫的太難讀，例如錯誤訊息的格式`{ [key: string]: any; }`可以直接使用ValidationErrors；原本實作Validator的validate是同步方法，要改成非同步可以改為實作`AsyncValidator`，方法會變為
