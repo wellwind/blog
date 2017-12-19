@@ -23,18 +23,18 @@ Angular是由Google推出的前端框架，其熱門程度在前端領域的不�
 
 ### Angular CLI
 
-搭配**Angular CL**I，開發人員能夠以更簡單的方式產生一個基本的專案範本，同時只要下一些簡單的指令即可產生基本的程式碼架構；隨著Angular CLI逐漸的進步，開發的彈性也越來越高，例如schematic可以讓我們在團隊中建立共用的範本程式等等，讓開發速度大耀進！
+搭配**Angular CLI**，開發人員能夠以更簡單的方式產生一個基本的專案範本，同時只要下一些簡單的指令即可產生基本的程式碼架構；隨著Angular CLI逐漸的進步，開發的彈性也越來越高，例如[@angular-devkit/schematics](https://www.npmjs.com/package/@angular-devkit/schematics)可以讓我們在團隊中建立共用的範本程式等等，讓開發速度大耀進！
 
 ### TypeScript
 
-除此之外Angular主要**使用TypeScript作為開發語言**，TypeScript是JavaScript的超集合，能讓我們在開發JavaScript時能以強型別的方式撰寫程式，並在轉譯成JavaScript時自動檢查型別的錯誤，減少runtime時的debug成本；同時TypeScript能讓我們**不斷享受使用最新的語法來撰寫程式的快感**，只需要稍作設定即可把最新的語法轉為比較舊的語法，避免瀏覽器支援度的問題！也由於Angular開了這一槍，讓這種熱門的前端library/framework也陸陸續續有了TypeScript開發的版本，足見TypeScript對於前端的影響力也將越來越高！
+除此之外Angular主要**以TypeScript作為開發語言**，TypeScript是JavaScript的超集合，能讓我們在開發JavaScript時能以強型別的方式撰寫程式，並在轉譯成JavaScript時自動檢查型別的錯誤，減少runtime時的debug成本；同時TypeScript能讓我們**不斷享受使用最新的語法來撰寫程式的快感**，只需要稍作設定即可把最新的語法轉為比較舊的語法，避免瀏覽器支援度的問題！也由於Angular開了這一槍，讓各種熱門的前端library/framework也陸陸續續有了TypeScript開發的版本，足見TypeScript對於前端世界的影響力也將越來越高！
 
 ### 基本門檻
 
 由於本系列文章屬於稍微進階的Angular議題，因此對於Angular基礎的知識將不會有太多的介紹，建議讀者至少具備以下Angular基礎後，在閱讀本系列文章：
 
 1.  了解Angular的MVC架構
-2.  使用Angular CLI建立並開始開發
+2.  使用Angular CLI建立專案並開始開發
 3.  懂得如何設計並共用一個component
 4.  理解最基本的Angular相依注入的知識，並能實作一個service注入到component之中
 5.  有基本的模組化概念
@@ -52,11 +52,15 @@ Angular是由Google推出的前端框架，其熱門程度在前端領域的不�
 
 ## 關於Material Design
 
-Material Design是由Google推出的**設計語言**，也可以把它想像成是一種設計的pattern，把視覺化設計的概念、網頁元件、操作互動等等理論及實作整理書來的設計準則，從元件的配色、陰影到特效都有一定的規則可循，我們能透過這些準則設計出清楚明確且容易使用的使用者介面(UI)，打造更好的使用者經驗(UX)；如果你是Google相關服務的愛用者，又對Material Design有點了解，相信你也一定有發現Google的服務在設計上也已經不斷朝Material Design邁進了。
+Material Design是由Google推出的**設計語言**，也可以把它想像成是一種設計的pattern，把視覺化設計的概念、網頁元件、操作互動等等理論及實作整理出來的設計準則，從元件的配色、陰影到特效都有一定的規則可循，我們能透過這些準則設計出清楚明確且容易使用的使用者介面(UI)，打造更好的使用者經驗(UX)；如果你是Google相關服務的愛用者，又對Material Design有點了解，相信你一定也有發現Google的各種服務在設計上也已經不斷朝Material Design邁進了。
 
 ### Material Design的實作
 
-由於Material Design僅僅只是一種設計的準則，不像bootstrap這類css framewrok，有直接的css樣式或javascript library可用，而是交由設計人員依照準則進行實作，偏偏Material Design的設計準則又非常多，一般開發人員不可能有時間依照這些準則一一設計，好在也有許依照Material Design的設計準則開發且open source的library可用。例如Google官方推出的[Material Design Lite](https://getmdl.io/)，或是由4個亞洲人合力開發出來的[Materialize.css](http://materializecss.com/)等等，都是目前常見的Material Desig實作版本。當然像是React或Vue這類熱門的前端框架也很容易能夠找到相關的設計套件。透過這些實作套件，**即使是沒有美感的前端工程師也能夠輕易設計出簡單大方，又不失設計感的頁面**。而身為爸爸同樣是Google的Angular，有一套由官方推出的Material Design套件也不是件奇特的事情，也就是接下來要介紹的[Angular Material](https://material.angular.io/)。
+由於Material Design僅僅只是一種設計的準則，不像bootstrap這類css framewrok，有直接的css樣式或javascript library可用，而是交由設計人員依照準則進行實作，偏偏Material Design的設計準則又非常多，一般開發人員不可能有時間依照這些準則一一設計，好在也有許依照Material Design的設計準則開發且open source的專案可用。例如Google官方推出的[Material Design Lite](https://getmdl.io/)，或是由4個亞洲人合力開發出來的[Materialize.css](http://materializecss.com/)等等，都是目前常見的Material Desig實作版本。
+
+當然像是React或Vue這類熱門的前端框架也很容易能夠找到相關的設計套件，透過這些實作套件，**即使是沒有美感的前端工程師也能夠輕易設計出簡單大方，又不失設計感的頁面**。
+
+而身為爸爸同樣是Google的Angular，有一套由官方推出的Material Design套件也不是件奇特的事情，也就是接下來要介紹的[Angular Material](https://material.angular.io/)。
 
 ### 相關資源
 
@@ -70,7 +74,7 @@ Angular身為Google自家推出的主力前端框架，而Material Design又是G
 
 ### 高品質的Angular Material
 
-所謂的高品質，對於Angular Material來說包含了以下幾點特性：
+所謂的高品質，對於Angular Material來說包含了以下幾個重點：
 
 -   i18n及a11y：所有Angular Material提供的元件原則上都不會有無法支援多語系的情況，且同時也都能夠可存取性(a11y)的開發，讓所有使用者都能夠輕易與這些元件互動。
 -   直覺的API
@@ -82,7 +86,7 @@ Angular身為Google自家推出的主力前端框架，而Material Design又是G
 
 ### 追求高品質的後果與成果
 
-從上段介紹可以看到，Angular Material對於品質的要求，從程式碼本身到元件實用性都完全顧慮到了，如果能夠達到這樣的品質，**絕對可以說是目前其他任何Material Deesign套件所望成莫及的程度**！也因此不難想像在beta時期，Angular Material可以說是不斷的breaking change，想必就是為了能夠不斷的往所謂**"高品質"**的目標邁進，這也成了很多想要進入Angular Material世界的人裹足不前的理由；儘管罵聲不斷，但朝著目標邁進的Angular Material在不斷進化的Angular推出第5版後，Angular Material的版本也**從2.0.0-beta一下子大躍進為5.0.0-rc**！同時才幾個禮拜後的2017/12/06邁入正式版，在這個剛release的時候進入學習既能避免不斷breaking changes的傷害，又能夠~~跟別人炫耀~~**贏在起跑點**，實在是個很不錯的進入時機！這也成了這次鐵人賽想要以Angular Material為目標的主要原因！
+從上段介紹可以看到，Angular Material對於品質的要求，從程式碼本身到元件實用性都完全顧慮到了，如果能夠達到這樣的品質，**絕對可以說是目前其他任何Material Deesign套件所望成莫及的程度**！也因此不難想像在beta時期，Angular Material可以說是不斷的breaking change，想必就是為了能夠不斷的往所謂**"高品質"**的目標邁進，這也成了很多想要進入Angular Material世界的人裹足不前的理由；儘管罵聲不斷，但朝著目標邁進的Angular Material在不斷進化的Angular推出第5版後，Angular Material的版本也**從2.0.0-beta一下子大躍進為5.0.0-rc**！同時才幾個禮拜後的2017/12/06邁入正式版，在這個剛release的時候進入學習既能避免不斷breaking changes的傷害，又能夠 ~~跟別人炫耀~~ **贏在起跑點**，實在是個很不錯的進入時機！這也成了這次鐵人賽想要以Angular Material為目標的主要原因！
 
 ## 系列文章規劃
 
