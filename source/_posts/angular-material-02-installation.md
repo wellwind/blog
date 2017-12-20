@@ -287,7 +287,7 @@ https://material.angular.io/guide/getting-started#appendix-configuring-systemjs
 
 明天即將開始進入正戲，介紹Angular Material的元件啦！
 
-本日的程式碼GitHub：
+本日的程式碼GitHub：<https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-02-prepare-installation> (分枝：day-02-prepare-installation)
 
 ## 相關資源：
 
