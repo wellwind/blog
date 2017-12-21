@@ -271,7 +271,8 @@ MatIcon本身的能力也超過了Material Icon的範圍，除了用來產生現
 
 適度地替系統加上Icon能達到畫面更簡潔，但操作卻更清楚的效果，把這些使用方式都學會，就能輕易的在畫面上加入各種的icons啦！
 
-本日的程式碼GitHub：
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-03-mat-icon 
+分支：day-03-mat-icon
 
 ## 相關資源
 
