@@ -50,7 +50,7 @@ Google本身已經提供了超過900個系統Icons，而且完全Open Source，�
 
 {% asset_img 03-material-icons-usage.png %}
 
-我們可以看到想要加入一個人的圖像，可以使用以下語法
+如果看到想要加入一個人的圖像，可以使用以下語法
 
 ```html
 <i class="material-icons">person</i>
@@ -64,7 +64,7 @@ Google本身已經提供了超過900個系統Icons，而且完全Open Source，�
 
 ## 關於Angular Material的MatIcon
 
-使用`<i class="material-icons">person</i>`的方式來顯示Material Icon本身已經是一件很容易的事情，但對於項Angular這種以元件的方式來開發的情境上，這種HTML Tag會略顯得不夠語意化，因此Angular Material在顯示Icon上另外提供了一個元件，也就是MatIcon。
+使用`<i class="material-icons">person</i>`的方式來顯示Material Icon本身已經是一件很容易的事情，但對於像Angular這種以元件的方式來開發的情境上，這種HTML Tag就略顯得不夠語意化，因此Angular Material在顯示Icon上另外提供了一個元件，也就是MatIcon。
 
 ### 在MatIcon中使用Material Icons
 
@@ -89,7 +89,7 @@ export class AppModule {}
 <mat-icon>person</mat-icon>
 ```
 
-中間的person一樣是Material Icons裡面可以選的icon名稱，不同的是外面由`<mat-icon>`這個元件標籤包起來，效果是完全一樣的，不同的是比起原來必須看到`class="material-icons"`才知道使用的是Material Icon，現在只要看到`<mat-icon>`就知道了，同時以Angular Material為基礎設計出來的元件，都能夠有比較多的變化。
+中間的`person`一樣是Material Icons裡面可以選的icon名稱，不同的是外面由`<mat-icon>`這個元件標籤包起來；雖然效果是完全一樣的，但比起原來必須看到`class="material-icons"`才知道使用的是Material Icon，現在只要看到`<mat-icon>`就知道了，同時以Angular Material為基礎設計出來的元件，也能夠有比較多的Material Design相關變化。
 
 例如預設的MatIcon會是我們加入的theme的文字顏色(currentColor)，但我們可以很容易的透過`color`屬性，來切換icon的顏色類型。
 
@@ -135,7 +135,7 @@ export class AppModule {}
 
 ### 使用MatIconRegistry擴充
 
-ＭatIcon除了能夠直接使用Material Icon以外，我們還能夠過**MatIconRegistry**來擴充能夠使用的Icons；MatIconRegistry具有兩個功能，**一個是直接在MatIcon中加入SVG圖檔，另外一個則是支援使用其他的Icon Font**，這在我們所需要的Icon超出Material Icon提供的範圍時非常實用，同時又能保持使用一致的MatIcon來顯示畫面。
+ＭatIcon除了能夠直接使用Material Icon以外，我們還能夠過**MatIconRegistry**來擴充能夠使用的Icons；MatIconRegistry具有兩個功能，**一個是直接在MatIcon中加入SVG圖檔，另外一個則是支援使用其他的Icon Font**，這在我們所需要的Icon超出Material Icon提供的範圍時非常實用，同時又能保持使用一致的MatIconm元件來顯示畫面。
 
 #### 在MatIcon中使用SVG
 
@@ -147,7 +147,7 @@ export class AppModule {}
 
 {% asset_img 07-angular-icon-path.png %}
 
-接著注入MatIconRegistery及DomSanitizer，由於SVG icon是在程式中透過路徑載入，為了避免XSS的問題，必須透過Angular提供的DomSanitizer service來信任這個路徑，如果你的圖片放在網路上的其他來源，同時還需要注意cors的問題，不過這已經超出這次介紹的範圍，就不多做說明。
+接著注入`MatIconRegistery`及`DomSanitizer`，由於SVG icon是在程式中透過路徑載入，為了避免XSS的問題，必須透過Angular提供的DomSanitizer service來信任這個路徑，如果你的圖片放在網路上的其他來源，同時還需要注意cors的問題，不過這已經超出這次介紹的範圍，就不多做說明。
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
@@ -168,9 +168,9 @@ export class AppComponent implements OnInit {
 }
 ```
 
-另外為了能夠在程式中下載者張圖片擴充為我們的icon，還需要再加入HttpClientModule，加入方法也已經是基本知識，就不多說明囉。
+另外為了能夠在程式中下載者張圖片擴充為我們的icon，還需要再加入`HttpClientModule`，加入方法也已經是基本知識，就不多說明囉。
 
-接著我們就可以透過MatRegistery來擴充SVG icon啦！
+接著我們就可以透過`MatRegistery`來擴充SVG icon啦！
 
 ```typescript
 this.matIconRegistry.addSvgIconInNamespace(
@@ -181,11 +181,11 @@ this.matIconRegistry.addSvgIconInNamespace(
 
 **MatIconRegistery.addSvgIconInNamespace**有三個參數：
 
--   namespace：icon的namespace，方便用來分類不同的icons，也能夠避免名稱衝突
--   iconName：給予這個icon一個名稱
--   url：一個安全的圖片來源
+-   **namespace：icon**的namespace，方便用來分類不同的icons，也能夠避免名稱衝突
+-   **iconName**：給予這個icon一個名稱
+-   **url**：一個安全的圖片來源
 
-加入這個設定後，我們就可以直接在畫面中使用這個icon啦！更棒的是，只要svg icon裡面沒有設定任何顏色的話，我們還能夠過`color`屬性來直接調整我們的svg icon的顏色！
+加入這個設定後，我們就可以直接在畫面中使用這個icon啦！更棒的是，只要svg icon裡面沒有特別設定任何顏色的話，我們還能夠過`color`屬性來直接調整我們的svg icon的顏色！
 
 加入svg icon可以透過MatIcon的`svgIcon`屬性來設定，必須依照`[namespace]:[iconName]`的方式來指定：
 
@@ -220,7 +220,7 @@ this.matIconRegistry.addSvgIconInNamespace(
 
 {% endnote %}
 
-接著一樣可以透過MatIconRegistery的方式加入
+接著一樣可以透過`MatIconRegistery`的方式加入
 
 ```typescript
 this.matIconRegistry.registerFontClassAlias('fontawesome', 'fa');
@@ -261,11 +261,11 @@ this.matIconRegistry.registerFontClassAlias('fontawesome', 'fa');
 
 ## 本日小結
 
-今天我們認識了Material Design中的Icon設計哲學，以及身為前端開發人員最常使用的系統Icon使用方式，學到了Material  Icon的使用方式。
+今天我們認識了Material Design中的Icon設計哲學，以及身為前端開發人員最常使用的系統Icon使用方式，學到了Material Icon的使用方式。
 
-而在Angular Material中我們能夠過MatIcon來幫助我們統一管理這些icons，讓view上的語法呈現更加一致明確。
+而在Angular Material中我們能夠過MatIcon來幫助我們**統一管理這些icons**，讓view上的語法呈現更加一致明確。
 
-同時我們也簡單認識了Material Desing基本的配色概念，以及了解到Angular Material中使用這些顏色的方式。
+同時我們也簡單認識了**Material Desing基本的配色概念**，以及了解到Angular Material中使用這些顏色的方式。
 
 MatIcon本身的能力也超過了Material Icon的範圍，除了用來產生現有的Material Icons以外，我們也能自行加入SVG圖檔來當作icon顯示，更方便的是我們還能把其他網路上知名的Icon Font樣式一併套進來，通通使用MatIcon的方式進行管理，非常的方便及強大。
 
