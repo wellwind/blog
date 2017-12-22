@@ -26,7 +26,7 @@ tags:
 
 {% asset_img 00-save-icon.png %}
 
-這種系統Icon對於前端的UI來說就至關重要，有時候一個好的系統Icon可以完整的說明系統的行為或狀態，而不好的Icon加上沒有適當的說明，就會讓操作變得更不流暢；只要有了適當的Icon，平凡的網頁就立刻有的不凡的生命力，可以說是現代化網頁設計非常重要的一個環節啊！而關於系統Icon，在Googl官方也推出了一系列超過900個系統Icons，提供給大家使用，也就是[Material Icons](https://material.io/icons/)。
+這種系統Icon對於前端的UI來說就至關重要，有時候一個好的系統Icon可以完整的說明系統的行為或狀態，而不好的Icon加上沒有適當的說明，就會讓操作變得更不流暢；只要有了適當的Icon，平凡的網頁就立刻有的不凡的生命力，可以說是現代化網頁設計非常重要的一個環節啊！而關於系統Icon，在Google官方也推出了一系列超過900個系統Icons，提供給大家使用，也就是[Material Icons](https://material.io/icons/)。
 
 #### 輕鬆一下
 
@@ -168,7 +168,7 @@ export class AppComponent implements OnInit {
 }
 ```
 
-另外為了能夠在程式中下載者張圖片擴充為我們的icon，還需要再加入`HttpClientModule`，加入方法也已經是基本知識，就不多說明囉。
+另外為了能夠在程式中下載這張圖片擴充為我們的icon，還需要再加入`HttpClientModule`，加入方法也已經是基本知識，就不多說明囉。
 
 接著我們就可以透過`MatRegistery`來擴充SVG icon啦！
 
@@ -263,7 +263,7 @@ this.matIconRegistry.registerFontClassAlias('fontawesome', 'fa');
 
 今天我們認識了Material Design中的Icon設計哲學，以及身為前端開發人員最常使用的系統Icon使用方式，學到了Material Icon的使用方式。
 
-而在Angular Material中我們能夠過MatIcon來幫助我們**統一管理這些icons**，讓view上的語法呈現更加一致明確。
+而在Angular Material中我們能夠透過MatIcon來幫助我們**統一管理這些icons**，讓view上的語法呈現更加一致明確。
 
 同時我們也簡單認識了**Material Desing基本的配色概念**，以及了解到Angular Material中使用這些顏色的方式。
 
