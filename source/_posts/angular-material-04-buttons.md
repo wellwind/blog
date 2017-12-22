@@ -360,7 +360,8 @@ export class AppComponent implements OnInit {
 
 在介紹過幾個實用的元件及功能後，明天開始我們就要開來組合各種元件，並且完成各式各樣的畫面啦！！
 
-本日的程式碼GitHub：
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-04-mat-button
+分之：day-04-mat-button
 
 ## 相關資源
 
