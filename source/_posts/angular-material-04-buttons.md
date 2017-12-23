@@ -191,7 +191,7 @@ export class AppModule {}
 
 ## 按鈕開關(button toggle)
 
-按鈕開關基本上不是按鈕，反而比較類似checkbox，偏偏他又不像checkbox是表單控制項，可以搭配ngModel使用，因此單一的按鈕開關使用上會比較沒有意義，而是使用一個群組式的按鈕開關，易用層面比較廣
+按鈕開關基本上不是按鈕，反而比較類似checkbox，偏偏他又不像checkbox是表單控制項，可以搭配ngModel使用，因此單一的按鈕開關使用上會比較沒有意義，而是使用一個群組式的按鈕開關，應用層面比較廣
 
 ### 基本的Button Toggle(mat-button-toggle)
 
