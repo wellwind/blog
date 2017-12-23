@@ -85,7 +85,7 @@ tags:
 
 -   **over**：預設值，SideNav會浮動在畫面之上，背後會出現一個灰底的backdrop，點擊SideNav以外的地方(或按下<kbd>ESC</kbd>)會隱藏起來。
 
--   **push**：跟over類似，但顯示的時候會把畫面像另外一個方向推，同時也會有一個灰底的backdrop，在螢幕較大的裝置時可以同時瀏覽SideNav和選單，但在行動裝置等小螢幕上則比較沒有感覺。
+-   **push**：跟over類似，但顯示的時候會把畫面往另外一個方向推，同時也會有一個灰底的backdrop，在螢幕較大的裝置時可以同時瀏覽SideNav和選單，但在行動裝置等小螢幕上則比較沒有感覺。
 
     {% asset_img 04-sidenav-push-mode.gif %}
 
@@ -147,7 +147,7 @@ SideNav支援顯示在畫面的起始(`start`，預設值，通常是左邊)或�
 
 #### disableClose
 
-在mode設為`over`或`push`時，預設會出現一個backdrop，當點選backdrop或按下esc時則會自動隱藏SideNav，如果希望不要自動隱藏，則可以設定disabledClose，有了這個屬性就必須另外在可點選的範圍內加上程式設定隱藏SideNav。
+在mode設為`over`或`push`時，預設會出現一個backdrop，當點選backdrop或按下esc時則會自動隱藏SideNav，如果希望不要自動隱藏，則可以設定`disabledClose`，有了這個屬性就必須另外在可點選的範圍內加上程式設定隱藏SideNav。
 
 ```html
   <mat-sidenav #sideNav mode="over" disableClose>
