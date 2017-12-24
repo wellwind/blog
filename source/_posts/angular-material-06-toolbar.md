@@ -7,7 +7,7 @@ tags:
 	- MatToolbar
 ---
 
-在昨天介紹SideNav時，我們有稍微提到過Toolbar，今天我們就比較認真的來看看Material Design中Toolbar的特性，及Angular Material中Toolbar可以呈現什麼樣的變話吧！
+在昨天介紹SideNav時，我們有稍微提到過Toolbar，今天我們就比較認真的來看看Material Design中Toolbar的特性，及Angular Material中Toolbar可以呈現什麼樣的變化吧！
 
 <!-- more -->
 
@@ -46,7 +46,7 @@ Toolbar的元件放置在MatToolbarModule之中，加入這個module後，我們
 }
 ```
 
-目的是將將toolba固定在上放，並透過`z-index: 2`來避免捲動時被下方內容蓋過， `mat-sidenav-container`跟`mat-sidenav`喬出一個上方64px的空間給toolbar使用，避免內容被toolbar蓋過。
+目的是將toolbar固定在上方，並透過`z-index: 2`來避免捲動時被下方內容蓋過， `mat-sidenav-container`跟`mat-sidenav`喬出一個上方64px的空間給toolbar使用，避免內容被toolbar蓋過。
 
 接著將原來的元件套上這些樣式
 
@@ -91,7 +91,7 @@ Toolbar的元件放置在MatToolbarModule之中，加入這個module後，我們
 
 ### 替Toolbar加上各種按鈕
 
-接著我們想在toolbar加上一些東西，第一個是在左邊加上一個icon，可以透過這個icon來開關SideNav，這是很常見的後台做法
+接著我們想在toolbar加上一些東西，第一個是在左邊加上一個icon，可以透過這個icon來開關SideNav，這是一種很常見的後台做法
 
 ```html
 <mat-toolbar color="primary" class="demo-app-header">
@@ -106,7 +106,7 @@ Toolbar的元件放置在MatToolbarModule之中，加入這個module後，我們
 
 {% asset_img 04-toolbar-toogle-sidenav.gif %}
 
-接著我們想在toolbar的最右邊加上一個登出的按鈕，不過要怎麼把按鈕推到最右邊去呢，其實只要透過CSS就可以輕易解決，由於Toolbar內的排版是flex，我們可以加入一個分隔用的空間，把空間後的內容都推到另外一邊去。
+接著我們想在toolbar的最右邊加上一個登出的按鈕，不過要怎麼把按鈕推到最右邊去呢，其實只要透過CSS就可以輕易解決，由於Toolbar內的排版是**flex**，我們可以加入一個分隔用的空間，把空間後的內容都推到另外一邊去。
 
 ```css
 .toolbar-seprator {
@@ -114,7 +114,7 @@ Toolbar的元件放置在MatToolbarModule之中，加入這個module後，我們
 }
 ```
 
-接著再toolbar中加入這個分隔器
+接著在toolbar中加入這個分隔器
 
 ```html
 <mat-toolbar color="primary" class="demo-app-header">
@@ -144,7 +144,7 @@ Toolbar的元件放置在MatToolbarModule之中，加入這個module後，我們
 
 ## 多行的Toolbar
 
-Toolbar預設是單行的，在`mat-toolbar`中的內容預設都會在同一行顯示，若在一行toolbar中放入太多資訊則可能會因為解析度的關係無法顯示，這時候我們可以用多個`<mat-toolbar-row>`來設定多行的toolbar。
+Toolbar預設是單行的，在`mat-toolbar`中的內容預設都會在同一行顯示，若在一行toolbar中放入太多資訊則可能會因為寬度有限的關係無法顯示，這時候我們可以用多個`<mat-toolbar-row>`來設定多行的toolbar。
 
 ```html
     <mat-toolbar color="primary">
@@ -169,7 +169,7 @@ Toolbar預設是單行的，在`mat-toolbar`中的內容預設都會在同一行
 
 ## 本日小結
 
-今天我們學會了另一個系統上最常用的元件－Toolbar，Toolbar算是相對簡單的component，也因為他的簡單，給了開發人員更多的彈性空間去靈活調整，不管是在整個頁面架構上，還是系統內的功能畫面，都有很大的機會去使用到，好好熟練Toolbar的用法對於功能畫面的開發會很有幫助！
+今天我們學會了另一個前端上常用的元件－Toolbar，Toolbar算是相對簡單的元件，也因為他的簡單，給了開發人員更多的彈性空間去靈活調整，不管是在整個頁面架構上，還是系統內的功能畫面，都有很大的機會去使用到，好好熟練Toolbar的用法對於功能畫面的開發會很有幫助喔！
 
 明後天我們再來學習使用其他元件，來豐富這兩天學到的SideNav和Toolbar的內容吧！
 
