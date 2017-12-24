@@ -74,7 +74,7 @@ export class AppModule {}
 
 ### 凸起的按鈕(mat-raised-button)
 
-比起扁平化的按鈕，凸起的按鈕會有明顯的反差，也會有比較深的陰影效果，已凸顯按鈕的存在，凸起的按鈕需要加上mat-raised-button
+比起扁平化的按鈕，凸起的按鈕會有明顯的反差，也會有比較深的陰影效果，以凸顯按鈕的存在，凸起的按鈕需要加上mat-raised-button
 
 ```html
   <button mat-raised-button>我是raised按鈕</button>
@@ -281,7 +281,7 @@ export class AppModule {}
 }
 ```
 
-position和transaition是必要的，其他可以依照情況設定，只要有這樣的設定，立刻就可以為我們鵝畫面加上漣漪的效果啦！
+position和transaition是必要的，其他可以依照情況設定，只要有這樣的設定，立刻就可以為我們的畫面加上漣漪效果啦！
 
 {% asset_img 12-basic-mat-ripple.gif %}
 

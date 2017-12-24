@@ -19,7 +19,7 @@ tags:
 
 圖片來源：https://material.io/guidelines/layout/structure.html#structure-ui-regions
 
--   Toolbar：通常用來放置基本的品牌log、簡單的搜尋、常用的功能和切換左右sidenav的按鈕等等。
+-   Toolbar：通常用來放置基本的品牌logo、簡單的搜尋、常用的功能和切換左右sidenav的按鈕等等。
 -   SideNav：放置使用者資訊，或是主要的功能選單等等、可以選擇常駐在左邊或右邊，也可以選擇平常隱藏起來，需要的時候可以動態的打開來。
 -   Content：當然就是主要的功能畫面啦。
 
