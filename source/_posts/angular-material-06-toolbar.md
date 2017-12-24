@@ -173,7 +173,9 @@ Toolbar預設是單行的，在`mat-toolbar`中的內容預設都會在同一行
 
 明後天我們再來學習使用其他元件，來豐富這兩天學到的SideNav和Toolbar的內容吧！
 
-本日的程式碼GitHub：
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-06-toolbar
+
+分支：day-06-toolbar
 
 ## 相關資源
 
