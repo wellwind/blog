@@ -77,7 +77,7 @@ Toolbar的元件放置在MatToolbarModule之中，加入這個module後，我們
 
 ### 設定Toolbar的樣式
 
-跟其他Angular Materialm元件一樣，我們可以透過`color`來改變toolbar的顏色：
+跟其他Angular Material元件一樣，我們可以透過`color`來改變toolbar的顏色：
 
 ```html
 <mat-toolbar color="primary">這是primary的toolbar</mat-toolbar>
