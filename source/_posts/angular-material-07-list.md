@@ -29,7 +29,7 @@ tags:
 
 ### 使用mat-list及mat-list-item
 
-使用List元件前，我們必須加入MatListModule，之後可以使用`mat-list`及`mat-list-item`的組合來完成一個基本的List：
+使用List元件前，我們必須加入`MatListModule`，之後可以使用`<mat-list>`及`<mat-list-item>`的組合來完成一個基本的List：
 
 ```html
 <mat-list>
@@ -43,7 +43,7 @@ tags:
 
 {% asset_img 01-basic-list.png %}
 
-這是一個很單純的清單資料，不過我們在SideNav中，希望是能夠點選的Link，好在mat-list-item不僅僅是component，也能夠以directive的方式呈現，因此我們稍微做點調整：
+這是一個很單純的清單資料，不過我們在SideNav中，希望是能夠點選的Link，好在`<mat-list-item>`不僅僅是component，也能夠以directive的方式呈現，因此我們稍微做點調整：
 
 ```html
 <mat-list>
@@ -57,13 +57,15 @@ tags:
 
 {% asset_img 02-nav-item-in-link.gif %}
 
-一個可以點選的List就出現啦！這裡可以注意到一件非常有趣的事情，當我們展開選單時，預設會focus在第一個項目，同時我們可以使用tab來切換，更棒的是使用tab切換時，不會切換到List之外的內容，只會在List之內循環，許多清單類型的Angular Material都具有這樣的特性，讓使用鍵盤操作時的情境可以更加靈活。
+一個可以點選的List就出現啦！這裡可以注意到一件非常有趣的事情，當我們展開選單時，預設會focus在第一個項目，同時我們可以使用`tab`來切換，更棒的是使用tab切換時，不會切換到List之外的內容，只會在List之內循環，許多清單類型的Angular Material都具有這樣的特性，讓使用鍵盤操作時的情境可以更加靈活。
 
+{% note info %}
 我們也能夠在自己的component中做到這個特性，這在未來的**Angular CDK篇**時會再作介紹。
+{% endnote %}
 
 ### 使用mat-nav-list
 
-剛剛的例子我們已經在SideNav導覽列中加入了選單，但是在導覽列的選單連結中有底線有為了我們一般的習慣，我們可以用CSS把它調整調，但Angular Material提供了更優質的做法，也就是另一個元件`mat-nav-list`，這個元件可以使用在導覽用的list中，我們只要把原來的`mat-list`換掉即可
+剛剛的例子我們已經在SideNav導覽列中加入了選單，但是在導覽列的選單連結中有底線有違我們一般的習慣，我們可以用CSS把它調整調，但Angular Material提供了更優質的做法，也就是另一個元件`mat-nav-list`，這個元件可以使用在導覽用的list中，我們只要把原來的`mat-list`換掉即可
 
 ```html
 <mat-nav-list>
@@ -91,6 +93,7 @@ tags:
   <a [routerLink]="['/', 'dashboard', 'survey']" mat-list-item>問卷調查</a>
   <a [routerLink]="['/', 'dashboard', 'blog']" mat-list-item>部落格</a>
   <a [routerLink]="['/', 'dashboard', 'inbox']" mat-list-item>收件夾</a>
+  <mat-divider></mat-divider> 
   <!-- 另外一組選單 -->
   <h3 matSubheader>其他頁面</h3>
   <a [routerLink]="['/']" mat-list-item>首頁</a>
@@ -107,7 +110,7 @@ tags:
 
 ### 使用matLine讓清單資料以多行方式顯示
 
-`mat-list-item`預設是一行文字，但當有需要的時候，我們也可以使用`matLine`來建立多行文字。
+`<mat-list-item>`預設是一行文字，但當有需要的時候，我們也可以使用`matLine`來建立多行文字。
 
 ```html
 <mat-nav-list>
@@ -127,17 +130,17 @@ tags:
 
 {% asset_img 05-multiline.png %}
 
-可以發現我們沒有做任何設定，但第一行的文字就是會比較大點，因為第一行文字通常代表的是主要訊息，之後的文字則是以補充為主。
+可以發現我們沒有做任何設定，但第一行的文字就是會比較大點，因為第一行文字通常代表的是主要訊息，之後的文字則是以補充為主，因此會小一點點。
 
 ### 使用matListAvatar顯示產生頭像
 
-在清單中使用頭像是很常見的一種應用，像是許多通訊軟體都會採用這種設計方式，要在清單中使用頭像可以在頭像加上`matListAvatar`這個directive
+在清單中使用頭像是很常見的一種應用，像是許多通訊軟體都會採用這種設計方式，要在清單中使用頭像可以在頭像加上`matListAvatar`：
 
 ```html
 <h3 matSubheader>好友訊息</h3>
 <mat-list-item>
   <img matListAvatar src="..." />
-  <p matLine>志</p>
+  <p matLine>志玲</p>
   <p matLine>hi，好久不見，最近好嗎？</p>
 </mat-list-item>
 <mat-list-item>
@@ -153,7 +156,7 @@ tags:
 
 ### 在清單右方加上動作icon
 
-在Material Design中的清單，所有的執行動作按鈕與社都會放在最後方，因此在Angular Material中，只要加入按鈕，都會直接被推到最後面：
+在Material Design中的清單，所有的執行動作按鈕預設都會放在最後方，因此在Angular Material中，只要加入按鈕，都會直接被推到最後面：
 
 ```html
 <mat-list-item>
