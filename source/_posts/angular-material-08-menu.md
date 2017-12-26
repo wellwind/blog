@@ -68,8 +68,8 @@ tags:
 ​
 -   **xPosition**：選項為`after`(預設值、從start往end的方向長，通常是從左到右)或`before`(從end往start的方向長，通常是從右到左)。
 -   **yPosition**：選項為`below`(預設值、從上往下長)或`above`(從下往上長)
-​
-舉例來說，一個沒有設定`xPosition`和y`Position`，且生長方向沒有阻礙時的程式碼和畫面如下：
+  ​
+  舉例來說，一個沒有設定`xPosition`和y`Position`，且生長方向沒有阻礙時的程式碼和畫面如下：
 
 ```html
 <div style="text-align:center">
@@ -109,6 +109,18 @@ tags:
 ```
 
 {% asset_img 06-menu-position-sample-3.png %}
+
+另外，我們也可以設定`[overlapTrigger]="false"`，如此一來，選單就永遠不會遮住我們的trigger：
+
+```html
+<mat-menu #messageMenu="matMenu" [overlapTrigger]="false">
+  <button mat-menu-item>最新訊息</button>
+  <button mat-menu-item>訊息設定</button>
+</mat-menu>
+<button mat-icon-button [matMenuTriggerFor]="messageMenu" #menuTrigger="matMenuTrigger">
+  <mat-icon>message</mat-icon>
+</button>
+```
 
 ### 巢狀menu
 
@@ -174,7 +186,7 @@ menu選單可以是巢狀的，要使用巢狀的選單沒有什麼新技巧，�
 
 {% note info %}
 
-當然，你還是必須要載入MatListModule才可以。
+當然，你還是必須要載入`MatListModule`才可以。
 
 {% endnote %}
 
@@ -186,7 +198,9 @@ Angular Material在Menu的設計上非常用心，儘管是web application，但
 
 介紹到這邊，整個基本的後台畫面就已經大致上成形了！明天開始我們將花幾天的時間透過一個問卷調查的頁面，來介紹Angular Material中各種不同的表單元件的使用，這些表單元件都有很豐富的動態效果，但使用上非常顯示明確，不會被這些效果給混淆，敬請期待吧！！
 
-本日的程式碼GitHub：
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-08-menu
+
+分支：day-08-menu
 
 ## 相關資源
 
