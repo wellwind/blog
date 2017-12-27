@@ -201,7 +201,7 @@ Material Design是極具質感的設計樣式，因此Angular Material自然也�
 
 {% asset_img theme-preview-purple-green.png %}
 
-未來Angular Material也會持續增加不同的配色；當然，我們也可以自己設計自己想要的樣式，在Angular Material要產生客製化的樣式非常簡單，只需要簡單設定要搭配的顏色即可，在後續的文章會介紹如何自訂自己的Angular Material Theme。在這裡我們只要先選擇內建的theme就好，我們可以把這個theme的css加到style.css中。
+未來Angular Material也會持續增加不同的配色；當然，我們也可以自己設計自己想要的樣式，在Angular Material要產生客製化的樣式非常簡單，只需要簡單設定要搭配的顏色即可，在後續的文章會介紹如何自訂自己的Angular Material Theme。在這裡我們只要先選擇內建的theme就好，我們可以把這個theme的css加到styles.css中。
 
 ```css
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
