@@ -7,7 +7,7 @@ tags:
 	- MatStepper
 ---
 
-昨天我們已經完成了一個基本的後台版型，今天開始我們要使用Angular Material來製作一個問卷調查的頁面，這個練習主要會學到所有Angular Material的表單元件，畢竟在前端的世界各式各樣的表單是必須面臨到的一大議題！不過在介紹表單元件之前，我們先來介紹一個還蠻適合放在問卷頁面的元件－Stepper。
+昨天我們已經完成了一個基本的後台版型，今天開始我們要使用Angular Material來製作一個問卷調查的頁面，這個練習主要會學到**所有Angular Material的表單元件**，畢竟在前端的世界各式各樣的表單是必須面臨到的一大議題！不過在介紹表單元件之前，我們先來介紹一個還蠻適合放在問卷頁面的元件－Stepper。
 
 <!-- more -->
 
@@ -21,7 +21,7 @@ Stepper也有許多不同的呈現模式，我們可以依照需要的不同來�
 
 ## 開始使用Angular Material的Stepper元件
 
-要使用Stepper元件，首先要先加入MatStepperModule。
+要使用Stepper元件，首先要先加入`MatStepperModule`。
 
 ### 使用mat-stepper
 
@@ -41,7 +41,7 @@ Stepper基本上是一個水平或垂直的component與一系列的step的組合
 </mat-horizontal-stepper>
 ```
 
-在上述程式中，我們使用`mat-horizontal-stepper`作為一個水平stepper的容器，接著每個步驟都以一個`mat-step`包裝起來，對於每個步驟的基本標題文字則使用`mat-step`的`label`屬性。
+在上述程式中，我們使用`<mat-horizontal-stepper>`作為一個水平stepper的容器，接著每個步驟都以一個`<mat-step>`包裝起來，對於每個步驟的基本標題文字則使用`<mat-step>`的`label`屬性。
 
 成果如下：
 
@@ -59,7 +59,7 @@ Stepper基本上是一個水平或垂直的component與一系列的step的組合
 
 ### 設定複雜的label
 
-如果顯示的label想要以比較複雜的方式呈現，可以再`mat-step`裡面加上一個帶有 `matStepLabel` directive的`ng-template`元素，如下：
+如果顯示的label想要以比較複雜的方式呈現，可以再`<mat-step>`裡面加上一個帶有 `matStepLabel` directive的`<ng-template>`元素，如下：
 
 ```html
 <mat-vertical-stepper>
@@ -87,7 +87,7 @@ Stepper基本上是一個水平或垂直的component與一系列的step的組合
 
 ### 加上「上一步」和「下一步」的按鈕
 
-我們可以在`mat-step`中透過`matStepperNext`和`matStepperPrevious`來動態切換不同的步驟，如下：
+我們可以在`<mat-step>`中使用按鈕並透過`matStepperNext`和`matStepperPrevious`來動態切換不同的步驟，如下：
 
 ```html
 <mat-vertical-stepper>
@@ -119,9 +119,9 @@ Stepper基本上是一個水平或垂直的component與一系列的step的組合
 
 ### 設定Linear Stepper
 
-Stepper有一個`linear`屬性可以設定，這個屬性設定後，如果step內的表單是`invalid`的話，就會無法前進到下一步，這個設定比較複雜，且必須搭配ReactiveForm來處理，讓我們先看code，再來解釋內容：
+Stepper有一個`linear`屬性可以設定，這個屬性設定後，如果step內的表單是`invalid`的話，就會無法前進到下一步，這個設定比較複雜，且必須搭配表單驗證(form validation)來處理，讓我們先看code，再來解釋內容：
 
-首先在component.ts中加入一個可以用來切換linear狀態的變數，以及一個FormGroup：
+我們使用ReactiveForm，首先在component.ts中加入一個可以用來切換linear狀態的變數，以及一個`FormGroup`：
 
 ```Typescript
 export class SurveyComponent {
@@ -136,7 +136,7 @@ export class SurveyComponent {
 }
 ```
 
-接著在頁面上加入切換狀態的功能，以及把FormGroup套用在第一個step的表單內：
+接著在頁面上加入切換狀態的功能，以及把`FormGroup`套用在第一個step的表單內：
 
 ```html
 <button mat-button (click)="isLinear = !isLinear">切換Linear狀態</button>
@@ -162,11 +162,11 @@ export class SurveyComponent {
 </mat-vertical-stepper>
 ```
 
-在這裡我們偷偷使用了`mat-form-field` 和 `matInput`，這是明天會介紹到的元件，為了要展示表單與Linear Stepper的關係先偷偷拿來使用，要記得加入`MatFormFieldModule`和`MatInputModule`才能開始使用。
+在這裡我們偷偷使用了`<mat-form-field>` 和 `matInput`，這是明天會介紹到的元件，為了要展示表單與Linear Stepper的關係先偷偷拿來使用，要記得加入`MatFormFieldModule`和`MatInputModule`才能開始使用。
 
-另外別忘記我們使用的ReactiveForm，因此也要記得加入`ReactiveFormsModule`。
+另外別忘記我們使用了ReactiveForm，因此也要記得加入`ReactiveFormsModule`。
 
-而在上面的程式碼中，我們先在`mat-step`中設定`stepControl`這個設定是用來**讓整個step知道要以哪個form group的valid狀態來決定是否可以進到下一步**，接著裡面就只是一般ReactiveForm的設計了。
+而在上面的程式碼中，我們先在`<mat-step>`中設定`stepControl`這個設定是用來**讓整個step知道要以哪個form group的valid狀態來決定是否可以進到下一步**，接著裡面就只是一般ReactiveForm的設計了。
 
 成果如下：
 
@@ -174,7 +174,7 @@ export class SurveyComponent {
 
 ### 只用單一個表單包含所有Step的狀態
 
-剛剛我們用一個`mat-step`對一個表單的方式，如果不喜歡這樣的設計，我們依然可以使用一個大的表單包住所有Step的方式來設計，只需要同時設計一個大的巢狀FormGroup即可，讓我們先來看看component.ts的內容：
+剛剛我們用一個`<mat-step>`對一個表單的方式，如果不喜歡這樣的設計，我們依然可以使用一個大的表單包住所有Step的方式來設計，只需要同時設計一個大的巢狀`FormGroup`即可，讓我們先來看看component.ts的內容：
 
 ```typescript
 export class SurveyComponent implements OnInit {
@@ -218,11 +218,11 @@ export class SurveyComponent implements OnInit {
 </form>
 ```
 
-這邊我們直接在最外面用一個form包起來並指定主要的FormGroup，接著在`mat-step`中指定內部的`formGroupName`，及`stepControl`，如此一來就可以用一個大的model涵蓋所有step的內容啦！
+這邊我們直接在最外面用一個form包起來並指定主要的FormGroup，接著在`<mat-step>`中指定內部的`formGroupName`，及`stepControl`，如此一來就可以用一個大的model涵蓋所有step的內容啦！
 
 ### 設定optional step
 
-如果某個step不是必要的，我們可以在`mat-step`中設定`optinoal`屬性，設定了這個屬性後，會在這個step的label下出現一個灰色的optional提示，不過如果有設定`linear`屬性的話，只要裡面的form group是invalid的，依然會無法直接跳到下一步。
+如果某個step不是必要的，我們可以在`<mat-step>`中設定`optinoal`屬性，設定了這個屬性後，會在這個step的label下出現一個灰色的optional提示，不過如果有設定`linear`屬性的話，只要裡面的form group是invalid的，依然會無法直接跳到下一步(畢竟optional只是參考用的)。
 
 程式碼如下：
 
@@ -276,7 +276,7 @@ export class SurveyComponent implements OnInit {
 
 ### 自訂optional label文字內容
 
-在`mat-step`加上`optional`屬性後，會顯示一個灰色的英文`optional`文字標籤，不過Angular Material的**高品質**承諾包含了所有的元件如果有文字內容，都應該要可以被更改的成符合的語系內容，因此這個`optional`文字內容當然也可以調整，Angular Material使用`MatStepperIntl`來設定optional文字內容，其中的`optionalLabel`就是用來設定顯示文字的，所以我們可自訂一個一樣的class，然後在Angular Material的DI系統中取代原來的`MatStepperIntl`：
+當`<mat-step>`加上`optional`屬性後，會顯示一個灰色的英文`optional`文字標籤，不過Angular Material的**高品質**承諾包含了所有的元件如果有文字內容，都應該要可以被更改的成符合的語系內容，因此這個`optional`文字內容當然也可以調整，Angular Material使用`MatStepperIntl`來設定optional文字內容，其中的`optionalLabel`就是用來設定顯示文字的，所以我們可自訂一個一樣的class，然後在Angular Material的DI系統中取代原來的`MatStepperIntl`：
 
 ```typescript
 export class TwStepperIntl extends MatStepperIntl {
@@ -306,7 +306,10 @@ export class SurveyComponent implements OnInit { ... }
 
 有了基本的精靈功能之後，明天開始我們就會一步一步把所有基本Angular Material的表單元件都填入這些步驟裡面，好完成一個簡單的問卷系統啦！
 
-本日的程式碼GitHub
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-09-stepper
+
+分支：day-09-stepper
+
 
 ## 相關資源
 
