@@ -8,7 +8,7 @@ tags:
 	- MatAutocomplete
 ---
 
-接下我們要來介紹幾個在Material Design中屬於Input，也就是文字輸入欄位相關的功能，文字輸入也可以說是表單裡面最常使用到的控欄位！接下來就來看看Angular Material的Input、Autocomplete！！
+接下我們要來介紹幾個在Material Design中屬於Input，也就是文字輸入欄位相關的功能，文字輸入也可以說是表單裡面最常使用到的欄位！接下來就來看看Angular Material的Input、Autocomplete！！
 
 <!-- more -->
 
@@ -22,7 +22,7 @@ tags:
 
 ## 開始使用Angular Material的Input
 
-要使用Input相關的功能，首先得先加入MatInputModule。另外，部分的表單控制項，都需要搭配另一個元件－FormField來使用，因此我們也要加入MatFormFieldModule。關於FormField元件，目前只需要簡單使用就好，細節的操作會在後續的文章做詳細的說明。
+要使用Input相關的功能，首先得先加入`MatInputModule`。另外，部分的表單控制項，都需要搭配另一個元件－FormField來使用，因此我們也要加入`MatFormFieldModule`。關於FormField元件，目前只需要簡單使用就好，細節的操作會在後續的文章做詳細的說明。
 
 ### 使用matInput
 
@@ -45,7 +45,7 @@ tags:
 
 {% asset_img 01-mat-input-basic.gif %}
 
-可以看到我們的placeholder在這邊扮演了label的效果，而且預設會直接在輸入框裡面(就跟一般的placeholder一樣)，但是當focus到裡面時，placeholder的內容就往上浮動成了一個label。
+可以看到我們的`placeholder`在這邊扮演了`label`的效果，而且預設會直接在輸入框裡面(就跟一般的placeholder一樣)，但是當focus到裡面時，placeholder的內容就往上浮動成了一個label。
 
 ### matInput支援的input type
 
@@ -78,7 +78,7 @@ tags:
 
 {% asset_img 02-mat-input-type-date.png %}
 
-如此即可為input家讓日期選擇的功能，如圖這是Macbook的Google Chrome上顯示的結果，但實際結果可能會因為作業系統和瀏覽器的不同而不同，有些瀏覽器可能甚至不支援這樣的功能，這在現代的網頁設計上是一個稍微扣分的部分，也就是在不同瀏覽器呈現效果可能會有極大差異的問題；不過若是設計出來的網頁能確定在某個系統和瀏覽器上顯示，這也不失為一種簡單有效的做法！
+如此即可為input家讓日期選擇的功能，如圖這是Macbook的Google Chrome上顯示的結果，但實際結果可能會因為作業系統和瀏覽器的不同而不同，有些瀏覽器可能甚至不支援這樣的功能，這在現代的網頁設計上是一個稍微扣分的部分，也就是在**不同瀏覽器呈現效果可能會有極大差異的問題**；不過若是設計出來的網頁能確定在某個系統和瀏覽器上顯示，這也不失為一種簡單有效的做法！
 
 {% note info %}
 
@@ -88,7 +88,7 @@ tags:
 
 ### 使用mat-hint加上提示說明
 
-有時候單是使用placeholder屬性可能會無法說明欄位的意義，這時候我們可以使用`mat-hint`替欄位加上比較仔細地說明，例如：
+有時候單是使用placeholder屬性可能會無法說明欄位的意義，這時候我們可以使用`<mat-hint>`替欄位加上比較仔細地說明，例如：
 
 ```html
 <mat-form-field>
@@ -103,7 +103,7 @@ tags:
 
 ### 使用mat-error加上錯誤訊息提示
 
-當文字欄位資料有問題時，需要提示錯誤訊息是很常見的事情，關於這點我們可以用`mat-error`來顯示錯誤的訊息，程式如下：
+當文字欄位資料有問題時，需要提示錯誤訊息是很常見的事情，關於這點我們可以用`<mat-error>`來顯示錯誤的訊息，程式如下：
 
 ```html
 <mat-form-field>
@@ -117,7 +117,7 @@ tags:
 
 {% asset_img 04-mat-error.gif %}
 
-只要同一個`mat-form-field`區間裡面的輸入欄位有錯誤，這個錯誤訊息就會跳出來。
+只要同一個`<mat-form-field>`區間裡面的輸入欄位有錯誤，這個錯誤訊息就會跳出來。
 
 假如我們希望針對不同的錯誤跳出不同的訊息，只需要使用`ngIf`或`ngSwitch`來依照錯誤類型來決定顯示與否即可：
 
@@ -140,7 +140,7 @@ tags:
 
 如果希望自己決定錯誤顯示的時機，可以實作`ErrorStateMatcher`這個介面的`isErrorState`方法，來決定何時該顯示，為傳true代表要顯示錯誤；並在input的`errorStateMatcher`(加上`matInput`後擴充的功能)指定我們自訂的macher即可，實際來寫點程式看看吧，我們先在component.ts實作這個macher
 
-```Typescript
+```typescript
 // 調整時機為invalid + dirty即顯示錯誤訊息
 export class EarlyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -197,7 +197,7 @@ providers: [
 
 ## 開始使用Angular Material的Autocomplete
 
-要使用Input相關的功能，首先得先加入MatInputModule。
+要使用Input的Autoomplete相關功能，首先得先加入`MatAutocompleteModule`。
 
 ### 使用mat-autocomplete
 
@@ -213,7 +213,7 @@ providers: [
 </mat-form-field>
 ```
 
-而autocomplete的清單，我們可以使用`mat-autocomplete`以及`mat-option`的組合來建立這組清單：
+而autocomplete的清單，我們可以使用`<mat-autocomplete>`以及`<mat-option>`的組合來建立這組清單：
 
 ```html
 <mat-autocomplete>
@@ -225,9 +225,9 @@ providers: [
 
 國家的json檔資料來源：https://gist.github.com/keeguon/2310008
 
-我們把這個清單存到asset/countries.json中，然後在component直接使用HttpClient抓取這個清單的資料：
+我們把這個清單存到`asset/countries.json`中，然後在component直接使用`HttpClient`抓取這個清單的資料：
 
-```typescript
+```javascript
 ngOnInit() {
   this.countries$ = this.httpClient.get<any[]>('assets/countries.json');
 }
@@ -307,7 +307,7 @@ ngOnInit() {
 
 ### 透過displayWith決定最終顯示內容
 
-我們可以透過設定`mat-autocomplete`的`displayWith`屬性來指定一個functino，這個function可以改變要顯示的內容：
+我們可以透過設定`<mat-autocomplete>`的`displayWith`屬性來指定一個function，這個function可以改變要顯示的內容：
 
 ```html
 <mat-autocomplete #countries="matAutocomplete" [displayWith]="displayCountry">
@@ -317,7 +317,7 @@ ngOnInit() {
 </mat-autocomplete>
 ```
 
-這裡我們把原來的[value]改為傳入整個country物件，好讓`displayWith`指定的function可以透過選擇的物件決定文字呈現的內容：
+這裡我們把原來的`[value]`改為傳入整個country物件，好讓`displayWith`指定的function可以透過選擇的物件決定文字呈現的內容：
 
 ```typescript
 displayCountry(country: any) {
@@ -333,11 +333,11 @@ displayCountry(country: any) {
 
 {% asset_img 11-display-with.gif %}
 
-可以看到在選擇完國家後，透過displayWith，我們自動為選擇的內容加上了國家的編碼。
+可以看到在選擇完國家後，透過`displayWith`，我們自動為選擇的內容加上了國家的編碼。
 
 ### 使用mat-optgroup顯示群組資料
 
-`mat-option`既然是清單型的選項資料，有個`mat-optgroup`作為群組好像也是很合理的一件事情，Angular Material也替我們想好了，要使用一點都不難，跟在設計select的optgroup大同小異，假設我們有一組資料如下：
+`<mat-option>`既然是清單型的選項資料，有個`<mat-optgroup>`作為群組好像也是很合理的一件事情，Angular Material也替我們想好了，要使用一點都不難，跟在設計select的optgroup大同小異，假設我們有一組資料如下：
 
 ```typescript
 this.majorTechList = [
