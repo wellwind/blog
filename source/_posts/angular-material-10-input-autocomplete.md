@@ -1,6 +1,7 @@
 ---
 title: "[Angular Material完全攻略]打造問卷頁面(2) - Input、Autocomplete"
 date: 2017-12-28 20:10:48
+category: "Angular Material完全攻略"
 tags:
 	- Angular Material
 	- Material Design
@@ -372,7 +373,7 @@ this.majorTechList = [
 
 {% asset_img 12-mat-optgroup.gif %}
 
-連這種細節都想好了，真不愧是Angular Material啊！
+連這種細節都想好了，真不愧是高品質的Angular Material啊！
 
 ## 本日小結
 
