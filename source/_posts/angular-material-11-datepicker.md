@@ -8,9 +8,11 @@ tags:
 	- MatDatepicker
 ---
 
-昨天我們介紹了兩個常用的輸入元件，分別是Input及Autocomplete，在提到Input時有介紹當input type設為date時，會依照瀏覽器的不同產生不一樣的日期顯示方式，為了消除這種瀏覽器間的差異，我們會選擇不使用原生的畫面，而是自己刻(或找人家寫好的)一個元件來選擇日期。
+昨天我們介紹了兩個常用的輸入元件，分別是Input及Autocomplete，在提到Input時有介紹當`<input type>`設為date時，會依照瀏覽器的不同產生不一樣的日期顯示方式，為了消除這種瀏覽器間的差異，我們會選擇不使用原生的畫面，而是自己刻(或找人家寫好的)一個元件來選擇日期。
 
 而在日期選擇方面，Material Design也有訂出一些設計參考，同時Angular Material提供了一個Datepicker，方便我們可以快速的選擇日期。
+
+至於該如何使用呢？就讓我們繼續看下去吧！
 
 <!-- more -->
 
@@ -30,7 +32,7 @@ Angular Material中目前只有Datepicker可以用來選擇日期，還沒有提
 
 ### 使用Angular Material Datepicker的前置準備
 
-老規矩，要使用Datepicker，必須先在程式中加入MatDatepickerModule。
+老規矩，要使用Datepicker，必須先在程式中加入`MatDatepickerModule`。
 
 不過對於Datepicker來說，這樣還不太夠，因為**跟日期有關的部分雖然JavaScript有原生的Date型別可用，但Date在不同瀏覽器偏偏又有不同的實作方式，而且還會遇到語系呈現的問題等等**，因此比較常見的做法是使用[Moment.js](https://momentjs.com/)來處理日期相關的資訊，這部分Angular Material也都設想好了，對於日期處理的部份，我們可以選擇要使用原生的處理日期方式`MatNativeDateModule`或是使用moment.js處理日期的方式`MatMomentDateModule`，為了讓畫面對日期顯示有更好的支援，我們選擇使用`MatMomentDateModule`，不過`MatMomentDateModule`沒有內建在Angular Material中，需要透過npm套件安裝`@angular/material-moment-adapter`
 
@@ -38,11 +40,11 @@ Angular Material中目前只有Datepicker可以用來選擇日期，還沒有提
 npm i --save @angular/material-moment-adapter moment
 ```
 
-安裝完成後再將MatMomentDateModule加入我們共用的Ｍodule中就好囉！
+安裝完成後再將`MatMomentDateModule`加入我們共用的Ｍodule中就好囉！
 
 ### 使用mat-datepicker選擇日期
 
-跟昨天的Autocomplete一樣，我們一樣需要的個input作為文字輸入的主體，而datepicker則可以使用`mat-datepicker`元件，我們只要在input中設定`[matDatepicker]`屬性及可指定input要顯示的datepicker來源，另外我們加上一個`mat-datepicker-toggle`來開關`mat-datepicker`的顯示方式。
+跟昨天的Autocomplete一樣，我們一樣需要的個`<input>`作為文字輸入的主體，而datepicker則可以使用`<mat-datepicker>`元件，我們只要在input中設定`[matDatepicker]`屬性及可指定input要顯示的datepicker來源，另外我們加上一個`<mat-datepicker-toggle>`來開關`<mat-datepicker>`的顯示方式。
 
 ```html
 <mat-form-field>
@@ -77,7 +79,11 @@ npm i --save @angular/material-moment-adapter moment
 export class SharedMaterialModule {}
 ```
 
+結果如下：
+
 {% asset_img 03-datepicker-locale.png %}
+
+有了中文版，就不怕被英文不好的客戶罵啦XD
 
 ### 設定datepicker顯示格式
 
@@ -105,7 +111,7 @@ export const TW_FORMATS = {
 export class SharedMaterialModule {}
 ```
 
-我們分別設定了解析(parse)與顯示(display)的規則，`monthLearLabel`是picker左上方選擇年/月時的顯示格式，A11y相關的設定則是在使用螢幕朗讀程是時(或mac的voice over)使用的格式
+我們分別設定了解析(parse)與顯示(display)的規則，`monthYearLabel`是picker左上方選擇年/月時的顯示格式，A11y相關的設定則是在使用螢幕朗讀程式時(或mac的voice over)使用的格式
 
 結果如下：
 
@@ -147,7 +153,7 @@ export class SurveyComponent implements OnInit {
 
 ### 設定datepicker可以選擇的範圍
 
-我們可以使用min和max屬性，來設定一個input的最小值和最大值，當在使用datepicker時，也會根據這兩個值來決定picker可選擇的範圍，例如我們在component中設定了時間範圍：
+我們可以使用`min`和`ma`x屬性，來設定一個input的最小值和最大值，當在使用datepicker時，也會根據這兩個值來決定picker可選擇的範圍，例如我們在component中設定了時間範圍：
 
 ```typescript
 export class SurveyComponent implements OnInit {
@@ -169,7 +175,7 @@ export class SurveyComponent implements OnInit {
 
 {% asset_img 07-min-max-input.png %}
 
-可以看到1999/01/05之前和1999/01/15之後的日期就變成會底無法選擇，這樣就能固定住datepicker可以選擇的範圍囉。
+可以看到1999/01/05之前和1999/01/15之後的日期就變成灰底無法選擇，這樣就能固定住datepicker可以選擇的範圍囉。
 
 ### 使用filter過濾不可以被選擇的日期
 
@@ -208,7 +214,7 @@ familyDayFilter(date: moment.Moment): boolean {
 
 {% asset_img 09-native-input-change-event.png %}
 
-若希望紀錄的是真實的日期選擇變化，則可以使用`dateInput`和`dateChange`事件，傳入的事件會是`MatDatepickerInputEvent<T>`如下，`<T>`則看我們使用處理時間的Ｍodule是MatNativeDateModule還是MatMomentDateModule，如果是MatNativeDateModule會使用Date，MatMomentDateModule則是Momen型別：
+若希望紀錄的是真實的日期選擇變化，則可以使用`dateInput`和`dateChange`事件，傳入的事件會是`MatDatepickerInputEvent<T>`如下，`<T>`則看我們使用處理時間的Module是`MatNativeDateModule`還是`MatMomentDateModule`，如果是`MatNativeDateModule`會使用`Date`，`MatMomentDateModule`則是Momen型別：
 
 ```typescript
 export class SurveyComponent implements OnInit {
@@ -267,11 +273,11 @@ this.surveyForm = new FormGroup({
 
 {% asset_img 13-disabled-toggle-after.png %}
 
-變成了不可以點選的灰底，這時候日期選擇棄會無法叫出來，但input文字方塊依然是可以正常輸入了。
+變成了不可以點選的灰底，這時候日期選擇器會無法叫出來，但input文字方塊依然是可以正常輸入了。
 
 #### disable文字input，但picker不做disable
 
-另外一種變形的做法是，我們可以把input文字欄位disable掉，但是依然保留picker可選擇的狀態，這麼做的好處是，可以避免使用者隨意輸入不必要的內容，造成後續處理的麻煩，在component.ts中我們再次把birthday的狀態設為disabled，這時原本是不可以輸入，也沒有picker可以用的，但這時候我們可以把`mat-datepicker`的`disabled`狀態設為`false`，就會變成picker可以使用的狀態囉：
+另外一種變形的做法是，我們可以把input文字欄位disable掉，但是依然保留picker可選擇的狀態，這麼做的好處是，**可以避免使用者隨意輸入不必要的內容，造成後續處理的麻煩**；在component.ts中我們再次把birthday的狀態設為disabled，這時原本是不可以輸入，也沒有picker可以用的，而這時候我們可以把`mat-datepicker`的`disabled`狀態設為`false`，就會變成picker可以使用的狀態囉：
 
 ```html
 <input type="text" name="birthday" matInput (dateInput)="logDateInput($event)" (dateChange)="logDateChange($event)" placeholder="生日" [matDatepicker]="demoDatepicker" formControlName="birthday" />
@@ -301,11 +307,11 @@ this.surveyForm = new FormGroup({
 
 ### 自行在程式中打開datepicker
 
-`mat-datepicker`本身就是一個component，因此我們不一定非得需要搭配`mat-datepicker-toggle`來作切換，也能自行在程式中處理，只要去設定`mat-datepicker`的`opened`屬性即可：
+`<mat-datepicker>`本身就是一個component，因此我們不一定非得需要搭配`<mat-datepicker-toggle>`來作切換，也能自行在程式中處理，只要去設定`<mat-datepicker>`的`opened`屬性即可：
 
 ```html
 <mat-form-field>
-  <input type="text" name="birthday" matInput (dateInput)="logDateInput($event)" (dateChange)="logDateChange($event)" placeholder="生日"           [matDatepicker]="demoDatepicker" formControlName="birthday" />
+  <input type="text" name="birthday" matInput (dateInput)="logDateInput($event)" (dateChange)="logDateChange($event)" placeholder="生日" [matDatepicker]="demoDatepicker" formControlName="birthday" />
   <mat-datepicker #demoDatepicker [startAt]="startDate" disabled="false" touchUi="true"></mat-datepicker>
 </mat-form-field>
 <button mat-raised-button (click)="demoDatepicker.opened = true">打開Datepicker</button>
@@ -329,7 +335,9 @@ this.surveyForm = new FormGroup({
 
 {% endnote %}
 
-本日的程式碼GitHub
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-11-datepicker
+
+分支：day-11-datepicker
 
 ## 參考資源
 
