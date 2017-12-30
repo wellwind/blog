@@ -236,7 +236,9 @@ HTML的select可以使用`<optgroup label="xxx">`來為`<option>`分組放置，
 
 關於這幾天我們一直提到一個包在我們的表單控制項之外的元件`mat-form-field`，是一個讓輸入控制欄位活起來的強大外皮，明天我們再來仔細地介紹它！
 
-本日的程式碼GitHub
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-12-select
+
+分支：day-12-select
 
 ## 相關資源
 
