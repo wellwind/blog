@@ -18,11 +18,11 @@ tags:
 
 ## 開始使用Angular Material的Select
 
-在Angular Material中，Select跟Input這類元件一樣，都需要跟`mat-form-field`一起合作，才能發揮最大的威力，而Select的元件都在MatSelectModule之中，加入這個Module之後，我們可以簡單地組合使用`mat-select`和`mat-option`來達到類似HTML的`select`，但**更具有Material Design風格的select畫面**。
+在Angular Material中，Select跟Input這類元件一樣，都需要跟`<mat-form-field>`一起合作，才能發揮最大的威力，而Select的元件都在`MatSelectModule`之中，加入這個Module之後，我們可以簡單地組合使用`<mat-select>`和`<mat-option>`來達到類似HTML的`<select>`功能，但**更具有Material Design的風格**。
 
 ### 使用mat-select和mat-option
 
-`mat-select`和`mat-option`使用上非常類似於HTML的`select`和`option`，因此使用上非常容易上手：
+`<mat-select>`和`<mat-option>`使用上非常類似於HTML的`<select>`和`<option>`，因此使用上非常容易上手：
 
 ```html
 <mat-form-field>
@@ -32,19 +32,19 @@ tags:
 </mat-form-field>
 ```
 
-看起來是不是跟我們直接用`selecr` / `option` 產生的語法差不多啊！但畫面上可就是滿滿的Material Design了！
+看起來是不是跟我們直接用`<select>` / `<option>` 產生的語法差不多啊！但畫面上可就是滿滿的Material Design了！
 
 {% asset_img 01-mat-select-basic.gif %}
 
 {% note info %}
 
-如果沒有要搭配表單的話，可以直接使用`[(value)]`來達到two way binding的效果。
+**小技巧**：如果沒有要搭配表單的話，可以直接使用`[(value)]`來達到two way binding的效果。
 
 {% endnote %}
 
 ### 設定placeholder屬性
 
-上面的select雖然充滿了Material Design的風格，但還差了一點，就是沒有像Input類型的placeholder來替代label顯示欄位名稱。在原生HTML中`select`是沒有placeholder可以使用的，比較常見的技巧是透過一個`<option [value]="null">text</option>`來假裝成placeholder，但在Angular Material中我們可以在`mat-select`元件中直接使用`placeholder`，實在是非常方便！
+上面的select雖然充滿了Material Design的風格，但還差了一點，就是沒有像Input類型的placeholder來替代label顯示欄位名稱。在原生HTML中`select`是沒有placeholder可以使用的，比較常見的技巧是透過一個`<option [value]="null">text</option>`來**假裝**成placeholder，但在Angular Material中我們可以在`<mat-select>`元件中直接使用`placeholder`，實在是非常方便！
 
 ```html
 <mat-form-field>
@@ -62,7 +62,7 @@ tags:
 
 ### 設定disabled屬性
 
-不管是`mat-select`還是`mat-option`，都能夠透過`disabled`來設定其允許被選取的狀態。我們先看看在`mat-select`加上`disabled`屬性後的樣式：
+不管是`<mat-select>`還是`<mat-option>`，都能夠透過`disabled`來設定其允許被選取的狀態。我們先看看在`<mat-select>`加上`disabled`屬性後的樣式：
 
 ```html
 <mat-form-field>
@@ -96,7 +96,7 @@ tags:
 
 ### 還原mat-select的選取狀態
 
-目前設定好`mat-option`並進行選擇後，是無法取消目前的選取狀態的，這會使得選項非必填無法反悔，這時候我們可以加入一個沒有設定`[value]`(其實也就是`[value]="undefined"`)的`mat-option`，當選到這個選項時，就會自動跳回沒有選擇任何選項的模式，也就是還看得到placeholder的狀態：
+目前設定好`<mat-option>`並進行選擇後，是無法取消目前的選取狀態的，這會使得選項非必填無法反悔，這時候我們可以加入一個沒有設定`[value]`(其實也就是`[value]="undefined"`)的`<mat-option>`，當選到這個選項時，就會自動跳回沒有選擇任何選項的模式，也就是還看得到placeholder的狀態：
 
 ```html
 <mat-form-field>
@@ -115,7 +115,7 @@ tags:
 
 ### 使用mat-optgroup群組為選項分群組
 
-HTML的select可以使用`<optgroup label="xxx">`來為`<option>`分組放置，Angular Material當然也不會忽略掉這部分，在Angular Material中我們可以使用`mat-optgroup`來達到一樣的功能，要設定整個群組的disabled狀態也完全沒問題！
+HTML的select可以使用`<optgroup label="xxx">`來為`<option>`分組放置，Angular Material當然也不會忽略掉這部分，在Angular Material中我們可以使用`<mat-optgroup>`來達到一樣的功能，要設定整個群組的disabled狀態也完全沒問題！
 
 ```html
 <mat-select formControlName="interest" placeholder="你的休閒愛好?">
@@ -134,7 +134,7 @@ HTML的select可以使用`<optgroup label="xxx">`來為`<option>`分組放置，
 
 ### 設定multiple變更多選狀態
 
-跟原生的select一樣，我們也可以透過設定`mutiple`屬性，讓`mat-select`變為可複選狀態，此時binding的資料將會變成一個陣列，同時選擇`[value]="undefined"`的`mat-option`也只會讓陣列中多一個undefined元素而已，要還原成原來的狀態只需要**不勾選任何選項即可**。
+跟原生的select一樣，我們也可以透過設定`mutiple`屬性，讓`<mat-select>`變為可複選狀態，此時binding的資料將會變成一個陣列，同時選擇`[value]="undefined"`的`mat-option`也只會讓陣列中多一個undefined元素而已，要還原成原來的狀態只需要**不勾選任何選項即可**。
 
 ```html
 <mat-form-field>
@@ -165,7 +165,7 @@ HTML的select可以使用`<optgroup label="xxx">`來為`<option>`分組放置，
 
 ### 使用mat-select-trigger自訂label顯示資料
 
-`mat-select`有自己的顯示資料的方式，這部分我們可以透過`mat-select-trigger`覆蓋掉原來的顯示資料方式：
+`<mat-select>`有自己的顯示資料的方式，這部分我們可以透過`<mat-select-trigger>`覆蓋掉原來的顯示資料方式：
 
 ```html
 <mat-form-field>
@@ -182,15 +182,15 @@ HTML的select可以使用`<optgroup label="xxx">`來為`<option>`分組放置，
 
 {% asset_img 08-mat-select-trigger.gif %}
 
-我們成功地自訂了資料顯示的邏輯，透過`mat-select-trigger`資料呈現就不再死板啦！
+我們成功地自訂了資料顯示的邏輯，透過`<mat-select-trigger>`資料呈現就不再死板啦！
 
 ### 取消ripple特效
 
-預設的`mat-select`在選取時會有一個漣漪的效果，如下：
+預設的`<mat-select>`在選取時會有一個漣漪的效果，如下：
 
 {% asset_img 09-disableRipple-before.gif %}
 
-如果不喜歡，可以設定disableRipple：
+如果不喜歡，可以設定`disableRipple`：
 
 ```html
 <mat-form-field>
@@ -208,7 +208,7 @@ HTML的select可以使用`<optgroup label="xxx">`來為`<option>`分組放置，
 
 ### 自訂下拉panel的樣式
 
-`mat-select`提供了`panelClass`屬性，方便我們自訂下拉選單的樣式，我們可以先在`mat-select`中設定這個屬性：
+`<mat-select>`提供了`panelClass`屬性，方便我們自訂下拉選單的樣式，我們可以先在`<mat-select>`中設定這個屬性：
 
 ```html
 <mat-form-field>
@@ -218,7 +218,7 @@ HTML的select可以使用`<optgroup label="xxx">`來為`<option>`分組放置，
 </mat-form-field>
 ```
 
-接著需要提醒的是，由於Angular CDK的關係，這個panel其實會被放在我們使用的component之外，因此若直接在component.css中設定會無效，除非額外設定`ViewEncapsulation`，或是直接在全域的style.css中加入就好：
+接著需要提醒的是，由於這些功能都被拉到共用的Angular CDK的關係，因此若直接在component.css中設定會無效，除非額外設定`ViewEncapsulation`，或是直接在全域的style.css中加入就好：
 
 ```css
 .blue-dropdown .mat-select-content {
@@ -240,4 +240,4 @@ HTML的select可以使用`<optgroup label="xxx">`來為`<option>`分組放置，
 
 ## 相關資源
 
--   [Angular Material - Selecr](https://material.angular.io/components/select/overview)
+-   [Angular Material - Select](https://material.angular.io/components/select/overview)
