@@ -8,7 +8,7 @@ tags:
 	- MatFormField
 ---
 
-前幾天我們介紹了幾個Angular Material常見的文字型表單欄位控制項，如Input、Autocomplete、Datepicker和Select。這些控制項在Angular 有一些特點，就是他們都會使用一個`<mat-form-field>`元件包起來，這個元件到底是有什麼能耐，讓這些表單欄位都離不開它呢？就讓我們繼續看下去吧！
+前幾天我們介紹了幾個Angular Material常見的文字型表單欄位控制項，如Input、Autocomplete、Datepicker和Select。這些控制項在Angular 有一些特點，就是它們都會使用一個`<mat-form-field>`元件包起來，這個元件到底是有什麼能耐，讓這些表單欄位都離不開它呢？就讓我們繼續看下去吧！
 
 <!-- more -->
 
