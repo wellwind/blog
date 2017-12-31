@@ -42,9 +42,9 @@ tags:
 
 這個效果相信看過之前的文章應該已經非常清楚了，而這個效果其實是可以自己設定的，我們可以透過設定`floatLabel`，來決定這個label的顯示模式，目前有以下幾種：
 
--   auto：預設值，當focus時，label會自動自動往上浮起來變成label的角色。
--   always：代表永遠都是浮起來的狀態，這時候可以直接將它視為一個單純的label存在。
--   never：代表永遠不要扶起來，這時候可以把它直接當作一個單純的placeholder。
+-   **auto**：預設值，當focus時，label會自動自動往上浮起來變成label的角色。
+-   **always**：代表永遠都是浮起來的狀態，這時候可以直接將它視為一個單純的label存在。
+-   **never**：代表永遠不要浮起來，這時候可以把它直接當作一個單純的placeholder。
 
 我們可以修改一下之前問卷調查的程式，隨意找幾個由`<mat-form-field>`包起來的元件做設定，例如：
 
@@ -61,7 +61,7 @@ tags:
 
 {% asset_img 03-set-float-label.gif %}
 
-姓名欄位我們設定了`floatLabel="always"`，因此一開始她不會被當作是一個placeholder，而是一直以label的形式存在；而設定了`floatLabel="never"`的暱稱欄位，一開始看起來沒什麼變化，但當focus時，他不會往上浮動變成label的形式，有資料時提示就會自動消失，變成了單純的placeholder的感覺。
+姓名欄位我們設定了`floatLabel="always"`，因此一開始它不會被當作是一個placeholder，而是一直以label的形式存在；而設定了`floatLabel="never"`的暱稱欄位，一開始看起來沒什麼變化，但當focus時，它不會往上浮動變成label的形式，有資料時提示就會自動消失，變成了單純的placeholder的感覺。
 
 #### 設定全域的float label
 
@@ -160,7 +160,7 @@ tags:
 
 在之前介紹`matInput`的時候，我們已經用過`<mat-hint>`了，透過`<mat-hint>`我們可以為元件提供基礎的說明文字，我們也能夠直接設定`<mat-form-field>`的`hintLabel`達到同樣的效果，不過`hintLabel`比較適合用在單純的文字顯示上，而`<mat-hint>`則可以做更複雜的顯示。
 
-除此之外`<mat-hint>`還可以設定`align`屬性，透過設定為`start`或`end`來決定對其的方向，而`hintLabel`則無法設定`align`，只會出現在`start`的位置
+除此之外`<mat-hint>`還可以設定`align`屬性，透過設定為`start`或`end`來決定對齊的方向，而`hintLabel`則無法設定`align`，只會出現在`start`的位置
 
 範例程式如下：
 
@@ -182,7 +182,7 @@ tags:
 
 {% note info %}
 
-**溫馨提醒**：`align`不能重複，否則會產生錯誤訊息，雖然目前看起來還是會顯示只是排版可能會亂掉，但還是勁量避免囉。
+**溫馨提醒**：`align`不能重複，否則會產生錯誤訊息，雖然目前看起來還是會顯示只是排版可能會亂掉，但還是盡量避免囉。
 
 {% asset_img 12-mat-hint-error.png %}
 
@@ -222,7 +222,7 @@ tags:
 
 ### 設定prefix和suffix
 
-最後我們再來看一個表單中常用的功能，在輸入控制項前後加上icon圖示；我們可以透過`matPrefix`和`matSuffix`，把元素放到輸入控制項的前面或後面，如下
+最後我們再來看一個表單中常用的功能，**在輸入控制項前後加上icon圖示**；我們可以透過`matPrefix`和`matSuffix`，把元素放到輸入控制項的前面或後面，如下
 
 ```html
 <mat-form-field>
@@ -236,7 +236,7 @@ tags:
 
 {% asset_img 15-prefix-suffix.png %}
 
-不管是mat-icon還是什麼都好，只要加入matPrefix或matSuffix，就會幫你放到對的位置，真的是很方便啊！
+不管是mat-icon還是什麼都好，只要加入`matPrefix`或`matSuffix`，就會幫你放到對的位置，真的是很方便啊！
 
 ### 小提示
 
@@ -248,11 +248,11 @@ Error: mat-form-field must contain a MatFormFieldControl
 
 ## 本日小結
 
-今天我們介紹了`<mat-form-field>`這個component，也算解了之前介紹input等相關原件事為何一定要加上`<mat-form-field>`的迷惑，原來`<mat-form-field>`具有這麼多細緻的功能，讓我們的能用更加一致的方式，為我們的表單添加上更多的變化，實在是**居家旅行 ~~殺人滅口~~ 必備良藥**啊XD！
+今天我們介紹了`<mat-form-field>`這個component，也總算解了之前介紹input等相關原件事為何一定要加上`<mat-form-field>`的迷惑，原來`<mat-form-field>`具有這麼多細緻的功能，讓我們的能用更加一致的方式，為我們的表單添加上更多的變化，實在是**居家旅行 ~~殺人滅口~~ 必備良藥**啊XD！
 
-問卷調查篇預計還有兩篇，再介紹4個元件就會結束了，到時候我們就能把所有表單相關的控制項(FormControl)全部掌握，要設計各種Material Design風格的表單也會越來越輕鬆囉！
+問卷調查篇預計還有兩篇，再介紹4個元件就會結束了，到時候我們就能把所有**表單相關的控制項(FormControl)**全部掌握，要設計各種Material Design風格的表單也會越來越輕鬆囉！
 
-本日的程式碼GitHub：
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-13-form-field
 
 分支：day-13-form-field
 
