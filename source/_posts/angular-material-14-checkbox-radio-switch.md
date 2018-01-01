@@ -7,13 +7,13 @@ tags:
 	- Material Design
 ---
 
-昨天我們介紹了Angular Material的Form Field，為我們的輸入類型控制項帶來一致的顯示成果；今天我們來介紹兩個相對簡單但是使用頻率也非常高的元件－Checkbox、Radio和Slide Toggle，這三個元件有很多類似的地方，因此很適合放在一起學習，遇到類似的地方，還可以當做複習哩。
+昨天我們介紹了Angular Material的Form Field，為我們的輸入類型控制項帶來一致的顯示成果；今天我們來介紹三個相對簡單但是使用頻率也非常高的元件－Checkbox、Radio和Slide Toggle，這三個元件有很多類似的地方，因此很適合放在一起學習，遇到類似的地方，還可以當做複習哩。
 
 <!-- more -->
 
 ## 關於Material Design的Checkbox與Radio
 
-在Material Design中，Checkbox、Radio和Slide Toggle被歸類在[Selection controls](https://material.io/guidelines/components/selection-controls.html#)中，基本上的概念跟我們使用HTML原生的Checkbox和Radio沒什麼不同；Checkbox主要是用來提供使用者選擇多個選項使用的，而Radio則是提供使用者進行單一選項的選擇。
+在Material Design中，Checkbox、Radio和Slide Toggle都被歸類在[Selection controls](https://material.io/guidelines/components/selection-controls.html#)中，基本上的概念跟我們使用HTML原生的Checkbox和Radio沒什麼不同；Checkbox主要是用來提供使用者選擇多個選項使用的，而Radio則是提供使用者進行單一選項的選擇。
 
 不同的是，Material Design對於focused和pressed狀態提出了更容易被識別的效果，如下圖：
 
@@ -21,7 +21,7 @@ tags:
 
 圖片來源：https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox
 
-另外在Selection controls中還有提到一個元件－Switch，跟同是開關型的Checkbox類似，但建議上Checkbox是提供多個選項時使用，而Switch則是單純的狀態開跟關而已。
+另外在Selection controls中還有提到一個元件－Switch，跟同是開關型的Checkbox類似，但建議上**Checkbox是提供多個選項時使用**，而**Switch則是單純的狀態開跟關**而已。
 
 例如`興趣`可以選擇很多種，這時候就可以用`Checkbox`；而某個`功能的關閉或打開`，則適合使用`Switch`。
 
@@ -31,7 +31,7 @@ tags:
 
 ### 使用mat-checkbox
 
-`mat-checkbox`是表單元件的一種，因此支援和`FormsModule`或`ReactiveFormsModule`搭配使用，在這邊我們使用ReactiveFormsModule先建立一個資料模型，大致內容如下：
+`<mat-checkbox>`是表單元件的一種，因此支援和`FormsModule`或`ReactiveFormsModule`搭配使用，在這邊我們使用ReactiveFormsModule先建立一個資料模型，大致內容如下：
 
 ```typescript
 this.surveyForm = new FormGroup({
@@ -55,11 +55,11 @@ this.surveyForm = new FormGroup({
 
 {% asset_img 02-checkbox-basic.gif %}
 
-一個落落大方的checkbox完成，由於我們的payForMovie的值是`true`，因此預設會是被勾選的狀態；我們可以試著勾選/取消勾選某個項目看看他的特效，或是使用tab來切換不同的checkbox，看看被focus的checkbox的狀態。
+一個落落大方的checkbox完成，由於我們的payForMovie的值是`true`，因此預設會是被勾選的狀態；我們可以試著勾選/取消勾選某個項目看看它的特效，或是使用tab來切換不同的checkbox，看看被focus的checkbox的狀態。
 
 ### 調整label的位置
 
-在`<mat-checkbox>`中，我們不需要跟`<input type="checkbox">`一樣特地需要再用一個`<label>`設定標籤內容，只需要在`<mat-checkbpx>`裡面寫入要顯示的label內容即可，不過這麼一來我們不就無法控制label和checkbox誰要在前面誰要在後面了嗎？還好Angular Material早就想到這一點了，我們可以透過設定`labelPosition`屬性為`after`(預設)或`before`來決定label要顯示在checkbox的後面還是前面。
+在`<mat-checkbox>`中，我們不需要跟`<input type="checkbox">`一樣需要特地用一個`<label>`設定標籤內容，只需要在`<mat-checkbpx>`裡面寫入要顯示的label內容即可，不過這麼一來我們不就無法控制label和checkbox誰要在前面誰要在後面了嗎？還好Angular Material早就想到這一點了，我們可以透過設定`labelPosition`屬性為`after`(預設)或`before`來決定label要顯示在checkbox的後面還是前面。
 
 ```html
 <mat-checkbox formControlName="payForBook" labelPosition="before">書籍</mat-checkbox>
@@ -73,7 +73,7 @@ label就跑到checkbox之前啦！(老實說還真的不太習慣@@)
 
 ### 設定Indeterminate狀態
 
-Indeterminate是checkbox一種有趣的狀態，這種狀態**通常代表的是介於"選取"和"未選取"之間**，常常使用在一個checkbox代表全選/取消全選的時候，透過Indeterminate可以得知目前的狀態是"部分被選取"。
+Indeterminate是checkbox一種有趣的狀態，這種狀態**代表的是介於"選取"和"未選取"之間**，常常使用在一個checkbox代表全選/取消全選的時候，透過Indeterminate可以得知目前的狀態是"部分被選取"。
 
 以下舉個例子，我們在原來的功能加上一個全選的checkbox，並設定`inteterminate`狀態及一些事件綁定：
 
@@ -84,7 +84,7 @@ Indeterminate是checkbox一種有趣的狀態，這種狀態**通常代表的是
 <mat-checkbox formControlName="payForMovie" (change)="payForChange()">電影</mat-checkbox>
 ```
 
-接著調整一下程式碼，如果選擇全部時會依照狀態決定是否要全選，或全部選；選擇單一選項時，則會將`indeterminate`狀態設定為`true`：
+接著調整一下程式碼，如果選擇全部時會依照狀態決定是否要「全選」，或「全不選」；只選擇部分選項時，則會將`indeterminate`狀態設定為`true`：
 
 ```typescript
 export class SurveyComponent implements OnInit {
@@ -192,7 +192,7 @@ export class SurveyComponent implements OnInit {
 
 ## 使用Angular Material的Radio
 
-接下來我們來聊聊Radio的使用方式，我們可以在加入`MatCheckboxModule`後，搭配`mat-radio-group`和`mat-radio-button`來完成一組單選題。
+接下來我們來聊聊Radio的使用方式，我們可以在加入`MatCheckboxModule`後，搭配`<mat-radio-group>`和`<mat-radio-button>`來完成一組單選題。
 
 ### 使用mat-radio-group和mat-radio-button
 
@@ -314,7 +314,7 @@ export class SurveyComponent implements OnInit {
 
 學會了Checkbox、Radio和Slide Toggle，之後遇到狀態改變相關的畫面，應該就能靈活運用囉。
 
-本日的程式碼GitHub：
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-14-checkbox-radio-slide-toggle
 
 分支：day-14-checkbox-radio-slide-toggle
 
