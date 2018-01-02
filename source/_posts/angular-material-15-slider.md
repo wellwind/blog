@@ -134,7 +134,7 @@ export class SurveyComponent implements OnInit {
 
 ### 設定tickInterval
 
-我們也可以設定`tickInterval`，替`<mat-slider>`顯示一個刻度標示，讓我們在選擇時更加的有把握！我們可以給予一個`tickInterval`一個數值，代表每隔多少顯示一個刻度標示；有一點需要特別注意的是，`tickInterval`和`step`是有關係的，我們可以想像成是：每步要移動幾個數字(step)，且每幾步(tickInterval)放置一個標誌，因此假設我們設定每步移動`5`，且每`2`步放一個標誌，代表每移動`10`就會看到一個刻度。
+我們也可以設定`tickInterval`，替`<mat-slider>`顯示一個刻度標示，讓我們在選擇時更加的有把握！我們可以給予一個`tickInterval`一個數值，代表每隔多少顯示一個刻度標示；有一點需要特別注意的是，`tickInterval`和`step`是有關係的，我們可以想像成是：**每步要移動幾個數字(step)，且每幾步(tickInterval)放置一個標誌(tick)**，因此假設我們設定每步移動`5`，且每`2`步放一個標誌，代表每移動`10`就會看到一個刻度。
 
 另外我們也可以給一個字串`auto`讓Angular Material自己去算，這麼一來Angular Material會在每`30px`替我們加上一個刻度。
 
