@@ -7,17 +7,17 @@ tags:
 	- Material Design
 ---
 
-在前幾天介紹完各式各樣的表單元件後，今天我們要先來看看在Material Design中對於排版的建議－Grid List，以及Angular Material中如何實現這樣的排版，最後我們會實際上先把一個簡易的部落格版型給切出來！
+在前幾天介紹完各式各樣的表單元件後，今天我們要先來看看在Material Design其中一種顯示清單資料的方法－Grid List，以及Angular Material中如何實現應用這樣的方法，把一個簡易的部落格版型給切出來！
 
 <!-- more -->
 
 ## 關於Material Design中的Grid List
 
-在[Material Design的Grid Lists設計指南](https://material.io/guidelines/components/grid-lists.html#)中，Grid List是一種用**網格**呈現重複性資料方式，可以想像成是用來放置多組類似的元件的容器，**具有水平和垂直的排列組合**，可以用比較好理解的方式，來呈現資料。由於有水平和垂直的排列組合，我們也可以想像Grid List是一種表格式的排版(當然不會真的用`<table>`去做排版)。
+在[Material Design的Grid Lists設計指南](https://material.io/guidelines/components/grid-lists.html#)中，Grid List是一種用**網格**呈現重複性資料方式，可以想像成是用來放置多組類似的元件的容器，**具有水平和垂直的排列組合**，來呈現資料。由於有水平和垂直的排列組合，我們也可以想像Grid List是一種類似表格式的排版(當然不會真的用`<table>`去做排版)。
 
 {% asset_img 01-grid-list-basic-concept.png %}
 
-Grid List使用的是網格的概念，因此每一個格子我們會稱之為Cell；Tile則代表用來放置內容的容器，且一個Tile是可以橫跨多個Cells的。
+Grid List使用的是網格的概念，每一個格子我們會稱之為Cell；Tile則代表用來放置內容的容器，且一個Tile是可以橫跨多個Cells的。
 
 {% asset_img 02-grid-list-cell-tile.png %}
 
@@ -34,7 +34,7 @@ Grid List使用的是網格的概念，因此每一個格子我們會稱之為Ce
 
 只需要加入`MatGridListModule`，就可以開始使用Grid List的功能囉。
 
-雖然Grid List適合用來放置重複型的資料，但也很適合**當作一個排版系統來使用**，雖然針對排版Angular也有一套`angular/flex-layout`可以使用，但這套目前還是beta版，且進度緩慢，拿來用在production還是會覺得抖，而且若flex不是很熟，使用上也不太容易；反觀Angular Material的Grid Lsit，它的概念就相對簡單很多，而且使用上非常貼近我們都熟悉的Table，雖然功能沒那麼強大，但是對於基本的排版可以說是完全沒問題！因此接下來我們介紹時也會把它當作排版系統使用，但實際上你要用它來呈現清單資料等等是完全沒問題的！
+雖然Grid List適合用來放置重複型的清單資料，但也很適合**當作一個排版系統來使用**，雖然針對排版Angular也有一套`angular/flex-layout`可以使用，但這套目前還是beta版，且進度緩慢，拿來用在production還是會覺得抖，而且若flex不是很熟，使用上也不太容易；反觀Angular Material的Grid Lsit，它的概念就相對簡單很多，而且使用上非常貼近我們都熟悉的Table；雖然功能沒那麼強大，但是對於基本的排版可以說是完全沒問題！因此接下來我們介紹時也會把它當作排版系統使用，但實際上你要用它來呈現清單資料等等是完全沒問題的！
 
 ### 使用mat-grid-list
 
@@ -44,7 +44,7 @@ Grid List使用的是網格的概念，因此每一個格子我們會稱之為Ce
 <mat-grid-list cols="3"></mat-grid-list>
 ```
 
-在這裡我們設定`cols="3"，``<mat-grid-list>`會自動佔滿可以使用的寬度，然後平均分成3等分(cell)。
+在這裡我們設定`cols="3"`，`<mat-grid-list>`會自動佔滿可以使用的寬度，然後平均分成3等分(cell)。
 
 接著我們可以在裡面放置`<mat-grid-tile>`，代表每一個資料呈現的區塊，`<mat-grid-list>`則會依照`cols`的設定，決定每列放置多少個`<mat-grid-tile>`
 
@@ -103,7 +103,7 @@ Grid List使用的是網格的概念，因此每一個格子我們會稱之為Ce
 
 {% note info %}
 
-覺得很眼熟嗎？沒錯！就跟table的`rowspan`和`colspan`是一樣的概念，只是使用table排版是眾所皆知的罪惡(?)，而在`<mat-grid-list>`中所使用的排版系統是flex，但是排版起來卻更加容易理解哩。
+覺得很眼熟嗎？沒錯！就跟table的`rowspan`和`colspan`是一樣的概念，只是使用table排版是眾所皆知的罪惡(?)，而在`<mat-grid-list>`中所使用的排版系統是flex，但是排版起來卻像容易理解哩。
 
 {% endnote %}
 
@@ -131,13 +131,13 @@ Grid List使用的是網格的概念，因此每一個格子我們會稱之為Ce
 
 結果：
 
-{% asset_img 06-row-span.png}
+{% asset_img 06-row-span.png %}
 
 接著我們先看Tile 4，一樣希望他是一個在最下面的橫幅廣告，因此讓他跨越2個cell，程式碼如Tile 1的設定，結果如下：
 
 {% asset_img 07-tile4-colspan.png %}
 
-由於Tile 2垂直跨越5個cell的關係，導致第二列只剩下ㄉ2個cell可以用，而原來的Tile 3已經佔用1個cell，所以佔用2個cell的Tile 2無法盎在Tile 3旁變，就被推到下方去了。
+由於Tile 2垂直跨越5個cell的關係，導致第二列只剩下2個cell可以用，而原來的Tile 3已經佔用1個cell，所以佔用2個cell的Tile 2無法盎在Tile 3旁變，就被推到下方去了。
 
 接著我們測試看看，在第二列只剩下2個cell可以用的情看下，設定`colspan=3`會有什麼結果：
 
