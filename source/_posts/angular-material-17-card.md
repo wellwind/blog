@@ -7,7 +7,7 @@ tags:
 	- Material Design
 ---
 
-在昨天介紹完Grid List之後，今天我們要介紹一個Material Design中被使用頻率非常高的元件－Card。我們將利用Card來當作部落格表的呈現方式。
+在昨天介紹完Grid List之後，今天我們要介紹一個Material Design中被使用頻率非常高，且個人認為是Material Design中很經典的元件－Card。我們將利用Card來當作部落格列表的呈現方式。
 
 <!-- more -->
 
@@ -21,13 +21,13 @@ tags:
 
 ### 先調整一下Grid List
 
-在開始使用Card之前，我們要先將原來的Grid List排版做點調整，我們希望呈現如下的結果：
+在開始使用Card之前，我們要先將原來的Grid List排版做點調整，我們預期的最終結果如下：
 
 {% asset_img 01-scaffold.png %}
 
-在主要的文章清單中，最上方位有兩個置頂文章，而下面會顯示6篇文章，每篇寬度佔1格cell；高度在規劃後，置頂文章需要佔掉2格cell，清單文章需要佔掉6格cell，6篇共3列，就會用掉18格cell的高度，加上置頂文章的2格，共20格cell的高度；另外加上上下橫幅，**總共會用掉22格cell的高度**，因此原來放置右邊選單的Tile 2高度我們會重新設定為`rowspan="22"`。
+在主要的文章清單中，最上方位有兩個置頂文章，而下面會顯示6篇文章，每篇寬度佔1格cell；高度在規劃後，置頂文章需要佔掉2格cell，清單文章需要佔掉6格cell，6篇共3列，就會用掉18格cell的高度，加上置頂文章的2格，共20格cell的高度；另外加上上下橫幅各1格，加起來**總共會用掉22格cell的高度**，因此原來放置右邊選單的Tile 2高度我們會重新設定為`rowspan="22"`。
 
-另外一件事情是，昨天我們把Tile 3當作整個放文章的容器，但目前`<mat-grid-list>`是沒辦法直接巢狀使用的，也就是在`<mat-grid-tile>`中，我們是無法加上`<mat-grid-list>`的，雖然不會出錯，但也不會顯示內容(實際上是跑掉了)，比較簡單的方式就是重新規劃好`cols`及`rowHeight`，每個Tile裡面就直接放置內容就好。
+另外，昨天我們把Tile 3當作整個放文章的容器，但目前`<mat-grid-list>`是沒辦法直接巢狀使用的，也就是在`<mat-grid-tile>`中，我們是無法加上`<mat-grid-list>`的，雖然不會出錯，但也不會顯示內容(實際上是跑掉了)，比較簡單的方式就是重新規劃好`cols`及`rowHeight`，每個Tile裡面就直接放置內容就好。
 
 另外我們也把`gutterSize`拿掉，以免影響內容顯示，調整後的程式碼大致如下：
 
@@ -68,9 +68,7 @@ tags:
 
 {% endnote %}
 
-接下來我們就正式開始用Card元件來填滿我們的tile吧！
-
-記得要先加入`MatCardModule`喔！
+接下來在加入`MatCardModule`之後，我們就正式開始用Card元件來填滿我們的tile吧！
 
 ### 使用mat-card建立卡片
 
@@ -201,6 +199,8 @@ tags:
 }
 ```
 
+`.mat-card-image`這個CSS class是哪裡來的呢？
+
 在所有`<mat-card>`的directive再加入後都會自動加入一個與名稱相同的class(**實際上所有的Angular Material元件都會這做，方便我們自訂樣式**)，因此我們的`<img mat-card-image>`在顯示時實際上會是`<img mat-card-image class="mat-card-image">`，這麼一來就可以輕鬆透過CSS來做一些樣式的調整，在這裡我們可以使用這種技巧，直接去調整`mat-card-image`這個class。
 
 成果如下：
@@ -211,7 +211,7 @@ tags:
 
 我們剛剛使用過了`<mat-card-header>`來組合`<mat-card-title>`、`<mat-card-subtitle>`和`<img mat-card-avatar>`，而`<img mat-card-avatar>`主要是用來放置使用者的頭像，在Material Design中對於卡片還有另外一種顯示方式，是把縮圖放在標題的右邊，如下圖：
 
-{% asset_img 12-card-title-sample %}
+{% asset_img 12-card-title-sample.png %}
 
 這個功能我們可以使用`<mat-card-title-group>`來達成，`<mat-card-title-group>`可以組合以下directive：
 
@@ -270,7 +270,7 @@ mat-card:focus {
 
 {% asset_img 14-mat-card-focus.png %}
 
-可以看到被focus的`<mat-card>`不僅擁有瀏覽器內建被選擇的提示框(以Chrome來說就是外面的藍色框框)，我們也可以直接使用`:focus`的css selector來設定它的樣式，非常方便吧！
+可以看到被focus的`<mat-card>`不僅擁有瀏覽器內建被選擇的提示框，我們也可以直接使用`:focus`的css selector來設定它的樣式，非常方便吧！
 
 ## 本日小結
 
