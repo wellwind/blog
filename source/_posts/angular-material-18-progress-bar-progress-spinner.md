@@ -13,7 +13,7 @@ tags:
 
 ## 關於Material Design中的Progress Bar和Progress Spinner
 
-Progress Bar和Progress Spinner被歸納在[Material Design的Progress & activity設計指南](https://material.io/guidelines/components/progress-activity.html#)中，主要是用來提示使用者**內容正在讀取中**，依照顯示的位置不同，可以使用長條的顯示(Progress Bar)、或是圓形的顯示(Progress Spinner)，使用情境適合在讀取(或重新整理)新的資料時，告知使用者內容正在讀取中；依照使用情境不同，我們也能選擇讓使用者知道目前f確定的進度(**Determinate indicators**)，或是顯示不確定的進度(**Indeterminate indicators**)。
+Progress Bar和Progress Spinner被歸納在[Material Design的Progress & activity設計指南](https://material.io/guidelines/components/progress-activity.html#)中，主要是用來提示使用者**內容正在讀取中**，依照顯示的位置不同，可以使用長條的顯示(Progress Bar)、或是圓形的顯示(Progress Spinner)，適合使用在讀取(或重新整理)新的資料時，告知使用者內容正在讀取中；依照使用情境不同，我們也能選擇讓使用者知道目前確定的進度(**Determinate indicators**)，或是顯示不確定的進度(**Indeterminate indicators**)。
 
 {% asset_img 00-components-progress-and-activity.png %}
 
@@ -270,7 +270,7 @@ Progress Spinner顯示的模式相對單純，但對於資料顯示前的空白�
 
 把這兩個元件學好，遇到需要顯示loading狀況時就不怕沒有武器可以應對囉。
 
-本日的程式碼GitHub：
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-18-progress-bar-progress-spinner
 
 分支：day-18-progress-bar-progress-spinner
 
