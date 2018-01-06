@@ -21,7 +21,7 @@ Dialog的主要幾個常見用途如下：
 -   **簡易的選單**：提供一些基本選項讓使用者選取。
 -   **確認用**：需要使用者明確的進行一個確認性的選擇。
 
-Dialog可以說是很基礎的元件，也可以說是讓畫面呈現變得立體的關鍵，例如我們過去介紹的Datepicker、Select、Menu等等，都可以說是應用了Dialog的結果。
+Dialog可以說是很基礎的元件，也可以說是讓畫面呈現變得更加有立體感的關鍵，例如我們過去介紹的Datepicker、Select、Menu等等，都可以說是Dialog的一種應用結果。
 
 ## 開始使用Angular Material的Dialog
 
@@ -31,7 +31,7 @@ Dialog可以說是很基礎的元件，也可以說是讓畫面呈現變得立�
 
 Dialog不像是其他Angular Material元件，只要單純的使用即可，需要一些比較複雜的動作，但其實也不是說多困難，讓我們一步一步來說明：
 
-1.  我們先單純建立一個元件AddPostDialogComponent元件，不改變任何內容
+1.  我們先單純建立一個元件`AddPostDialogComponent`元件，不改變任何內容
 
     `ng g c dashboard/blog/add-post-dialog`
 
@@ -79,7 +79,7 @@ Dialog不像是其他Angular Material元件，只要單純的使用即可，需�
 
 {% note info %}
 
-在dialog中這個灰底的部分稱為`backdrop`，我找不到比較好的翻譯，因此之後依舊會直接使用backdrop來稱呼他。
+在dialog中這個灰底的部分稱為`backdrop`，我找不到比較好的翻譯，因此之後依舊會直接使用backdrop來稱呼它。
 
 {% endnote %}
 
@@ -97,7 +97,7 @@ Dialog不像是其他Angular Material元件，只要單純的使用即可，需�
 
 #### mat-dialog-actions
 
-用來放置行動按鈕的區塊，呈現位置剛好與mat-dialog-title相反，會固定在畫面的最下方，我們會在這裡放置一些如**確認**、**取消**的按鈕。
+用來放置行動按鈕的區塊，呈現位置剛好與`mat-dialog-title`相反，會固定在畫面的最下方，我們會在這裡放置一些如**確認**、**取消**的按鈕。
 
 #### mat-dialog-close
 
@@ -134,7 +134,7 @@ Dialog不像是其他Angular Material元件，只要單純的使用即可，需�
 
 {% asset_img 02-dialog-contents.gif %}
 
-一個標準的dialog就誕生啦！除了依照title、content和actions的切分空間之外，按下取消的按鈕就能夠關閉dialog，另外當高度超過可以延展的範圍(Angular Material中的dialog設定為`65vh`)時，就會變成可以捲動的狀態。
+一個標準的dialog就誕生啦！除了依照title、content和actions切割空間之外，按下取消的按鈕就能夠關閉dialog，另外當高度超過可以自動延展的範圍(Angular Material中的dialog設定為`65vh`)時，就會變成可以捲動的狀態。
 
 讀者有興趣可以實際試玩看看這個dialog的效果，可以看到以下幾個亮點：
 
@@ -152,7 +152,7 @@ Dialog不像是其他Angular Material元件，只要單純的使用即可，需�
 
 MatDialog有3個屬性：
 
--   `afterAllClosed`：`Observable<void>`，會在所有畫面上的dialog都被關閉時，才會觸發的一個Observable，從這樣的說明應該可以發現：沒錯，Dialog是可以開多個的！只需要在任何時候使用`MatDialog.open()`方法即可
+-   `afterAllClosed`：`Observable<void>`，會在所有畫面上的dialog都被關閉時，才會觸發的一個Observable，從這樣的說明應該可以發現：沒錯，**Dialog是可以開多個的**！只需要在任何時候使用`MatDialog.open()`方法即可
 -   `afterOpen`：`Observable<MatDialogRef<any>>`，每當一個dialog開啟時，就會觸發一次，並告知目前開啟的dialog
 -   `openDialogs`：`MatDialogRef<any>[]`，單純的紀錄目前所有開啟中的dialog。
 
@@ -171,7 +171,7 @@ this.dialog.afterOpen.subscribe((dialogRef: MatDialogRef<any>) => {
 
 開啟多的dialog的程式就不多做說明了，只需要呼叫注入的`MatDialog`的`open()`方法，就會自然而然地開一個新的dialog。
 
-我們直接來看看log的結果：
+我們直接來看看log顯示的結果：
 
 {% asset_img 03-introduce-dialog-properties.gif %}
 
@@ -204,11 +204,11 @@ MatDialog有3個方法，可以讓我們自由自在地控制dialog：
         }
         ```
 
-    -   `config?:MatDialogConfig<D>`：非必填，用來設定一些顯示的細節。我們稍後會直接說明這個`MatDialogConfig`
+    -   `config?:MatDialogConfig<D>`：非必填，用來設定一些顯示的細節。我們稍後會直接針對這個`MatDialogConfig`型別做說明。
 
 ### 自行設定MatDialogConfig
 
-我們可以透過`MatDialogConfig`類別設定一些dialog打開時的細節，由於屬性眾多，以下挑幾個個人覺得重要的來介紹：
+我們可以透過`MatDialogConfig`型別設定一些dialog打開時的細節，由於屬性眾多，以下挑幾個個人覺得重要的來介紹：
 
 #### data
 
@@ -256,7 +256,7 @@ export class AddPostConfirmDialogComponent implements OnInit {
 
 #### hasBackdrop
 
-是否要使用一個灰色的底來隔絕dialog與下面的畫面，如果設定為`false`則依然可以和dialog後面的元件互動。
+是否要使用一個灰色的底來隔絕dialog與下面的畫面，也就是backdrop，如果設定為`false`則依然可以和dialog後面的元件互動。
 
 ```typescript
 showAddPostDialog() {
@@ -288,7 +288,7 @@ background: rgba(0,0,0,.6);
 
 ### 使用MatDialogRef
 
-所有的dialog開啟後，都會產生一個對應的`MatDialogRef<T>`，其中的T代表實際產生的component或templateRef，取得這個DialogRef的方式很多，主要有
+所有的dialog開啟後，都會產生一個對應的`MatDialogRef<T>`，其中的`T`代表實際產生的component或templateRef，取得這個DialogRef的方式很多，主要有
 
 1.  使用`MatDialog`的`open()`時，回傳的值
 
@@ -324,7 +324,7 @@ background: rgba(0,0,0,.6);
 
 Dialog是前端非常經典的議題，也是SPA架構下不可或缺的一個環節，在Material Design中更是應用範圍極廣，如果能好好善用dialog，在設計互動性較高的介面時，也能夠更加靈活，讓使用者經驗大幅提高哩！
 
-本日的程式碼GitHub：
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-19-dialog
 
 分支：day-19-dialog
 
