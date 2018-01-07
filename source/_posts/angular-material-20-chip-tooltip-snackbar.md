@@ -173,7 +173,7 @@ export class AddPostDialogComponent implements OnInit {
 
 上面程式我們宣告了一個`separatorKeysCodes`變數，來指令當按下哪些鍵時，會傳入新的`MatChipInputEvent`資料，以這裡的設定來說是`ENTER`鍵和`逗點(,)`。這兩個鍵盤keyCode都在`@angular/cdk/keycodes`先定義好了，節省我們尋找鍵盤keyCode的時間。
 
-另外我們也寫了一個addTag()方法，接收當畫面上輸入資料遇到`separatorKeysCodes`時，傳入的事件，這個事件有兩個屬性
+另外我們也寫了一個`addTag()`方法，接收當畫面上輸入資料遇到`separatorKeysCodes`時，傳入的事件，這個事件有兩個屬性
 
 -   **input**：輸入的來源，基本上就是DOM
 -   **value**：輸入的資料
