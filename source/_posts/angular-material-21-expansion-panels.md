@@ -44,7 +44,7 @@ Expansion panels的相關功能都放在`MatExpansionModule`之中，加入後�
 
 結果如下：
 
-{% asset_img 02-mat-expanstoin-panel-basic.gif %}
+{% asset_img 02-mat-expansion-panel-basic.gif %}
 
 很簡單吧！只要點一下panel的標題，就可以立即展開/收起每個panel囉。
 
@@ -193,7 +193,7 @@ Expansion panels的相關功能都放在`MatExpansionModule`之中，加入後�
 
 遇到特定的情境，expansion panel這種配置方式還蠻實用的哩！
 
-本日的程式碼GitHub：
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-21-expansion-panel-tab
 
 分支：day-21-expansion-panel-tab
 
