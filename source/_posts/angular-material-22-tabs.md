@@ -9,7 +9,7 @@ tags:
 
 昨天我們介紹了Expansaion Panels，替收件夾的左邊加上了基本的分類資訊，今天讓我們來使用Angular Material的Tab元件，來把右邊也填入些東西！
 
-Tab元件可以說是許許多多UI都會用到的功能，也有許多不同的呈現模式，**可以說是最簡單也最複雜的元件之一**，接下來就立刻來看看有些什麼變化吧！
+Tab元件可以說是許許多多UI都會用到的功能，使用上雖然簡單，但也有許多不同的呈現模式，**可以說是最簡單也最複雜的元件之一**，接下來就立刻來看看有些什麼變化吧！
 
 <!-- more -->
 
@@ -25,7 +25,7 @@ Tab元件可以說是許許多多UI都會用到的功能，也有許多不同的
 
 ### 使用mat-tab-group與mat-tab
 
-跟許多群組式的元件都差不多，我們可以使用`<mat-tab-group>`作為一個最外層的tab容器，並在裡面放置數個`<mat-tab>`：
+跟許多群組型的元件都差不多，我們可以使用`<mat-tab-group>`作為一個最外層的tab容器，並在裡面放置數個`<mat-tab>`：
 
 ```html
 <mat-tab-group>
@@ -44,7 +44,7 @@ Tab元件可以說是許許多多UI都會用到的功能，也有許多不同的
 
 ### 使用selectedIndex改變選取的tab
 
-我們可以透過selectedIndex，來設定要選取第幾個tab，這個selectedIndex是two way binding的，所以我們也能在手動切換tab時，得知目前的被選取的tab index：
+我們可以透過`selectedIndex`，來設定要選取第幾個tab，這個`selectedIndex`是two way binding的，所以我們也能在手動切換tab時，得知目前的被選取的tab index：
 
 ```html
 <button mat-button (click)="tabIndex = tabIndex - 1">上一頁</button>
@@ -132,7 +132,7 @@ export class InboxComponent {
 
 ### mta-tab-group固定寬度時，設定stretch模式
 
-當我們為`<mat-tab-group>`設定一個固定寬度時，可以加上`mat-stretch-tabs`這個directive，此時所有tab頁籤就會平均分配寬度，例`<mat-tab-group>`寬度設為300時，每個`<mat-tab>`的label就會佔據100的寬度：
+當我們為`<mat-tab-group>`設定一個固定寬度時，可以加上`mat-stretch-tabs`這個directive，此時所有tab頁籤就會平均分配寬度，例`<mat-tab-group>`寬度設為300時，每個`<mat-tab>`的label就會佔據100(300/3)的寬度：
 
 ```html
 <mat-tab-group mat-stretch-tabs>
