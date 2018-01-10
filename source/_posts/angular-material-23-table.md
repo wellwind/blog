@@ -7,11 +7,11 @@ tags:
 	- Angular Material
 ---
 
-今天我們要來介紹Angular Material中幾個最複雜元件之一：**表格Table**。透過組合table、sort header和paginator這三個功能，我們會完成一個大部分情境都適用的data table。
+今天我們要來介紹Angular Material中最複雜的元件之一：**表格Table**。透過組合table、sort header和paginator這三個功能，我們會完成一個大部分情境都適用的data table。
 
 Data table可以說是許多軟體都會被使用到的功能，尤其是管理各種資料的後台程式，更是使用data table的大宗來源，而在商務應用上後台軟體的開發需求也是源源不絕，因此data table可以說是前端應用最大的一個議題也不為過！
 
-也因此在Angular Material中要設計data table也自然已非常多彈性可以調整的地方，尤其是我們會一次組合3種元件，來完成data table的功能，讓狀況更加的複雜，因此我們會將data table這個主題拆成2篇介紹，今天我們會先完成一個大部分情境都適用的data table，明天則會針對一些細節的部分做進階的介紹；準備好了嗎？開始囉！
+也因此在Angular Material中要設計data table自然有非常多彈性可以調整的地方，尤其是我們會一次組合3種元件，來完成data table的功能，讓狀況更加的複雜，因此我們會將data table這個主題拆成2篇介紹，今天我們會先完成一個大部分情境都適用的data table，明天則會針對一些細節的部分做進階的介紹；準備好了嗎？開始囉！
 
 <!-- more -->
 
@@ -19,7 +19,7 @@ Data table可以說是許多軟體都會被使用到的功能，尤其是管理�
 
 在[Material Design的Data tables設計指南](https://material.io/guidelines/components/data-tables.html#)中，data table用來呈現多筆的資料列，在許多系統中的會使用到，我們能透過data table呈現資料，也能夠進行資料的管理。
 
-Data table基本上就是表格的呈現，只是比起傳統HTML的表格，應該具備更多的功能，如分頁、排序等等。
+Data table基本上就是表格的呈現，只是比起傳統HTML的表格，應該具備更多的功能，如**分頁、排序**等等。
 
 ## 開始使用Angular Material的Data Table
 
@@ -246,15 +246,15 @@ export class EmailListComponent implements OnInit {
   ...
   
   ngOnInit() {
-    this.getIssuees(0, 10);
+    this.getIssues(0, 10);
 
     // 分頁切換時，重新取得資料
     this.paginator.page.subscribe((page: PageEvent) => {
-      this.getIssuees(page.pageIndex, page.pageSize);
+      this.getIssues(page.pageIndex, page.pageSize);
     });
   }
 
-  getIssuees(pageIndex, pageSize) {
+  getIssues(pageIndex, pageSize) {
     this.httpClient
       .get<any>(`https://api.github.com/search/issues?q=repo:angular/material2&page=${pageIndex + 1}&per_page=${pageSize}`)
       .subscribe(data => {
@@ -300,7 +300,7 @@ export class EmailListComponent implements OnInit {
   
   ...
 
-  getIssuees(pageIndex, pageSize) {
+  getIssues(pageIndex, pageSize) {
     this.httpClient
       .get<any>(`https://api.github.com/search/issues?q=repo:angular/material2&page=${pageIndex + 1}&per_page=${pageSize}`)
       .subscribe(data => {
@@ -353,12 +353,12 @@ export class EmailListComponent implements OnInit {
       active: '',
       direction: ''
     };
-    this.getIssuees();
+    this.getIssues();
 
     // 分頁切換時，重新取得資料
     this.paginator.page.subscribe((page: PageEvent) => {
       this.currentPage = page;
-      this.getIssuees();
+      this.getIssues();
     });
   }
 
@@ -368,10 +368,10 @@ export class EmailListComponent implements OnInit {
       sortInfo.active = 'created';
     }
     this.currentSort = sortInfo;
-    this.getIssuees();
+    this.getIssues();
   }
 
-  getIssuees() {
+  getIssues() {
     const baseUrl = 'https://api.github.com/search/issues?q=repo:angular/material2';
     let targetUrl = `${baseUrl}&page=${this.currentPage.pageIndex + 1}&per_page=${this.currentPage.pageSize}`;
     if (this.currentSort.direction) {
