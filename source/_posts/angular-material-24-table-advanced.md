@@ -213,7 +213,7 @@ export class EmailListComponent implements OnInit {
 
 {% asset_img 07-default-paginator-intl.png %}
 
-當然這個文字我們也可以進行調整，只要在``MatPaginatorIntl``這個service裡面設定即可：
+當然這個文字我們也可以進行調整，只要在`MatPaginatorIntl`這個service裡面設定即可：
 
 ```typescript
 @Component({ })
