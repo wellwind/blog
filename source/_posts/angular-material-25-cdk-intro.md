@@ -31,7 +31,7 @@ https://www.youtube.com/watch?v=kYDLlfpTLEA
 
 {% asset_img 01-angular-cdk-slide-01.png %}
 
-就算不是如同Angular Material開發團隊般擁有頂尖的人才，只要是有一定經驗的開發人員，就算不公開成人人可用的library，將這些共用的部分抽取出來，絕對是一件再正常不過的事情；而抽出來的部分，就是Angular CDK。
+就算不是如同Angular Material開發團隊般擁有頂尖的人才，只要是有一定經驗的開發人員，就算不公開成人人可用的library，將這些共用的部分抽取出來，絕對是一件再正常不過的事情；而抽出來的部分，就是**Angular CDK**。
 
 {% asset_img 02-angular-cdk-slide-02.png %}
 
@@ -49,7 +49,7 @@ https://www.youtube.com/watch?v=kYDLlfpTLEA
 
 {% asset_img 05-angular-cdk-slide-05.png %}
 
-基於以上原因，Angular Material便將他們開發過程中共用的部分，提煉出一個共用的類別庫，來解決上面提到的問題，這也就是Angular CDK啦！
+基於以上原因，Angular Material團隊便將他們開發過程中共用的部分，提煉出一個共用的類別庫，來解決上面提到的問題，這也就是Angular CDK啦！
 
 ## Angular CDK目前擁有的功能
 
@@ -90,7 +90,7 @@ Components內主要就是在設計些常用元件時的輔助directive，替我�
 
 今天我們簡單的對Angular CDK做了介紹，也把目前Angular CDK所能夠提供的功能部分大致說明了一下；讀著們可以想想同樣的類似的功能，若自己要寫程式實作需要花多少時間，就能理解若有人幫我們都設計好，只要直接使用是多麽方便的一件事情！
 
-在之後介紹每個功能時，也可以一樣的想想這樣的功能，不使用CDK我們要多寫多少程式碼，相信會對於Angular CDK有更加的印象深刻。
+在之後介紹每個功能時，也可以一樣的想想這樣的功能，不使用CDK我們要寫出多少程式碼，相信會對於Angular CDK有更加的印象深刻。
 
 明天開始，我們就來介紹這些強大的CDK吧！
 
