@@ -151,7 +151,7 @@ export class SurveyComponent implements OnInit, AfterViewInit {
   
   @HostListener('keydown', ['$event'])
   keydown($event: KeyboardEvent) {
-    // 監聽鍵盤事件並依照案件設定按鈕focus狀態
+    // 監聽鍵盤事件並依照按鍵設定按鈕focus狀態
     if ($event.keyCode === UP_ARROW) {
       this.keyManager.setPreviousItemActive();
     } else if ($event.keyCode === DOWN_ARROW) {
