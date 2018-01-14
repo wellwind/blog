@@ -195,7 +195,7 @@ export class SurveyComponent implements OnInit, AfterViewInit {
   constructor(private breakpointObserver: BreakpointObserver) {}
   
   ngOnInit() {
-    this.isHandeset$ = this.breakpointObserver.observe(Breakpoints.Handset).map(match => match.matches);
+    this.isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset).map(match => match.matches);
   }
 }
 ```
@@ -206,7 +206,7 @@ export class SurveyComponent implements OnInit, AfterViewInit {
 <mat-form-field>
   <input type="text" name="birthday" matInput placeholder="生日"
          [matDatepicker]="demoDatepicker">
-  <mat-datepicker [touchUi]="isHandeset$ | async"></mat-datepicker>
+  <mat-datepicker [touchUi]="isHandset$ | async"></mat-datepicker>
 </mat-form-field>
 ```
 
