@@ -190,7 +190,7 @@ this.breakpointObserver.observe([Breakpoints.HandsetLandscape, Breakpoints.Hands
 
 ```typescript
 export class SurveyComponent implements OnInit, AfterViewInit {
-  isHandeset$: Observable<boolean>;
+  isHandset$: Observable<boolean>;
   
   constructor(private breakpointObserver: BreakpointObserver) {}
   
