@@ -224,7 +224,7 @@ Bidirectionality可以幫助我們設定LTR和RTL模式，也能對於模式的�
 
 而Layout則是用來判斷瀏覽器螢幕大小的變化，在不搭配其他library的情況下，善用Layout，可以讓我們的網站符合RWD的精神，在各種不同大小的裝置上都能給予最好的顯示方式，讓網站操作上更加方便！
 
-本日的程式碼GitHub：
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-27-cdk-bidirectionality-layout
 
 分支：day-27-cdk-bidirectionality-layout
 
