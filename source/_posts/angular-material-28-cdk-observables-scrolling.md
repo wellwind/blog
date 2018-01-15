@@ -209,7 +209,7 @@ this.scrollDispatcher.scrolled(1000).subscribe((scrollable: CdkScrollable) => {
 
 #### 使用ancestorScrolled()
 
-除了元件本身的scroll狀態之外，我們也能得知某個目標**有加入cdkScrollable的祖先scroll狀態**，也就是以某個元件往祖先早，當祖先有`cdkScrollable`且產生scroll時，就會發生事件，例如我們直接在某個元件中不加入`cdkScrollable`，但在程式中直接使用`ScrollDispatcher`的`ancestorScrolled()`來得知外部有`cdkScrollable`元件的狀態：
+除了元件本身的scroll狀態之外，我們也能得知某個目標**有加入cdkScrollable的祖先scroll狀態**，也就是以某個元件往祖先找，當祖先有`cdkScrollable`且產生scroll時，就會發生事件，例如我們直接在某個元件中不加入`cdkScrollable`，但在程式中直接使用`ScrollDispatcher`的`ancestorScrolled()`來得知外部有`cdkScrollable`元件的狀態：
 
 ```typescript
 @Component({ })
@@ -231,7 +231,7 @@ export class SomeChildComponent implements OnInit {
 
 #### 使用getAncestorScrollContainers()
 
-如果一定需要等到scroll發生時，才知道有什麼祖先 ~~顯靈~~ 發生scroll，那未免也太沒效率了，因此我們也能使用getAncestorScrollContainers()取得包含`cdkScrollable`的祖先。如下：
+如果一定需要等到scroll發生時，才知道有什麼祖先 ~~顯靈~~ 發生scroll，那未免也太沒效率了，因此我們也能使用`getAncestorScrollContainers()`取得包含`cdkScrollable`的祖先。如下：
 
 ```typescript
 console.log(this.scrollDispatcher.getAncestorScrollContainers(this.elementRef));
