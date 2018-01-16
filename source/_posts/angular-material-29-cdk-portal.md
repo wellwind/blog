@@ -19,7 +19,7 @@ tags:
 
 Angular CDK中的Portal類別中提供了一些方便的directives和services，用來產生動態的內容，使用前要先加入`PortalModule`：
 
-```html
+```typescript
 import { PortalModule } from '@angular/cdk/portal';
 
 @NgModule({
@@ -34,10 +34,10 @@ export class SharedMaterialModule {}
 
 在使用Portal相關功能之前，有兩個簡單名詞要先介紹：
 
--   Portal：真正要被切換的內容，這些內容會用Portal包起來，如果要切換的內容是一個template reference，則會使用`TemplatePortal`；如果是元件(component)，則使用`ComponentPortal`。
--   PortalOutlet：實際放置內容的地方，**如果Portal是插頭，那麼PortalOutlet就可以想像成是插座**。
+-   **Portal**：真正要被切換的內容，這些內容會用Portal包起來，如果要切換的內容是一個template reference，則會使用`TemplatePortal`；如果是元件(component)，則使用`ComponentPortal`。
+-   **PortalOutlet**：實際放置內容的地方，**如果Portal是插頭，那麼PortalOutlet就可以想像成是插座**。
 
-接下來我們來用一個簡單的Tab功能，來說明Portal如何動態切換內容！
+接著我們來實作一個簡單的Tab功能，說明Portal如何動態切換內容！
 
 ### 使用cdkPortalOutlet
 
@@ -89,7 +89,7 @@ cdkPortal是一個簡單的directive，其實就是`TemplatePortal`衍生的dire
 </p>
 ```
 
-一般的`<ng-template>不要加上`cdkPortal`可以嗎？當然可以，只是需要再加工一下，我們先擺上來
+一般的`<ng-template>`不要加上`cdkPortal`可以嗎？當然可以，只是需要再加工一下，我們先擺上來：
 
 ```html
 <ng-template #template>
@@ -227,11 +227,7 @@ export const PORTAL4_INJECT_DATA = new InjectionToken<any>('portal4-inject-data'
 如以下程式，我們寫了一個`_createInjector`，來把我們想要注入的token，和當前的`Injector`，合併成一個新的`PortalInjector`
 
 ```typescript
-@Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css']
-})
+@Component({ ... })
 export class MainComponent implements OnInit {
   name : string;
   
@@ -247,11 +243,12 @@ export class MainComponent implements OnInit {
 
 ##### 將PortalInjector加入ComponentPortal
 
-之後，在建立ComponentPortal時，只需要把這個PortalInjector也傳入即可
+之後，在建立ComponentPortal時，只需要把這個`PortalInjector`也傳入即可
 
 ```typescript
 changePortal4() {
-    this.currentPortal = new ComponentPortal(Portal4Component, undefined, this._createInjector());
+    const portalInjector = this._createInjector();
+    this.currentPortal = new ComponentPortal(Portal4Component, undefined, portalInjector);
   }
 ```
 
@@ -275,7 +272,7 @@ export class Portal4Component implements OnInit {
 }
 ```
 
-這時候畫面上就可以直接使用囉！
+這時候畫面上就可以直接使用啦！
 
 {% asset_img 04-inject-data-to-component-portal.gif %}
 
@@ -314,18 +311,11 @@ export class MainComponent implements OnInit {
 
 #### 注入必要條件
 
-說穿了，DomPortalOutlet就是操作DOM來做些事情，以及把產生的內容丟到一個`<app-root>`外插座上，但其實它還是在管理範圍內，只是不住在`<app-root>`裡面而已，因此在建立時，還是需要把可以管理他的範圍界定起來，這些也是DomPortalOutlet要建立時所相依的類別：
+說穿了，DomPortalOutlet就是操作DOM來做些事情，以及把產生的內容丟到一個`<app-root>`外的插座上，但其實它還是在管理範圍內，只是不住在`<app-root>`裡面而已，因此在建立時，還是需要把可以管理他的範圍界定起來，這些也是DomPortalOutlet要建立時所相依的類別：
 
 ```typescript
 @Component({ ... })
 export class MainComponent implements OnInit {
-  @ViewChild(MatRipple) ripple: MatRipple;
-  @ViewChildren(CdkPortal) templatPortals: QueryList<CdkPortal>;
-  @ViewChild('template') template3: TemplateRef<any>;
-  name = 'wellwind';
-  currentPortal: Portal<any>;
-  displayFocusTrap = false;
-  displayContent = 999;
   domPortalOutlet: DomPortalOutlet;
 
   constructor(
@@ -341,7 +331,7 @@ export class MainComponent implements OnInit {
 
 #### 在app-root外建立插座
 
-因為超過`<app-root>`的範圍，因此伸手直接去摸DOM基本上是不可避免的，我們可以直接用`document`來操作DOM，但在這裡我們卻另外注入了token為`DOCUMENT`一個`document`，這是為什麼呢？
+因為超過`<app-root>`的範圍，因此伸手直接去摸DOM基本上是不可避免的，我們可以直接用`document`來操作DOM，但在這裡我們卻另外注入了一個document的DOCUMENT token(有點饒舌)，這是為什麼呢？
 
 一般情況下，我們注入的`document`，在網頁上其實就是`window.document`，但Angular是一個可以跨不同平台的設計，因此到了其他平台，就不一定了，另外在撰寫單元測試時，為了避免單元測試下只有JavaScript而沒有DOM，中間墊了一層也是比較好的！也因為如此，雖然我們可以直接使用`window.document`，但還是選擇了使用注入的方式，來隔離相依。
 
@@ -405,7 +395,7 @@ export class Overlay {
 }
 ```
 
-可以看到只要是超過`<app-root>`以外的元件應用，都很適合使用`DomPortalOutlet`呢！
+可以看到只要是超過`<app-root>`以外的元件顯示應用，都很適合使用`DomPortalOutlet`呢！
 
 ## 本日小結
 
