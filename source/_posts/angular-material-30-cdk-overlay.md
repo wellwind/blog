@@ -273,7 +273,7 @@ const config = new OverlayConfig({
 
 今天我們把Angular CDK目前(5.0.0)主功能分類的最後一塊拼圖－Overlay給介紹完了。這個功能可以讓我們的介面更具有立體感，應用層面也非常廣，許多Angular Material的元件都依賴著Overlay的功能，因此要寫的程式也不少，不過相信大致操作過一遍後，就能發現這個功能的強大及易用！而且**光是想像自己要達到這些功能需要寫多少程式碼，考量到多少狀態，就覺得Angular CDK實在是太貼心啦**！！
 
-本日的程式碼GitHub：
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-30-cdk-overlay
 
 分支：day-30-cdk-overlay
 
