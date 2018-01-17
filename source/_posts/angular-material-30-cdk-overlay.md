@@ -100,7 +100,7 @@ export class InboxComponent implements OnInit {
 
 以上程式中的步驟大致描述如下：
 
-1.  我們注入`Overlay`
+1.  注入`Overlay`
 2.  在`ngOninit()`中，使用`const strategy = this.overlay.position().connectedTo()`，建立一個`ConnectedPositionStrategy`，代表overlay要與某個物件連結的策略，其中的參數分別為：
     1.  要被連結的物件(也就是我們的originFab這個按鈕)要被連結的物件(也就是我們的originFab這個按鈕)
     2.  連結物件的連結點位置，以這裡的程式來說，就是右上角為連結點。
@@ -150,7 +150,7 @@ this._overlay.position()
 
 剛剛我們已經成功讓選單物件連結到按鈕物件上了，接下來我們要試試看讓選單不要連結到任何畫面上，只需要把原來的strategy修改一下：
 
-```javascript
+```typescript
 const strategy = this.overlay
   .position()
   .global()
@@ -160,7 +160,7 @@ const strategy = this.overlay
   .centerVertically();
 ```
 
-在這裡我們改用`overlay.position().global()`來產生一個`GlobalPositionStrategy`，代表部連結任何物件，是全域的顯示策略。接著用`width()`和`height()`給予基本的尺寸，再加上`centerHorizontally()`和`centerVertically()`來調整放到畫面的正中間，成果如下：
+在這裡我們改用`overlay.position().global()`來產生一個`GlobalPositionStrategy`，代表部連結任何物件，是**全域的顯示策略**。接著用`width()`和`height()`給予基本的尺寸，再加上`centerHorizontally()`和`centerVertically()`來調整放到畫面的正中間，成果如下：
 
 {% asset_img 03-global-menu.gif %}
 
@@ -226,6 +226,8 @@ this.overlayRef = this.overlay.create(config);
 
 {% asset_img 05-backdrop-class-transparent.gif %}
 
+有了`cdk-overlay-transparent-backdrop`，滑鼠移到按鈕上時，就沒有hover的效果，直到按下去關掉overlay時，才一切又正常了。
+
 ### 設定scrollStrategy
 
 最後我們來聊一下`scrollStrategy`，在`ConnectedPositionStrategy`模式下，我們能透過設定`scrollStrategy`來決定當滑鼠滾輪捲動時，overlay該如何處置，例如預設如下：
@@ -271,7 +273,7 @@ const config = new OverlayConfig({
 
 ## 本日小結
 
-今天我們把Angular CDK目前(5.0.0)主功能分類的最後一塊拼圖－Overlay給介紹完了。這個功能可以讓我們的介面更具有立體感，應用層面也非常廣，許多Angular Material的元件都依賴著Overlay的功能，因此要寫的程式也不少，不過相信大致操作過一遍後，就能發現這個功能的強大及易用！而且**光是想像自己要達到這些功能需要寫多少程式碼，考量到多少狀態，就覺得Angular CDK實在是太貼心啦**！！
+今天我們把Angular CDK目前(5.0.0)主功能分類的最後一塊拼圖－Overlay給介紹完了。這個功能可以讓我們的操作介面更具立體感，應用層面也非常廣，非常多的Angular Material元件都依賴著Overlay功能，因此要寫的程式也不少，不過相信大致操作過一遍後，就能發現這個功能的強大及易用！而且**光是想像自己要達到這些功能需要寫多少程式碼，考量到多少狀態，就覺得Angular CDK實在是太貼心啦**！！
 
 本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-30-cdk-overlay
 
