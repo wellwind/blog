@@ -33,7 +33,7 @@ if(selected) {
 
 偏偏上面提到的`selected`很有趣，寫成`selected="true"`會被選取沒有問題，而寫成`selected="false"`也完全沒問題不會被選取，因為Angular Material都幫我們處理好這種小細節了！
 
-這時候我們可以想看看這個用來處理`true`或`false`的屬性`selected`是一個`<mat-chip>`的`@Input`，但偏偏它又可以不用中括號設定資料，那他宣告的型別到底要是`string`還是`boolean`呢？如果是`string`，後續又該如何處理？
+這時候我們可以想看看這個用來處理`true`或`false`的屬性`selected`，它明明是一個`<mat-chip>`的`@Input`，但偏偏它又可以不用中括號設定非字串資料，那他宣告的型別到底要是`string`還是`boolean`呢？如果是`string`，後續又該如何處理？
 
 其實我們不用想太多，因為這種貼心小細節在Angular Material中被使用的機會太高了！因此也被拉到Angular CDK中，也就是型別轉換功能－**coercion**。
 
@@ -62,6 +62,8 @@ export class CoercionDemoBoxComponent implements OnInit {
     return this._display;
   }
 
+  // value: boolean，代表預期的參數型別是boolean
+  // 但我們都知道，javascript其實是弱型別語言
   set display(value: boolean) {
     // 就算傳進來是string，也會被轉成boolean
     this._display = coerceBooleanProperty(value);
@@ -243,9 +245,9 @@ HTML如下：
 
 分支：day-30-cdk-overlay
 
-到這邊我們終於把所有Angular CDK中用來打造一流元件的功能都介紹了一遍，當然還有幾個分類是我們之前使用Angular Material元件時就有感覺的，因此沒有多加介紹，但有過使用Angular Material元件的經驗，要閱讀起來就方便多了！
+到這邊我們終於把所有Angular CDK中用來打造一流元件的功能都介紹了一遍，當然還有幾個屬於元件的分類是我們之前使用Angular Material元件時就有感覺的，因此沒有多加介紹，但有過使用Angular Material元件的經驗，要閱讀文件也會很容易上手！
 
-透過Angular CDK，真的能幫助我們節省很多程式碼，筆者目前工作上也開始在專案中加入Angular CDK相關的功能，來打造一些Angular Material目前無法提供的功能，體驗到了其強大的威力，真的非常適合推薦給所有使用Angular的開發人員，既然要使用輪子，當然要使用最高級的輪子啦！！XD
+透過Angular CDK，真的能幫助我們節省很多程式碼，筆者目前工作上也已經開始在專案中加入Angular CDK相關的功能，來打造一些Angular Material目前無法提供的功能，體驗到了其強大的威力，真的非常適合推薦給所有使用Angular的開發人員，**既然要使用輪子，當然要使用最高級的輪子啦**！！XD
 
 接下來我們會再花幾天時間介紹一些關於使用Angular Material和Angular CDK的相關小技巧，明天見！
 
