@@ -151,7 +151,7 @@ export class DashboardComponent implements OnInit {
 
 由於SCSS的特性，我們也能輕易把這些主題樣式包裝到另外一個class之中，來達到切換樣式的效果，可以說是非常的有彈性啊！
 
-本日的程式碼GitHub：day-31-cdk-coerce-platform
+本日的程式碼GitHub：https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-32-theme
 
 分支：day-32-theme
 
