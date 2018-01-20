@@ -12,7 +12,7 @@ tags:
 
 ## 透過Angular Material使用Material Design中的顏色
 
-昨天的文章再介紹自訂theme時，我們提到了內建顏色的`$mat-XXXX`變數，這些變數的實際原始碼看起來如下：
+[昨天的文章在介紹自訂theme時](https://wellwind.idv.tw/blog/2018/01/19/angular-material-32-custom-theme/)，我們提到了內建顏色的`$mat-XXXX`變數，這些變數的實際原始碼看起來如下：
 
 {% asset_img 01-mat-red-sample.png %}
 
@@ -81,11 +81,9 @@ tags:
 
 真是省時又省力啊！
 
-使用
-
 ## 替某個Angular Material元件客製化樣式
 
-這個技巧在之前其實已經提過幾次，但真的很實用也很重要，因此在這邊再次提一下。在Angular Material中，幾乎所有的元件與directive，都會加上一個與它自己同名的CSS class，例如`mat-button`這個directive會在它的元件上加入同名的CSS class。因此我們可以直接在style.css(或style.scss)中，透過這個class來調整樣式，例如：
+這個技巧在之前其實已經提過幾次，但真的很實用也很重要，因此在這邊再次提一下。在Angular Material中，幾乎所有的元件與directive，都會加上一個與它自己同名的CSS class，例如`mat-button`這個directive會在它的元件上加入同名的CSS class。因此我們可以直接在撰寫CSS時，透過這個class來調整樣式，例如：
 
 ```css
 .mat-button {
