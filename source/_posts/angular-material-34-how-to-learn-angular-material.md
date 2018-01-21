@@ -39,7 +39,7 @@ Angular Material的文件主要分成兩個部分
 
 {% asset_img 04-angular-material-doc-example-code.png %}
 
-在旁邊還有一個按鈕，則會跳到[StackBlitz](https://stackblitz.com/)的網站，並顯示這個範例的程式碼，並且放在StackBlitz網站的程式碼都是正確的！~~方便我們copy/paste~~
+再旁邊還有一個按鈕，則會跳到[StackBlitz](https://stackblitz.com/)的網站，並顯示這個範例的程式碼，並且放在StackBlitz網站的程式碼都是正確的！~~方便我們copy/paste~~
 
 只要好好的把握文件的使用脈絡，要能夠掌握大部分Angular Material的功能，基本上絕對不是問題！
 
