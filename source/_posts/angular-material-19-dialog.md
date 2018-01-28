@@ -290,31 +290,48 @@ background: rgba(0,0,0,.6);
 
 所有的dialog開啟後，都會產生一個對應的`MatDialogRef<T>`，其中的`T`代表實際產生的component或templateRef，取得這個DialogRef的方式很多，主要有
 
-1.  使用`MatDialog`的`open()`時，回傳的值
+1.  使用`MatDialog`的`open()`時，回傳的值，例如以下程式範例，可以透過取得開啟對應component的MatDialogRef，來處理原來元件的事件：
+
+    ```typescript
+      doPost() {
+        const confirmDialogRef = this.dialog.open(AddPostConfirmDialogComponent, {
+          data: {
+            title: this.title
+          }
+        });
+        // doConfirm是AddPostConfirmDialogComponent中的事件(EventEmitter)
+        // 透過componentInstance取得AddPostConfirmDialogComponent產生的實體
+        confirmDialogRef.componentInstance.doConfirm.subscribe(() => {
+          console.log('開啟的dialog按下確認按鈕了');
+        });
+      }
+    ```
+
+    ​
 
 2.  使用`MatDialog`的`getDialogById`取得
 
 3.  在我們要當作dialog的component中，注入取得
 
-    ```typescript
-    @Component()
-    export class AddPostDialogComponent {
-      constructor(private dialogRef: MatDialogRef<AddPostDialogComponent>)
-      
-      move() {
-        this.dialogRef.updatePosition({
-          top: '0',
-          left: '0'
-        });
-      }
-    }
-    ```
+```typescript
+@Component()
+export class AddPostDialogComponent {
+  constructor(private dialogRef: MatDialogRef<AddPostDialogComponent>)
+  
+  move() {
+    this.dialogRef.updatePosition({
+      top: '0',
+      left: '0'
+    });
+  }
+}
+```
 
-    結果如下：
+結果如下：
 
-    {% asset_img 07-mat-dialog-ref.gif %}
+{% asset_img 07-mat-dialog-ref.gif %}
 
-ＭatDialogRef許多方法都跟前面介紹過的類似，就不多作介紹，有興趣的可以再去仔細看看[dialog的API內容](https://material.angular.io/components/dialog/api)。
+ＭatDialogRef還有許多方法都跟前面介紹過的類似，就不多作介紹，有興趣的可以再去仔細看看[dialog的API內容](https://material.angular.io/components/dialog/api)。
 
 ## 本日小結
 
