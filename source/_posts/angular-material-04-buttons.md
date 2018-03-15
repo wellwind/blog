@@ -122,7 +122,7 @@ export class AppModule {}
 
 {% asset_img 06-mat-icon-button.png %}
 
-看起來就單純許多，如果希望凸顯這個按鈕，我們可以先用`mat-raised-button`將它變成更明顯的按鈕，在使用`mat-icon-button`改變成為左右不留白的樣式
+看起來就單純許多，如果希望凸顯這個按鈕，我們可以先用`mat-raised-button`將它變成更明顯的按鈕，再使用`mat-icon-button`改變成為左右不留白的樣式
 
 ```html
 <button mat-raised-button mat-icon-button color="primary"><mat-icon>thumb_up</mat-icon></button>
@@ -162,7 +162,7 @@ export class AppModule {}
 
 可以發現一件事情，在沒有指定顏色的時候，`mat-fab`的樣式與accent顏色是一樣的，可以見得floating action button本身的設計理念就是為了凸顯它的存在感，這剛好與accent的概念是用來強調這裡有東西的顏色概念一樣，不得不佩服Angular Material設想得非常周到。
 
-`mat-fab`本身應為原型且要凸顯的效果，整個按鈕看起來會比較大，但對於比較小的區塊中要使用時反而會顯得太過突兀，這時候我們也可以使用`mat-mini-fab`來產生比較小的floating action button
+`mat-fab`本身應為圓形且要凸顯的效果，整個按鈕看起來會比較大，但對於比較小的區塊中要使用時反而會顯得太過突兀，這時候我們也可以使用`mat-mini-fab`來產生比較小的floating action button
 
 ```html
   <button mat-mini-fab>
@@ -192,7 +192,7 @@ export class AppModule {}
 
 ## 按鈕開關(button toggle)
 
-按鈕開關基本上不是按鈕，反而比較類似checkbox，偏偏他又不像checkbox是表單控制項，可以搭配ngModel使用，因此單一的按鈕開關使用上會比較沒有意義，而是使用一個群組式的按鈕開關，應用層面比較廣
+按鈕開關基本上不是按鈕，反而比較類似checkbox，偏偏它又不像checkbox是表單控制項，可以搭配ngModel使用，因此單一的按鈕開關使用上會比較沒有意義，而是使用一個群組式的按鈕開關，應用層面比較廣
 
 ### 基本的Button Toggle(mat-button-toggle)
 
