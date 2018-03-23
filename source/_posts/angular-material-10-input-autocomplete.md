@@ -277,7 +277,7 @@ ngOnInit() {
 ```typescript
   highlightFiltered(countryName: string) {
     const inputCountry = this.surveyForm.get('basicQuestions').get('country').value;
-    return countryName.replace(inputCountry, `<strong>${inputCountry}</strong>`);
+    return countryName.replace(inputCountry, `<span class="autocomplete-highlight">${inputCountry}</span>`);
   }
 ```
 
