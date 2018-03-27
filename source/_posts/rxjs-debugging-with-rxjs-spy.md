@@ -9,7 +9,7 @@ tags:
 	debugging
 ---
 
-[rxjs-spy](https://cartant.github.io/rxjs-spy/)，是一款專門用來除錯RxJS的套件，透過rxjs-spa，我們可以很輕易的在網頁執行階段理解每一步operator的動作，同時調整現有的observable，來驗證不同邏輯帶來的結果，最棒的是，整個過程幾乎不用動到原來的程式碼，可以說是非常方便的一款library，今天我們就來看看這個神奇的RxJS除錯神器－rxjs-spa吧！
+[rxjs-spy](https://cartant.github.io/rxjs-spy/)，是一款專門用來除錯RxJS的套件，透過rxjs-spy，我們可以很輕易的在網頁執行階段理解每一步operator的動作，同時調整現有的observable，來驗證不同邏輯帶來的結果，最棒的是，整個過程幾乎不用動到原來的程式碼，可以說是非常方便的一款library，今天我們就來看看這個神奇的RxJS除錯神器－rxjs-spy吧！
 
 <!-- more -->
 
@@ -39,18 +39,18 @@ Observable.interval(1000).pipe(
 
 # 關於rxjs-spy
 
-**rxjs-spy**是用來方便針對RxJS除錯的一套library，它可以再盡量不要弄髒程式碼的前提下，印出RxJS的資訊；透過rxjs-spy，我們可以很輕鬆地針對某個串好的observable進行偵錯，在console上看到輸出資訊，而且隨時可以中斷，甚至可以在執行期間抽換某個observable；非常的方便！接下來就讓我們來看看rxjs-spa的神奇魔術吧！
+**rxjs-spy**是用來方便針對RxJS除錯的一套library，它可以再盡量不要弄髒程式碼的前提下，印出RxJS的資訊；透過rxjs-spy，我們可以很輕鬆地針對某個串好的observable進行偵錯，在console上看到輸出資訊，而且隨時可以中斷，甚至可以在執行期間抽換某個observable；非常的方便！接下來就讓我們來看看rxjs-spy的神奇魔術吧！
 
 # 使用rxjs-spy來除錯RxJS專案
 
 由於RxJS大量被使用在Angular專案中，因此我們使用Angular專案來做示範，但實際上，在任何專案中只要有使用到RxJS，都可以很輕鬆地透過rxjs-spy來進行偵錯。
 
-## 安裝rxjs-spa
+## 安裝rxjs-spy
 
-要安裝rxjs-spa非常簡單，透過npm或yarn即可，這已經算是前端起手式了
+要安裝rxjs-spy非常簡單，透過npm或yarn即可，這已經算是前端起手式了
 
 ```shell
-npm install --save-dev rxjs-spa
+npm install --save-dev rxjs-spy
 ```
 
 接著我們就可以在`main.ts`中建立一個rxjs的spy
