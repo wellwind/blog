@@ -3,10 +3,10 @@ title: "[RxJS] rxjs-spy：RxJS除錯神器"
 date: 2018-03-27 17:08:22
 category: RxJS
 tags:
-	RxJS
-	Angular
-	rxjs-spy
-	debugging
+	- RxJS
+	- Angular
+	- rxjs-spy
+	- debugging
 ---
 
 [rxjs-spy](https://cartant.github.io/rxjs-spy/)，是一款專門用來除錯RxJS的套件，透過rxjs-spy，我們可以很輕易的在網頁執行階段理解每一步operator的動作，同時調整現有的observable，來驗證不同邏輯帶來的結果，最棒的是，整個過程幾乎不用動到原來的程式碼，可以說是非常方便的一款library，今天我們就來看看這個神奇的RxJS除錯神器－rxjs-spy吧！
