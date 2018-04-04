@@ -88,6 +88,16 @@ GitKraken支援以下幾種常見的clone方式：
 3.  git的樹狀結構，基本上還蠻清楚的
 4.  每次commit的資訊
 
+# 快速切換不同的repository
+
+open、clone或init過的repository會被記錄下來，方便我們快速切換，我們可以直接在Repository Management中開啟最近開過的repository，也可以點repository旁邊的星號，把它加進我的最愛，之後快速切換時也可以直接選擇加到最愛的repository
+
+{% asset_img 07-change-repository-1.png %}
+
+也可以直接點擊左上方目前的repository名稱，來切換最近開過或是加到最愛裡面的repository
+
+{% asset_img 07-change-repository-2.png %}
+
 # 第一次commit
 
 接下來就讓我們實際來看看如何進行commit吧！當成是有異動時，GitKraken會自動追蹤目前的異動：
