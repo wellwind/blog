@@ -1,11 +1,13 @@
 ---
 title: "[Git]GitKraken 強大的剛剛好的Git GUI神器(2)進階篇-GitFlow、Commit Template和衝突管理"
 date: 2018-04-04 20:13:53
+category: Git
 tags:
 	- Git
 	- GitKraken
 	- GitGUI
 	- GitFlow
+	- Commit Template
 ---
 
 昨天我們簡單的說明了[GitKraken的基本功能](https://wellwind.idv.tw/blog/2018/04/03/git-using-gitkraken-1-basic/)，今天我們來介紹如何在GitKraken中一些其他的功能，包含GitFlow開發流程、Commit Template和衝突的處理方式
@@ -158,6 +160,10 @@ GitKraken內建的合併工具，會在左右邊分別出現來源及目標的�
 在遇到衝突時，通常我會自己打開其他工具來處理衝突，而非使用GitKraken
 
 {% endnote %}
+
+最後輕鬆一下，附個merge產生衝突的示意圖：
+
+{% asset_img merge.png %}
 
 # 本日小節
 

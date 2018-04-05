@@ -1,6 +1,7 @@
 ---
 title: "[Git]GitKraken 強大的剛剛好的Git GUI神器(1)基本篇"
 date: 2018-04-03 20:05:24
+category: Git
 tags:
 	- Git
 	- GitKraken
