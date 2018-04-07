@@ -218,6 +218,8 @@ function generateData(numPoints, answer) {
 
 希望這篇文章可以幫助對於機器學習有興趣的前端朋友更容易入門，之後有機會的話，再來寫TensorFlow.js與神經網路等等的相關應用吧！
 
+今天的程式碼在這裡：https://github.com/wellwind/tensorflow-js-practice
+
 # 相關資源
 
 -   [TensorFlow.js](https://js.tensorflow.org/)
