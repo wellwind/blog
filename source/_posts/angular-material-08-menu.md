@@ -12,7 +12,7 @@ tags:
 
 <!-- more -->
 
-## 關於Ｍaterial Design中的Menu
+## 關於Material Design中的Menu
 
 在[Material Design的Menu設計指南](https://material.io/guidelines/components/menus.html#)中，Menu可以用來顯示一系列的選項，每一列就是一個選項，通常由一個按鈕，或一個簡單的文字label開始，在畫面上進行立體的呈現，而不會影響到其他元素的排版。
 
@@ -170,7 +170,7 @@ menu選單可以是巢狀的，要使用巢狀的選單沒有什麼新技巧，�
 
 當要呈現的選單多的時候，除了選擇用巢狀的選單以外，用一個divider分隔也是個不錯的選擇，可以減少子項目難以分類的煩惱，在行動裝置的呈現上也會比較清楚。
 
-還記得我們在昨天介紹List時有提到一個`<mat-divider>`嗎？雖然官方的Ｍenu文件沒有提到，但`<mat-divider>`其實一樣可以在`<mat-menu>`中使用：
+還記得我們在昨天介紹List時有提到一個`<mat-divider>`嗎？雖然官方的Menu文件沒有提到，但`<mat-divider>`其實一樣可以在`<mat-menu>`中使用：
 
 ```html
 <mat-menu #positionMenu="matMenu">
