@@ -76,6 +76,8 @@ $custom-theme: mat-dark-theme($custom-primary, $custom-accent, $custom-warn);
 
 看起來是不是別有一番風味啊！
 
+如果不知道顏色怎麼搭比較好，可以到 [Material Design Color Palette Generator](https://www.materialpalette.com)這個網站，隨意選擇兩種顏色，就可以看到效果參考囉！
+
 ## 建立多個theme並動態切換
 
 要建立多個theme也很簡單，把`@include angular-material-theme();`的部分放到一個css class下，再切換不同的class就可以了，如下：
