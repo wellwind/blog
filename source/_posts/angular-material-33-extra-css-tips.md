@@ -7,7 +7,7 @@ tags:
 	- Angular Material
 ---
 
-今天來分享一些筆者近期撰寫Angular Material文章，以及開始在實際專案中開始使用Angular Material所整理出來的一些CSS小技巧，有些在文件上可以輕鬆找到，有些則是遇到後才整理出來的，希望能對各位讀者大大們在使用Angular Material時有所幫助！
+今天來分享一些筆者近期撰寫Angular Material文章，以及開始在實際專案中使用Angular Material所整理出來的一些CSS小技巧，有些在文件上可以輕鬆找到，有些則是遇到後才整理出來的，希望能對各位讀者大大們在使用Angular Material時有所幫助！
 
 <!-- more -->
 
@@ -96,7 +96,7 @@ tags:
 
 ## 善用panelClass
 
-Angualr Material中，有許多popup的呈現，透能透過設定panelClass來改變整個popup的呈現，以筆者實際遇到的一個狀況為例：專案需要一個dialog，已經由美工設計好，這個dialog是**沒有padding**的，但使用Angular Material打開的dialog預設會套用一個`mat-dialog-container`樣式，團隊討論後不希望直接像上一段描述的調整全域`mat-dialog-container`樣式，這時候我們就替要打開的dialog設定了一個panelClass：`custom-dialog`，並調整樣式把裡面`mat-dialog-container`的padding設為0，如下：
+Angualr Material中，有許多popup的呈現，都能透過設定panelClass來改變整個popup的呈現，以筆者實際遇到的一個狀況為例：專案需要一個dialog，已經由美工設計好，這個dialog是**沒有padding**的，但使用Angular Material打開的dialog預設會套用一個`mat-dialog-container`樣式，團隊討論後不希望直接像上一段描述的調整全域`mat-dialog-container`樣式，這時候我們就替要打開的dialog設定了一個panelClass：`custom-dialog`，並調整樣式把裡面`mat-dialog-container`的padding設為0，如下：
 
 ```scss
 .custom-dialog {
