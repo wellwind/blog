@@ -1,6 +1,7 @@
 ---
 title: "[TensorFlow.js] 前端也能玩Machine Learning：TensorFlow.js初體驗"
 date: 2018-04-07 15:10:04
+category: Machine Learning 機器學習
 tags:
 	- TensorFlow
 	- TensorFlow.js
