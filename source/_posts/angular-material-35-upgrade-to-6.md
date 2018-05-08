@@ -4,7 +4,9 @@ date: 2018-05-04 16:28:51
 category: "Angular Material完全攻略"
 tags:
 	- Angular
+	- Angular 6
 	- Angular Material
+	- Angular Material 6
 ---
 
 Angular Material 6 在今天 (2018/05/04) 正式登場，從 Angular 本身、Angular CLI 到 Angular Material，全部都一次推出第 6 版！這個版本除了對齊版號以外，也投下了非常多驚人的震撼彈，許多都是跟程式架構與產生(schematics)有關！原本的安裝或升級都能夠藉此架構大幅節省心力，今天就讓我們看看，從 Angular 6 與 Angular Material 6 之後，要使用 Angular Material 到底變得有多簡單吧！
