@@ -1,6 +1,7 @@
 ---
 title: "[Angular進階議題] Angular Elements 簡介"
 date: 2018-05-08 20:30:33
+category: "Angular進階議題"
 tags:
 	- Angular
 	- Angular 6
@@ -10,7 +11,7 @@ tags:
 
 Angular 6正式推出了Angular Elements的功能，讓我們可以將Angular元件轉換成標準的[Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements)功能，在任何其他的HTML頁面中使用，這代表著Angular的應用範圍可以延伸到各種web應用去了！就算團隊中習慣用的是jQuery，我們也能夠把複雜的功能專換成Custom Elements，並且直接用在使用jQuery或其他靜態網站中，非常的方便！！
 
-今天我們就來簡單看看如何使用Angular Elements，以及實際把它運用到一般的HTML看看，來學習理解Angular Elements的強大吧。
+今天我們就來簡單看看如何使用Angular Elements，以及實際把它運用到一般的HTML頁面，來學習理解Angular Elements的強大吧。
 
 <!-- more -->
 
@@ -54,7 +55,7 @@ Angular Elements有兩個主要的方向可以應用：
 ng add @angular/elements
 ```
 
-{% asset_img 02.png %}
+{% asset_img 01.png %}
 
 以上指令會幫我們做幾件事情：
 
@@ -105,7 +106,7 @@ export class CounterComponent implements OnInit {
 <app-counter [counter]="10" (counterChange)="onCounterChange($event)"></app-counter>
 ```
 
-
+{% asset_img 02.png %}
 
 ## 將元件轉為 Custom Elements
 
