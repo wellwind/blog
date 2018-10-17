@@ -1,5 +1,5 @@
 ---
-title: "[Angular 大師之路] 更加理解 Angular CLI & Monorepo 應用"
+title: "[Angular 大師之路] 更加理解 Angular CLI 之 Monorepo 應用"
 date: 2018-10-17 11:26:20
 tags:
 	- Angular
@@ -10,7 +10,7 @@ tags:
 
 Angular CLI 基本上已經成為開發 Angular 應用程式的標準配備了，我們會透過 Angular CLI 建立專案、檔案骨架，或是用來執行以及打包應用程式，以及運行測試等等。透過 Angular CLI 可以減少許多開發時期以及執行程式的前置準備時間成本，讓生活變得更加美好！
 
-而到了 Angular CLI 第 6 版後，多了非常多與過去不同的設定，雖然在常用的功能體驗上完全沒有不同，但卻有了更多可以調整的地方，今天就來更加深入理解 Angular CLI 的相關指令、設定與應用吧。
+而到了 Angular CLI 第 6 版後，多了非常多和過去不同的設定，雖然在常用的功能體驗上完全沒有不同，但卻有了更多可以調整的地方，今天就來更加深入理解 Angular CLI 的相關指令、設定與應用吧。
 
 <!-- more -->
 
@@ -21,6 +21,18 @@ Angular CLI 基本上已經成為開發 Angular 應用程式的標準配備了�
 **實用度**：4 顆星
 
 在 Angular CLI 中，我們應該已經非常熟悉使用 `ng new`、`ng generate` 或 `ng serv` 等指令了，因此我們就不多做說明，只針對 Angular CLI 6 之後的指令說明囉。
+
+# ng-add 與 ng-update
+
+`ng add` 與 `ng update` 是 Angular CLI 升到第 6 版後，多了兩個非常有用的指令，只要某個 Angular 相關的套件，實作了特定的程式([@angular-devkit/schematics](https://www.npmjs.com/package/@angular-devkit/schematics))，就能用 `ng add 套件名稱` 的指令，快速將套件裝到專案中，同時完成許多的前置設定。
+
+舉例來說，根據熱門套件 [Angular Material 的安裝說明](https://material.angular.io/guide/getting-started)，需要 6 個步驟才算安裝完成；但由於 Angular Material 的套件實做了 schematics ，因此能輕易地使用 `ng add @angular/material` 指令，輕鬆搞定所有麻煩的安裝步驟！
+
+除此之外，支援 schematics 的程式，也可以把每次升級要異動的腳本寫好，之後就能使用 `ng update 套件名稱` 的指令，一次將套件更新時需要手動調整的部分一口氣完成！可以說是非常的方便！！
+
+一樣以 Angular Material 的例子來看，在第 5 版準備升級到第 6 版時，為了讓所有的 API 更加有一致性，根據官方的 [CHANGELOG](https://github.com/angular/material2/blob/master/CHANGELOG.md#600-beta5-2018-03-23) 出現了將近 70 條的 breaking changes，就算不是每條在專案中都會用到，要逐一比對也是一件極大的工程！而有了 `ng update` 指令，我們只需要使用 `ng update @angular/material` 即可一鍵升級，完成整個更新度動作，並且自動把 breaking chages 的部分自動修正，真的是非常強大。
+
+多虧了這樣的架構，未來我們在使用 Angular 或相關套件時，都能更加快速無痛的升級，關於這一切背後的技術－Schematics，之後有機會再來說明囉。
 
 # 認識 angular.json 結構
 
@@ -204,3 +216,5 @@ ng run demo:serve:production --port=4201
 - [Customizing Angular CLI 6 build — an alternative to ng eject](https://codeburst.io/customizing-angular-cli-6-build-an-alternative-to-ng-eject-a48304cd3b21)
   - 若有需要自行擴充 builder 可以參考此篇文章
 - [What's new in Angular CLI 6.0?](https://blog.ninja-squad.com/2018/05/04/angular-cli-6.0/)
+
+- [Schematics - An Introduction](https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2)
