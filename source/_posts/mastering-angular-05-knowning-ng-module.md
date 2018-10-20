@@ -1,6 +1,7 @@
 ---
 title: "[Angular 大師之路] 認識 NgModule"
 date: 2018-10-20 20:57:59
+category: "Angular 大師之路"
 tags:
 	- Angular
 	- NgModule
