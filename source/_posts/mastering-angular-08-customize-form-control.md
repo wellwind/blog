@@ -54,7 +54,7 @@ Angular 在執行元件程式時，會檢查此元件是否包含 `NG_VALUE_ACCE
 })
 ```
 
-{% noteinfo %}
+{% note info %}
 
 關於元件中的 `provideres: []`，在之後介紹相依注入時會再詳細說明。
 
