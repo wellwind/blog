@@ -1,6 +1,7 @@
 ---
 title: "[Angular 大師之路] 樣板語法中的冷知識 - $any"
 date: 2018-10-25 21:58:56
+category: "Angular 大師之路"
 tags:
 	- Angular
 	- $any

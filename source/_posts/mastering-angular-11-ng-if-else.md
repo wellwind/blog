@@ -1,9 +1,10 @@
 ---
 title: "[Angular 大師之路] *ngIf 有 else 可以用嗎？"
 date: 2018-10-26 22:01:09
+category: "Angular 大師之路"
 tags:
 	- Angular
-	- *ngIf
+	- "*ngIf"
 	- ng-template
 ---
 
@@ -75,7 +76,7 @@ tags:
 
 https://stackblitz.com/edit/ironman2019-ngifelse?file=src/app/app.component.html
 
-# 在一個樣板中共用 <ng-template>
+# 在一個樣板中共用 ng-template
 
 上述是一個簡單的 `else` 使用情境，在實務上，我們也可能在一個樣板內設定一個 `<ng-template>` ，並且在畫面上多個 `*ngIf` 的 `else` 都使用這裡面的內容，例如：
 
