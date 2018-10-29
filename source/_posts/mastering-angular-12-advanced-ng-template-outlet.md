@@ -1,6 +1,6 @@
 ---
 title: "[Angular 大師之路] *ngTemplateOutlet 與 ng-template 的完美組合"
-date: 2018-10-26 22:01:09
+date: 2018-10-27 22:01:09
 category: "Angular 大師之路"
 tags:
 	- Angular
