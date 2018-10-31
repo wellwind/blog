@@ -5,6 +5,8 @@ category: "Angular 大師之路"
 tags:
 	- Angular
 	- Structural Directives
+	- Attribute Directives
+	- EmbeddedViewRef
 	- directive
 ---
 
@@ -124,3 +126,4 @@ https://stackblitz.com/edit/itironman2019-custom-structural-directive?file=src/a
 - [Microsyntax](https://angular.io/guide/structural-directives#microsyntax)
 - [Template input variable](https://angular.io/guide/structural-directives#template-input-variable)
 - [Write a structural directive](https://angular.io/guide/structural-directives)
+- [EmbeddedViewRef](https://angular.io/api/core/EmbeddedViewRef)
