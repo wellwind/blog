@@ -8,7 +8,7 @@ tags:
 	- directive
 ---
 
-在之前幾天，我們花了不少時間在介紹 `*ngComponentOutlet` 以及 `*ngTemplateOutlet` ，這種星號 (`*`) 開頭的語法，像是 `*ngIf` 或 `*ngFor` 等等，在 Angular 裡都稱為 **Structural Directive**，這種用法看起來跟我們自己設計 directive (像是 `ngClass` 或 `ngStyle` 等，又稱為 Attribute Directive) 很像，但多了個星號開頭，不過原理是差不多的。
+前幾天我們花了不少時間在介紹 `*ngComponentOutlet` 以及 `*ngTemplateOutlet` ，這種星號 (`*`) 開頭的語法，像是 `*ngIf` 或 `*ngFor` 等等，在 Angular 裡都稱為 **Structural Directive**，這種用法看起來跟我們自己設計 directive (像是 `ngClass` 或 `ngStyle` 等，又稱為 Attribute Directive) 很像，但多了個星號開頭，不過原理是差不多的。
 
 Structural Directive 其實可以單純想像成是 Attribute Directive 的一種語法糖，也就是說，它的本質跟我們建立 directive 是一樣的，但透過一些巧妙的設計，就能夠讓我們在使用時省去許多麻煩，讓我們來看看該如何設計吧！
 
