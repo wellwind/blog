@@ -4,6 +4,8 @@ date: 2018-11-01 21:43:31
 tags:
 	- Angular
 	- HTTP_INTERCEPTORS
+	- HttpRequest
+	- HttpHandler
 ---
 
 在開發 Angular 應用程式時，HTTP 請求絕對可以說是最常使用的功能之一，而在一般的應用情境上，我們很常會需要針對請求再做額外的包裝，或統一的管理，這時候我們就可以使用 `HTTP_INTERCEPTORS` 來協助我們攔截 HTTP 請求，並做額外的處理！
