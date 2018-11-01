@@ -10,9 +10,7 @@ tags:
 	- directive
 ---
 
-前幾天我們花了不少時間在介紹 `*ngComponentOutlet` 以及 `*ngTemplateOutlet` ，這種星號 (`*`) 開頭的語法，像是 `*ngIf` 或 `*ngFor` 等等，在 Angular 裡都稱為 **Structural Directive**，這種用法看起來跟我們自己設計 directive (像是 `ngClass` 或 `ngStyle` 等，又稱為 Attribute Directive) 很像，但多了個星號開頭，不過原理是差不多的。
-
-Structural Directive 其實可以單純想像成是 Attribute Directive 的一種語法糖，也就是說，它的本質跟我們建立 directive 是一樣的，但透過一些巧妙的設計，就能夠讓我們在使用時省去許多麻煩，讓我們來看看該如何設計吧！
+前幾天我們花了不少時間在介紹 `*ngComponentOutlet` 以及 `*ngTemplateOutlet` ，這種會**改變 DOM 結構的語法**，像是 `*ngIf` 或 `*ngFor` 等等，在 Angular 裡都稱為 **Structural Directive**，這種用法看起來跟我們自己設計 directive (像是 `ngClass` 或 `ngStyle` 等，又稱為 Attribute Directive) 很像，但多了個星號開頭，不過它其實只是個語法糖，原理是差不多的。如果我們想要設計這種符合語法糖的程式，該怎麼做呢？
 
 <!-- more -->
 
@@ -84,11 +82,11 @@ export class TemplateOutletDirective {
 </ng-template>
 ```
 
-看起來是不是就像 `*ngTemplateOutlet` 的功能啦！但是目前還是單純的 Attribute Directive，且當屬性越來越多時，我們就必須逐一去設定這些屬性資料，會顯得稍微麻煩(或是變得很麻煩)；此時改用 Structural Directive 就可以改善這個問題！
+看起來是不是就像 `*ngTemplateOutlet` 的功能啦！但是目前還是單純的 Attribute Directive，且當屬性越來越多時，我們就必須逐一去設定這些屬性資料，會顯得稍微麻煩(或是變得很麻煩)；但只要符合特定條件，我們就能使用**語法糖**來呈現！
 
-# 使用 Structural Directive
+# 使用 * 語法糖
 
-在剛剛建立的 directive 程式中，其實已經符合使用 Structural Directive 的條件了，簡單來說，當我們產生一個 selector 為 `appTemplateOutlet` ，且包含一個同名的 `@Input()` 時，就可以使用 `*appTemplateOutlet` 這樣的語法啦！
+在剛剛建立的 directive 程式中，其實已經符合使用語法糖的條件了，簡單來說，當我們產生一個 selector 為 `appTemplateOutlet` ，且包含一個同名的 `@Input()` 時，就可以使用 `*appTemplateOutlet` 這樣的語法啦！
 
 所以在沒有加入 `appTemplateOutletData` 的前提，我們可以這樣使用
 
@@ -96,7 +94,7 @@ export class TemplateOutletDirective {
 <ng-container *appTemplateOutlet="myTemplate"></ng-container>
 ```
 
-很簡單吧！不過這樣看起來只是從中括弧(`[]`)改成星號(`*`)，少打一個字而已，沒什麼好驕傲的；接下來厲害的地方是：當我們有個 `@Input` 是以 selector 開頭，後面再給個名稱時，(如 `appTemplateOuteletData` 是 `appTemplateOutlet` 這個 selector 後面加上 `Data`)，可以直接在 structural directive 中使用，如下：
+很簡單吧！不過這樣看起來只是從中括弧(`[]`)改成星號(`*`)，少打一個字而已，沒什麼好驕傲的；接下來厲害的地方是：當我們有個 `@Input` 是以 selector 開頭，後面再給個名稱時，(如 `appTemplateOuteletData` 是 `appTemplateOutlet` 這個 selector 後面加上 `Data`)，可以直接在與法中使用，如下：
 
 ```html
 <ng-container *appTemplateOutlet="myTemplate; data: {value: 123}"></ng-container>
@@ -109,13 +107,7 @@ export class TemplateOutletDirective {
 
 # 本日小結
 
-今天我們揭開了 Structural Directive 的神秘面紗，發現了它的本質就是 Attribute Directive；在開發 Angular 應用程式時，我們常常會建立 Attribute Directive 來控制宿主元素上的一些行為，隨著功能越來越多，也不可避免會需要在 directive 上擴充更多輸入參數，這時候若使用 Structural Directive 的設計，就能夠幫助我們節省很多寫參數的時間，閱讀上也會更加容易啦！
-
-{% note info %}
-
-結論：Structural Directive 是一種 Attribute Directive 的語法糖寫法，只要使用符合特定規則的方式設計，在樣板上就能用更好閱讀的方式來撰寫程式！
-
-{% endnote %}
+今天我們自己設計了一個 Structural Directive，而且學會了使用語法糖(`*`)的方式來表示複雜的 directive，在開發 Angular 應用程式時，我們常常會建立 Attribute Directive 來控制宿主元素上的一些行為，隨著功能越來越多，也不可避免會需要在 directive 上擴充更多輸入參數，這時候若加上一點符合語法糖的設計，就能夠幫助我們節省很多寫參數的時間，閱讀上也會更加容易啦！
 
 本日程式碼參考：
 
