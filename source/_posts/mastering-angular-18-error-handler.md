@@ -83,7 +83,7 @@ class ErrorLogHandler implements ErrorHandler {
 class AppModule {}
 ```
 
-這麼一來只要在程式中任何地方有錯誤發生，就會進入 `ErrorLogHandler` 內的 `handleError()` 來統一處理，而不用在程式個個地方到處處理錯誤囉！
+這麼一來只要在程式中任何地方有錯誤發生，就會進入自己設計的 `ErrorLogHandler` 內的 `handleError()` 來統一處理，而不用在程式個個地方到處處理錯誤囉！
 
 # 相關資源
 
