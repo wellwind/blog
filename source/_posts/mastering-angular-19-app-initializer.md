@@ -1,6 +1,7 @@
 ---
 title: "[Angular 大師之路] 使用 APP_INITIALIZER 在程式運行早期處理資料"
 date: 2018-11-03 22:10:27
+category: "Angular 大師之路"
 tags:
 	- Angular
 	- APP_INITIALIZER

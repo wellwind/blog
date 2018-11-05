@@ -1,6 +1,7 @@
 ---
 title: "[Angular 大師之路] 在 @NgModule 的 providers: [] 自由更換注入內容 (2)"
 date: 2018-11-05 21:50:12
+category: "Angular 大師之路"
 tags:
 	- Angular
 	- NgModule
