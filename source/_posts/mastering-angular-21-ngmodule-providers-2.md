@@ -5,6 +5,7 @@ category: "Angular 大師之路"
 tags:
 	- Angular
 	- NgModule
+	- DI
 	- providers
 	- useValue
 	- useFactory
