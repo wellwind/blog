@@ -8,7 +8,7 @@ tags:
 	- Inject
 ---
 
-前兩天我們學到了多種替換注入內容的方法，今天我們來看看如何取得不同注入內容的方式：
+前兩天我們學到了多種替換注入 token 內容的方法，今天我們來看看如何取得不同注入內容的方式：
 
 <!-- more -->
 
@@ -59,7 +59,7 @@ constructor(private injector: Injector) {
 
 {% endnote %}
 
-`Injector` 還提供了一個 `create()` 的靜態方法，透過這個方法，我們可以在程式中隨時動態產生：
+`Injector` 還提供了一個 `create()` 的靜態方法，透過這個方法，我們可以在程式中隨時動態產生一個新的 `Injector` 物件：
 
 ```typescript
 const injector = Injector.create({
@@ -103,6 +103,4 @@ export class AppComponent  {
 
 # 相關資源
 
-- [Injector](https://angular.io/api/core/Injector)
-- [InjectinToken](https://angular.io/api/core/InjectionToken)
-- [Inject](https://angular.io/api/core/inject)
+- [Injector](https://angular.io/api/core/inject)
