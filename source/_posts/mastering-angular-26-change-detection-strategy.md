@@ -4,6 +4,7 @@ date: 2018-11-10 09:58:47
 tags:
 	- Angular
 	- ChangeDetectionStrategy
+	- OnPush
 	- ChangeDetectorRef
 	- Pure Component
 ---
