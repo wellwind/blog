@@ -1,6 +1,7 @@
 ---
 title: "[Angular 大師之路] 認識元件的變更偵測策略"
 date: 2018-11-10 09:58:47
+category: "Angular 大師之路"
 tags:
 	- Angular
 	- ChangeDetectionStrategy
