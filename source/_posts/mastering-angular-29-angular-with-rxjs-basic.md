@@ -5,6 +5,15 @@ category: "Angular 大師之路"
 tags:
 	- Angular
 	- RxJS
+	- map
+	- tap
+	- switchMap
+	- mergeMap
+	- concatMap
+	- exhaustMap
+	- combineLatest
+	- forkJoin
+	- startWith
 ---
 
 在前兩天介紹 AsyncPipe 時，我們不難發現當進入 RxJS 思維時，搭配 AsyncPipe 可以帶來非常多的好處！雖然透過這種不使用 `subscribe()` 訂閱的方式，對於許多剛進入 Angular 或 RxJS 世界的朋友會感到不適應；尤其是當有更多複雜資料要處理時，不使用 `subscribe()` 訂閱後處理資料還真的不知道該如何處理是好。
@@ -171,3 +180,15 @@ this.data$ = forkJoin(posts$, tags$).pipe(
 # 本日小結
 
 今天我們把一些個人在開發 Angular 時常用的單一個 RxJS operator，當有了更多的實際案例後，就能夠產生越來越多有創意的變化囉！明天我們再來討論一些比較複雜的 RxJS operators 應用吧！
+
+# 相關資源
+
+- [map](https://rxjs-dev.firebaseapp.com/api/operators/map)
+- [tap](https://rxjs-dev.firebaseapp.com/api/operators/tap)
+- [switchMap](https://rxjs-dev.firebaseapp.com/api/operators/switchMap)
+- [mergeMap](https://rxjs-dev.firebaseapp.com/api/operators/mergeMap)
+- [concatMap](https://rxjs-dev.firebaseapp.com/api/operators/concatMap)
+- [exhaustMap](https://rxjs-dev.firebaseapp.com/api/operators/exhaustMap)
+- [combineLatest](https://rxjs-dev.firebaseapp.com/api/index/function/combineLatest)
+- [forkJoin](https://rxjs-dev.firebaseapp.com/api/index/function/forkJoin)
+- [startWith](https://rxjs-dev.firebaseapp.com/api/operators/startWith)
