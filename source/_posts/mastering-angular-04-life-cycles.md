@@ -169,7 +169,7 @@ OnInit 的週期就相對簡單的多，在第一次執行完 `ngOnChanges()` �
 
 ## DoCheck
 
-`ngDoCheck()` 會在 Angular 核心程式執行變更偵測後呼叫，我們可以在這裡面額外撰寫程式來處理變更偵測所武法偵測到的部分。
+`ngDoCheck()` 會在 Angular 核心程式執行變更偵測後呼叫，我們可以在這裡面額外撰寫程式來處理變更偵測所無法偵測到的部分。
 
 例如剛才原本練習 `ngOnChanges()` 的程式中，若我們把原來的 price 改成一個物件，如下：
 
@@ -324,7 +324,7 @@ export class AppComponent{
 
 上面程式 BlockComponent 中的樣板透過了 `<ng-content>` 的方式，讓顯示的內容改為由使用元件的父元件來決定，增加元件的彈性。
 
-在 DoCheck 週期後，會立刻觸發 AfterContentInit 週期，之後每當有變跟偵測發生時，在 DoCheck 後觸發 AfterContentChecked。
+在 DoCheck 週期後，會立刻觸發 AfterContentInit 週期，之後每當有變更偵測發生時，在 DoCheck 後觸發 AfterContentChecked。
 
 在使用 `<ng-content>` 的元件內，我們可以使用 `@ContentChild` 來取得某個樣板參考變數實體或子元件，若父元件在使用時有加入符合 `@ContentChild` 設定的條件時，在 AfterContentInit 週期就可以取得其實體，若想取得多個實體，則可以使用 `@ContentChildern` 來取得一個包含所有實體的 [QueryList](https://angular.io/api/core/QueryList) 如下：
 
@@ -398,7 +398,7 @@ https://stackblitz.com/edit/ironman-2019-lifecycles-aftercontent?file=src%2Fapp%
 
 ## AfterViewInit 與 AfterViewChecked
 
-在 AfterContentInit 觸法後，會觸發 AfterViewInit，之後觸發 AfterViewChecked，而在每次變更偵測後也會觸發 AfterViewChecked。
+在 AfterContentInit 觸發後，會觸發 AfterViewInit，之後觸發 AfterViewChecked，而在每次變更偵測後也會觸發 AfterViewChecked。
 
 在開發元件時，我們常常會使用 `@ViewChild` 取得樣板上的某個**子元件**宣告，如果想取得樣板上指定的某個子元件的所有宣告，則可以使用 `@ViewChildren` 取得一個包含所有子元件的 QueryList，這些子原件在其父元件的 OnInit 週期時還不會產生實體，必須在 AfterViewInit 之後，才能正確取得實體，如以下程式：
 

@@ -27,7 +27,11 @@ Angular 提供了一種可以很擴充元件或HTML標籤屬性的方式，叫�
   selector: '[appColorful]'
 })
 export class ColorfulDirective {
-  @HostBinding('style.color') appColorful = 'red';
+  @Input() appColorful;
+  @HostBinding('style.color') get color() {
+    console.log(this.appColorful);
+    return this.appColorful || 'red';
+  }
 }
 ```
 
@@ -44,7 +48,11 @@ export class ColorfulDirective {
   selector: '[appColorful]'
 })
 export class ColorfulDirective {
-  @HostBinding('style.color') appColorful = 'red';
+  @Input() appColorful;
+  @HostBinding('style.color') get color() {
+    console.log(this.appColorful);
+    return this.appColorful || 'red';
+  }
 
   changeColor(color) {
     this.appColorful = color;
@@ -91,7 +99,7 @@ export class AppComponent  {
 
 ## 使用 exportAs
 
-在宣告 `@Directive()` 裝飾我們的 directive 時，裡面可以設定一個 `exportAs: []`，用來代表這個 directive 實體要以什麼名稱分享出去，所以我們的 `@Directive()` 可以調整成如下：
+在宣告 `@Directive()` 裝飾我們的 directive 時，裡面可以設定一個 `exportAs: string`，用來代表這個 directive 實體要以什麼名稱分享出去，所以我們的 `@Directive()` 可以調整成如下：
 
 ```typescript
 @Directive({

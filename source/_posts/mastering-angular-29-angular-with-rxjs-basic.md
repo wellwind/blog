@@ -166,7 +166,7 @@ this.products$ = combineLatest(
 
 # forkJoin
 
-`forkJoin` 與 `combineLatest` 類似，差別在於 `combineLatest` 在 RxJS 整個資料留有資料變更時都會發生，而 `forkJoin` 會在所有 observable 都完成(complete)後，才會取得最終的結果，所以對於 Http Request 的整合，我們可以直接使用 `forkJoin` 因為 Http Request 只會發生一次，然後就完成了！
+`forkJoin` 與 `combineLatest` 類似，差別在於 `combineLatest` 在 RxJS 整個資料流有資料變更時都會發生，而 `forkJoin` 會在所有 observable 都完成(complete)後，才會取得最終的結果，所以對於 Http Request 的整合，我們可以直接使用 `forkJoin` 因為 Http Request 只會發生一次，然後就完成了！
 
 ```typescript
 const posts$ = this.httpClient.get('.../posts');
