@@ -339,3 +339,5 @@ app.get('*', (req, res) => {
 # 相關資源
 
 - [Angular Universal: server-side rendering](https://angular.io/guide/universal)
+- [Deploying Angular Universal v6+ with Firebase](https://hackernoon.com/deploying-angular-universal-v6-with-firebase-c86381ddd445)
+- [Angular Universal and Firebase Hosting (Server-side Rendering with JavaScript Frameworks)](https://www.youtube.com/watch?v=gxCu5TEmxXE)
