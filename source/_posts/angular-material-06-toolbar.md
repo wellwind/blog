@@ -14,7 +14,7 @@ tags:
 
 ## Material Design中的Toolbar
 
-在[Material Design的Toolbar設計指南](https://material.io/guidelines/components/toolbars.html)中，Toolbar通常會浮動在整個系統的正上方，所有的內容應該從toolbar下放通過，除非是暫時性顯示的元件如dialog等等。我們可以把Toolbar當作整個系統的header(或footer)角色，在這裡放置品牌Logo、標題、和一些簡單的執行動作等等。
+在[Material Design的Toolbar設計指南](https://material.io/guidelines/components/toolbars.html)中，Toolbar通常會浮動在整個系統的正上方，所有的內容應該從toolbar下方通過，除非是暫時性顯示的元件如dialog等等。我們可以把Toolbar當作整個系統的header(或footer)角色，在這裡放置品牌Logo、標題、和一些簡單的執行動作等等。
 
 ## 開始使用Angular Material中的Toolbar
 

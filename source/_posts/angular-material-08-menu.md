@@ -70,7 +70,7 @@ tags:
 -   **xPosition**：選項為`after`(預設值、從start往end的方向長，通常是從左到右)或`before`(從end往start的方向長，通常是從右到左)。
 -   **yPosition**：選項為`below`(預設值、從上往下長)或`above`(從下往上長)
   ​
-  舉例來說，一個沒有設定`xPosition`和y`Position`，且生長方向沒有阻礙時的程式碼和畫面如下：
+  舉例來說，一個沒有設定`xPosition`和`yPosition`，且生長方向沒有阻礙時的程式碼和畫面如下：
 
 ```html
 <div style="text-align:center">

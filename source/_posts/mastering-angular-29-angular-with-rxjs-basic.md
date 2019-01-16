@@ -52,7 +52,7 @@ menuItems$ = this.httpClient.get('...').pipe(
 
 # tap
 
-`tap()` 不換幫我們做認資料的變換，也不會影響整個 RxJS 資料流方向，某種程度的意思是「什麼都不影響」，然而在 `tap()` 內是可以寫一些程式的，只是跟 RxJS 整個流向無關而已，因此最常使用的就是在 `tap()` 內加個 `console.log` 就能夠方便我們進行一些除錯，如下：
+`tap()` 不會幫我們做認資料的變換，也不會影響整個 RxJS 資料流方向，某種程度的意思是「什麼都不影響」，然而在 `tap()` 內是可以寫一些程式的，只是跟 RxJS 整個流向無關而已，因此最常使用的就是在 `tap()` 內加個 `console.log` 就能夠方便我們進行一些除錯，如下：
 
 ```typescript
 title$ = this.httpClient.get('...').pipe(
