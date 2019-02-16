@@ -49,7 +49,7 @@ Grid List使用的是網格的概念，每一個格子我們會稱之為Cell；T
 接著我們可以在裡面放置`<mat-grid-tile>`，代表每一個資料呈現的區塊，`<mat-grid-list>`則會依照`cols`的設定，決定每列放置多少個`<mat-grid-tile>`
 
 ```html
-<mat-grid-list cols="2">
+<mat-grid-list cols="3">
   <mat-grid-tile style="background: red">
     Tile 1
   </mat-grid-tile>
@@ -137,7 +137,7 @@ Grid List使用的是網格的概念，每一個格子我們會稱之為Cell；T
 
 {% asset_img 07-tile4-colspan.png %}
 
-由於Tile 2垂直跨越5個cell的關係，導致第二列只剩下2個cell可以用，而原來的Tile 3已經佔用1個cell，所以佔用2個cell的Tile 2無法盎在Tile 3旁變，就被推到下方去了。
+由於Tile 2垂直跨越5個cell的關係，導致第二列只剩下2個cell可以用，而原來的Tile 3已經佔用1個cell，所以佔用2個cell的Tile 2無法盎在Tile 3旁邊，就被推到下方去了。
 
 接著我們測試看看，在第二列只剩下2個cell可以用的情看下，設定`colspan=3`會有什麼結果：
 

@@ -148,7 +148,7 @@ SideNav支援顯示在畫面的起始(`start`，預設值，通常是左邊)或�
 
 #### disableClose
 
-在mode設為`over`或`push`時，預設會出現一個backdrop，當點選backdrop或按下esc時則會自動隱藏SideNav，如果希望不要自動隱藏，則可以設定`disabledClose`，有了這個屬性就必須另外在可點選的範圍內加上程式設定隱藏SideNav。
+在mode設為`over`或`push`時，預設會出現一個backdrop，當點選backdrop或按下esc時則會自動隱藏SideNav，如果希望不要自動隱藏，則可以設定`disableClose`，有了這個屬性就必須另外在可點選的範圍內加上程式設定隱藏SideNav。
 
 ```html
   <mat-sidenav #sideNav mode="over" disableClose>

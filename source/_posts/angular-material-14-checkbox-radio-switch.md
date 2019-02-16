@@ -192,7 +192,7 @@ export class SurveyComponent implements OnInit {
 
 ## 使用Angular Material的Radio
 
-接下來我們來聊聊Radio的使用方式，我們可以在加入`MatCheckboxModule`後，搭配`<mat-radio-group>`和`<mat-radio-button>`來完成一組單選題。
+接下來我們來聊聊Radio的使用方式，我們可以在加入`MatRadioModule`後，搭配`<mat-radio-group>`和`<mat-radio-button>`來完成一組單選題。
 
 ### 使用mat-radio-group和mat-radio-button
 
