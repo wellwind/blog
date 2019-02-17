@@ -90,5 +90,14 @@
   {% include '_third-party/scroll-cookie.swig' %}
   {% include '_third-party/exturl.swig' %}
   <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        var content = '<h1 id="工商服務"><a href="#工商服務" class="headerlink" title="工商服務"></a>工商服務</h1><p>如果你是對 Angular 有興趣的新手，建議可以參加 「<a href="https://www.accupass.com/event/1901240229371238325763" target="_blank" rel="noopener">Angular 7 開發實戰：新手入門篇</a>」，由保哥替你打下紮實的基礎觀念！有一點基礎理解後，我會在 「<a href="https://www.accupass.com/event/1901240309585287122000" target="_blank" rel="noopener">Angular 7 開發實戰：新手實作篇</a>」手把手帶給你豐富的實戰經驗！對於想入門卻不知道該如何進入的朋友，千萬不要錯過啦！</p><p>學習紮實的基本觀念：</p><p><a href="https://www.accupass.com/event/1901240229371238325763" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/87220fe1743249efb639982a246b237c_P520x260.jpg"  alt="Angular 7 開發實戰：新手入門篇"></a></p><p>學習業界的實戰經驗：</p><p><a href="https://www.accupass.com/event/1901240229371238325763" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f9e530ee76944e5e8197f3222d4d202f_P520x260.jpg" alt="Angular 7 開發實戰：新手實作篇"></a></p>';
+        $('.post-body').append(content);
+      }
+    })();
+  </script>
 </body>
 </html>
