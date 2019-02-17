@@ -119,11 +119,13 @@ social_icons:
   Weibo: weibo
 
 # Blog rolls
-#links_title: Links
-#links_layout: block
-#links_layout: inline
-#links:
-  #Title: http://example.com/
+links_title: 推薦網站
+links_layout: block
+# links_layout: inline
+links:
+  'CK''s Notepad': https://blog.kevinyang.net/
+  'The Will Will Web': https://blog.miniasp.com/
+  '點燈坊': https://oomusou.io/
 
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.jpg
