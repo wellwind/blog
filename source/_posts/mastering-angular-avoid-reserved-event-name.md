@@ -127,11 +127,17 @@ export class AppComponent  {
 
 所有造成問題的知識都釐清後，我們就來解決問題吧！
 
-最推薦的處理方法，是替我們的 `@Output` 宣告換一個名稱！我們不需要跟瀏覽器原生的機制做對，只需要把原來的 `@Output submit = new EventEmitter();` 改成其他名稱如 `@Output formSubmit() = new EventEmitter();` 即可，這麼一來我們在使用元件時就不會與 HTML 原生的事件名稱衝突，也比較不會產生各種眼身問題！
+最推薦的處理方法，是替我們的 `@Output` 宣告換一個名稱！我們不需要跟瀏覽器原生的機制做對，只需要把原來的 `@Output submit = new EventEmitter();` 改成其他名稱如 `@Output formSubmit() = new EventEmitter();` 即可，這麼一來我們在使用元件時就不會與 HTML 原生的事件名稱衝突，也比較不會產生各種衍伸問題！
+
+這也提醒了我們，我們在規劃元件 `@Output` 時應該盡可能避免與 HTML 事件名稱衝突到！
+
+如何避免 `@Output` 與 HTML 事件名稱衝突呢？最簡單的方式就是在 Angular 專案的 `tslint.json` 加上 `no-output-named-after-standard-event` 這條規則！接著記得一定要在編輯器中安裝 TSLint 套件，就可以在開發階段即時看到錯誤：
+
+{% asset_img 03.jpg %}
 
 {% note info %}
 
-這也提醒了我們，我們在規劃元件 `@Output` 時應該盡可能避免與 HTML 事件名稱衝突到！
+這條 TSLint 規則是來自 [codelyzer](http://codelyzer.com) 套件，使用 Angular CLI 安裝的專案預設會安裝此套件並設定好相關規則(只是沒加上這條)，如果專案不是用 Angular CLI 建立的，記得先將 codelyzer 裝起來，這條規則才有作用！
 
 {% endnote %}
 
@@ -147,5 +153,7 @@ export class AppComponent  {
 
 因此在設計前，若覺得名稱可能與現有事件衝突，不妨先查一下資料！如果在開發時發現有莫名重複的事件呼叫，也可以試著往這個方向，找找設計的 `@Output` 是否與原生的事件名稱衝突。
 
-畢竟我們不可能被下所有 HTML 元素的所有事件名稱，但至少曾經遭遇過，以後遇到類似問題就很好找到方啦！
+當然我們不可能背下所有 HTML 元素的所有事件名稱，所以透過 TSLint 幫我們檢查，可以說是一種非常好的方式。
+
+不管怎樣，只要遭遇過一次慘痛教訓後，以後遇到類似問題，至少會有方向找答案啦！
 
