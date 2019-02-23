@@ -131,7 +131,7 @@ export class AppComponent  {
 
 這也提醒了我們，我們在規劃元件 `@Output` 時應該盡可能避免與 HTML 事件名稱衝突到！
 
-如何避免 `@Output` 與 HTML 事件名稱衝突呢？最簡單的方式就是在 Angular 專案的 `tslint.json` 加上 `no-output-named-after-standard-event` 這條規則！接著記得一定要在編輯器中安裝 TSLint 套件，就可以在開發階段即時看到錯誤：
+如何避免 `@Output` 與 HTML 事件名稱衝突呢？最簡單的方式就是在 Angular 專案的 `tslint.json` 加上 `"no-output-named-after-standard-event": true` 這條規則！接著記得一定要在編輯器中安裝 TSLint 套件，就可以在開發階段即時看到錯誤：
 
 {% asset_img 03.jpg %}
 
