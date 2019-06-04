@@ -151,4 +151,5 @@ export class AppComponent implements OnInit {
 - [NgComponentOutlet 文件](https://angular.io/api/common/NgComponentOutlet)
 - [使用 Complier 產生 module factory (原始碼)](https://github.com/angular/angular/blob/72ecc453639eae017f75653c9004adc406ed2ee6/packages/router/src/router_config_loader.ts#L54)
 - [NgComponentOutlet 產生元件的方法(原始碼)](https://github.com/angular/angular/blob/8.0.0/packages/common/src/directives/ng_component_outlet.ts#L107-L109)
+- [[Angular] 手動創造出 Lazy Loading 的效果](https://blog.kevinyang.net/2017/11/08/manual-lazy-loading/)
 
