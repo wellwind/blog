@@ -11,7 +11,7 @@ tags:
 
 Angular 8 之後，將原來延遲載入路由模組的方式做了變動，改使用 [dynamic import](https://developers.google.com/web/updates/2017/11/dynamic-import) 的方法。這樣的方法替我們在開發時帶來非常大的優勢！隨著編輯器的資源，不管是模組路徑的設定還是選擇模組的方式，都擁有的自動完成的功能！
 
-不僅如此，如果不想透過路由設定就想達到在程式中動態仔入模組也變得比過去簡單許多。今天就讓我們來看看該如何自行在程式中動態載入模組吧。
+不僅如此，如果不想透過路由設定就想達到在程式中動態載入模組也變得比過去簡單許多。今天就讓我們來看看該如何自行在程式中動態載入模組吧。
 
 <!-- more -->
 
@@ -139,7 +139,7 @@ export class AppComponent implements OnInit {
 
 # 本日小結
 
-- Angular 8 之後使用 dynamic import 來進行延遲載入路由，此共能不僅能運用在路由上，也可以透過 dynamic import 來進行各種程式的切分，不用再被限定在路由內。
+- Angular 8 之後使用 dynamic import 來進行延遲載入路由，此功能不僅能運用在路由上，也可以透過 dynamic import 來進行各種程式的切分，不用再被限定在路由內。
 - 使用 dynamic import 載入的是 ES6 的模組，若要轉換成 Angular 模組，可搭配 Compiler 來建立。
 - 能夠建立相關的模組工廠 (Module Factory) 後，即可進一步建立其中的元件，本篇文章使用 ngComponentOutlet 來節省建立的程式碼撰寫。
 - 範例程式有許多部分可以自行調整，如選擇元件來顯示的邏輯，或是把一堆 promise 包裝成 observable 等等。
