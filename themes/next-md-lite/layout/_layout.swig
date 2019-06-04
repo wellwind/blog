@@ -94,7 +94,8 @@
   <script>
     (function displayCourses() {
       if($('.post-body').length === 1) {
-        var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
         $('.post-body').append(content);
         setTimeout(function() {
           $('#displayCourses a').removeClass('fancybox');
