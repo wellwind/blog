@@ -34,7 +34,7 @@ if (document.fullscreenEnabled) {
 }
 ```
 
-我們必須檢查目前柳覽器是否支援Fullscreen API，並針對不同瀏覽器呼叫不同的方法，而當載入screenfull.js，程式碼就簡單多了：
+我們必須檢查目前瀏覽器是否支援Fullscreen API，並針對不同瀏覽器呼叫不同的方法，而當載入screenfull.js，程式碼就簡單多了：
 
 ```javascript
 if (screenfull.enabled) {
