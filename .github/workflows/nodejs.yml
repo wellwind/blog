@@ -21,8 +21,16 @@ jobs:
       run: |
         npm install
         npm run build --if-present
-        git config --global user.email "wellwind@mail2000.com.tw"
-        git config --global user.name "Mike Huang"
-        npm run deploy
       env:
         CI: true
+    - name: deploy
+      env:
+        HEXO_DEPLOY_PRIVATE_KEY: ${{secrets.HEXO_DEPLOY_PRIVATE_KEY}}
+      run: |
+      mkdir -p ~/.ssh/
+      echo "$HEXO_DEPLOY_PRIVATE_KEY" > ~/.ssh/id_rsa
+      chmod 600 ~/.ssh/id_rsa
+      ssh-keyscan github.com >> ~/.ssh/known_hosts
+      git config --global user.name 'Mike Huang'
+      git config --global user.email 'wellwind@mail2000.com.tw'
+      npm run deploy
