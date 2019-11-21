@@ -41,7 +41,7 @@ tags:
 
 我們可以想像成，透過 `*ngTemplateOutlet` 來決定要呼叫某個樣板上名為 `data` 的樣板方法，因此我們可以在這個樣板上的任何地方，放上 `*ngTemplateOutlet` 來顯示某個樣板，把重複的樣版內容抽出來，設計上就會更加靈活。
 
-# 使用 ngOutletContext 帶入參數
+# 使用 ngTemplateOutletContext 帶入參數
 
 下一個問題是，既然要把 `<ng-template>` 想像成是一個方法，我們能夠帶入參數嗎？答案當然是可以的，在使用 `*ngTemplateOutlet` 時，可以加上 `context` 代表要傳入 `<ng-template>` 的參數，如下：
 
