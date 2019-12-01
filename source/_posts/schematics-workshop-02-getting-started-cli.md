@@ -188,7 +188,7 @@ schematics .:schematics-workshop --dry-run=false
 
 其他還有很多，未來有機會再來介紹。
 
-有了這些 API，我們就幾乎能夠完成大部分檔案系統變更的需求，其他的都是工具的使用，如 Schematics 設定、各種 Tree APIs 和 Rules；或是需要異動程式碼時，需要另外的語法樹 (ASY，Abstract Syntax Tree) 工具協助分析等等，但本質上都還是需要對檔案系統進行操作。
+有了這些 API，我們就幾乎能夠完成大部分檔案系統變更的需求，其他的都是工具的使用，如 Schematics 設定、各種 Tree APIs 和 Rules；或是需要異動程式碼時，需要另外的語法樹 (AST，Abstract Syntax Tree) 工具協助分析等等，但本質上都還是需要對檔案系統進行操作。
 
 # 本日小結
 
