@@ -11,7 +11,7 @@ tags:
 
 # 建立一個新的 Schematics
 
-首先我們應該已經安裝 [Schematics Snippets 套件了](https://marketplace.visualstudio.com/items?itemName=MikeHuang.vscode-schematics-snippets)，透過此套件，我們可以快速的生成一個基本的 Schematics 程式骨架，按下 `F1`，選擇 `Schematics: Generate A Schematic` 後，輸入今天的練：`exercise-2`
+首先我們應該已經安裝 [Schematics Snippets 套件了](https://marketplace.visualstudio.com/items?itemName=MikeHuang.vscode-schematics-snippets)，透過此套件，我們可以快速的生成一個基本的 Schematics 程式骨架，按下 `F1`，選擇 `Schematics: Generate A Schematic` 後，輸入今天的練習：`exercise-2`
 
 {% asset_img 01.gif %}
 
@@ -43,7 +43,7 @@ export function exercise2(_options: any): Rule {
 
 {% note info %}
 
-修改 `*.ts` 檔案後，記得要使用 `npm run build` 從重建置程式，或是也可以使用 `npm run build -- --watch`，當檔案有變更時，自動重新建置。
+修改 `*.ts` 檔案後，記得要使用 `npm run build` 重建置程式，或是也可以使用 `npm run build -- --watch`，當檔案有變更時，自動重新建置。
 
 {% endnote %}
 
