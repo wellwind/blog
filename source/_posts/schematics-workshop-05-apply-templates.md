@@ -11,14 +11,14 @@ tags:
 
 # 建立範本
 
-第一步驟當然是先建立一個 Schematics，這部分可以使用 [Schematics Snippets] 的 Visual Studio Code 套件快速產生，之前的文章也已經提過，這裡就不多說明。
+第一步驟當然是先建立一個 Schematics，這部分可以使用 [Schematics Snippets](https://marketplace.visualstudio.com/items?itemName=MikeHuang.vscode-schematics-snippets) 的 Visual Studio Code 套件快速產生，之前的文章也已經提過，這裡就不多說明。
 
 ## 建立範本目錄
 
 首先我們先建立一個 `files` 目錄，用來放置要產生的範本檔案來源，另外裡面再建立一個目錄，名稱為 `__name@dasherize__`，程式會將這樣的格式進行名稱的轉換，這裡的格式是：
 
 1. 首尾用兩個底線 `__`，當範本轉換時，會自動辨識裡面的內容，並且做替換
-2. 兩個底線內，放入要取代的變入名稱，如 `__name__`，當我們傳入一個 demo 作為 `name` 變數時，就會自動產生對應的檔案或目錄
+2. 兩個底線內，放入要取代的變數名稱，如 `__name__`，當我們傳入一個 demo 作為 `name` 變數時，就會自動產生對應的檔案或目錄
 3. 我們也可以讓這個變數傳入某個方法內，格式是 `名稱@方法`，如 `dasherize` 是一個方法，此時 `name@dasherize`可以想像成一般程式內執行了 `dasherize(name)`。
 
 至於這個 `name` 變數和 `dasherize` 方法內容從哪裡來，稍後會介紹。
