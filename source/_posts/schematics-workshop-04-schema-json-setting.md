@@ -43,7 +43,7 @@ export function exercise2(_options: any): Rule {
 
 {% note info %}
 
-修改 `*.ts` 檔案後，記得要使用 `npm run build` 重建置程式，或是也可以使用 `npm run build -- --watch`，當檔案有變更時，自動重新建置。
+修改 `*.ts` 檔案後，記得要使用 `npm run build` 從重建置程式，或是也可以使用 `npm run build -- --watch`，當檔案有變更時，自動重新建置。
 
 {% endnote %}
 
