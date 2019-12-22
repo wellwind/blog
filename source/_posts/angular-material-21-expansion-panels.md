@@ -48,7 +48,7 @@ Expansion panels的相關功能都放在`MatExpansionModule`之中，加入後�
 
 很簡單吧！只要點一下panel的標題，就可以立即展開/收起每個panel囉。
 
-### 使用mat-panel-title與mat-panel-description未header顯示更多資訊
+### 使用mat-panel-title與mat-panel-description為header顯示更多資訊
 
 在標題`<mat-expansion-panel-header>`裡面，我們也可以用`<mat-panel-title>`和`<mat-panel-description>`分別顯示標題的主文字與補充描述，`<mat-panel-description>`會在標題旁邊加上灰色的文字補充說明；例如：
 
