@@ -39,7 +39,7 @@ Angular Material使用SCSS來設計，並提供了許多的`@mixin`可以使用�
 $custom-primary: mat-palette($mat-light-blue);
 ```
 
-另外我們也能提供3個參數，分別為，顏色主要的亮度(預設為500)，前色的色調以及深色的色調
+另外我們也能提供3個參數，分別為，顏色主要的亮度(預設為500)，淺色的色調以及深色的色調
 
 ```scss
 $custom-accent:  mat-palette($mat-orange, 500, A100, A700);
