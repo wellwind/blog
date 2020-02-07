@@ -1,5 +1,5 @@
 ---
-title: "[Angular 大師之路] 使用 ng 物件幫助我們快速除錯"
+title: "[Angular 大師之路 ] 使用 ng 物件幫助我們快速除錯"
 date: 2020-02-07 21:07:15
 tags:
 	- Angular
@@ -31,9 +31,9 @@ Angular 9 在今天 (2020/02/07) 正式推出了！在這個版本最重要的�
 
 {% asset_img 02.jpg %}
 
-先來看看如何拿到一個畫面上的元件 (component)，我們知道畫面上的元件其時候是一個對應的 HTML 標籤，也會對應元件 `@Component` 中的 `selector` 設定，若要拿到這個標籤，可以單純的使用 `document.querySelector` 的方始，得到標籤元素 (element)，這是一件容易的事情。
+先來看看如何拿到一個畫面上的元件 (component)，我們知道畫面上的元件其實是一個對應的 HTML 標籤，也會對應元件 `@Component` 中的 `selector` 設定，若要拿到這個標籤，可以單純的使用 `document.querySelector` 的方式，得到標籤元素 (element)，這是一件容易的事情。
 
-另外一個簡單拿到元素的技巧是，開啟 F12 的 Elemements 中找到該元素後，按右鍵 -> Store as global variable，即可產生一個 tempX 的變數，代表這個元件所屬元素。
+另外一個簡單拿到元素的技巧是，開啟 F12 的 Elements 頁籤中找到該元素後，按右鍵 -> Store as global variable，即可產生一個 tempX 的變數，代表這個元件所屬元素。
 
 {% asset_img 03.jpg %}
 
@@ -59,14 +59,14 @@ Angular 9 在今天 (2020/02/07) 正式推出了！在這個版本最重要的�
 
 - `ng.applyChanges()`：觸發指定元件物件的變更偵測
 - `ng.getComponent()`：傳入一個元素，取得此元素代表的元件物件實體
-- `ng.getContext()`：如果元素放在一個 embbed view 內(如 `*ngIf` 或 `*ngFor` 或任何自訂的樣板)，可以取得元素在哪個樣板下
+- `ng.getContext()`：如果元素放在一個 embedded view 內(如 `*ngIf` 或 `*ngFor` 或任何自訂的樣板)，可以取得元素在哪個樣板下
 
 {% asset_img 05.jpg %}
 
 - `ng.getDirectives()`：依照某個元素取得掛在此元素上的 directives
 - `ng.getHostElement()`：取得元件或 directive 所屬的元素
 - `ng.getInjector()`：取得元素、元件或 directive 的 injector
-- `ng.getListeners()`：取得元素目前被監聽的事件，如某個元件使用 `(click)="xxx()"`，透過 `ng.getListeners()` 即可知道該元素(or 元件) 目前有綁定 click 事件。需要注意個是只有使用事件繫結或 `@HostListener` 的才會計算，自己使用如 `addEventListener()` 的不會被算進去。
+- `ng.getListeners()`：取得元素目前被監聽的事件，如某個元件使用 `(click)="xxx()"`，透過 `ng.getListeners()` 即可知道該元素(or 元件) 目前有綁定 click 事件。需要注意的是，只有使用事件繫結或 `@HostListener` 的才會計算，自己使用如 `addEventListener()` 的不會被算進去。
 
 {%asset_img 06.jpg %}
 
