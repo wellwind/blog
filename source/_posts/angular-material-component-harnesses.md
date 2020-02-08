@@ -17,11 +17,11 @@ Angular CDK 9 推出了新的 Component Harness 功能，方便我們更容易�
 
 在前端開發時，E2E 測試通常都會實際模擬一些畫面上的互動，並測試互動後畫面的結果是否正常，也應此會大量使用到如 `document.querySelector` 這類的 API 來抓取畫面上的資訊。
 
-而隨著現代化前端技術的發展，不管是 Angular、React 還是 Vue，開發人員都會開始將 HTML 輸出整合到 JavaScript 裡面，也就是畫面的 HTML 輸出也是程式的一部份，這麼做對大的好出之一就是連整合測試都可以更加容易測試到畫面結果(因為把 HTML 也是為程式的一部份)。
+而隨著現代化前端技術的發展，不管是 Angular、React 還是 Vue，開發人員都會開始將 HTML 輸出整合到 JavaScript 裡面，也就是畫面的 HTML 輸出也是程式的一部份，這麼做的一大好處就是連整合測試都可以更加容易測試到畫面結果(因為把 HTML 也視為程式的一部份)。
 
-然而隨著畫面互動越來越複雜，以及對第三方 UI 元件的不熟悉，要找出畫面元件就變成一個兼具的任務！
+然而隨著畫面互動越來越複雜，以及對第三方 UI 元件的不熟悉，要找出畫面元件就變成一個艱鉅的任務！
 
-以下面例子來說，畫面上的 `<mat-select>` 是 Angular Material 提供的 select 元件，如果要策試它的互動行為，我們得先想辦法找出畫面上對應 HTML 的位置，包含真正滑鼠按下時到底按到什麼元素，產出的下拉選單的元素結構等等，都要花費一段時間尋找出來，才能寫出正確的整合測試或 E2E 測試。
+以下面例子來說，畫面上的 `<mat-select>` 是 Angular Material 提供的 select 元件，如果要測試它的互動行為，我們得先想辦法找出畫面上對應 HTML 的位置，包含真正滑鼠按下時到底按到什麼元素，產出的下拉選單的元素結構等等，都要花費一段時間尋找出來，才能寫出正確的整合測試或 E2E 測試。
 
 {% asset_img 01.jpg %}
 
@@ -51,13 +51,13 @@ it('should set selectedValue when select changed', async () => {
 });
 ```
 
-實際上是花了不少時間釐清元件到底產出的 HTML 位置及結構，才能撰寫初正確的操作；更麻煩的是，隨著 Angular Material 未來改版，這樣的結構有可能會改變，導致套件一更新測試就壞掉的窘境。
+實際上是花了不少時間釐清元件到底產出的 HTML 位置及結構，才能撰寫出正確的 DOM 操作；更麻煩的是，隨著 Angular Material 未來改版，這樣的結構有可能會改變，導致套件一更新測試就壞掉的窘境。
 
 有鑑於此，Angular CDK 推出了 Component Harness 來簡化這個問題，同時目前幾乎所有的 Angular Material 元件也都有對應的實作！
 
 # 簡介 Component Harness
 
-Component Harness 的觀念基本上跟我們開發整合測試或 E2E 測試時常用的 PageObject 觀念基本上一樣，由於畫面邏輯非常容易隨著需求變更而改變，導致運行測試時產生許多不必要的麻煩，因此將一些預期可能會改變，或太過細節的部分封裝起來，以便測試程式呼叫時可以忽略這些細節，當畫面因應改變時，只需要修改封裝的部分就好好了，其他測試程式完全不需要更動。
+Component Harness 的觀念基本上跟我們開發整合測試或 E2E 測試時常用的 PageObject 觀念基本上一樣，由於畫面邏輯非常容易隨著需求變更而改變，導致運行測試時產生許多不必要的麻煩，因此將一些預期可能會改變，或太過細節的部分封裝起來，以便測試程式呼叫時可以忽略這些細節，當畫面因應改變時，只需要修改封裝起來的程式碼部分就好了，其他測試程式完全不需要更動。
 
 以上述例子來說，我們可以將選擇某個選項的邏輯封裝成類似如下的程式碼：
 
@@ -72,7 +72,7 @@ const clickSelectOption = (index: number) => {
 
 而 Component Harness 就是基於這樣的概念，把所有常見的基本行為 (如 click 等等) 都先設計好，且每個元件會再針對元件本身功能可能的行為都預先設計好相關的 API 提供呼叫，如此一來想要針對第三方元件互動行為撰寫測試時，就可以省去不必要的元素操作，只需要專注在真正的行為即可！大幅節省測試程式撰寫時間，測試程式碼的**可讀性**也會更高！
 
-不僅如此，Angular Material 每個元件的 Component Harness 程式碼也有自己的測試程式在保護，也就是說當未來套件升級時若有緣見畫面行為改變，第一個壞掉的一定是這些 Component Harness 對應的測試程式碼，Angular Material 開發團隊也會同時更新 Component Harness 程式，我們一般開發人員只要使用一致的 API 就好，不用擔心未來套件升級畫面結構改變帶來的後遺症，代表我們自行撰寫測試程式碼的**強健性**也更高了！
+不僅如此，Angular Material 每個元件的 Component Harness 程式碼也有自己的測試程式在保護，也就是說當未來套件升級時若有元件的畫面行為改變，第一個壞掉的一定是這些 Component Harness 對應的測試程式碼，Angular Material 開發團隊也會同時更新 Component Harness 程式，我們一般開發人員只要使用一致的 API 就好，不用擔心未來套件升級畫面結構改變帶來的後遺症，代表我們自行撰寫測試程式碼的**強健性**也更高了！
 
 # 開始使用 Component Harness
 
@@ -138,7 +138,7 @@ it('should set selectedValue when select changed (harness)', async () => {
 
 另外要注意的是 Component Harness 所有的 API 回傳的都是 Promise，根據 Angular 團隊的建議，建議都使用 async / await 的方式來處理 Promise。
 
-接下來我們就可以透過 `MatSelectHarness` 來跟 select 互動囉，以前面的測試例子來說，我們打該下拉選單，點擊第二個選項(index 為 1)，並確認該選項有被選起來：
+接下來我們就可以透過 `MatSelectHarness` 來跟 select 互動囉，以前面的測試例子來說，我們打開下拉選單，點擊第二個選項(index 為 1)，並確認該選項有被選起來：
 
 ```typescript
 it('should set selectedValue when select changed (harness)', async () => {
