@@ -179,7 +179,7 @@ const select = await loader.getHarness(
 基本上所有的 Component Harness 都支援三種
 
 - `selector`：依照 CSS selector 條件找到元件的 Component Harness
-- `ancestor`：依照 CSS selector 條件找到 DOM 中元件以上的元素
+- `ancestor`：依照 CSS selector 條件往父元件去找
 - `text`： 依照文字尋找，可使用 regular expression
 
 這些條件也可複合使用，如：
@@ -226,7 +226,7 @@ Component Harness 是一個非常好的概念，而且 Angular CDK 也提供了�
 
 ## 根據不同平台撰寫 Component Harness 環境
 
-Angular CDK 針對 Karma 與 Protractor 兩個測試框架內見了對應的 Component Harness 環境，這也是 Angular CLI 專案預設的測試架構，若有習慣使用其他的測試框架，也能自行撰寫 COmponent Harness 環境，可以參考[文件說明](https://material.angular.io/cdk/test-harnesses/overview#api-for-harness-environment-authors)，之後也會撰寫文章來介紹。
+Angular CDK 針對 Karma 與 Protractor 兩個測試框架內見了對應的 Component Harness 環境，這也是 Angular CLI 專案預設的測試架構，若有習慣使用其他的測試框架，也能自行撰寫 Component Harness 環境，可以參考[文件說明](https://material.angular.io/cdk/test-harnesses/overview#api-for-harness-environment-authors)，之後也會撰寫文章來介紹。
 
 # 本日小結
 
