@@ -79,7 +79,7 @@ tags:
 
 {% asset_img 02-mat-input-type-date.png %}
 
-如此即可為input家讓日期選擇的功能，如圖這是Macbook的Google Chrome上顯示的結果，但實際結果可能會因為作業系統和瀏覽器的不同而不同，有些瀏覽器可能甚至不支援這樣的功能，這在現代的網頁設計上是一個稍微扣分的部分，也就是在**不同瀏覽器呈現效果可能會有極大差異的問題**；不過若是設計出來的網頁能確定在某個系統和瀏覽器上顯示，這也不失為一種簡單有效的做法！
+如此即可為input加入日期選擇的功能，如圖這是Macbook的Google Chrome上顯示的結果，但實際結果可能會因為作業系統和瀏覽器的不同而不同，有些瀏覽器可能甚至不支援這樣的功能，這在現代的網頁設計上是一個稍微扣分的部分，也就是在**不同瀏覽器呈現效果可能會有極大差異的問題**；不過若是設計出來的網頁能確定在某個系統和瀏覽器上顯示，這也不失為一種簡單有效的做法！
 
 {% note info %}
 
@@ -139,7 +139,7 @@ tags:
 
 預設情境下，**錯誤顯示的時機必須符合dirty、touched和invalid的狀態，才會顯示錯誤訊息**，因此以剛剛的狀況來說，我們在一開始輸入文字時，由於符合dirty和invalid的狀態，但是因為第一次進入不會是touched狀態，因此一開始不會立刻顯示錯誤訊息，而是在離開欄位後，狀態也變更為touched後，才會顯示錯誤。
 
-如果希望自己決定錯誤顯示的時機，可以實作`ErrorStateMatcher`這個介面的`isErrorState`方法，來決定何時該顯示，為傳true代表要顯示錯誤；並在input的`errorStateMatcher`(加上`matInput`後擴充的功能)指定我們自訂的macher即可，實際來寫點程式看看吧，我們先在component.ts實作這個macher
+如果希望自己決定錯誤顯示的時機，可以實作`ErrorStateMatcher`這個介面的`isErrorState`方法，來決定何時該顯示，為傳true代表要顯示錯誤；並在input的`errorStateMatcher`(加上`matInput`後擴充的功能)指定我們自訂的matcher即可，實際來寫點程式看看吧，我們先在component.ts實作這個matcher
 
 ```typescript
 // 調整時機為invalid + dirty即顯示錯誤訊息
@@ -151,15 +151,15 @@ export class EarlyErrorStateMatcher implements ErrorStateMatcher {
 }
 export class SurveyComponent {
   surveyForm: FormGroup;
-  earlyErrorStateMacher = new EarlyErrorStateMatcher();
+  earlyErrorStateMatcher = new EarlyErrorStateMatcher();
 }
 ```
 
-接著在input中加入這個macher
+接著在input中加入這個matcher
 
 ```html
 <mat-form-field>
-  <textarea name="intro_self" matInput placeholder="自我介紹" formControlName="intro" required [errorStateMatcher]="earlyErrorStateMacher"></textarea>
+  <textarea name="intro_self" matInput placeholder="自我介紹" formControlName="intro" required [errorStateMatcher]="earlyErrorStateMatcher"></textarea>
   <mat-hint>簡單介紹一下你的興趣吧！</mat-hint>
   <mat-error *ngIf="surveyForm.get('basicQuestions').get('intro').hasError('required')">請記得輸入自我介紹喔！</mat-error>
   <mat-error *ngIf="surveyForm.get('basicQuestions').get('intro').hasError('minlength')">至少輸入10個字吧！</mat-error>
@@ -168,11 +168,11 @@ export class SurveyComponent {
 
 結果如下：
 
-當我們一進入文字欄位並輸入內容時，立即符合了我們自訂的macher規則，所以不用等到移出焦點後變成touched狀態，就會提早顯示錯誤啦！
+當我們一進入文字欄位並輸入內容時，立即符合了我們自訂的matcher規則，所以不用等到移出焦點後變成touched狀態，就會提早顯示錯誤啦！
 
 {% asset_img 06-custom-error-state-macher.gif %}
 
-如果要在全域的範圍套用這個規則，可以在providers中注入這個macher
+如果要在全域的範圍套用這個規則，可以在providers中注入這個matcher
 
 ```typescript
 providers: [
