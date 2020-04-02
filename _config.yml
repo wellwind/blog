@@ -6,7 +6,7 @@
 title: 全端開發人員天梯
 subtitle: 軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記
 description: 個人學習程式設計、系統開發和讀書的經驗及心得。
-author: Wellwind
+author: Mike Huang
 language: zh-tw
 timezone:
 
@@ -43,7 +43,7 @@ highlight:
   line_number: true
   auto_detect: false
   tab_replace:
-  
+
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
 # per_page: Posts displayed per page. (0 = disable pagination)
@@ -52,7 +52,7 @@ index_generator:
   path: ''
   per_page: 10
   order_by: -date
-  
+
 # Category & Tag
 default_category: uncategorized
 category_map:
@@ -91,7 +91,7 @@ deploy:
 
 # Sitemap
 sitemap:
-    path: sitemap.xml
+  path: sitemap.xml
 
 # RSS feed
 feed:
