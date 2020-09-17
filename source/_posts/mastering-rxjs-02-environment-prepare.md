@@ -27,8 +27,6 @@ tags:
 https://unpkg.com/@reactivex/rxjs@6.0.0/dist/global/rxjs.umd.js
 ```
 
-以目前這個時間點來說，是使用 RxJS 第 6 版。
-
 在 HTML 中進行套件載入後我們可以就使用 `rxjs` 這個物件，來進行各種操作，以下範例會偵測畫面的滑鼠點擊事件，並且只有在奇數次點擊的時候，印出滑鼠點擊在畫面上的座標，以下是整個範例程式：
 
 ```html
@@ -57,7 +55,7 @@ https://unpkg.com/@reactivex/rxjs@6.0.0/dist/global/rxjs.umd.js
 
 上面程式中的 `fromEvent` 是 `rxjs` 物件的一個方法，另外下面還有 `operators.filter` 和 `operators.map` 等，我們會把它們都稱為是操作符 (operators)，之後用 `subscribe` 來得到每次事件搭配 operators 處理後的結果。
 
-上面程式目前看不懂也沒有關係，之後我們會在介紹 RxJS 的組成要素及各種 operators 的使用方式。
+上面程式目前看不懂也沒有關係，之後我們會再介紹 RxJS 的組成要素及各種 operators 的使用方式。
 
 完成後使用瀏覽器打開這個網頁，在開啟 F12 切到 console 頁籤，點擊看看滑鼠有沒有如下圖的反應：
 
@@ -75,7 +73,7 @@ https://unpkg.com/@reactivex/rxjs@6.0.0/dist/global/rxjs.umd.js
 
 ## 安裝 node.js 與 npm
 
-直接到 [node.js 官網下載](https://nodejs.org/en/)，這部分對大多的前端工程師應該已經是基本功了，就不多做說明，網路上也有很多文章可以參考，就不多說明了。
+直接到 [node.js 官網下載](https://nodejs.org/en/)，這部分對大多的前端工程師應該已經是基本功了，網路上也有很多文章可以參考，就不多說明了。
 
 ## 初始化專案並安裝 Parcel 與 RxJS
 
@@ -153,8 +151,6 @@ parcel index.html
 
 進入 [StackBlitz](https://stackblitz.com/) 網站後，可以看到下方列出目前內建的專案架構，我們可以直接點選 RxJS，建立一個 RxJS 專案。
 
-{% asset_img 02.jpg %}
-
 或是直接使用以下連結，也可以直接建立一個新的 RxJS 專案：
 
 ```
@@ -169,7 +165,7 @@ https://stackblitz.com/fork/rxjs?devtoolsheight=60
 
 建立完成後，打開左邊的 `index.ts` (預設應該也是直接打開的)，填入之前就寫過的 TypeScript 程式碼，就可以直接到右邊預覽視窗看結果囉！
 
-{% asset_img 03.jpg %}
+{% asset_img 02.jpg %}
 
 使用 StackBlitz 最方便的地方就是可以隨時將程式碼分享出去，而且可以立刻在線上看到結果，不用做任何特別的設定，之後我們的練習如果有比較複雜的程式，也會透過 StackBlitz 來做分享！
 
