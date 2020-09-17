@@ -127,7 +127,7 @@ fromEvent(document, 'click')
 </html>
 ```
 
-這邊唯一特別的是仔入的是 TypeScript 的程式碼，但在使用 Parcel 轉譯後，會自動把 TypeScript 的程式碼專換成  JavaScript 並進行仔入。
+這邊唯一特別的是載入的是 TypeScript 的程式碼，但在使用 Parcel 轉譯後，會自動把 TypeScript 的程式碼專換成  JavaScript 並進行載入。
 
 ## 轉譯 index.html 並查看結果
 
