@@ -46,7 +46,7 @@ https://unpkg.com/@reactivex/rxjs@6.0.0/dist/global/rxjs.umd.js
           rxjs.operators.map((event) => ({ x: event.x, y: event.y }))
         )
         .subscribe((position) => {
-          console.log(`x: ${position.y}, y: ${position.y}`);
+          console.log(`x: ${position.x}, y: ${position.y}`);
         });
     </script>
   </body>
@@ -104,7 +104,7 @@ fromEvent(document, 'click')
     map((event: MouseEvent) => ({ x: event.x, y: event.y }))
   )
   .subscribe((position) => {
-    console.log(`x: ${position.y}, y: ${position.y}`);
+    console.log(`x: ${position.x}, y: ${position.y}`);
   });
 ```
 
