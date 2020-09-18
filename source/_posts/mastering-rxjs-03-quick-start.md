@@ -31,7 +31,7 @@ tags:
 
 要建立一個新的 Observable 基本上分成兩種方式，第二種則是自己從頭開始建立新的資料流，第二種是透過現有的資料或事件來建立。
 
-而所有建立 Observable 的 API 都在 `rxjs` 這個 namespace 裡並遵循 ES 6 的模組化方式管理，例如要使用上篇文章 `fromEvent`，則可以透過以下語法：
+而大多數建立 Observable 的 API 都在 `rxjs` 這個 namespace 裡並遵循 ES 6 的模組化方式管理，例如要使用上篇文章 `fromEvent`，則可以透過以下語法：
 
 ```typescript
 import { fromEvent } from 'rxjs';
@@ -39,7 +39,7 @@ import { fromEvent } from 'rxjs';
 
 ### 自己從頭開始建立新的 Observable
 
-在 ReactiveX 的定義中，我們把它稱為 Subject；中文翻譯叫做「目標」，從意義上也很容易可以看出來他是一個「可觀察的 (observable)」。
+在 ReactiveX 的定義中，我們把它稱為 **Subject**；中文翻譯叫做「目標」，從意義上也很容易可以看出來他是一個「可觀察的 (observable)」。
 
 這個 Subject 預設會有三個方法，分別是：
 
@@ -102,7 +102,7 @@ import { of } from 'rxjs';
 const source = of('abc');
 ```
 
-雖然乍看之下把單純的資料包裝成 observable 很無意義，但在組合多個 observable 時，就會變得非常常見，之後我們會在實際案例中介紹。
+雖然乍看之下把單純的資料包裝成 Observable 沒什麼意義，但在組合多個 Observable 時，就會變得很常見，之後我們會在實際案例中介紹。
 
 ## 使用 Operators 組合/轉換來源 Observable
 
@@ -150,7 +150,7 @@ ReactiveX 根據不同類型制定出了[不同分類的 Operators](http://react
 - 條件/布林類 Conditional and Boolean Operators
 - 數學/聚合類 Mathematical and Aggregate Operators
 
-總共 70~80 個 operators，非常的豐富！之後我們會挑出一些比較實用的來介紹。
+總共約 80 個 operators，非常的豐富！之後我們會挑出一些比較實用的來介紹。
 
 ## 訂閱 Observable
 
