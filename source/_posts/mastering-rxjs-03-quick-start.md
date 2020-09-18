@@ -1,5 +1,5 @@
 ---
-title: "[RxJS] 快速上手 RxJS"
+title: "[RxJS] 三步驟快速上手 RxJS"
 date: 2020-09-18 18:00:00
 category:
 	- "打通 RxJS 任督二脈"
