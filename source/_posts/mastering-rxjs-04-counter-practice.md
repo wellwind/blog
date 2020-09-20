@@ -271,7 +271,7 @@ fromEvent(completeButton, 'click').subscribe(() => {
 
 // 這是加上 error 和 complete 處理的方法
 counter$.subscribe({
-  next: () => {
+  next: data => {
     currentCounterLabel.innerHTML = `目前計數：${data}`
   },
   error: message => {
