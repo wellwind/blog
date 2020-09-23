@@ -9,7 +9,7 @@ tags:
 	- Iterator Pattern
 ---
 
-前兩天的文章中我們介紹了「觀察者模式 - Observer Pattern」，今天我們來介紹另外一個在 ReactiveX 中也很重要的觀念：「疊代器模式 - Iterator Pattern」。其實我們在寫程式時會經常遇到疊代器模式，但我們通常不會直接碰觸到它，而是程式語言針對疊代器模式提供了原生語法的支持，將背後的細節隱藏了起來(這也是它的目的)；大多數程式語言都提供疊代器模式整合到原生語法內，可見他有多們重要！
+前兩天的文章中我們介紹了「觀察者模式 - Observer Pattern」，今天我們來介紹另外一個在 ReactiveX 中也很重要的觀念：「疊代器模式 - Iterator Pattern」。其實我們在寫程式時會經常遇到疊代器模式，但通常不會直接碰觸到它，而是程式語言針對疊代器模式提供了原生語法的支持，將背後的細節隱藏了起來(這也是它的目的)；大多數程式語言都提供疊代器模式整合到原生語法內，可見它有多們重要！
 
 <!-- more -->
 
@@ -27,7 +27,7 @@ tags:
 
 關於 Iterator 的中文名字，有不少版本，像是 `疊代器`、`迭代器` 或 `反覆器`，基本上聽得懂就好，這邊採用的是維基百科的中文版本。
 
-而疊代器的重點在於「如何走訪集合內的所有元素，並隱藏實作細節」。
+而疊代器的重點在於「**如何走訪集合內的所有元素，並隱藏實作細節**」。
 
 ## 疊代器模式解決的問題
 
@@ -184,7 +184,9 @@ const createEvenOddIterator = (data: any[]) => {
 
 之後就可以搭配 JavaScript 原生的語法來使用囉！
 
+{% note info %}
 在 ES6 之後也可以搭配 [generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) 來實作，程式碼會更精簡，因為主題還是介紹 ReactiveX，而不是 JavaScript，就不花太多時間說明。有興趣可以看[我在 StackBlitz 上的 generator 實作](https://stackblitz.com/edit/mastering-rxjs-08-even-odd-generator-demo?file=index.ts)。
+{% endnote %}
 
 # ReactiveX 與疊代器模式
 
