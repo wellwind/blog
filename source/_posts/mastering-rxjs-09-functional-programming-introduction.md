@@ -380,7 +380,7 @@ console.log(result);
 
 {% endnote %}
 
-程式碼：https://stackblitz.com/edit/mastering-rxjs-09-functional-programming-intro-01-declarative
+程式碼：https://stackblitz.com/edit/mastering-rxjs-09-functional-programming-intro-declarative
 
 # 本日小結
 
