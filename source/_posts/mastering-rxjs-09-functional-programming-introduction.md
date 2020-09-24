@@ -384,7 +384,7 @@ console.log(result);
 
 # 本日小結
 
-今天我們把 functional programming 的一些基本觀念介紹了一輪，讓我們對 functional programming 的整體輪廓有了比較明確的概念；應該不難發現透過 functional programming 的觀念可以幫助我們打造出更好理解及維護的程式，當然通常 functional programming 的寫法效能會相對比較差，但在現今運算技術越來越強的情況下，很多時候這些差異是可以被忽略的 (0.03 秒執行時間是 0.01 秒的三倍，但通常是感覺不出來的)，在沒有明顯效能的考量下，誠心建議也推廣大家使用這種 functional programming 的思考方式來寫程式，以寫出更加穩固的程式碼喔！
+今天的文章中把 functional programming 的一些基本觀念介紹了一輪，讓我們對 functional programming 的整體輪廓有了比較明確的概念；應該不難發現透過 functional programming 的觀念可以幫助我們打造出更好理解及維護的程式，當然通常 functional programming 的寫法效能會相對比較差，但在現今運算技術越來越強的情況下，很多時候這些差異是可以被忽略的 (0.03 秒執行時間是 0.01 秒的三倍，但通常是感覺不出來的)，在沒有明顯效能的考量下，誠心建議也推廣大家使用這種 functional programming 的思考方式來寫程式，以寫出更加穩固的程式碼喔！
 
 要撰寫 functional programming，這些觀念非常重要：
 
