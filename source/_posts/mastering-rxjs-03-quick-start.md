@@ -150,7 +150,7 @@ ReactiveX 根據不同類型制定出了[不同分類的 Operators](http://react
 - 條件/布林類 Conditional and Boolean Operators
 - 數學/聚合類 Mathematical and Aggregate Operators
 
-總共約 80 個 operators，非常的豐富！之後我們會挑出一些比較實用的來介紹。
+operators 的數量超過 100 個以上，非常的豐富！之後我們會挑出一些比較實用的來介紹。
 
 ## 訂閱 Observable
 
