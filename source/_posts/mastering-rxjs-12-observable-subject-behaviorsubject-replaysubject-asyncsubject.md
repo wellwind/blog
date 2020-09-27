@@ -177,7 +177,7 @@ source$.complete();
 
 ## BehaviorSubject
 
- `Subject` 產生的誤件在訂閱時若沒有事件發生，會一直收不到資料，如果希望在一開始訂閱時會先收到一個預設值，且有事件發生後裁訂閱可以收到最近一次發生過的事件資料，則可以使用 [BehaviorSubject](https://rxjs-dev.firebaseapp.com/api/index/class/BehaviorSubject)：
+ `Subject` 產生的物件在訂閱時若沒有事件發生，會一直收不到資料，如果希望在一開始訂閱時會先收到一個預設值，且有事件發生後裁訂閱可以收到最近一次發生過的事件資料，則可以使用 [BehaviorSubject](https://rxjs-dev.firebaseapp.com/api/index/class/BehaviorSubject)：
 
 ```typescript
 const source$ = new BehaviorSubject(0);
