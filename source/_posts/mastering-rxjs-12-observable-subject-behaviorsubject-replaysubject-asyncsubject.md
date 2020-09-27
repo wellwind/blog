@@ -19,7 +19,7 @@ tags:
 
 # Observable
 
-[Observable](https://rxjs-dev.firebaseapp.com/api/index/class/Observable) 是 RxJS 中建立串流最基本的方式之一，我們可以透過 `Observable` 類別來建立一個「可被觀察的」物件，這個物件內會先寫好整個資料流的流程，以便我們未來訂閱 (subscribe) 時可以依照這資料流程進行處理：
+`Observable` 是 RxJS 中建立串流最基本的方式之一，我們可以透過 `Observable` 類別來建立一個「可被觀察的」物件，我們會在這個物件內先寫好整個資料流的流程，以便未來訂閱 (subscribe) 時可以依照這資料流程進行處理：
 
 ## 建立 Observable
 
@@ -32,13 +32,13 @@ const source$ = new Observable();
 
 {% note info %}
 
-另外一種建立方式是 `Observable.create()` 不過這種方式在 RxJS 6 之後已被標示為棄用，在這裡提出來純粹是說明，以免未來接手別人舊程式時有用到不會看不懂。
+另外一種建立方式是 `Observable.create()` 不過這種方式在 RxJS 6 之後已被標示為棄用，在這裡提出來純粹是說明，以免未來接手別人舊程式時有用到看不懂。
 
 {% endnote %}
 
 ## 建立資料流
 
-再建立時，可以傳入一個 callback function，function 只有一個物件參數，我們稱為訂閱者 (Subscriber)，這個訂閱者就是處理資料流程的人，也就是負責呼叫 `next()`、`complete()`和 `error()` 的物件，我們可以透過這個物件先設計好資料流的流程，例如發送 1、2、3、4 然後結束：
+使用 `Observable` 建立資料流時，可以傳入一個 callback function，function 內只有一個物件參數，我們稱為訂閱者 (Subscriber)，這個訂閱者就是處理資料流程的人，也就是負責呼叫 `next()`、`complete()`和 `error()` 的物件，我們可以透過這個物件先設計好資料流的流程，例如發送 1、2、3、4 然後結束：
 
 ```typescript
 const source$ = new Observable(subscriber => {
@@ -67,7 +67,7 @@ source$.subscribe({
 
 {% asset_img 01.jpg %}
 
-每次訂閱發生時，就會呼叫 `new Observable()` 內的 callback function，以上面的例子來說，這樣的呼叫是**同步**的，也就是發生兩次訂閱時，會依序等前一次訂閱全部執行玩才會執行下一次訂閱，例如：
+每次訂閱發生時，就會呼叫 `new Observable()` 內的 callback function，以上面的例子來說，這樣的呼叫是**同步**的，也就是發生兩次訂閱時，會依序等前一次訂閱全部執行完畢才會執行下一次訂閱，例如：
 
 ```typescript
 source$.subscribe({
@@ -112,7 +112,7 @@ const source$ = new Observable(subscriber => {
 
 1、2、3 發出後，4 和 complete 放到 `setTimeout()` 內變成非同步執行，因此會在兩次訂閱都收到 1、2 和 3 後，才會收到 4 和完成；另外要小心的是，使用非同步處理時， `complete()` 一定也會是非同步，而且要想辦法在整個非同步處理程式中最後呼叫，以免提早結束而收不到後續 `next()` 的資料。
 
-`Observable` 非常適合在有固定資料流程的情境，先把流程建立好，只後每次訂閱都會照這個流程走囉。
+`Observable` 非常適合在有**固定資料流程**的情境，先把流程建立好，之後每次訂閱都會照這個流程走囉。
 
 程式碼：https://stackblitz.com/edit/mastering-rxjs-observable
 
@@ -120,10 +120,10 @@ const source$ = new Observable(subscriber => {
 
 `Subject` 系列繼承了 `Observable` 類別，並給予了更多不同的特性，因此我們會說 `Subject` 也是一種 `Observable`；而 `Subject` 與 `Observable` 有兩個明顯不同的地方：
 
-1. `Observable` 在建立物件同時就決定好資料流向了，而 `Subject` 是在產生物件後才決定資料的流向；
+1. `Observable` 在建立物件同時就決定好資料流向了，而 `Subject` 是在產生物件後才決定資料的流向。
 2.  `Observable` 每個訂閱者都會得到獨立的資料流，又稱為 unicast；而 `Subject` 則是每次事件發生時就會同步傳遞給所有訂閱者 (Observer)，又稱為 multicast。
 
-由於 `Subject` 是在產生物件後才決定資料流向，因此比較適合在程式互動過程中動態決定資料流向，也就是 `Subjct` 建立好後，將這個 `Subject` 傳出去，讓其它程式來透過 `next()` 等方法來決定資料流向。
+由於 `Subject` 是在產生物件後才決定資料流向，因此比較適合在程式互動過程中動態決定資料流向，也就是 `Subjct` 建立好後，將這個 `Subject` 物件傳出去，讓其它程式來透過呼叫該物件的 `next()` 等方法來決定資料流向。
 
 另外，同樣是訂閱，`Subject` 的訂閱與 Observer 的關係是一對多的，而 `Observable` 的訂閱與 Observer 則是一對一關係。
 
@@ -133,7 +133,7 @@ const source$ = new Observable(subscriber => {
 
 {% endnote %}
 
-接著讓我們用之前就學過最基礎的 [Subject](https://rxjs-dev.firebaseapp.com/api/index/class/Subject) 為例。
+接著讓我們用之前就學過最基礎的 `Subject` 為例。
 
 ## Subject
 
@@ -169,15 +169,15 @@ source$.complete();
 
 {% asset_img 05.jpg %}
 
-可以看到每次訂閱後，都會在有新的事件時才會收到新事件的資料。每個訂閱都會應到目前這條資料流，這就是跟 `Observable` 最大不同的地方。
+可以看到每次訂閱後，都會在有新的事件時才會收到新事件的資料。每次訂閱都識直接訂閱這條執行中的資料流，這就是跟 `Observable` 最大不同的地方。
 
-關於這種特性，我們會在明天的 Cold Observable v.s Hot Observable 說明。
+關於這種特性，我們會在明天的 **Cold Observable v.s Hot Observable** 說明。
 
 程式碼：https://stackblitz.com/edit/mastering-rxjs-subject
 
 ## BehaviorSubject
 
- `Subject` 產生的物件在訂閱時若沒有事件發生，會一直收不到資料，如果希望在一開始訂閱時會先收到一個預設值，且有事件發生後裁訂閱可以收到最近一次發生過的事件資料，則可以使用 [BehaviorSubject](https://rxjs-dev.firebaseapp.com/api/index/class/BehaviorSubject)：
+`Subject` 產生的物件在訂閱時若沒有事件發生，會一直收不到資料，如果希望在一開始訂閱時會先收到一個預設值，且有事件發生後才訂閱的行為也可以收到最近一次發生過的事件資料，則可以使用 `BehaviorSubject`：
 
 ```typescript
 const source$ = new BehaviorSubject(0);
@@ -205,7 +205,7 @@ source$.next(2);
 source$.subscribe(data => console.log(`BehaviorSubject 第二次訂閱: ${data}`));
 ```
 
-這時候會立刻收到「最近一次事件的資料」：
+這時候會立刻收到「最近一次發生過的事件資料」：
 
 {% asset_img 07.jpg %}
 
@@ -228,7 +228,7 @@ console.log(`目前 BehaviorSubject 的內容為: ${source$.value}`);
 
 ## ReplaySubject
 
-[ReplaySubject](https://rxjs-dev.firebaseapp.com/api/index/class/ReplaySubject) 有「重播」的意思，如果把資料流視為時間軸時，我們就應該有能力可以根據一定時間內的資料進行「重播」的動作，`ReplaySubject` 就是幫我們保留最近 N 次的事件資料，並在訂閱時重播給訂閱者，跟 BehaviorSubject 類似，都有 cache 的概念，只是更有彈性。
+`ReplaySubject` 有「重播」的意思，`ReplaySubject` 會幫我們保留最近 N 次的事件資料，並在訂閱時重播這些發生過的事件資料給訂閱者，跟 BehaviorSubject 類似，都有 cache 的概念，只是更有彈性。
 
 ```typescript
 // 設定「重播」最近 3 次資料給訂閱者
@@ -246,7 +246,7 @@ source$.subscribe(data => console.log(`ReplaySubject 第二次訂閱: ${data}`))
 
 {% asset_img 09.jpg %}
 
-第二次訂閱後還沒有任何事件發生，此時單純是靠 `BehaviorSubject` 把最近 3 次的資料重播，但目前只有兩次事件，所以只會收到兩次事件的資料；當事件繼續發生超過三次時，這時再訂閱就會收到完整 cache 的最近 3 次資料囉。
+第二次訂閱後還沒有任何事件發生，此時單純是靠 `BehaviorSubject` 把最近三次的資料重播，但目前只有兩次事件，所以只會收到兩次事件的資料；當事件繼續發生超過三次時，這時再訂閱就會收到完整 cache 的最近三次資料囉。
 
 ```typescript
 source$.next(3);
@@ -263,7 +263,7 @@ source$.subscribe(data => console.log(`ReplaySubject 第三次訂閱: ${data}`))
 
 ## AsyncSubject
 
-[AsyncSubject](https://rxjs-dev.firebaseapp.com/api/index/class/AsyncSubject) 比較特殊一點，當 `AsyncSubject` 物件被建立後，過程中事件發生都不會收到資料，直到 `complete()` 被呼叫後，才會收到「最後一次事件資料」，例如以下程式：
+`AsyncSubject` 比較特殊一點，當 `AsyncSubject` 物件被建立後，過程中發生任何事件都不會收到資料，直到 `complete()` 被呼叫後，才會收到「最後一次事件資料」，例如以下程式：
 
 ```typescript
 const source$ = new AsyncSubject();
@@ -346,3 +346,11 @@ mike.score$.next(50); // (錯誤：next is not a function)
 今天我們介紹了幾種基本的建立 Observable 的方法，這些方法各有不同的使用情境，可以針對需要的情況使用。
 
 `Subject` 系列類別繼承了 `Observable` 類別，並給予更多的彈性，同時 `Subject` 和 `Observable` 對於觀察者 (Observer) 的處理方式也有所不同，這部分我們在明天的文章再來介紹 Cold Observable 和 Hot Observable 的區別。
+
+# 相關資源
+
+- [Observable](https://rxjs-dev.firebaseapp.com/api/index/class/Observable)
+- [Subject](https://rxjs-dev.firebaseapp.com/api/index/class/Subject)
+- [BehaviorSubject](https://rxjs-dev.firebaseapp.com/api/index/class/BehaviorSubject)
+- [ReplaySubject](https://rxjs-dev.firebaseapp.com/api/index/class/ReplaySubject)
+- [AsyncSubject](https://rxjs-dev.firebaseapp.com/api/index/class/AsyncSubject)
