@@ -224,6 +224,15 @@ source$.subscribe(data => console.log(data));
 
 程式碼：https://stackblitz.com/edit/mastering-rxjs-operator-ajax
 
+# 本日小結
+
+- `EMPTY`：用來產生一條「空的 Observble」，也就是沒有發生任合事件值，就結束。
+- `of`：用裡面的參數當作每次事件的資料。
+- `range`：用一定範圍內的數值資料作為事件的資料。
+- `iif`：依照第一個參數的條件，決定要使用不同的 Observable 資料流。
+- `throwError`：讓 Observable 發生錯誤。
+- `ajax`：呼叫一個 HTTP 請求作為 Observsble 的事件資料。
+
 # 相關資源
 
 - [Operators - EMPTY](https://rxjs-dev.firebaseapp.com/api/index/const/EMPTY)
