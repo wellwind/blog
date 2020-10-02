@@ -174,6 +174,10 @@ race(sourceA$, sourceB$, sourceC$)
 
 這兩天我們介紹了「組合/建立類型」的 operators，這類型的 opereators 都是透過不同的 Observables 來源組合成新的 Observables，讓我們能更靈活的操作各種 Observables。
 
+- `combineLatest`：同時訂閱所有內部 Observables，並將內部 Observables 裡面的最後一次事件資料組合起來。
+- `forkJoin`：同時訂閱所有內部 Observables，並將內部 Observables 「完成」前的最後一個事件資料組合起來。
+- `race`：同時訂閱所有內部 Observables，當其中一個 Observable 先發生第一次事件後，以此 Observable 為主，並將其他 Observable 取消訂閱。
+
 跟建立類型相關的 operators 介紹到此為止，明天開始讓我們介紹這種轉換資料流向的 operators 囉。
 
 # 相關資源
