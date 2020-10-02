@@ -209,7 +209,13 @@ setTimeout(() => {
 以下範例會在 3000 毫秒後開始以每 1000 毫秒一個新事件的頻率計時：
 
 ```typescript
-timer(3000, 1000).subscribe(data => console.log(`timer 示範: ${data}`));
+timer(3000, 1000)
+  .subscribe(data => console.log(`timer 示範 (1): ${data}`));
+// timer 示範 (1): 0
+// timer 示範 (1): 1
+// timer 示範 (1): 2
+// timer 示範 (1): 3
+// ....
 ```
 
 彈珠圖：
@@ -229,6 +235,21 @@ timer(0, 10000).subscribe(data => console.log(`timer 示範: ${data}`));
 
 ```
 0----1----2----3----......
+```
+
+還有一個重點，`timer` 如果沒有設定第二個參數，代表在指定的時間發生第一次事件後，就不會再發生任何事件了。
+
+```typescript
+timer(3000).subscribe(data => {
+  console.log(`timer 示範 (2): ${data}`);
+});
+// timer 示範 (2): 0
+```
+
+彈珠圖：
+
+```
+--------------------0|
 ```
 
 程式碼：https://stackblitz.com/edit/mastering-rxjs-operator-timer
