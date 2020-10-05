@@ -69,12 +69,6 @@ zip(sourceA$, sourceB$, sourceC$)
 
 `combineLatest` 在實務上組合各種 Observables 的時候還蠻常用的，之後實戰練習的時候再來詳細介紹一下。
 
-{% note warning %}
-
-`combineLatest` 在 RxJS 7 之後被更名為 `combineLatestWith`；`combineLatest` 會在 RxJS 8 之後移除。
-
-{% endnote %}
-
 程式碼：https://stackblitz.com/edit/mastering-rxjs-operator-combinelatest
 
 # forkJoin

@@ -76,12 +76,6 @@ concat(sourceA$, sourceB$, source$)
                            ^ 到這裡 sourceB$ 結束，接續下一個 sourceC$
 ```
 
-{% note warning %}
-
-`concat` 在 RxJS 7 之後被更名為 `concatWith`；`concat` 會在 RxJS 8 之後移除。
-
-{% endnote %}
-
 程式碼：https://stackblitz.com/edit/mastering-rxjs-operator-concat
 
 # merge
@@ -137,12 +131,6 @@ merge(sourceA$, sourceB$, sourceC$)
 
 之所以會這樣是因為 `sourceA$`、`sourceB$` 和 `sourceC$` 是同時開始的，只是透過 `merge` 組合成一條 Observable。
 
-{% note warning %}
-
-`merge` 在 RxJS 7 之後被更名為 `mergeWith`；`merge` 會在 RxJS 8 之後移除。
-
-{% endnote %}
-
 程式碼：https://stackblitz.com/edit/mastering-rxjs-operator-merge
 
 # zip
@@ -185,12 +173,6 @@ zip(sourceA$, sourceB$, sourceC$)
 這邊彈珠圖刻意把時間拉開一點，讓各位可以注意到合併的感覺是依照事件發生的次序進行合併的，也就是「所有第一次發生的事件」會合併成一組，「所有第二次發生的事件」會合併成另外一組，以此類推。
 
 {% asset_img 02.jpg %}
-
-{% note warning %}
-
-`zip` 在 RxJS 7 之後被更名為 `zipWith`；`zip` 會在 RxJS 8 之後移除。
-
-{% endnote %}
 
 程式碼：https://stackblitz.com/edit/mastering-rxjs-operator-zip
 
