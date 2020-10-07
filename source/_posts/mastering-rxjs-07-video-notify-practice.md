@@ -45,7 +45,7 @@ youtuber$.next(1);
 // 建立觀察者 A 物件
 const observerA = {
   next: id => {
-    console.log(`我是觀察者 B，我收到影片 ${id} 上架通知了`);
+    console.log(`我是觀察者 A，我收到影片 ${id} 上架通知了`);
   },
   error: () => {}, // 沒有要處理「錯誤」的話不一定要加上這一行
   complete: () => {} // 沒有要處理「完成」的話不一定要加上這一行
