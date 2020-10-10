@@ -1,15 +1,17 @@
 ---
-title: "[RxJS] 過濾類型 Operators (5) - auditTime / audit / sampleTime / sample / debounceTime / debounce"
+title: "[RxJS] 過濾類型 Operators (5) - sampleTime / sample / auditTime / audit / debounceTime / debounce"
 date: 2020-10-10 18:00:00
 category:
 	- "打通 RxJS 任督二脈"
 	- "第 12 屆鐵人賽"
 tags:
 	- RxJS
-	- distinct
-	- distinctKey
-	- distinctUntilChanged
-	- distinctUntilKeyChanged
+	- sampleTime
+	- sample
+	- auditTime
+	- audit
+	- debounceTime
+	- debounce
 ---
 
 今天分享的過濾類型 operators 都具有依照時間條件讓原來資料流不要太過頻繁發生件的意味，但各自有不同處理邏輯，有些也比較抽象，建議多看看彈珠圖來理解。
