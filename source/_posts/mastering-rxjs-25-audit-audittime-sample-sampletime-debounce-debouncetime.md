@@ -287,7 +287,7 @@ debounce((value) => interval(value * 1000))
 
 # 相關資源
 
-- [Opereator - sampleTime](https://rxjs-dev.firebaseapp.com/api/operators/sampleTime)
+- [Operator - sampleTime](https://rxjs-dev.firebaseapp.com/api/operators/sampleTime)
 - [Operator - sample](https://rxjs-dev.firebaseapp.com/api/operators/sample)
 - [Operator - auditTime](https://rxjs-dev.firebaseapp.com/api/operators/auditTime)
 - [Operator - audit](https://rxjs-dev.firebaseapp.com/api/operators/audit)
