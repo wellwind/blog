@@ -153,6 +153,9 @@ auditTime(1500)
 直接來看看程式碼和彈珠圖：
 
 ```typescript
+const source$ = interval(1000);
+const durationSelector = (value) => interval(value * 1200);
+
 source$.pipe(
   audit(durationSelector)
 ).subscribe(data => {
