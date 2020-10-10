@@ -143,7 +143,7 @@ auditTime(1500)
 
 # audit
 
-`audit` 和 `autidTime` 非常類似，都是在一個指定的時間發生時讓來源 Observable 最近一次的事件發生在新的 Observable 上，差別在 `auditTime` 是直接指定時間，而 `audit` 則是傳入一個 `durationSelector` callback function，audit 會將來源 Observable 事件值傳入 callback function，同時回傳一個 Observable 或 Promise，`audit` 會依此資訊來決定下次事件發生的時機，處理邏輯如下：
+`audit` 和 `auditTime` 非常類似，都是在一個指定的時間發生時讓來源 Observable 最近一次的事件發生在新的 Observable 上，差別在 `auditTime` 是直接指定時間，而 `audit` 則是傳入一個 `durationSelector` callback function，audit 會將來源 Observable 事件值傳入 callback function，同時回傳一個 Observable 或 Promise，`audit` 會依此資訊來決定下次事件發生的時機，處理邏輯如下：
 
 1. 每當來源 Observable 發生新的事件時，就會訂閱 `durationSelector` 回傳的資料流
 2. 在`durationSelector` 回傳的資料流有新的事件前，來源 Observable 的事件都不會發生在新的 Observable 上
