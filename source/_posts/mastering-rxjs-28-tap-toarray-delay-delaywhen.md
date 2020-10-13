@@ -103,7 +103,7 @@ interval(1000).pipe(
 
 {% note danger %}
 
-此寫法在 RxJS 7 將被標示為棄用，沒意外的話 RxJS 8 會移除，只保留傳入 Observer 物件的寫法。
+傳入 3 個 callback 的寫法在 RxJS 7 將被標示為棄用 (只傳入一個處理 `next()` 沒問題)，沒意外的話 RxJS 8 會移除，屆時要處理 `error()` 或 `complete()` 需要使用傳入 Observer 物件的寫法。
 
 {% endnote %}
 
@@ -111,7 +111,7 @@ interval(1000).pipe(
 
 # toArray
 
-`toArray` 在來源 Observable 發生事件時，不會立即發生在新的 Observable 上，而是將資料暫存起來，當來源 Observable 結束時，將這些資料組合成一個陣列發生在新的 Observable 上。
+`toArray` 在來源 Observable 發生事件時，不會立即發生在新的 Observable 上，而是將資料暫存起來，當來源 Observable **結束**時，將這些資料組合成一個陣列發生在新的 Observable 上。
 
 ```typescript
 interval(1000)
@@ -252,7 +252,7 @@ delayWhen(
 # 本日小結
 
 - `tap`：可以用來隔離「side effect」以及「非 side effect」，在 Observable 運作過程中，不論是 `next()`、`error()`或`complete()`，只要有 side effect 邏輯都建議放到 `tap` 內處理。
-- `toArray`：將來源 Observable 資料彙整成一個陣列。
+- `toArray`：將來源 Observable 資料彙整成一個陣列。`toArray` 可以應用來處理陣列資料。
 - `delay`：延遲一段時間後，才開始運行來源 Observable。
 - `delayWhen`：可自行設計 Observable，來決定來源 Observable 每個事件的延遲邏輯。
 
