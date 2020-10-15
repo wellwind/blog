@@ -93,7 +93,7 @@ of(...studentScore).pipe(
   // 專注處理判斷是否及格
   map(student => ({...student, pass: student.newScore >= 60}))
 ).subscribe(student => {
-  // 轉著處理如何顯示
+  // 專注處理如何顯示
   console.log(
     `map 示範 (3): ${student.name} 成績為 ${student.newScore} (${student.pass ? '及格': '不及格'})`);
 });
