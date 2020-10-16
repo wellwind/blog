@@ -57,7 +57,7 @@ https://stackblitz.com/edit/mastering-rxjs-practice-search-finished
 
 {% asset_img 02.jpg %}
 
-再輸入文字時，可以提供符合文字的 repositories 建議。
+當輸入文字時，可以提供符合文字的 repositories 建議。
 
 ## 相關檔案
 
