@@ -302,7 +302,7 @@ export const todoReducer = (currentState, action) => {
 
 其他兩個 Action 也是一樣，都是針對資料做處理，就不浪費篇幅，完成程式碼在這裡：
 
-https://stackblitz.com/edit/mastering-rxjs-flux-pattern-finished?file=todo-store%2Ftodo-reducer.ts
+https://stackblitz.com/edit/mastering-rxjs-flux-pattern-finished
 
 ### Dispatcher 邏輯
 
