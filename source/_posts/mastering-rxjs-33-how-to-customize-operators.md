@@ -183,7 +183,7 @@ of(0, 16, 36, 49, 100)
 
 ## 從新的 Observable 開始
 
-另外一種自訂 operator 的方法，就是從一個新的 Observable 開始，這麼做的好處是具有更大的談性，不過就需要更全面地進行考量囉！一樣拿上述的例子來看，中間的各種觀念就省略了，直接看看程式碼：
+另外一種自訂 operator 的方法，就是從一個新的 Observable 開始，這麼做的好處是具有更大的彈性，不過就需要更全面地進行考量囉！一樣拿上述的例子來看，中間的各種觀念就省略了，直接看看程式碼：
 
 ```typescript
 const adjustAndFilterPassScoreBy = (passScore: number) => {
