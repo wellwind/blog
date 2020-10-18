@@ -222,7 +222,7 @@ const adjustAndFilterPassScoreBy = (passScore: number) => {
 
 {% note info %}
 
-這種從新的 Observable 開始處理的方式，也才是大多 RxJS operators 底層實際處理的方式。
+這種從新的 Observable 開始處理的方式，也是許多 RxJS operators 底層實際處理的方式。
 
 {% endnote %}
 
