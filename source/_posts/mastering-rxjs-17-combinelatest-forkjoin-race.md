@@ -17,7 +17,7 @@ tags:
 
 # combineLatest
 
-`combineLatest` 跟昨天介紹過的 `zip` 非常像，差別在於 `zip` 會依序組合，而 `combineLatest` 會在資料留有事件發生時，直接跟目前其他資料流的「最後一個事件」組合在一起，也因此這個 operator 是 `latest` 結尾，另一個不同的地方是，`comeintLatest` 內的參數是一個 Observable 陣列，訂閱後會把陣列內的這些 Observables 組合起來；直接看看程式碼：
+`combineLatest` 跟昨天介紹過的 `zip` 非常像，差別在於 `zip` 會依序組合，而 `combineLatest` 會在資料流有事件發生時，直接跟目前其他資料流的「最後一個事件」組合在一起，也因此這個 operator 是 `latest` 結尾，另一個不同的地方是，`comeintLatest` 內的參數是一個 Observable 陣列，訂閱後會把陣列內的這些 Observables 組合起來；直接看看程式碼：
 
 ```typescript
 const sourceA$ = interval(1000).pipe(

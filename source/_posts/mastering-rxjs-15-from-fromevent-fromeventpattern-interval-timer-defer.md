@@ -48,7 +48,7 @@ from([1, 2, 3, 4]).subscribe(data => {
 
 ## 傳遞可迭代的物件當參數
 
-在之前的文章中我們介紹過 Iterator Pattern，JavaScript 原生也支援讓 `for` 語法等支援的迭代器寫法，只要支援疊代器的物件，也可以直接傳入 `from` 中，結果會傳入一般的陣列相同，把陣列中所有的內容作為事件傳遞給訂閱的觀察者。
+在之前的文章中我們介紹過 Iterator Pattern，JavaScript 原生也支援讓 `for` 語法等支援的迭代器寫法，只要支援疊代器的物件，也可以直接傳入 `from` 中，結果和傳入一般的陣列相同，把陣列中所有的內容作為事件傳遞給訂閱的觀察者。
 
 ```typescript
 // 使用 generator 建立 iterable
@@ -71,7 +71,7 @@ from(range(1, 4)).subscribe(data => {
 
 ## 傳遞 Promise 當參數
 
-Promise 是前端處理非同步最常見的手段，如 fetch API 本身也是回傳一個 Promise 物件，有了 `from` 我們也能輕易將一個 Promise 物件:
+Promise 是前端處理非同步最常見的手段，如 fetch API 本身也是回傳一個 Promise 物件，有了 `from` 我們也能輕易將一個 Promise 物件建立為新的 Observable:
 
 ```typescript
 // 傳入 Promise 當參數
@@ -256,7 +256,7 @@ timer(3000).subscribe(data => {
 
 # defer
 
-`defer` 可以會將建立 Observable 的邏輯包裝起來，提供更一致的使用感覺，使用 `defer` 時需要傳入一個 factroy function 當作參數，這個 function 裡面需要回傳一個 Observable (或 Promise 也行)，當 `defer` 建立的 Observable 被訂閱時，會呼叫這個 factroy function，並以裡面回傳的 Observer 當作資料流：
+`defer` 會將建立 Observable 的邏輯包裝起來，提供更一致的使用感覺，使用 `defer` 時需要傳入一個 factroy function 當作參數，這個 function 裡面需要回傳一個 Observable (或 Promise 也行)，當 `defer` 建立的 Observable 被訂閱時，會呼叫這個 factroy function，並以裡面回傳的 Observer 當作資料流：
 
 ```typescript
 const factory = () => of(1, 2, 3);

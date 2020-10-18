@@ -144,7 +144,7 @@ emitOneIfEven(2).subscribe(data => console.log(`iif 範例 (2): ${data}`));
 iif(() => data % 2 === 0, of('Hello'), EMPTY);
 ```
 
-也就是當傳入的 `data` 是偶數時，回傳 `of(1)` 這個 Observable，若不是則不做任何事情，也就是回傳 `EMPTY` 這個 Observable。
+也就是當傳入的 `data` 是偶數時，回傳 `of('Hello')` 這個 Observable，若不是則不做任何事情，也就是回傳 `EMPTY` 這個 Observable。
 
 當需要一些簡單條件來控制使用的 Observable 時，`iif` 就很方便囉！
 
@@ -163,7 +163,7 @@ source$.subscribe({
   error: (error) => console.log(`throwError 範例 (error): ${error}`),
   complete: () => console.log('throwError 範例 (complete)'),
 });
-// throwError 範例 (next): 發生錯誤了
+// throwError 範例 (error): 發生錯誤了
 ```
 
 `throwError` 通常不會被單獨使用，而是在使用 `pipe` 設計整條 Observable 時，用來處理錯誤的。

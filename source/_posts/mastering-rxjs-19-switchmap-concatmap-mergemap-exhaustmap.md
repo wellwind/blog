@@ -81,7 +81,7 @@ interval(3000).pipe(
 
 程式碼：https://stackblitz.com/edit/mastering-rxjs-operator-switchmap-02
 
-來源 Observable (`timer(0, 3000)`) 每次有新事件發生時，會產生新的 Observable (`timer(0, 1000)`)，如果上一次 Observable 沒有完成，會被退訂閱掉，「切換」成新的 Observable。因此每次都只會產生 `0, 1, 2` 的循環。
+來源 Observable (`interval(0, 3000)`) 每次有新事件發生時，會產生新的 Observable (`timer(0, 1000)`)，如果上一次 Observable 沒有完成，會被退訂閱掉，「切換」成新的 Observable。因此每次都只會產生 `0, 1, 2` 的循環。
 
 直接畫張彈珠圖來理解看看：
 
@@ -208,7 +208,7 @@ source1$.pipe(concatMap(() => source2$))
 
 # mergeMap
 
-`mergeMap` 會把所有被轉換成的 Observable 「合併」(merge)到同一條資料流內，因此會有平行處理的概念，也就是每此轉換的 Observable 都會直接訂閱，不會退訂上一次的 Observable，也不會等待上一次的 Observable 結束，因此任何目前存在中的 Observable 資料流有心事件，都會被轉換成整體資料流的事件，`mergeMap` 
+`mergeMap` 會把所有被轉換成的 Observable 「合併」(merge)到同一條資料流內，因此會有平行處理的概念，也就是每此轉換的 Observable 都會直接訂閱，不會退訂上一次的 Observable，也不會等待上一次的 Observable 結束，因此任何目前存在中的 Observable 資料流有新事件，都會被轉換成整體資料流的事件，`mergeMap` 
 
 ```typescript
 const source1$ = timer(0, 3000);
@@ -246,7 +246,7 @@ source1$.pipe(
 
 # exhaustMap
 
-`exhaust` 有「力竭」的意思，可以把它理解成，來源 Observable 有新事件發生時，它是沒有力氣產生新的 Observable 的；也就是說當來源事件發生時，如果上一次轉換的 Observable 結束，就不會產生新的 Observable。
+`exhaust` 有「力竭」的意思，可以把它理解成，來源 Observable 有新事件發生時，它是沒有力氣產生新的 Observable 的；也就是說當來源事件發生時，如果上一次轉換的 Observable 尚未結束，就不會產生新的 Observable。
 
 讓我們直接用彈珠圖來解釋：
 

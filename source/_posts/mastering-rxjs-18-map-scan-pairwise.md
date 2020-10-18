@@ -118,8 +118,6 @@ of(...studentScore).pipe(
 ```typescript
 const donateAmount = [100, 500, 300, 250];
 
-constconst donateAmount = [100, 500, 300, 250];
-
 const accumDonate$ = of(...donateAmount).pipe(
   scan(
     (acc, value) => acc + value, // 累加函數
