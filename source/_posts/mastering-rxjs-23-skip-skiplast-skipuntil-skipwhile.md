@@ -175,7 +175,7 @@ skipWhile(data => data < 2)
 - `skip`：從訂閱開始後忽略指定數量的事件資料。
 - `skipLast`：依照指定的數量，忽略整個 Observable 最後的事件數量。
 - `skipUntil`：持續忽略目前 Observable 的事件資料，直到另一個 Observable 發生事件為止。
-- `skipWhile`：持續忽略目前 Observable 的事件資料，直到事件資料值不符合制定條件為止。
+- `skipWhile`：持續忽略目前 Observable 的事件資料，直到事件資料值不符合指定條件為止。
 
 # 相關資源
 

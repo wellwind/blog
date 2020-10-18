@@ -144,7 +144,7 @@ setTimeout(() => {
 
 # mergeAll
 
-如同 `switchMap` 和 `switchAll` 的差別一樣，`mergeMap` 和 `mergeAll` 在得到新的資料流後會直接訂閱，且不退定之前的資料流，因此所有資料流會依照各自發生的時間直接的發生在 `mergeAll` 建立的資料流上：
+如同 `switchMap` 和 `switchAll` 的差別一樣，`mergeMap` 和 `mergeAll` 在得到新的資料流後會直接訂閱，且不退訂之前的資料流，因此所有資料流會依照各自發生的時間直接的發生在 `mergeAll` 建立的資料流上：
 
 ```typescript
 const generateStream = round =>

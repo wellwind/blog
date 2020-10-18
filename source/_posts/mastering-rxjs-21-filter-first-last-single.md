@@ -12,7 +12,7 @@ tags:
 	- single
 ---
 
-今天開始我們來介紹「過濾類型」的 operators，「過濾類型」的 operators 主要功能是讓 Observable 資料流內的事件在符合特定條件時才發生；這類型的 operators 數量不少，也都很實用，且多半也不太困難，執得多花點時間學習。
+今天開始我們來介紹「過濾類型」的 operators，「過濾類型」的 operators 主要功能是讓 Observable 資料流內的事件在符合特定條件時才發生；這類型的 operators 數量不少，也都很實用，且多半也不太困難，值得多花點時間學習。
 
 <!-- more -->
 
