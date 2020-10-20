@@ -469,7 +469,7 @@ https://stackblitz.com/edit/mastering-rxjs-queuescheduler?file=index.ts
 # 相關資源
 
 - [RxJS Scheduler 文件](https://rxjs-dev.firebaseapp.com/guide/scheduler)
-- [Operators - schedulerd](https://rxjs-dev.firebaseapp.com/api/index/function/scheduled)
+- [Operators - scheduled](https://rxjs-dev.firebaseapp.com/api/index/function/scheduled)
 - [Operators - ObserveOn](https://rxjs-dev.firebaseapp.com/api/operators/observeOn)
 - [Operators - SubscribeOn](https://rxjs-dev.firebaseapp.com/api/operators/subscribeOn)
 
