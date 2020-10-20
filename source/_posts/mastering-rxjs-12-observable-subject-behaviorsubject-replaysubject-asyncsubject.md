@@ -47,7 +47,7 @@ const source$ = new Observable(subscriber => {
   subscriber.next(2);
   subscriber.next(3);
   subscriber.next(4);
-  console.log('steam 結束');
+  console.log('stream 結束');
   subscriber.complete();
 });
 ```
@@ -101,7 +101,7 @@ const source$ = new Observable(subscriber => {
   setTimeout(() => {
     subscriber.next(4);
     subscriber.complete();
-    console.log('steam 結束');
+    console.log('stream 結束');
   });
 });
 ```
