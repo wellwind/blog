@@ -86,7 +86,7 @@ search:
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/wellwind/blog.git
+  repo: git@github.com:wellwind/blog.git
   branch: gh-pages
 
 # Sitemap
