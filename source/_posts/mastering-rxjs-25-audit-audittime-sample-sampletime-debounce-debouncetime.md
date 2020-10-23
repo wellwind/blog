@@ -78,7 +78,7 @@ source$.pipe(
 setTimeout(() => notifier$.next(), 1500);
 // sample 示範: 0
 setTimeout(() => notifier$.next(), 1600);
-// sample 示範: 0
+// (沒事)
 setTimeout(() => notifier$.next(), 5000);
 // sample 示範: 4
 ```
@@ -87,8 +87,8 @@ setTimeout(() => notifier$.next(), 5000);
 
 ```
        ---0---1---2---3---4---5....
-sample(---------x---------x----....)
-       ---------1---------4----....
+sample(-----x---x---------x----....)
+       -----0-------------4----....
 ```
 
 運作過程如下：
@@ -104,7 +104,7 @@ sample(---------x---------x----....)
 
 # auditTime
 
-`auditTime` 運作方式跟 `sampleTime` 非常像，差別在 `auditTime` 是依照「新事件發生後的指定時間內」來除裡，而 `sampleTime` 則是單純的「時間週期循環」，我們可以在 `auditTime` 內指定一個時間間隔，每當來源 Observable 有新事件發生時，就會等待一段時間，當指定時間間隔到了之後，才讓新的 Observable 發生來源 Observable 在這段時間內發生過的最後一次事件資料。
+`auditTime` 運作方式跟 `sampleTime` 非常像，差別在 `auditTime` 是依照「新事件發生後的指定時間內」來處理，而 `sampleTime` 則是單純的「時間週期循環」，我們可以在 `auditTime` 內指定一個時間間隔，每當來源 Observable 有新事件發生時，就會等待一段時間，當指定時間間隔到了之後，才讓新的 Observable 發生來源 Observable 在這段時間內發生過的最後一次事件資料。
 
 ```typescript
 interval(1000).pipe(
@@ -175,7 +175,7 @@ audit((value) => interval(value * 1200))
 ---0--------2-----------------6....
    ^ 第一次是 interval(0)，因此直接發生在新的 Observable
        ^ 之後發生事件 1，audit() 內會等 1200 毫秒
-            ^ 1200 毫秒後，發生讓來源 Observable 最新事件值發生
+            ^ 1200 毫秒後，讓來源 Observable 最新事件值發生
 ```
 
 整個運作過程如下：
@@ -272,7 +272,7 @@ debounce((value) => interval(value * 1000))
 2. `source$` 發生事件 `1` ，訂閱 `interval(1000)`，下一個事件在 1000 毫秒內沒有發生，因此新的 Observable 會發生事件 `1`
 3. `source$` 發生事件 `2` ，訂閱 `interval(2000)`，下一個事件在 2000 毫秒內沒有發生，因此新的 Observable 會發生事件 `2`
 4. `source$` 發生事件 `3` ，訂閱 `interval(3000)`，而下個事件會在 3000 毫秒內發生，因此事件 `3` 不會在新的 Observable 上發生
-5. 由於接下來都需要超過 3000 毫秒沒新事件才可以在新的 Observable 上發生，但來源 Observable 沒 3000 毫秒都會發新的事件值，因此新的 Observable 不再有機會發生新的事件
+5. 由於接下來都需要超過 3000 毫秒沒新事件才可以在新的 Observable 上發生，但來源 Observable 每 3000 毫秒都會發新的事件值，因此新的 Observable 不再有機會發生新的事件
 
 程式碼：https://stackblitz.com/edit/mastering-rxjs-operator-debounce
 
