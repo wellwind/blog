@@ -28,14 +28,14 @@ https://github.com/wellwind/rxjs-marble-testing-demo
 
 ## 專案結構
 
-範例專案內多數都是基些基本的設定如套件設定、TypeScript 設定等等，另外有兩個重要的目錄：
+範例專案內多數都是些基本的設定如使用套件、TypeScript 設定等等，另外有兩個重要的目錄：
 
 - `src`：所有要測試的目標程式碼所在的位置
 - `test`：所有針對測試目標所撰寫的測試程式碼
 
 ## 測試目標
 
-在 RxJS 中，基本上會有兩件事情要測試，分別是
+在 RxJS 中，基本上有兩件事情要測試，分別是
 
 - Observable 訂閱得到的結果是否正確
 - Observable 資料流動的過程是否正確
@@ -72,7 +72,7 @@ export const debounceInput = ()
     );
 ```
 
-接著我們來看看兩種不同的測試手法，一種很簡單，但比較難測試各種情境；另外一種比較複雜，但可以應付幾乎所有情境的測試。
+接著就讓我們來看看兩種不同的測試手法，一種很簡單，但比較難測試各種情境；另外一種比較複雜，但可以應付幾乎所有情境的測試。
 
 # 在 subscribe callback 內進行測試
 
@@ -110,11 +110,11 @@ it('測試多個事件的 Observable', () => {
 });
 ```
 
-上述程式第 4 行將每次事件資料存到 `actual` 陣列中，接著在第 7 行比較結果。由於整個 Observable 是「同步執行」的，因此可以確定所有事件都發送完畢，Observable 結束後，才進行比較。
+上述程式第 4 行將每次事件資料存到 `actual` 陣列中，接著在第 7 行比較結果。由於整個 Observable 是「同步執行」的，因此可以確定所有事件都發送完畢，直到 Observable 結束後才進行比較。
 
 ## 非同步 Observable 測試
 
-如果是「非同步執行」的 Observable 如 `timer` 處理呢？那就先要看測試框架是否支援非同步處理了，以 Jasmine 來說可以在測試 function 內傳入一個 `done` 的 function，並在非同步程式中測試完畢後呼叫：
+如果是「非同步執行」的 Observable 如 `timer` 處理呢？那就先要看測試框架是否支援非同步處理了，以 Jasmine 來說可以在測試 function 內傳入一個 `done` 的 function，並在非同步程式中測試完畢後呼叫它代表非同步程式結束：
 
 ```typescript
 // const emitOntToFourPerSecond$ = timer(0, 1000).pipe(
@@ -174,7 +174,7 @@ it('單獨測試一個 operator', () => {
 
 # Marble Testing 彈珠圖測試
 
-上一段落我們單純的使用測試框架提供的功能來進行測試，已經足以應付一些情境了，但還是有些情境不是那麼適合，因此 RxJS 提供了一個 **TestScheduler** 測試工具，來協助我們以更直覺、圖像的方式處理各種同步、非同步的 RxJS 程式碼！
+上一段落我們單純的使用測試框架提供的功能來進行測試，已經足以應付不少情境了，但還是有些情境不是那麼適合，因此 RxJS 提供了一個 **TestScheduler** 測試工具，來協助我們以更直覺、圖像的方式處理各種同步、非同步的 RxJS 程式碼！
 
 {% note info %}
 
@@ -329,8 +329,8 @@ it('測試 take operator', () => {
 - 第 2 行：呼叫 `testScheduler.run` 開始進行彈珠圖測試
 - 第 3 行：將需要的程式從 `helpers` 中取出
 - 第 5 行：來源 Observable 的彈珠圖
-- 第 6 行：實際測試的 Observable 訂閱後實際上的的訂閱時機點
-- 第 7 行：實際測試的 Observable 實際上運行的彈珠圖
+- 第 6 行：實際測試的 Observable 訂閱後預期的訂閱時機點
+- 第 7 行：實際測試的 Observable 預期產出的彈珠圖
 - 第 9 行：依照第 5 行的彈珠圖，建立一個 Cold Observable
 - 第 10 行：建立實際要測試的 Observable，一般來說就是來源 Observable (第 9 行建立) 加上要測試的 operators (以這邊的例子是 `take(3)`)
 - 第 12 行，使用 `expectObservable` 測試 `source$` 訂閱後產生的資料流彈珠圖是否符合預期
@@ -488,7 +488,7 @@ it('使用彈珠圖測試多個事件的 Observable', () => {
 
 一樣要注意的是資料型態問題。
 
-### 測試非同步的  Observable
+### 測試非同步的 Observable
 
 要測試非同步 Observable 也不困難，在彈珠圖上標記經過時間即可：
 
