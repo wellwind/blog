@@ -94,7 +94,7 @@ sample(-----x---x---------x----....)
 運作過程如下：
 
 1. `source$` 是每 1000 毫秒發生一次事件的 Observable
-2. 1500 毫秒時，`notifier$` 發出事件，取樣一次，此時 0~1500 毫秒內來源 Observable 最後一次事件值為 `1`，發生在新的 Observable 上
+2. 1500 毫秒時，`notifier$` 發出事件，取樣一次，此時 0~1500 毫秒內來源 Observable 最後一次事件值為 `0`，發生在新的 Observable 上
 3. 1600 毫秒時，`notifier$` 發生事件，取樣一次，此時 1501~1600 毫秒內來源 Observable 沒有任何事件發生過，因此新的 Observable 上也沒有事件發生
 4. 5000 毫秒時，`notifier$` 發生事件，取樣一次，此時 1601~5000 毫秒內來源 Observable 最後一次事件值為 `4`，發生在新的 Observable 上
 
