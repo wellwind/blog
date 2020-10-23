@@ -60,7 +60,7 @@ console.log('end');
 
 程式碼：https://stackblitz.com/edit/mastering-rxjs-make-observable-async
 
-此時因為 `of(1, 2, 3)` 是非同步執行的，因此結果就變成：
+此時因為 `of(1, 2, 3)` 是非同步執行的，結果就變成：
 
 ```typescript
 start
@@ -71,7 +71,7 @@ end
 complete
 ```
 
-很簡單吧！透過 Scheduler 可以幫助我們快速的將同步程式切換成非同步程式，當然實際上不只這樣而已，還有許多使用 Scheduler 的技巧，但在介紹更多內容之前，先讓我們簡單(?)理解一下非同步處理的核心邏輯。
+很簡單吧！透過 Scheduler 可以幫助我們快速的將同步程式切換成非同步程式，當然實際上不只這樣而已，還有許多 Scheduler 的使用技巧，但在介紹更多內容之前，先讓我們簡單(?)理解一下非同步處理的核心邏輯。
 
 # 認識 JavaScript 處理非同步的原理
 
@@ -89,7 +89,7 @@ Promise.resolve('B')
 
 ## 認識 Microtask 與 Macrotask
 
-首先，我們必須先知道的是當 JavaScript 開始執行一段程式時，會產生一個「工作階段 (task)」，並「同步」的執行相關的程式碼，而當遇到 `Promise` 或 `setTimeout` 這類非同步呼叫時，會先將裡面的程式碼丟到一個「等待區 (task queue)」，然後繼續處理其他同步的程式碼，直到目前同步的程式碼處理完後，再從「等待區」將程式碼拿出來以「同步」的方式執行。
+首先，我們必須先知道的是當 JavaScript 開始執行一段程式時，會產生一個「工作階段 (task)」，並「同步」的執行相關的程式碼，而當遇到 `Promise` 或 `setTimeout` 這類非同步呼叫時，會先將裡面的程式碼丟到一個「等待區 (task queue)」，然後繼續處理其他同步的程式碼，直到目前同步的程式碼處理完後，再從「等待區」將程式碼拿出來以「同步」的方式執行裡面的程式碼
 
 由於等待區是一個佇列 (queue) 的資料結構，佇列的特色就是先進先出，因此先進入等待區的程式會先被執行，以下兩段非同步程式呼叫執行後會先印出 `A` 再印出 `B`：
 
@@ -106,7 +106,7 @@ Promise.resolve('B')
 - Microtask queue：如 `Promise` 或 node.js 中的 `process.nextTick`，都會丟到 microtask queue 中。
 - Macrotask queue：如 `setTimeout` 或 `requestAnimationFrame`，都會丟到 marcotask queue 中。
 
-JavaScript 在同步執行完畢時，會先將所有的 microtask queue 中的程式執行完畢，確認清空 microtask queue 的工作後，再處理 macrotask queue 中的工作，也因此同時有 `Promise` 和 `setTimeout()` 呼叫時，`promise` 會進入 microtask queue 而 `setTimeout` 則進入 macrotask queue，所以 `Promise` 的程式會先進行處理，之後才處理 `setTimeout` 的程式。
+JavaScript 在同步執行完畢時，會先將所有的 microtask queue 中的程式執行完畢，確認清空 microtask queue 的工作後，再處理下一個 macrotask queue 中的工作，也因此同時有 `Promise` 和 `setTimeout()` 呼叫時，`promise` 會進入 microtask queue 而 `setTimeout` 則進入 macrotask queue，所以 `Promise` 的程式會先進行處理，之後才處理 `setTimeout` 的程式。
 
 ## 影片支援
 
@@ -226,7 +226,7 @@ end
 
 ## 使用 asapScheduler
 
-`asapScheduler` 會將每次事件值都用「非同步」的方式處理，因此執行順序為：
+`asapScheduler` 會將每次 Observable 事件值都用「非同步」的方式處理，因此執行順序為：
 
 ```
 start
@@ -234,13 +234,13 @@ end
 complete -> 因為是非同步執行 
 ```
 
-`asapScheduler` 的非同步行為會進入 microtask，而畫面渲染需要等 microtask queue 清空，因此畫面中的紅色方塊雖然會「非同步的」被更新座標，但會在最後「直接出現在右下角」。
+`asapScheduler` 的非同步行為會進入 microtask，而再 microtask 階段是不會處理畫面渲染的，因此畫面中的紅色方塊雖然會「非同步的」被更新座標，但會在最後「直接出現在右下角」。
 
 {% asset_img 04.jpg %}
 
 ## 使用 asyncScheduler
 
-`asyncScheduler` 也會將每次事件值使用「非同步」的方式處理，不過因此執行順序一樣是：
+`asyncScheduler` 也會將每次 Observable 事件值使用「非同步」的方式處理，所以執行順序一樣是：
 
 ```
 start
@@ -248,13 +248,13 @@ end
 complete
 ```
 
-不過 `asyncScheduler` 是使用 macrotask 處理非同步呼叫，因此每次事件跟事件發生之間會產生畫面渲染，所以可以看到紅色方塊往右下角移動的動畫。
+不過 `asyncScheduler` 是使用 macrotask 處理非同步呼叫，而畫面渲染行為會發生在每次 macrotask 結束之間，因此每次 Observable 的事件跟事件發生之間會產生畫面渲染，結果就是可以看到紅色方塊往右下角移動的動畫。
 
 {% asset_img 05.jpg %}
 
 ## 使用 animationFrameScheduler
 
-`animationFrameScheduler` 觸發的時機點和畫面重繪 (repaing) 定義的時機點一樣，就跟我們使用 JavaScript 的 `requestAnimationFrame` 一樣，基本上是 1/60 秒發生一次，使用 `requestAnimationFrame` 的時機通常是使用 JavaScript 處理動畫，可以避免使用 `setTimeout((), 1)` 運算太頻繁，但畫面跟新頻率不需要這麼高的問題。
+`animationFrameScheduler` 觸發的時機點和畫面重繪 (repaint) 定義的時機點一樣，就跟我們使用 JavaScript 的 `requestAnimationFrame` 一樣，基本上是 1/60 秒發生一次，使用 `requestAnimationFrame` 的時機通常是使用 JavaScript 處理動畫，可以避免使用 `setTimeout((), 1)` 運算太頻繁，但畫面跟新頻率不需要這麼高的問題。
 
 由於是非同步執行，因此執行結果與前面相同，但可以看到畫面上的紅色方塊以比較慢的速度移動，原則上會是每 1/60 移動一次。
 
@@ -284,7 +284,7 @@ complete
 interval(period: number = 0, scheduler: SchedulerLike = async): Observable<number>
 ```
 
-可以看到是使用 `asyncScheduler`，而有些則沒有預設 scheduler，那麼就依照他預設的邏輯來決定同步或非同步，例如 `of` 預設的 Scheduler 是 `null`，因此是同步處理，而 `timer` 預設也是使用 `asyncScheduler`。
+可以看到是使用 `asyncScheduler`，而有些則沒有預設 scheduler，那麼就依照該 operator 預設的邏輯來決定同步或非同步，例如 `of` 預設的 Scheduler 是 `null`，因此是同步處理，而 `timer` 預設也是使用 `asyncScheduler`。
 
 ## 使用 scheduled operator 避免 of 和 from 模糊不清
 
@@ -340,7 +340,7 @@ of(1, 2).pipe(observeOn(asyncScheduler));
 
 {% asset_img 08.jpg %}
 
-這個觀念非常重要，如果搞錯了，很可能整個執行順序都跟想的不同了。
+這個觀念非常重要！如果搞錯，很可能整個執行順序都跟想的不同了。
 
 # 使用 Scheduler 控制訂閱時機
 
@@ -419,13 +419,13 @@ sourceB$.subscribe(...);
 
 {% asset_img 09.jpg %}
 
-以上過程都是「同步執行」的，也就是在一個執行階段內依序完成。
+以上過程都是「同步執行」的，也就是在一個執行階段 (task) 內依序完成。
 
 因此結果只印出 `5` 和 `6` 啦！那麼要怎麼達到我們預期的 `4`、`5` 和 `6` 的結果呢？這時候就是使用 `queueScheduler` 的時機了。
 
 ## 使用 queueScheduler 的執行順序
 
-`queueScheduler` 一樣是同步處理的，但在產生資料時，會將資料存入一個佇列 (queue) 內，每個 Observable 都會有自己的 queue，而 queue 除了祝列本身概念外，也可以想像成是一個「虛擬的時間窗格 (frame)」，因此當訂閱發生時，整個資料流就會依照這個 queue 內的虛擬時間窗格「一格一格的產生事件」。
+`queueScheduler` 一樣是同步處理的，但在產生資料時，會將資料存入一個佇列 (queue) 內，每個 Observable 都會有自己的 queue，而 queue 除了佇列本身概念外，也可以想像成是一個「虛擬的時間窗格 (frame)」，因此當訂閱發生時，整個資料流就會依照這個 queue 內的虛擬時間窗格「一格一格的產生事件」。
 
 因此上述的 `sourceA$` 和 `sourceB$` 若是使用了 `queueScheduler`，則 `sourceA$` 的事件 `1` 和 `sourceB$` 的事件 `2` 就會同時產生，而要達到這個目的，`combineLatest` 也必須將資料用「時間窗格」的方式訂閱。
 
