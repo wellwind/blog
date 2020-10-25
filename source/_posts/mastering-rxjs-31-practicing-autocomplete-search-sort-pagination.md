@@ -225,7 +225,7 @@ keyword$
 
 `distinct` 和 `distinctUntilChanged` 的差別，可以參考之前寫的文章：
 
-[[RxJS] 過濾類型 Operators (5) - sampleTime / sample / auditTime / audit / debounceTime / debounce](https://wellwind.idv.tw/blog/2020/10/10/mastering-rxjs-25-audit-audittime-sample-sampletime-debounce-debouncetime/)
+[[RxJS] 過濾類型 Operators (4) - distinct / distinctUntilChanged / distinctUntilKeyChanged](https://wellwind.idv.tw/blog/2020/10/09/mastering-rxjs-24-distinct-distinctuntilchanged-distinctuntilkeychanged/)
 
 {% endnote %}
 
