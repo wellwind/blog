@@ -194,7 +194,7 @@ source2$.subscribe((data) => {
 
 # share
 
-`share` 基本上就是 `multicast(new Subject())` 與 `refCount()` 的組合，當然也可以當作是 `publish()` 與 `refCount()` 的組合，在之前介紹 Cold Observable 與 Hot Observable 時，就介紹過了使用 `share()` 來進行轉換，如果對前面的範例都能理解，`share()` 應該就沒什麼問題囉！在實務上，都會直接使用 `share()` 來取代 `multicast(new Subject())` + `refCount()`，畢竟程式碼比較段，也更好理解。
+`share` 基本上就是 `multicast(new Subject())` 與 `refCount()` 的組合，當然也可以當作是 `publish()` 與 `refCount()` 的組合，在之前介紹 Cold Observable 與 Hot Observable 時，就介紹過了使用 `share()` 來進行轉換，如果對前面的範例都能理解，`share()` 應該就沒什麼問題囉！在實務上，都會直接使用 `share()` 來取代 `multicast(new Subject())` + `refCount()`，畢竟程式碼比較短，也更好理解。
 
 # shareReplay
 
