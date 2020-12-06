@@ -66,7 +66,7 @@ Angular CLI 基本上已經成為開發 Angular 應用程式的標準配備了�
 
 ## $schema
 
-`$schema` 主要用來放置 `angular.json` 可以使用的相關設定說明檔案位置，這是一個 [JSON Schema](https://json-schema.org/) 檔案，由於使用 json 檔當作設定已經漸漸變成主流，但這些設定檔往往沒有一個準則可以遵循，於是出現了 JSON Schema 的規範，JSON Schema 檔也是一個 JSON 檔案，但它是用來描述另一個 JSON 檔內可以使用的欄位、型別、可用資料等等，因此也可以想像成是 JSON 檔的 metadata，假設編輯器或 IDE 有支援 JSON Schema 的話，在使用時就能夠跳出對應的自動完成選項，如下圖使用 Visual Studio Code 編輯 `angular.json` 時的畫面：
+`$schema` 主要用來放置 `angular.json` 可以使用的相關設定說明檔案位置，這是一個 [JSON Schema](https://json-schema.org/) 檔案，由於使用 json 檔當作設定已經漸漸變成主流，但這些設定檔往往沒有一個準則可以遵循，於是出現了 JSON Schema 的規範，JSON Schema 檔也是一個 JSON 檔案，但它是用來描述另一個 JSON 檔內可以使用的欄位、型別、可用資料等等，因此也可以想像成是 JSON 檔的 metadata，假設編輯器或 IDE 有支援 JSON Schema 的話，再使用時就能夠跳出對應的自動完成選項，如下圖使用 Visual Studio Code 編輯 `angular.json` 時的畫面：
 
 {% asset_img 01.jpg %}
 
@@ -165,7 +165,7 @@ ng generate library share-libs
 
 ### 共用元件庫
 
-當我們的目的是建立共用元件庫時，可以先使用 `ng generate library` 建立元件庫的核心，在使用 `ng generate application` 建立不同應用的示範網站，如果有依照此核心延伸的元件庫，則可以在建立更多的 library。
+當我們的目的是建立共用元件庫時，可以先使用 `ng generate library` 建立元件庫的核心，再使用 `ng generate application` 建立不同應用的示範網站，如果有依照此核心延伸的元件庫，則可以在建立更多的 library。
 
 ```shell
 ng generate library core
