@@ -228,7 +228,7 @@ $custom-theme: mat-dark-theme($custom-primary, $custom-accent, $custom-warn);
 
 Angular CDK是Angular Material共用的部分抽取出來的工具，在之前的文章我們也提過，**不是每個專案都需要使用Material Design，但每個專案基本上都需要打造自己的元件**！因此我們可以不裝Angular Material，但**強烈建議把Angular CDK加入專案中**，但Angular CDK其實還是有基本的樣式，像是overaly的灰底等等，那麼只加入Angular CDK的專案，該怎麼把這些樣式加進來呢？
 
-其實從上一章套用部分樣式中我們就能略知一二，在`mat-core()`中我們加入了`cdk-a11y()`和`cdk-overlay()`兩個mixin，給Angular CDK使用，所以我們只需要把Angular CDK的SCSS路徑找出來，再加入style.scss之中就好囉：
+其實從上一章套用部分樣式中我們就能略知一二，在`mat-core()`中有`cdk-a11y()`和`cdk-overlay()`兩個mixin，給Angular CDK使用，所以我們只需要把Angular CDK的SCSS路徑找出來，再加入style.scss之中就好囉：
 
 ```scss
 @import "~@angular/cdk/_a11y.scss";
