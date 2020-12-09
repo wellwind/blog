@@ -157,7 +157,7 @@ export class SharedMaterialModule {}
 
 ### 使用cdkScrollable和ScrollDispatcher
 
-`cdkScrollable`這個directive在單獨使用時，不會有任何感覺，它不會對付加上的元件產生任何變化，也沒有任何的`@Input()`或`@Output`；雖然它能得知元件的scroll狀態變更，但無法透過`#someTemplate="cdkScrollable"`之類的方式管理，而實際上他做的事情很簡單，只有兩個：
+`cdkScrollable`這個directive在單獨使用時，不會有任何感覺，它不會對附加上的元件產生任何變化，也沒有任何的`@Input()`或`@Output`；雖然它能得知元件的scroll狀態變更，但無法透過`#someTemplate="cdkScrollable"`之類的方式管理，而實際上他做的事情很簡單，只有兩個：
 
 1.  監聽scroll狀態
 2.  把自己註冊給`ScrollDispatcher`
