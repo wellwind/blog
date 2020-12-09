@@ -81,7 +81,7 @@ export class CdkObserveContent implements AfterContentInit, OnDestroy {
 
 #### 使用debounce避免大量的變更
 
-`cdkObserveContent`另外提供了一個`debounce`參數，方便我們在大量變化時減少程式碼執行的浪費，只有在邊畫發生後持續`debounce`設定的時間內沒有再次發生，才會觸發`cdkObserveContent`事件：
+`cdkObserveContent`另外提供了一個`debounce`參數，方便我們在大量變化時減少程式碼執行的浪費，只有在變化發生後持續`debounce`設定的時間內沒有再次發生，才會觸發`cdkObserveContent`事件：
 
 ```html
 <div class="content-wrapper" (cdkObserveContent)="projectContentChanged($event)" debounce="1000">
