@@ -314,7 +314,7 @@
     {### END POST BODY ###}
     {#####################}
 
-    <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍個手！</div>
+    <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
     <div class="like-coin">
       <script type="text/javascript">
       document.write(
