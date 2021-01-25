@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular Material,Material Design,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="昨天我們輕鬆地介紹兩個與進度有關的元件，今天讓我們稍微精實一點，來介紹一下寫程式多於寫HTML的Dialog，不管在不在SPA架構，Dialog都是經典且極為重要的元件，也因此我們會比較多的時間來介紹，好讓讀著們能完全的掌控Angular Material中的Dialog使用方式！">
+<meta name="keywords" content="Angular Material,Material Design">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular Material完全攻略]設計一個部落格(4) - Dialog">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2018/01/06/angular-material-19-dialog/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="昨天我們輕鬆地介紹兩個與進度有關的元件，今天讓我們稍微精實一點，來介紹一下寫程式多於寫HTML的Dialog，不管在不在SPA架構，Dialog都是經典且極為重要的元件，也因此我們會比較多的時間來介紹，好讓讀著們能完全的掌控Angular Material中的Dialog使用方式！">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/06/angular-material-19-dialog/01-dialog-basic.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/06/angular-material-19-dialog/02-dialog-contents.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/06/angular-material-19-dialog/03-introduce-dialog-properties.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/06/angular-material-19-dialog/04-close-all.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/06/angular-material-19-dialog/05-inject-data.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/06/angular-material-19-dialog/06-set-hasbackdrop-to-false.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/06/angular-material-19-dialog/07-mat-dialog-ref.gif">
+<meta property="og:updated_time" content="2021-01-25T02:06:10.072Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular Material完全攻略]設計一個部落格(4) - Dialog">
+<meta name="twitter:description" content="昨天我們輕鬆地介紹兩個與進度有關的元件，今天讓我們稍微精實一點，來介紹一下寫程式多於寫HTML的Dialog，不管在不在SPA架構，Dialog都是經典且極為重要的元件，也因此我們會比較多的時間來介紹，好讓讀著們能完全的掌控Angular Material中的Dialog使用方式！">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2018/01/06/angular-material-19-dialog/01-dialog-basic.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2018/01/06/angular-material-19-dialog/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular Material完全攻略]設計一個部落格(4) - Dialog | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2018/01/06/angular-material-19-dialog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular Material完全攻略]設計一個部落格(4) - Dialog</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-06T17:38:25+00:00">
+                2018-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular-Material完全攻略/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular Material完全攻略</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/01/06/angular-material-19-dialog/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/06/angular-material-19-dialog/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>昨天我們輕鬆地介紹兩個與進度有關的元件，今天讓我們稍微精實一點，來介紹一下寫程式多於寫HTML的Dialog，不管在不在SPA架構，Dialog都是經典且極為重要的元件，也因此我們會比較多的時間來介紹，好讓讀著們能完全的掌控Angular Material中的Dialog使用方式！</p>
+<a id="more"></a>
+<h2 id="關於Material-Design中的Dialog"><a href="#關於Material-Design中的Dialog" class="headerlink" title="關於Material Design中的Dialog"></a>關於Material Design中的Dialog</h2><p>在<a href="https://material.io/guidelines/components/dialogs.html" target="_blank" rel="noopener">Material Design的Dialogs設計指南</a>中，Dialog的作用是用來提醒使用者需要進行的一些特定工作，同時可能包含了重要的提示訊息，或是需要做一些決定等等。因此我們會有非常多機會在裡面放是表單元件，或是特性訊息等等。</p>
+<p>Dialog的主要幾個常見用途如下：</p>
+<ul>
+<li><strong>產生提示</strong>：用來立即的中斷使用者目前的行為，並告知使用者目前的狀況或所需要知道的資訊等等。</li>
+<li><strong>簡易的選單</strong>：提供一些基本選項讓使用者選取。</li>
+<li><strong>確認用</strong>：需要使用者明確的進行一個確認性的選擇。</li>
+</ul>
+<p>Dialog可以說是很基礎的元件，也可以說是讓畫面呈現變得更加有立體感的關鍵，例如我們過去介紹的Datepicker、Select、Menu等等，都可以說是Dialog的一種應用結果。</p>
+<h2 id="開始使用Angular-Material的Dialog"><a href="#開始使用Angular-Material的Dialog" class="headerlink" title="開始使用Angular Material的Dialog"></a>開始使用Angular Material的Dialog</h2><p>要使用Dialog，當然我們必須加入<code>MatDialogModule</code>，接著我們就可以來設計一個簡單的Dialog元件。</p>
+<h3 id="先讓一個Dialog可以顯示吧！"><a href="#先讓一個Dialog可以顯示吧！" class="headerlink" title="先讓一個Dialog可以顯示吧！"></a>先讓一個Dialog可以顯示吧！</h3><p>Dialog不像是其他Angular Material元件，只要單純的使用即可，需要一些比較複雜的動作，但其實也不是說多困難，讓我們一步一步來說明：</p>
+<ol>
+<li><p>我們先單純建立一個元件<code>AddPostDialogComponent</code>元件，不改變任何內容</p>
+<p><code>ng g c dashboard/blog/add-post-dialog</code></p>
+</li>
+<li><p>接著用一個按鈕，希望這個按鈕按下後可以顯示Dialog</p>
+<p><code>&lt;button mat-raised-button color=&quot;primary&quot; (click)=&quot;showAddPostDialog()&quot;&gt;新增文章&lt;/button&gt;</code></p>
+</li>
+<li><p>在對應的component.ts中，注入<code>MatDialog</code>這個Service</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; MatDialog &#125; <span class="keyword">from</span> <span class="string">'@angular/material'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> BlogComponent &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> dialog: MatDialog</span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用這個<code>MatDialog</code>的實體，打開Dialog</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">showAddPostDialog() &#123;</span><br><span class="line">  <span class="keyword">this</span>.dialog.open(AddPostDialogComponent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>由於這種方式是動態產生元件的，因此我們需要在所屬Module中的<code>entryComponents</code>中加入要產生的component</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  ...</span><br><span class="line">  entryComponents: [AddPostDialogComponent]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> DashboardModule &#123;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>雖然看起來步驟比較多，但其實只有兩個重點：</p>
+<ol>
+<li>建立要當作Dialog的component</li>
+<li>使用注入的<code>MatDialog</code>實體把它打開</li>
+</ol>
+<p>這種步驟理解並習慣了就很快囉。接著就讓我們直接來看看結果吧！</p>
+<img src="/blog/2018/01/06/angular-material-19-dialog/01-dialog-basic.gif">
+<p>有沒有很感動啊！一個基本的Dialog就浮現在我們面前啦！我們這時候可以透過點擊灰底(backdrop)的部分來關閉dialog。</p>
+<div class="note info"><p>在dialog中這個灰底的部分稱為<code>backdrop</code>，我找不到比較好的翻譯，因此之後依舊會直接使用backdrop來稱呼它。</p></div>
+<h3 id="使用mat-dialog-xxx豐富Dialog內容"><a href="#使用mat-dialog-xxx豐富Dialog內容" class="headerlink" title="使用mat-dialog-xxx豐富Dialog內容"></a>使用mat-dialog-xxx豐富Dialog內容</h3><p>在<code>MatDialogModule</code>中，定義了幾個重要的directives，這些directives可以幫助我們豐富dialog裡面的內容，同時還能夠減少一些不必要的程式碼，讓我們簡單來介紹一下：</p>
+<h4 id="mat-dialog-title"><a href="#mat-dialog-title" class="headerlink" title="mat-dialog-title"></a>mat-dialog-title</h4><p>代表的是一個dialog的標題部分，儘管因為dialog的內容高度太長而造成捲動，依然會固定在整個dialog的最上方。</p>
+<h4 id="mat-dialog-content"><a href="#mat-dialog-content" class="headerlink" title="mat-dialog-content"></a>mat-dialog-content</h4><p>代表一個dialog的內文部分，當內容長度超過dialog可以容納的高度時，就會變成可以捲動的模式。</p>
+<h4 id="mat-dialog-actions"><a href="#mat-dialog-actions" class="headerlink" title="mat-dialog-actions"></a>mat-dialog-actions</h4><p>用來放置行動按鈕的區塊，呈現位置剛好與<code>mat-dialog-title</code>相反，會固定在畫面的最下方，我們會在這裡放置一些如<strong>確認</strong>、<strong>取消</strong>的按鈕。</p>
+<h4 id="mat-dialog-close"><a href="#mat-dialog-close" class="headerlink" title="mat-dialog-close"></a>mat-dialog-close</h4><p>只允許在button上使用的directive，這個directive會使得button變成一個可以關閉目前dialog的按鈕。</p>
+<h4 id="實際使用看看"><a href="#實際使用看看" class="headerlink" title="實際使用看看"></a>實際使用看看</h4><p>接下來就讓我們把一個簡單的新增文章頁面加入，並透過剛剛介紹的directives讓整個dialog更加完整吧！</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h2</span> <span class="attr">mat-dialog-title</span>&gt;</span></span><br><span class="line">  新增部落格文章</span><br><span class="line"><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-dialog-content</span> <span class="attr">class</span>=<span class="string">"post-form"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"標題"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">textarea</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"文章內容"</span> <span class="attr">rows</span>=<span class="string">"3"</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>條款01<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>條款02<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-dialog-content</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-dialog-actions</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-button</span> <span class="attr">color</span>=<span class="string">"primary"</span>&gt;</span>發表<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-button</span> <span class="attr">mat-dialog-close</span> <span class="attr">color</span>=<span class="string">"warn"</span>&gt;</span>取消<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-dialog-actions</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>再來看看結果：</p>
+<img src="/blog/2018/01/06/angular-material-19-dialog/02-dialog-contents.gif">
+<p>一個標準的dialog就誕生啦！除了依照title、content和actions切割空間之外，按下取消的按鈕就能夠關閉dialog，另外當高度超過可以自動延展的範圍(Angular Material中的dialog設定為<code>65vh</code>)時，就會變成可以捲動的狀態。</p>
+<p>讀者有興趣可以實際試玩看看這個dialog的效果，可以看到以下幾個亮點：</p>
+<ol>
+<li>dialog顯示時，預設會<strong>focus到第一個表單控制項</strong>。</li>
+<li>當使用<code>tab / shift + tab</code>切換focus狀態時，<strong>永遠不會跳出dialog的範圍，只會在dialog內移動</strong>。</li>
+<li><strong>不只按下取消按鈕可以關閉dialog</strong>，按下<code>ESC</code>鍵也可以。</li>
+</ol>
+<p>以上特色我們在未來介紹Angular CDK時，都可以透過Angular CDK來幫助我們在自己設計的元件中達到一樣的功能！在這邊就先不多做說明囉。</p>
+<p>###關於MatDialog Service </p>
+<p>在一開始介紹如何打開一個dialog時，我們注入了<code>MatDialog</code>這個Service，接下來我們來詳細介紹一下這個Service的屬性及方法：</p>
+<h4 id="MatDialog的屬性"><a href="#MatDialog的屬性" class="headerlink" title="ＭatDialog的屬性"></a>ＭatDialog的屬性</h4><p>MatDialog有3個屬性：</p>
+<ul>
+<li><code>afterAllClosed</code>：<code>Observable&lt;void&gt;</code>，會在所有畫面上的dialog都被關閉時，才會觸發的一個Observable，從這樣的說明應該可以發現：沒錯，<strong>Dialog是可以開多個的</strong>！只需要在任何時候使用<code>MatDialog.open()</code>方法即可</li>
+<li><code>afterOpen</code>：<code>Observable&lt;MatDialogRef&lt;any&gt;&gt;</code>，每當一個dialog開啟時，就會觸發一次，並告知目前開啟的dialog</li>
+<li><code>openDialogs</code>：<code>MatDialogRef&lt;any&gt;[]</code>，單純的紀錄目前所有開啟中的dialog。</li>
+</ul>
+<p>簡單的範例如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.dialog.afterAllClosed.subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'目前已經沒有dialog了'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">this</span>.dialog.afterOpen.subscribe(<span class="function">(<span class="params">dialogRef: MatDialogRef&lt;<span class="built_in">any</span>&gt;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`新的dialog已開啟：<span class="subst">$&#123;dialogRef.id&#125;</span>`</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`目前已開啟 <span class="subst">$&#123;<span class="keyword">this</span>.dialog.openDialogs.length&#125;</span> 個dialog了`</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>開啟多的dialog的程式就不多做說明了，只需要呼叫注入的<code>MatDialog</code>的<code>open()</code>方法，就會自然而然地開一個新的dialog。</p>
+<p>我們直接來看看log顯示的結果：</p>
+<img src="/blog/2018/01/06/angular-material-19-dialog/03-introduce-dialog-properties.gif">
+<h4 id="MatDialog的方法"><a href="#MatDialog的方法" class="headerlink" title="MatDialog的方法"></a>MatDialog的方法</h4><p>MatDialog有3個方法，可以讓我們自由自在地控制dialog：</p>
+<ul>
+<li><p><code>closeAll</code>：顧名思義，就是關閉所有的dialog</p>
+<img src="/blog/2018/01/06/angular-material-19-dialog/04-close-all.gif">
+</li>
+<li><p><code>getDialogById</code>：每個dialog都有他自己的id，當然我們也可以自行指定id，不管是用哪種方式，只要有id，我們就能在任何時候使用<code>getDialogById(id)</code>，來取得某個dialog，如果無法取得的話，會回傳<code>undefined</code>。</p>
+</li>
+<li><p><code>open</code>：最重要的一個方法，包含2個參數</p>
+<ul>
+<li><p><code>componentOrTemplateRef:ComponentType&lt;T&gt; | TemplateRef&lt;T&gt;</code>：必填，要顯示的dialog，我們可以傳入componet或是一個templateRef。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ng-template</span> #<span class="attr">dialogByTemplate</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">ng-template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在程式中可以直接將這個<code>&lt;ng-template&gt;</code>當作dialog顯示，可以減少設計太多的component，反而難以管理。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ViewChildren</span>(<span class="string">'dialogByTemplate'</span>) dialogByTemplate;</span><br><span class="line">open() &#123;</span><br><span class="line">    <span class="keyword">this</span>.dialog.open(<span class="keyword">this</span>.dialogByTemplate);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>config?:MatDialogConfig&lt;D&gt;</code>：非必填，用來設定一些顯示的細節。我們稍後會直接針對這個<code>MatDialogConfig</code>型別做說明。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="自行設定MatDialogConfig"><a href="#自行設定MatDialogConfig" class="headerlink" title="自行設定MatDialogConfig"></a>自行設定MatDialogConfig</h3><p>我們可以透過<code>MatDialogConfig</code>型別設定一些dialog打開時的細節，由於屬性眾多，以下挑幾個個人覺得重要的來介紹：</p>
+<h4 id="data"><a href="#data" class="headerlink" title="data"></a>data</h4><p><strong>超重要</strong>，我們不可能永遠只是單純地打開一個dialog，一定會有需要傳入一些資訊的時候，這時我們就可以使用data參數來傳入一些資訊，如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">doPost() &#123;</span><br><span class="line">  <span class="keyword">this</span>.dialog.open(AddPostConfirmDialogComponent, &#123;</span><br><span class="line">    data: &#123;</span><br><span class="line">      title: <span class="keyword">this</span>.title</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而在dialog內，我們可以使用<code>@Inject(MAT_DIALOG_DATA)</code>來注入需要的資訊</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AddPostConfirmDialogComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="keyword">get</span> title()&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.data.title;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="meta">@Inject</span>(MAT_DIALOG_DATA) <span class="keyword">private</span> data: <span class="built_in">any</span></span>) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(data.title);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/06/angular-material-19-dialog/05-inject-data.gif">
+<h4 id="autoFocus"><a href="#autoFocus" class="headerlink" title="autoFocus"></a>autoFocus</h4><p>當dialog打開時，是否要自動focus在第一個控制項</p>
+<h4 id="id"><a href="#id" class="headerlink" title="id"></a>id</h4><p>我們可以為每個dialog自定一個唯一的id</p>
+<h4 id="高度與寬度"><a href="#高度與寬度" class="headerlink" title="高度與寬度"></a>高度與寬度</h4><p>我們可以使用<code>height</code>、<code>width</code>、<code>minHeight</code>、<code>minWidth</code>、<code>maxHeight</code>和<code>maxWidth</code>來設定dialog的尺寸資訊，除了<code>height</code>和<code>width</code>一定要用字串表示外，其他屬性可以給予數值，當給予數值而非字串時，預設的單位為<code>px</code>。</p>
+<h4 id="hasBackdrop"><a href="#hasBackdrop" class="headerlink" title="hasBackdrop"></a>hasBackdrop</h4><p>是否要使用一個灰色的底來隔絕dialog與下面的畫面，也就是backdrop，如果設定為<code>false</code>則依然可以和dialog後面的元件互動。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">showAddPostDialog() &#123;</span><br><span class="line">  <span class="keyword">this</span>.dialog.open(AddPostDialogComponent, &#123;</span><br><span class="line">    hasBackdrop: <span class="literal">false</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/06/angular-material-19-dialog/06-set-hasbackdrop-to-false.gif">
+<h4 id="backdropClass"><a href="#backdropClass" class="headerlink" title="backdropClass"></a>backdropClass</h4><p>可以設定backdrop的樣式，不太常使用，若對灰色底不滿意時，可以進行調整，預設樣式如下：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">background</span>: <span class="selector-tag">rgba</span>(0,0,0,<span class="selector-class">.6</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="position"><a href="#position" class="headerlink" title="position"></a>position</h4><p>可以設定<code>top</code>、<code>bottom</code>、<code>left</code>和<code>right</code>，來決定dialog顯示的位置。</p>
+<h4 id="disableClose"><a href="#disableClose" class="headerlink" title="disableClose"></a>disableClose</h4><p>預設情況下我們可以使用<code>ESC</code>鍵關閉dialog，透過設定<code>disableClose</code>為<code>true</code>，可以取消這個功能，但要注意可能影響使用者的使用經驗。</p>
+<h3 id="使用MatDialogRef"><a href="#使用MatDialogRef" class="headerlink" title="使用MatDialogRef"></a>使用MatDialogRef</h3><p>所有的dialog開啟後，都會產生一個對應的<code>MatDialogRef&lt;T&gt;</code>，其中的<code>T</code>代表實際產生的component或templateRef，取得這個DialogRef的方式很多，主要有</p>
+<ol>
+<li><p>使用<code>MatDialog</code>的<code>open()</code>時，回傳的值，例如以下程式範例，可以透過取得開啟對應component的MatDialogRef，來處理原來元件的事件：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">doPost() &#123;</span><br><span class="line">  <span class="keyword">const</span> confirmDialogRef = <span class="keyword">this</span>.dialog.open(AddPostConfirmDialogComponent, &#123;</span><br><span class="line">    data: &#123;</span><br><span class="line">      title: <span class="keyword">this</span>.title</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">// doConfirm是AddPostConfirmDialogComponent中的事件(EventEmitter)</span></span><br><span class="line">  <span class="comment">// 透過componentInstance取得AddPostConfirmDialogComponent產生的實體</span></span><br><span class="line">  confirmDialogRef.componentInstance.doConfirm.subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'開啟的dialog按下確認按鈕了'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>使用<code>MatDialog</code>的<code>getDialogById</code>取得</p>
+</li>
+<li><p>在我們要當作dialog的component中，注入取得</p>
+</li>
+</ol>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AddPostDialogComponent &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> dialogRef: MatDialogRef&lt;AddPostDialogComponent&gt;</span>)</span><br><span class="line">  </span><br><span class="line">  move(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.dialogRef.updatePosition(&#123;</span><br><span class="line">      top: <span class="string">'0'</span>,</span><br><span class="line">      left: <span class="string">'0'</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/06/angular-material-19-dialog/07-mat-dialog-ref.gif">
+<p>ＭatDialogRef還有許多方法都跟前面介紹過的類似，就不多作介紹，有興趣的可以再去仔細看看<a href="https://material.angular.io/components/dialog/api" target="_blank" rel="noopener">dialog的API內容</a>。</p>
+<h2 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h2><p>今天我們用了非常多的文字及程式碼來介紹dialog這個功能，要建立並產生一個dialog放到畫面上本身並不是一件困難的事情，但更多時候我們需要的是dialog的細節設定，這時候就必須仰賴程式碼的幫助了。</p>
+<p>所以今天的內容會比較多偏向程式碼的方面，來說明所有相關的component、directive和service的屬性方法等等，並透過這些來調整dialog的顯示。</p>
+<p>Dialog是前端非常經典的議題，也是SPA架構下不可或缺的一個環節，在Material Design中更是應用範圍極廣，如果能好好善用dialog，在設計互動性較高的介面時，也能夠更加靈活，讓使用者經驗大幅提高哩！</p>
+<p>本日的程式碼GitHub：<a href="https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-19-dialog" target="_blank" rel="noopener">https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-19-dialog</a></p>
+<p>分支：day-19-dialog</p>
+<h2 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h2><ul>
+<li><a href="https://material.io/guidelines/components/dialogs.html" target="_blank" rel="noopener">Material Design - Dialogs</a></li>
+<li><a href="https://material.angular.io/components/dialog/overview#" target="_blank" rel="noopener">Angular Material - Dialog</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular-Material/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular Material</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Material-Design/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Material Design</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/01/05/angular-material-18-progress-bar-progress-spinner/" rel="next" title="[Angular Material完全攻略]設計一個部落格(3) - Progress Bar、Progress Spinner">
+                <i class="fa fa-chevron-left"></i> [Angular Material完全攻略]設計一個部落格(3) - Progress Bar、Progress Spinner
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/" rel="prev" title="[Angular Material完全攻略]設計一個部落格(5) - Chip、Tooltip、Snackbar">
+                [Angular Material完全攻略]設計一個部落格(5) - Chip、Tooltip、Snackbar <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#關於Material-Design中的Dialog"><span class="nav-number">1.</span> <span class="nav-text">關於Material Design中的Dialog</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#開始使用Angular-Material的Dialog"><span class="nav-number">2.</span> <span class="nav-text">開始使用Angular Material的Dialog</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#先讓一個Dialog可以顯示吧！"><span class="nav-number">2.1.</span> <span class="nav-text">先讓一個Dialog可以顯示吧！</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-dialog-xxx豐富Dialog內容"><span class="nav-number">2.2.</span> <span class="nav-text">使用mat-dialog-xxx豐富Dialog內容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mat-dialog-title"><span class="nav-number">2.2.1.</span> <span class="nav-text">mat-dialog-title</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mat-dialog-content"><span class="nav-number">2.2.2.</span> <span class="nav-text">mat-dialog-content</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mat-dialog-actions"><span class="nav-number">2.2.3.</span> <span class="nav-text">mat-dialog-actions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mat-dialog-close"><span class="nav-number">2.2.4.</span> <span class="nav-text">mat-dialog-close</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#實際使用看看"><span class="nav-number">2.2.5.</span> <span class="nav-text">實際使用看看</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MatDialog的屬性"><span class="nav-number">2.2.6.</span> <span class="nav-text">ＭatDialog的屬性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MatDialog的方法"><span class="nav-number">2.2.7.</span> <span class="nav-text">MatDialog的方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自行設定MatDialogConfig"><span class="nav-number">2.3.</span> <span class="nav-text">自行設定MatDialogConfig</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#data"><span class="nav-number">2.3.1.</span> <span class="nav-text">data</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#autoFocus"><span class="nav-number">2.3.2.</span> <span class="nav-text">autoFocus</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#id"><span class="nav-number">2.3.3.</span> <span class="nav-text">id</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高度與寬度"><span class="nav-number">2.3.4.</span> <span class="nav-text">高度與寬度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hasBackdrop"><span class="nav-number">2.3.5.</span> <span class="nav-text">hasBackdrop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#backdropClass"><span class="nav-number">2.3.6.</span> <span class="nav-text">backdropClass</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#position"><span class="nav-number">2.3.7.</span> <span class="nav-text">position</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#disableClose"><span class="nav-number">2.3.8.</span> <span class="nav-text">disableClose</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用MatDialogRef"><span class="nav-number">2.4.</span> <span class="nav-text">使用MatDialogRef</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本日小結"><span class="nav-number">3.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相關資源"><span class="nav-number">4.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2018/01/06/angular-material-19-dialog/';
+          this.page.identifier = '2018/01/06/angular-material-19-dialog/';
+          this.page.title = '[Angular Material完全攻略]設計一個部落格(4) - Dialog';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

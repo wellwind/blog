@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="RxJS,Subject,Observable,Cold Observable,Hot Observable,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="昨天我們介紹了 Observable 和 Subject 系列兩種不同的建立資料流物件的方法，也稍微說明了訂閱時會發生的不同，今天讓我們用比較專有的名詞：Cold Observable 和 Hot Observable 來說明這兩種的差別。從運作的方式去了解，能更幫助我們在開發時更加掌握技術的使用方式！">
+<meta name="keywords" content="RxJS,Subject,Observable,Cold Observable,Hot Observable">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[RxJS] Cold Observable v.s Hot Observable">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="昨天我們介紹了 Observable 和 Subject 系列兩種不同的建立資料流物件的方法，也稍微說明了訂閱時會發生的不同，今天讓我們用比較專有的名詞：Cold Observable 和 Hot Observable 來說明這兩種的差別。從運作的方式去了解，能更幫助我們在開發時更加掌握技術的使用方式！">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/01.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/02.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/03.jpg">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.364Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[RxJS] Cold Observable v.s Hot Observable">
+<meta name="twitter:description" content="昨天我們介紹了 Observable 和 Subject 系列兩種不同的建立資料流物件的方法，也稍微說明了訂閱時會發生的不同，今天讓我們用比較專有的名詞：Cold Observable 和 Hot Observable 來說明這兩種的差別。從運作的方式去了解，能更幫助我們在開發時更加掌握技術的使用方式！">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[RxJS] Cold Observable v.s Hot Observable | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[RxJS] Cold Observable v.s Hot Observable</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-09-28T18:00:00+00:00">
+                2020-09-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/" itemprop="url" rel="index">
+                    <span itemprop="name">打通 RxJS 任督二脈</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/第-12-屆鐵人賽/" itemprop="url" rel="index">
+                    <span itemprop="name">第 12 屆鐵人賽</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>昨天我們介紹了 <code>Observable</code> 和 <code>Subject</code> 系列兩種不同的建立資料流物件的方法，也稍微說明了訂閱時會發生的不同，今天讓我們用比較專有的名詞：Cold Observable 和 Hot Observable 來說明這兩種的差別。從運作的方式去了解，能更幫助我們在開發時更加掌握技術的使用方式！</p>
+<a id="more"></a>
+<p>今天的實作程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-13-warm-observable" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-13-warm-observable</a></p>
+<h1 id="Cold-Observable"><a href="#Cold-Observable" class="headerlink" title="Cold Observable"></a>Cold Observable</h1><p>先來回顧一下 <code>Observable</code> 類別建立及使用方式：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> source$ = <span class="keyword">new</span> Observable(<span class="function"><span class="params">subscriber</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'stream 開始'</span>);</span><br><span class="line">  subscriber.next(<span class="number">1</span>);</span><br><span class="line">  subscriber.next(<span class="number">2</span>);</span><br><span class="line">  subscriber.next(<span class="number">3</span>);</span><br><span class="line">  subscriber.next(<span class="number">4</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'steam 結束'</span>);</span><br><span class="line">  subscriber.complete();</span><br><span class="line">&#125;);</span><br><span class="line"> </span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`Observable 第一次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line"><span class="comment">// 1, 2, 3, 4</span></span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`Observable 第二次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line"><span class="comment">// 1, 2, 3, 4</span></span><br></pre></td></tr></table></figure>
+<p>對於每次訂閱來說，都是一次新的資料流產生；我們可以把整個資料流當作是一條<strong>水管管線設計圖</strong>，每次訂閱時，都是依照這條管線組裝出新的水管線路，然後裝水打開開關讓水流出，這樣的好處是<strong>每次訂閱都是新資料流的所以不會互相影響</strong>。</p>
+<img src="/blog/2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/01.jpg">
+<p>這種每次訂閱都重新開始的流程，稱為 「<strong>Cold Observable</strong>」。Cold 通常代表被用到時才啟動的行為，在這裡也是如此，說明了這個 Observable 被訂閱時才會開始啟動新的資料流。</p>
+<p>以一般的觀察者模式的行為來說，每次事件的發生都是「推送」給觀察者 (Observer) 的；而 Cold Observable 每次訂閱後就只會有一個觀察者，下一個觀察者要進行訂閱時會是一次新的資料流程，因此 Cold Observable 與 observer 是「<strong>一對一</strong>」的關係，這種只會推給唯一一個觀察者的方式也稱為 「<strong>unicast</strong>」。</p>
+<div class="note info"><p>先預告一下，下一篇開始我們會介紹各種建立資料流 的 operators，這類 operators 基本上都是屬於 Cold Observable，我們到時候再來看看。</p></div>
+<h1 id="Hot-Observable"><a href="#Hot-Observable" class="headerlink" title="Hot Observable"></a>Hot Observable</h1><p>Subject 系列產生出來的資料流都是屬於 Hot Observable，一樣的先來回顧 Hot Observable 的使用方式：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> source$ = <span class="keyword">new</span> Subject();</span><br><span class="line"></span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`Subject 第一次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line"><span class="comment">// 1, 2, 3, 4</span></span><br><span class="line">  </span><br><span class="line">source$.next(<span class="number">1</span>);</span><br><span class="line">source$.next(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`Subject 第二次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line"><span class="comment">// 3, 4</span></span><br><span class="line"></span><br><span class="line">source$.next(<span class="number">3</span>);</span><br><span class="line">source$.next(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`Subject 第三次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line"><span class="comment">// (沒收到任何事件就結束了)</span></span><br><span class="line">source$.complete();</span><br></pre></td></tr></table></figure>
+<p>一樣當作水管管線來看的話，<code>Subject</code> 就是一條隨時可能有資料流過的線路，每次訂閱都只是等待這條水管線路傳送資料過來而已，而這樣的好處是更有彈性，因為不用事先就把所有流程準備好，可以隨時依照不同情境在程式內讓新的事件發生 (只要呼叫 <code>next()</code> 就好)，所有的觀察者都會及時收到這份資料。</p>
+<img src="/blog/2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/02.jpg">
+<p>這種資料流已經開始，隨時訂閱就是等待最新資料的流程，就稱為 「<strong>Hot Observerable</strong>」。Hot 本身就有隨時準備好的意思，因此每次訂閱時不用從頭來過，只關注最新事件即可。</p>
+<p>由於只會有一個 Observable，在每次事件發生時都會推送給所有的 observer，因此 Hot Observable 與 Observer 的關係是「<strong>一對多</strong>」的關係，又稱為 「<strong>multicast</strong>」。</p>
+<h1 id="Warm-Observable"><a href="#Warm-Observable" class="headerlink" title="Warm Observable"></a>Warm Observable</h1><p>有沒有辦法把 Cold Observable 轉成 Hot Observable 呢？嚴格來說並沒有，因為 Cold Observable 一定要有個「啟動」的動作才會開始資料流，而 Hot Observable 在被建立同時就是啟動的狀態了。但是我們可以透過一些 Multicast 類的 operators 來達到類似目標，例如 <code>share()</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> source$ = <span class="keyword">new</span> Observable(<span class="function"><span class="params">subscriber</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'stream 開始'</span>);</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> subscriber.next(<span class="number">1</span>), <span class="number">100</span>);</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> subscriber.next(<span class="number">2</span>), <span class="number">200</span>);</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> subscriber.next(<span class="number">3</span>), <span class="number">300</span>);</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    subscriber.next(<span class="number">4</span>);</span><br><span class="line">    subscriber.complete();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'steam 結束'</span>);</span><br><span class="line">  &#125;, <span class="number">400</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> hotSource$ = source$.pipe(</span><br><span class="line">  share()</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  hotSource$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`Observable 第一次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line"></span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    hotSource$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`Observable 第二次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line">  &#125;, <span class="number">200</span>);</span><br><span class="line">&#125;, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+<p>上述程式我們先透過 <code>setTimeout()</code> 讓整個 stream 傳遞比較有明顯的時間順序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">---1---2---3---(4|)</span><br></pre></td></tr></table></figure>
+<p>之後透過 <code>share()</code> operator 讓整個 Observable 變成 multicast 的 Observable，這時候整個資料流還沒開始，必須有「第一次訂閱」的動作，才會開始提供資料。由於必須要先有一次「訂閱」的動作讓它啟動，所以也稱為 <strong><u>Warm Observable</u></strong>。</p>
+<p>在程式中我們先等待一秒鐘才開始訂閱，可以藉此看到在這段時間不會印出「stream 開始」的文字，直到第一次訂閱印出。第二次訂閱則刻意再慢一點進行訂閱，已確認收到的資料並不會從頭開始。</p>
+<p>整個執行結果如下：</p>
+<img src="/blog/2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/03.jpg">
+<p>有些時候我們會先設計好一個 Cold Observable，但又不希望每次訂閱時都要重新來過 (例如 HTTP 請求、WebSocket 等)，就很適合把 unicast 轉成 multicast 類型的 Observable！</p>
+<p>關於更多 multicast 類型的 operators，在之後的文章我們再來節紹。</p>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>今天我們介紹了 Cold Observable 與 Hot Observable 的不同與應用情境，以及如何把 Cold Observable 轉換成類似 Hot Observable 的 Warm Observable。</p>
+<ul>
+<li><strong>Cold Observable</strong>：在每次訂閱時，完整的資料流會重新產生；資料流與訂閱者是一對一的關係。</li>
+<li><strong>Hot Observable</strong>：在訂閱前資料流已開始，每個訂閱者訂閱的都是同一個資料流；資料流與訂閱者是一對多的關係。</li>
+<li><strong>Warm Observable</strong>：在第一次訂閱開始前不會啟動資料流，直到第一次訂閱發生啟動，所有觀察者都是訂閱同一個資料流；資料流與訂閱者是一對多關係。</li>
+</ul>
+<p>這些概念在需要更深入資料流程時就會非常重要，也能讓我們比較容易知道何時該使用什麼樣類型的 Observable。之後的文章我們會有機會再多說明一些。</p>
+<p>明天開始就是各種 operators 的介紹啦！敬請期待！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/RxJS/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> RxJS</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Subject/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Subject</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Observable/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Observable</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Cold-Observable/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Cold Observable</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Hot-Observable/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Hot Observable</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/" rel="next" title="[RxJS] 建立 Observable 的基礎 - Observable / Subject / BehaviorSubject / ReplaySubject / AsyncSubject">
+                <i class="fa fa-chevron-left"></i> [RxJS] 建立 Observable 的基礎 - Observable / Subject / BehaviorSubject / ReplaySubject / AsyncSubject
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2020/09/29/mastering-rxjs-14-creatoin-operators-of-empty-range-iif-throwerror-ajax/" rel="prev" title="[RxJS] 建立類型 Operators (1) - EMPTY / of / range / iif / throwError / ajax">
+                [RxJS] 建立類型 Operators (1) - EMPTY / of / range / iif / throwError / ajax <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cold-Observable"><span class="nav-number">1.</span> <span class="nav-text">Cold Observable</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hot-Observable"><span class="nav-number">2.</span> <span class="nav-text">Hot Observable</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Warm-Observable"><span class="nav-number">3.</span> <span class="nav-text">Warm Observable</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">4.</span> <span class="nav-text">本日小結</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/';
+          this.page.identifier = '2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/';
+          this.page.title = '[RxJS] Cold Observable v.s Hot Observable';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="TensorFlow,TensorFlow.js,Machine Learning,機器學習,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="TensorFlow.js是Google將機器學習(Machine Learning、ML)框架TensorFlow的JavaScript版本，透過TensorFlow.js，讓JavaScript開發人員也有機會加入機器學習的領域。加上前端領域的生態圈支持，讓機器學習在瀏覽器上有了更多發揮的空間！例如結合攝影機、行動裝置的陀螺儀等等，只要裝置與瀏覽器支援，都能夠發會更多不同的變化，同時藉由在客戶">
+<meta name="keywords" content="TensorFlow,TensorFlow.js,Machine Learning,機器學習">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[TensorFlow.js] 前端也能玩Machine Learning：TensorFlow.js初體驗">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2018/04/07/tensorflow-js-basic/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="TensorFlow.js是Google將機器學習(Machine Learning、ML)框架TensorFlow的JavaScript版本，透過TensorFlow.js，讓JavaScript開發人員也有機會加入機器學習的領域。加上前端領域的生態圈支持，讓機器學習在瀏覽器上有了更多發揮的空間！例如結合攝影機、行動裝置的陀螺儀等等，只要裝置與瀏覽器支援，都能夠發會更多不同的變化，同時藉由在客戶">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/07/tensorflow-js-basic/logo.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/07/tensorflow-js-basic/result.png">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.436Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[TensorFlow.js] 前端也能玩Machine Learning：TensorFlow.js初體驗">
+<meta name="twitter:description" content="TensorFlow.js是Google將機器學習(Machine Learning、ML)框架TensorFlow的JavaScript版本，透過TensorFlow.js，讓JavaScript開發人員也有機會加入機器學習的領域。加上前端領域的生態圈支持，讓機器學習在瀏覽器上有了更多發揮的空間！例如結合攝影機、行動裝置的陀螺儀等等，只要裝置與瀏覽器支援，都能夠發會更多不同的變化，同時藉由在客戶">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2018/04/07/tensorflow-js-basic/logo.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2018/04/07/tensorflow-js-basic/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[TensorFlow.js] 前端也能玩Machine Learning：TensorFlow.js初體驗 | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2018/04/07/tensorflow-js-basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[TensorFlow.js] 前端也能玩Machine Learning：TensorFlow.js初體驗</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-04-07T15:10:04+00:00">
+                2018-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Machine-Learning-機器學習/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning 機器學習</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/04/07/tensorflow-js-basic/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/04/07/tensorflow-js-basic/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://js.tensorflow.org/" target="_blank" rel="noopener">TensorFlow.js</a>是Google將機器學習(Machine Learning、ML)框架TensorFlow的JavaScript版本，透過TensorFlow.js，讓JavaScript開發人員也有機會加入機器學習的領域。加上前端領域的生態圈支持，讓機器學習在瀏覽器上有了更多發揮的空間！例如結合攝影機、行動裝置的陀螺儀等等，只要裝置與瀏覽器支援，都能夠發會更多不同的變化，同時藉由在客戶端瀏覽器上執行的優勢，節省後端訓練的成本。</p>
+<p>今天我們就來簡單介紹一下TensorFlow.js，以及簡單的機器學習訓練方式吧！</p>
+<a id="more"></a>
+<img src="/blog/2018/04/07/tensorflow-js-basic/logo.png">
+<h1 id="關於-TensorFlow-js-的基礎知識"><a href="#關於-TensorFlow-js-的基礎知識" class="headerlink" title="關於 TensorFlow.js 的基礎知識"></a>關於 TensorFlow.js 的基礎知識</h1><p>這是一篇很基礎很間單的TensorFlow.js介紹與範例，因此我們還是先簡單的介紹一下 TensorFlow.js。</p>
+<h2 id="TensorFlow-js的特色與基本組成"><a href="#TensorFlow-js的特色與基本組成" class="headerlink" title="TensorFlow.js的特色與基本組成"></a>TensorFlow.js的特色與基本組成</h2><p>由於TensorFlow.js是由JavaScript撰寫而成，因此只要與瀏覽器相關的應用，都可以與TensorFlow.js直接整合，這意味著我們可以將瀏覽器功能與機器學習搭配起來，組合成更多元的web application。</p>
+<p>TensorFlow.js也支援WebGL，因此即使在瀏覽器上，我們也能使用GPU來加快運算結果，不用擔心在瀏覽器上的效能限制。</p>
+<p>TensorFlow.js分成低階與高階兩組API。</p>
+<p>低階的API是由<a href="https://deeplearnjs.org/" target="_blank" rel="noopener">deeplearn.js</a>衍生，負責處理一些低階如線性代數的資料運算等等，來協助我們處理機器學習中的數學運算部分。</p>
+<p>而高階的API則是用來包裝一些常用的機器學習演算法，同時允許我們載入訓練好的模型，像是由Keras訓練的模型等等。</p>
+<h2 id="TensorFlow-js的限制"><a href="#TensorFlow-js的限制" class="headerlink" title="TensorFlow.js的限制"></a>TensorFlow.js的限制</h2><p>目前TensorFlow.js不支援Node.js開發，因此我們只能在瀏覽器上使用，未來會支援Node.js，但時程未定。</p>
+<h1 id="開始使用-TensorFlow-js"><a href="#開始使用-TensorFlow-js" class="headerlink" title="開始使用 TensorFlow.js"></a>開始使用 TensorFlow.js</h1><h2 id="直接使用CDN"><a href="#直接使用CDN" class="headerlink" title="直接使用CDN"></a>直接使用CDN</h2><p>接下來我們就可以開始使用TensorFlow.js啦！由於TensorFlow.js目前只能在瀏覽器上執行，為了簡化前置準備，我們直接建立一個index.html，並加入TensorFlow.js的CDN，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>TensorFlow.js DEMO<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"index.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>之後我們就能在index.js中開始使用TensorFlow.js進行機器學習啦！</p>
+<h2 id="使用-npm-或-yarn"><a href="#使用-npm-或-yarn" class="headerlink" title="使用 npm 或 yarn"></a>使用 npm 或 yarn</h2><p>當然，身為熟練的前端工程師，我們也能使用<code>npm</code>或<code>yarn</code>來安裝，如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install @tensorflow/tfjs</span><br></pre></td></tr></table></figure>
+<p>之後再用import的方式加入TensorFlow即可</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> tf <span class="keyword">from</span> <span class="string">'@tensorflow/tfjs'</span>;</span><br></pre></td></tr></table></figure>
+<p>當然，你就需要使用babel或webpack等工具來轉換程式囉。</p>
+<h2 id="機器學習基本概念"><a href="#機器學習基本概念" class="headerlink" title="機器學習基本概念"></a>機器學習基本概念</h2><p>先來簡單講講一般機器學習是怎麼做的，在機器學習中，通常我們會針對一個<strong>題目</strong>，給予一組<strong>訓練資料</strong>清單，這些資料包含了問題與答案，接著透過機器學習的各種演算法，來訓練出一個針對這個題目的<strong>模型</strong>。</p>
+<p>這個模型通常就代表了一個<strong>公式</strong>，只要將題目帶進去公式，就能夠算出答案，而這個公式怎麼來的呢？就是透過機器學習演算法，這些演算法通常會先隨機產生一個公式(也就是模型)，接著將訓練資料帶進去計算出<strong>預測值</strong>，並與正確答案比較，並透過不斷的調整模型內容，不斷想辦法<strong>降低預測值與正確答案的差距</strong>，直到預測值與足夠接近正確答案為止。</p>
+<p>簡單來說，就是經驗法則啦！剛開始學一項知識的時候，得到的結果會與預期落差很大，藉由不斷學到正確知識後，就會與預期越來越接近！</p>
+<p>有了這樣的基本概念後，就讓我們來訓練一個簡單的模型吧！</p>
+<p>另外，有時間的話建議可以先看過<a href="https://js.tensorflow.org/tutorials/core-concepts.html" target="_blank" rel="noopener">Core Concepts in TensorFlow.js</a>，對於TensorFlow.js的低階API有基礎的認知，會比較好理解後續的程式。(或是有機會再來簡單介紹一個TensorFlow.js的低階API)</p>
+<h2 id="產生第一個待訓練模型"><a href="#產生第一個待訓練模型" class="headerlink" title="產生第一個待訓練模型"></a>產生第一個待訓練模型</h2><p>首先我們先看一個簡單的數學公式代表我們的正確模型。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">y = 2x</span><br></pre></td></tr></table></figure>
+<p><code>x</code> 代表輸入值，<code>y</code>代表輸出結果，<code>2</code>是這個模型的重點參數，也是我們在訓練過程中期望達到的目標！</p>
+<p>但目前我們還沒有任何模型可用，因此我們先在程式中加入一個全域變數，把它當做要被訓練的<strong>模型參數</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 要被訓練的參數，這個參數隨著訓練次數增加會越來越準確</span></span><br><span class="line"><span class="keyword">const</span> trainingAnswer = tf.variable(tf.scalar(<span class="built_in">Math</span>.random()));</span><br></pre></td></tr></table></figure>
+<p>上述程式中，<code>tf</code>是載入CDN程式後，用來放置TensorFlow.js相關程式的全域變數。</p>
+<p>我們透過<code>tf.scalar()</code>將<code>Math.random()</code>的隨機值當作TensorFlow的數值資料，再使用<code>tf.variable()</code>將這個數值當作是一個變數，因此上面程式我們可以解讀為：<strong>在TensorFlow中宣告一個變數，並給予一個隨機數值</strong>。</p>
+<p>接下來，我們再來以這個參數來產生一個<strong>模型公式</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">predict</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> tf.tidy(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> trainingAnswer.mul(x)</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>tf.tidy()</code>是用來避免變數在TensorFlow運算中站用過多記憶體的一種管理機制，在這裡我們不用想太多，大部分情境下，關於運算的都放在<code>tf.tidy()</code>中就對了，剩下的TensorFlow.js會幫我們處理！</p>
+<p><code>.mul()</code>，則是TensorFlow.js低階運算API的一種，主要用來進行乘法運算。</p>
+<p>透過這個<code>predict()</code>函式，我們能運算出目前模式產生出來的預測值</p>
+<h2 id="定義損失函式-Loss-Function"><a href="#定義損失函式-Loss-Function" class="headerlink" title="定義損失函式(Loss Function)"></a>定義損失函式(Loss Function)</h2><p>損失函式是用來評估預測值與正確地案的差距，在訓練過程中，這個損失函式的輸出應該會越來越小，在這邊我們使用<a href="https://developers.google.com/machine-learning/crash-course/glossary#MSE" target="_blank" rel="noopener">Mean Square Error</a>函式作為評估的公式，代表的是預測結果與訓練資料中<strong>所有答案平方差的平均</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loss</span>(<span class="params">predictions, labels</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> meanSquareError = predictions.sub(labels).square().mean();</span><br><span class="line">    <span class="keyword">return</span> meanSquareError;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="定義訓練函式"><a href="#定義訓練函式" class="headerlink" title="定義訓練函式"></a>定義訓練函式</h2><p>接下來我們要定義訓練的方法，TensorFlow.js中提供了幾種訓練的演算法，我們選擇使用<a href="https://developers.google.com/machine-learning/crash-course/glossary#SGD" target="_blank" rel="noopener">Stochastic Gradient Descent</a>(SGD)演算法，這種演算法會根據訓練結果來隨機調升或調降參數的值，另外我們也需要設定一個學習率(learning rate)，這代表學習的跳耀程度，數值越低代表學習速度越慢，越高代表學習速度越快，但也可能會造成太過跳耀式的學習，導致學習成果走鐘</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">train</span>(<span class="params">xs, ys, numIterations</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> learningRate = <span class="number">0.5</span>;</span><br><span class="line">    <span class="keyword">const</span> optimizer = tf.train.sgd(<span class="number">0.5</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> iter = <span class="number">0</span>; iter &lt; numIterations; iter++) &#123;</span><br><span class="line">        optimizer.minimize(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> predsYs = predict(xs);</span><br><span class="line">            <span class="keyword">return</span> loss(predsYs, ys);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>參數<code>xs</code>代表訓練用問題資料集，<code>ys</code>代表答案資料集，<code>numIterations</code>代表訓練次數，理論上訓練次數越多，就越接近結果，當然也越花時間，同時在學習率太高的情況下，訓練走鐘的機率也會增加。</p>
+<p><code>tf.train.sgd(0.5)</code>代表使用SGD訓練演算法，並以<code>0.5</code>的學習率進行訓練。</p>
+<p>最後看到<code>optimizer.minimize()</code>方法，來調整參數，方法的callback中，我們將透過損失函式算出誤差值並回傳，<code>minimize()</code>方法會自動幫助我們調整損失函式中關聯到的參數，並透過調整參數把誤差值降到最低。</p>
+<h2 id="執行訓練"><a href="#執行訓練" class="headerlink" title="執行訓練"></a>執行訓練</h2><p>有了損失函式與訓練函式後，我們就可以將這些內容組合起來執行訓練啦！</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">learnCoefficients</span>(<span class="params">dataCount, iterations</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> correctAnswer = <span class="number">2</span>; <span class="comment">// 正確答案</span></span><br><span class="line">    <span class="keyword">const</span> trainingData = generateData(dataCount, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Before Training: '</span>, <span class="keyword">await</span> trainingAnswer.data());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Train the model!</span></span><br><span class="line">    <span class="keyword">await</span> train(trainingData.xs, trainingData.ys, iterations);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 印出訓練結果</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'After TRaining: '</span>, <span class="keyword">await</span> trainingAnswer.data());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">learnCoefficients(<span class="number">100</span>, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+<p>前兩行是利用正確的模型產生訓練資料，現實中則可能是準備好文字檔並讀取進來<code>generateData</code>內容如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">generateData</span>(<span class="params">numPoints, answer</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> tf.tidy(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// 產生常態分佈的隨機資料</span></span><br><span class="line">        <span class="keyword">const</span> xs = tf.randomNormal([numPoints], <span class="number">-1</span>, <span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 套用正確模型產生答案</span></span><br><span class="line">        <span class="keyword">const</span> ans = tf.scalar(answer);</span><br><span class="line">        <span class="keyword">const</span> ys = ans.mul(xs);</span><br><span class="line">        <span class="comment">// 回傳訓練資料與答案</span></span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            xs,</span><br><span class="line">            ys</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接著透過訓練函式，把問題、答案和訓練次數傳進去，讓訓練函式去把結果訓練出來，就可以得到一個正確的模型啦！</p>
+<p>我們可以試著打開瀏覽器的console看一下執行結果：</p>
+<img src="/blog/2018/04/07/tensorflow-js-basic/result.png">
+<p>訓練的結果就與我們的正確答案十分接近啦！</p>
+<p>前端人員要進入機器學習領域，門檻又降低不少了呢！</p>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>今天我們介紹了TensorFlow.js這關機器學習的架構，並且做了一個簡單的訓練程式，透過機器學習幫助我們解決一個數學問題。</p>
+<p>透過TensorFlow.js，前端JavaScript開發人員可以在不需要了解其他程式語言的前提下，進入機器學習的領域，當然啦，我們還是要有機器學習相關的知識，才能夠正確的使用TensorFlow.js；同時也能搭配各種前端應用，組合出各式各樣的有趣應用，TensorFlow.js上也有一些結合web產生的DEMO程式，有興趣的話也可以上去玩玩看。</p>
+<p>希望這篇文章可以幫助對於機器學習有興趣的前端朋友更容易入門，之後有機會的話，再來寫TensorFlow.js與神經網路等等的相關應用吧！</p>
+<p>今天的程式碼在這裡：<a href="https://github.com/wellwind/tensorflow-js-practice" target="_blank" rel="noopener">https://github.com/wellwind/tensorflow-js-practice</a></p>
+<h1 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h1><ul>
+<li><a href="https://js.tensorflow.org/" target="_blank" rel="noopener">TensorFlow.js</a></li>
+<li><a href="https://js.tensorflow.org/tutorials/core-concepts.html" target="_blank" rel="noopener">Core Concepts in TensorFlow.js</a></li>
+<li><a href="https://js.tensorflow.org/tutorials/fit-curve.html" target="_blank" rel="noopener">Training First Steps: Fitting a Curve to Synthetic Data</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/TensorFlow/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> TensorFlow</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/TensorFlow-js/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> TensorFlow.js</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Machine-Learning/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Machine Learning</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/機器學習/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> 機器學習</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/04/05/git-using-gitkraken-3-remote/" rel="next" title="[Git]GitKraken 強大的剛剛好的Git GUI神器(3)遠端篇">
+                <i class="fa fa-chevron-left"></i> [Git]GitKraken 強大的剛剛好的Git GUI神器(3)遠端篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/05/04/angular-material-35-upgrade-to-6/" rel="prev" title="[Angular Material完全攻略] Angular Material 6之快速安裝篇">
+                [Angular Material完全攻略] Angular Material 6之快速安裝篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#關於-TensorFlow-js-的基礎知識"><span class="nav-number">1.</span> <span class="nav-text">關於 TensorFlow.js 的基礎知識</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TensorFlow-js的特色與基本組成"><span class="nav-number">1.1.</span> <span class="nav-text">TensorFlow.js的特色與基本組成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TensorFlow-js的限制"><span class="nav-number">1.2.</span> <span class="nav-text">TensorFlow.js的限制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#開始使用-TensorFlow-js"><span class="nav-number">2.</span> <span class="nav-text">開始使用 TensorFlow.js</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#直接使用CDN"><span class="nav-number">2.1.</span> <span class="nav-text">直接使用CDN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-npm-或-yarn"><span class="nav-number">2.2.</span> <span class="nav-text">使用 npm 或 yarn</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#機器學習基本概念"><span class="nav-number">2.3.</span> <span class="nav-text">機器學習基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#產生第一個待訓練模型"><span class="nav-number">2.4.</span> <span class="nav-text">產生第一個待訓練模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定義損失函式-Loss-Function"><span class="nav-number">2.5.</span> <span class="nav-text">定義損失函式(Loss Function)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定義訓練函式"><span class="nav-number">2.6.</span> <span class="nav-text">定義訓練函式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#執行訓練"><span class="nav-number">2.7.</span> <span class="nav-text">執行訓練</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">3.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相關資源"><span class="nav-number">4.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2018/04/07/tensorflow-js-basic/';
+          this.page.identifier = '2018/04/07/tensorflow-js-basic/';
+          this.page.title = '[TensorFlow.js] 前端也能玩Machine Learning：TensorFlow.js初體驗';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

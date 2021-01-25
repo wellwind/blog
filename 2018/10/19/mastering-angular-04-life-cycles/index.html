@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular,Life Cycles,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="在設計 Angular 元件(component)時，可以在程式中針對 Angular 在運作程式時放入不同的 hooks(我們通常稱為 lifecycle hooks)，來在不同的行為中做出更深入的處理，今天就讓我們來看看整個元件在執行時所會發生的生命週期以及應用吧！">
+<meta name="keywords" content="Angular,Life Cycles">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular 大師之路] 認識 Angular 的生命週期">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2018/10/19/mastering-angular-04-life-cycles/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="在設計 Angular 元件(component)時，可以在程式中針對 Angular 在運作程式時放入不同的 hooks(我們通常稱為 lifecycle hooks)，來在不同的行為中做出更深入的處理，今天就讓我們來看看整個元件在執行時所會發生的生命週期以及應用吧！">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/10/19/mastering-angular-04-life-cycles/01.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/10/19/mastering-angular-04-life-cycles/02.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/10/19/mastering-angular-04-life-cycles/03.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/10/19/mastering-angular-04-life-cycles/04.gif">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.336Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular 大師之路] 認識 Angular 的生命週期">
+<meta name="twitter:description" content="在設計 Angular 元件(component)時，可以在程式中針對 Angular 在運作程式時放入不同的 hooks(我們通常稱為 lifecycle hooks)，來在不同的行為中做出更深入的處理，今天就讓我們來看看整個元件在執行時所會發生的生命週期以及應用吧！">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2018/10/19/mastering-angular-04-life-cycles/01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2018/10/19/mastering-angular-04-life-cycles/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular 大師之路] 認識 Angular 的生命週期 | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2018/10/19/mastering-angular-04-life-cycles/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular 大師之路] 認識 Angular 的生命週期</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-10-19T18:00:00+00:00">
+                2018-10-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular-大師之路/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular 大師之路</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/10/19/mastering-angular-04-life-cycles/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/19/mastering-angular-04-life-cycles/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在設計 Angular 元件(component)時，可以在程式中針對 Angular 在運作程式時放入不同的 hooks(我們通常稱為 <strong>lifecycle hooks</strong>)，來在不同的行為中做出更深入的處理，今天就讓我們來看看整個元件在執行時所會發生的生命週期以及應用吧！</p>
+<a id="more"></a>
+<p><strong>類型</strong>：觀念+技巧</p>
+<p><strong>難度</strong>：3 顆星</p>
+<p><strong>實用度</strong>：一般應用 3 顆星；有許多共用元件開發需求或整合第三方套件時 5 顆星</p>
+<h1 id="如何使用-lifecycle-hooks"><a href="#如何使用-lifecycle-hooks" class="headerlink" title="如何使用 lifecycle hooks"></a>如何使用 lifecycle hooks</h1><p>在不同的生命週期中，我們可以在程式中加入對應生命週期的方法，來得知生命週期變化，以及作出對應的處理，以最常見的 <code>OnInit</code> 週期來說，我們會在元件中加入 <code>ngOnInit()</code> 方法，如下</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppComponent &#123;</span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="comment">// do something...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如此一來，當 Angular 核心程式建立元件並進入初始化(<code>OnInit</code>)的生命週期時，會判斷其中是否有 <code>ngOnInit</code> 方法，若有則執行這個方法。我們便能在元件初始化時執行某些行為。</p>
+<h2 id="使用介面宣告-lifecycle-hooks"><a href="#使用介面宣告-lifecycle-hooks" class="headerlink" title="使用介面宣告 lifecycle hooks"></a>使用介面宣告 lifecycle hooks</h2><p>為了避免打錯字，Angular 也提供了所有生命週期的介面(interface)宣告，放在 <code>@angular/core</code> 中，如下範例程式：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, OnInit &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="comment">// do something...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面程式中，我們加入了 <code>OnInit</code> 的介面，在宣告元件類別時，加上了 <code>implements OnInit</code>，讓 TypeScript 在處理程式時，知道我們需要實作 <code>OnInit</code> 介面中宣告的方法，<code>OnInit</code> 介面中所宣告的方法簽章如下</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> OnInit &#123;</span><br><span class="line">    ngOnInit(): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因此，所有宣告需要實作 <code>OnInit</code> 介面的類別，都需要在其中宣告 <code>ngOnInit()</code> 方法，由於 JavaScript 本來就不是強行別的程式與言，因此這個宣告要實作介面的行為<strong>不是必須</strong>的，但為了避免不小心打錯字等等的人為疏失，可以透過 TypeScript 的型別機制，確保這個方法一定會被呼叫！</p>
+<h1 id="元件的完整生命週期"><a href="#元件的完整生命週期" class="headerlink" title="元件的完整生命週期"></a>元件的完整生命週期</h1><p>以下是一個元件可能會被呼叫生命週期，按照可能被呼叫的順序排序</p>
+<h2 id="OnChanges"><a href="#OnChanges" class="headerlink" title="OnChanges"></a>OnChanges</h2><p>當元件有 <code>@Input()</code> 且從外部有透過屬性綁定的方式將資料傳入時，當元件初始化時在 <code>ngOnInit()</code> 前呼叫 <code>ngOnChanges()</code> 方法；且每當 <code>@Input()</code> 的值有變化時，都會呼叫此方法，藉此得知資料被改變了，如下程式：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, Input, OnChanges, OnInit &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-price'</span>,</span><br><span class="line">  template: <span class="string">`&lt;span&gt;&#123;&#123; price &#125;&#125;&lt;/span&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> PriceComponent <span class="keyword">implements</span> OnInit, OnChanges &#123;</span><br><span class="line">  <span class="meta">@Input</span>() price;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Price Component Init'</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ngOnChanges() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Price Component Input Changed'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-app'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;app-price [price]="value"&gt;&lt;/app-price&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppComponent  &#123;</span><br><span class="line">  value = <span class="number">100</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>執行結果如下圖：</p>
+<img src="/blog/2018/10/19/mastering-angular-04-life-cycles/01.png">
+<p>可以看到 <code>ngOnChanges()</code> 確實會在 <code>ngOnInit()</code> 之前被呼叫。</p>
+<div class="note info"><p>注意如果沒有 <code>@Input()</code> 時，是不會有 <code>ngOnChanges()</code> 週期的。</p></div>
+<h3 id="得知-Input-的變化內容"><a href="#得知-Input-的變化內容" class="headerlink" title="得知 Input() 的變化內容"></a>得知 Input() 的變化內容</h3><p>在 <code>ngOnChanges()</code> 內，可以加入一個 <a href="https://angular.io/api/core/SimpleChanges" target="_blank" rel="noopener">SimpleChanges型別</a> 的參數，SimpleChanges 是一個 key/value 的型別，key 代表的是每個 @Input() 的欄位名稱，而 value 都是 <a href="https://angular.io/api/core/SimpleChange" target="_blank" rel="noopener">SimpleChange型別</a>，用來得知以下資訊：</p>
+<ul>
+<li><code>firstChange</code>：boolean 值，只有在第一次呼叫時為 true，之後都是 false</li>
+<li><code>previousValue</code>：上次呼叫時的值</li>
+<li><code>currentValue</code>：這次變更時的值</li>
+</ul>
+<p>因此從上述程式，我們可以變化為：將賠率/股價等類型的資訊，放到一個元件中，並依照資訊的增減呈現不同的變化</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, Input, OnChanges, OnInit, SimpleChanges &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-price'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;span class="price" [ngClass]="&#123;increase: price &gt; lastPrice, decrease: price &lt; lastPrice &#125;"&gt;</span></span><br><span class="line"><span class="string">    &#123;&#123; price &#125;&#125;</span></span><br><span class="line"><span class="string">    &lt;span&gt;&#123;&#123; firstChange ? '' : (price &gt; lastPrice ? '↑' : '↓') &#125;&#125;&lt;/span&gt;</span></span><br><span class="line"><span class="string">  &lt;/span&gt;</span></span><br><span class="line"><span class="string">  `</span>,</span><br><span class="line">  styles: [</span><br><span class="line">    <span class="string">` .price &#123; background: black;  color: white; &#125;</span></span><br><span class="line"><span class="string">      .increase &#123; color: red; &#125;</span></span><br><span class="line"><span class="string">      .decrease &#123; color: green; &#125;</span></span><br><span class="line"><span class="string">    `</span></span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> PriceComponent <span class="keyword">implements</span> OnInit, OnChanges &#123;</span><br><span class="line">  firstChange = <span class="literal">true</span>;</span><br><span class="line">  lastPrice;</span><br><span class="line">  <span class="meta">@Input</span>() price;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Price Component Init'</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ngOnChanges(changes: SimpleChanges) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Price Component Input Changed'</span>);</span><br><span class="line">    <span class="keyword">this</span>.firstChange = changes[<span class="string">'price'</span>].firstChange;</span><br><span class="line">    <span class="keyword">this</span>.lastPrice = changes[<span class="string">'price'</span>].previousValue;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>執行結果如下圖：</p>
+<img src="/blog/2018/10/19/mastering-angular-04-life-cycles/02.gif">
+<p>關於以上 <code>ngOnChanges</code> 的參考程式如下：</p>
+<p><a href="https://stackblitz.com/edit/ironman-2019-lifecycles-ngonchanges?file=src/app/app.component.ts" target="_blank" rel="noopener">https://stackblitz.com/edit/ironman-2019-lifecycles-ngonchanges?file=src/app/app.component.ts</a></p>
+<h2 id="OnInit"><a href="#OnInit" class="headerlink" title="OnInit"></a>OnInit</h2><p>OnInit 的週期就相對簡單的多，在第一次執行完 <code>ngOnChanges()</code> 後(如果有的話)，就會進入 <code>ngOnInit()</code> 週期，大部分的初始化程式都建議在 <code>ngOnInit()</code> 週期中執行，而非在建構式處理，尤其是比較複雜程式或 ajax 呼叫，建議都在 <code>ngOnInit()</code> 中執行。</p>
+<p>放在建構式中明顯的缺點是：撰寫單元測試時，由於建構式本身對外部程式的依賴太重，容易造成測試程式難以撰寫。</p>
+<h2 id="DoCheck"><a href="#DoCheck" class="headerlink" title="DoCheck"></a>DoCheck</h2><p><code>ngDoCheck()</code> 會在 Angular 核心程式執行變更偵測後呼叫，我們可以在這裡面額外撰寫程式來處理變更偵測所無法偵測到的部分。</p>
+<p>例如剛才原本練習 <code>ngOnChanges()</code> 的程式中，若我們把原來的 price 改成一個物件，如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, Input, OnChanges, OnInit, SimpleChanges &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-price'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;span class="price" [ngClass]="&#123;increase: price &gt; lastPrice, decrease: price &lt; lastPrice &#125;"&gt;</span></span><br><span class="line"><span class="string">    &#123;&#123; price.value &#125;&#125;</span></span><br><span class="line"><span class="string">    &lt;span&gt;&#123;&#123; firstChange ? '' : (price &gt; lastPrice ? '↑' : '↓') &#125;&#125;&lt;/span&gt;</span></span><br><span class="line"><span class="string">  &lt;/span&gt;</span></span><br><span class="line"><span class="string">  `</span>,</span><br><span class="line">  styles: [</span><br><span class="line">    <span class="string">` .price &#123; background: black;  color: white; &#125;</span></span><br><span class="line"><span class="string">      .increase &#123; color: red; &#125;</span></span><br><span class="line"><span class="string">      .decrease &#123; color: green; &#125;</span></span><br><span class="line"><span class="string">    `</span></span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> PriceComponent <span class="keyword">implements</span> OnInit, OnChanges &#123;</span><br><span class="line">  firstChange = <span class="literal">true</span>;</span><br><span class="line">  lastPrice;</span><br><span class="line">  <span class="meta">@Input</span>() price;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Price Component Init'</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ngOnChanges(changes: SimpleChanges) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Price Component Input Changed'</span>);</span><br><span class="line">    <span class="keyword">this</span>.firstChange = changes[<span class="string">'price'</span>].firstChange;</span><br><span class="line">    <span class="keyword">this</span>.lastPrice = changes[<span class="string">'price'</span>].previousValue;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-app'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;app-price [price]="price"&gt;&lt;/app-price&gt;</span></span><br><span class="line"><span class="string">  &lt;button (click)="increase()"&gt;Increase&lt;/button&gt;</span></span><br><span class="line"><span class="string">  &lt;button (click)="decrease()"&gt;Decrease&lt;/button&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppComponent &#123;</span><br><span class="line">  price = &#123; value: <span class="number">100</span> &#125;;</span><br><span class="line"></span><br><span class="line">  increase() &#123;</span><br><span class="line">    <span class="keyword">this</span>.price.value += <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  decrease() &#123;</span><br><span class="line">    <span class="keyword">this</span>.price.value -= <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此時的執行結果如下：</p>
+<img src="/blog/2018/10/19/mastering-angular-04-life-cycles/03.gif">
+<p>可以看到畫面上雖然有變化，但除了第一次以外，完全不再進入 OnChanges 生命週期中，因此偵測不到資料是否真的有變化了，這是因為在變更偵測時，我們的 <code>price</code> 物件本身的<strong>參考位置(reference)</strong>沒有改變的關係，因此在變更偵測時 Angular 認為 price 這個 Input 並沒有變更。</p>
+<p>要改變這個結果有兩種方式，一種是複製一個新的物件再改變新物件的內容，並把 price 指派為新的物件，此時因為物件的參考位置修改了，變更偵測就能夠認得；當然每次都建立新物件是有成本的，所以我們也能在 DoCheck 週期中自行判斷，如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, DoCheck, Input, OnInit &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-price'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;span class="price" [ngClass]="&#123;increase: priceIncrease, decrease: priceDecrease &#125;"&gt;</span></span><br><span class="line"><span class="string">    &#123;&#123; price.value &#125;&#125;</span></span><br><span class="line"><span class="string">    &lt;span&gt;&#123;&#123; firstChange ? '' : (priceIncrease ? '↑' : '↓') &#125;&#125;&lt;/span&gt;</span></span><br><span class="line"><span class="string">  &lt;/span&gt;</span></span><br><span class="line"><span class="string">  `</span>,</span><br><span class="line">  styles: [</span><br><span class="line">    <span class="string">` .price &#123; background: black;  color: white; &#125;</span></span><br><span class="line"><span class="string">      .increase &#123; color: red; &#125;</span></span><br><span class="line"><span class="string">      .decrease &#123; color: green; &#125;</span></span><br><span class="line"><span class="string">    `</span></span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> PriceComponent <span class="keyword">implements</span> OnInit, DoCheck &#123;</span><br><span class="line">  firstChange = <span class="literal">true</span>;</span><br><span class="line">  lastPriceValue:<span class="built_in">number</span>;</span><br><span class="line">  priceIncrease: <span class="built_in">boolean</span>;</span><br><span class="line">  priceDecrease: <span class="built_in">boolean</span>;</span><br><span class="line">  <span class="meta">@Input</span>() price: &#123; value: <span class="built_in">number</span> &#125;;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Price Component Init'</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ngDoCheck() &#123;</span><br><span class="line">    <span class="comment">// 在這裡主動判斷資料是否有變更 (判斷 Angular 所無法判斷的部分)</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.price &amp;&amp; <span class="keyword">this</span>.lastPriceValue &amp;&amp; <span class="keyword">this</span>.price.value !== <span class="keyword">this</span>.lastPriceValue) &#123;</span><br><span class="line">      <span class="keyword">this</span>.firstChange = <span class="literal">false</span>;</span><br><span class="line">      <span class="keyword">this</span>.priceIncrease = <span class="keyword">this</span>.price.value &gt; <span class="keyword">this</span>.lastPriceValue;</span><br><span class="line">      <span class="keyword">this</span>.priceDecrease = <span class="keyword">this</span>.price.value &lt; <span class="keyword">this</span>.lastPriceValue;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.lastPriceValue = <span class="keyword">this</span>.price.value;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程式碼位置：</p>
+<p><a href="https://stackblitz.com/edit/ironman-2019-lifecycles-ngdocheck?file=src/app/app.component.ts" target="_blank" rel="noopener">https://stackblitz.com/edit/ironman-2019-lifecycles-ngdocheck?file=src/app/app.component.ts</a></p>
+<h2 id="AfterContentInit-與-AfterContentChecked"><a href="#AfterContentInit-與-AfterContentChecked" class="headerlink" title="AfterContentInit 與 AfterContentChecked"></a>AfterContentInit 與 AfterContentChecked</h2><p>在設計元件時，我們會使用 <code>&lt;ng-content&gt;</code> 來允許使用元件的時候放置更多的 HTML 內容，我們常使用 <code>&lt;ng-content&gt;</code> 來設計類似 tabs 功能的元件，如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-block'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;div class="block"&gt;</span></span><br><span class="line"><span class="string">    &lt;ng-content&gt;&lt;/ng-content&gt;</span></span><br><span class="line"><span class="string">  &lt;/div&gt;`</span>,</span><br><span class="line">  styles: [</span><br><span class="line">    <span class="string">`.block &#123; border: 1px solid black; &#125;`</span></span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> BlockComponent &#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-app'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;button (click)="tab = 1"&gt;Tab 1&lt;/button&gt;</span></span><br><span class="line"><span class="string">  &lt;button (click)="tab = 2"&gt;Tab 2&lt;/button&gt;</span></span><br><span class="line"><span class="string">  &lt;button (click)="tab = 3"&gt;Tab 3&lt;/button&gt;</span></span><br><span class="line"><span class="string">  &lt;app-block *ngIf="tab === 1"&gt;</span></span><br><span class="line"><span class="string">    Tab 1</span></span><br><span class="line"><span class="string">  &lt;/app-block&gt;</span></span><br><span class="line"><span class="string">  &lt;app-block *ngIf="tab === 2"&gt;</span></span><br><span class="line"><span class="string">    Tab 2</span></span><br><span class="line"><span class="string">  &lt;/app-block&gt;</span></span><br><span class="line"><span class="string">  &lt;app-block *ngIf="tab === 3"&gt;</span></span><br><span class="line"><span class="string">    Tab 3</span></span><br><span class="line"><span class="string">  &lt;/app-block&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppComponent&#123;</span><br><span class="line">  tab = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程式 BlockComponent 中的樣板透過了 <code>&lt;ng-content&gt;</code> 的方式，讓顯示的內容改為由使用元件的父元件來決定，增加元件的彈性。</p>
+<p>在 DoCheck 週期後，會立刻觸發 AfterContentInit 週期，之後每當有變更偵測發生時，在 DoCheck 後觸發 AfterContentChecked。</p>
+<p>在使用 <code>&lt;ng-content&gt;</code> 的元件內，我們可以使用 <code>@ContentChild</code> 來取得某個樣板參考變數實體或子元件，若父元件在使用時有加入符合 <code>@ContentChild</code> 設定的條件時，在 AfterContentInit 週期就可以取得其實體，若想取得多個實體，則可以使用 <code>@ContentChildern</code> 來取得一個包含所有實體的 <a href="https://angular.io/api/core/QueryList" target="_blank" rel="noopener">QueryList</a> 如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; AfterContentChecked, AfterContentInit,  ContentChild, ContentChildren, Component, OnInit &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-block'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;div class="block"&gt;</span></span><br><span class="line"><span class="string">    &lt;ng-content&gt;&lt;/ng-content&gt;</span></span><br><span class="line"><span class="string">  &lt;/div&gt;`</span>,</span><br><span class="line">  styles: [</span><br><span class="line">    <span class="string">`.block &#123; border: 1px solid black; &#125;`</span></span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> BlockComponent &#123;</span><br><span class="line">  <span class="meta">@ContentChild</span>(<span class="string">'button'</span>) button;</span><br><span class="line">  <span class="meta">@ContentChildren</span>(<span class="string">'button'</span>) buttons;</span><br><span class="line">  </span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="comment">// 此時還得不到 &lt;ng-content&gt; 裡面的內容</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'OnInit - The Button is'</span>, <span class="keyword">this</span>.button);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'OnInit - The Buttons are'</span>, <span class="keyword">this</span>.buttons);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ngAfterContentInit() &#123;</span><br><span class="line">    <span class="comment">// 此時才能取得 &lt;ng-content&gt; 裡面的內容</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'AfterContentInit - The Button is'</span>, <span class="keyword">this</span>.button);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'AfterContentInit - The Buttons are'</span>, <span class="keyword">this</span>.buttons);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ngAfterContentChecked() &#123;</span><br><span class="line">    <span class="comment">// 在 &lt;ng-content&gt; 內變更偵測都完成後觸發</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'AfterContentChecked - The Button is'</span>, <span class="keyword">this</span>.button);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'AfterContentChecked - The Buttons are'</span>, <span class="keyword">this</span>.buttons);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-app'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;button (click)="tab = 1"&gt;Tab 1&lt;/button&gt;</span></span><br><span class="line"><span class="string">  &lt;button (click)="tab = 2"&gt;Tab 2&lt;/button&gt;</span></span><br><span class="line"><span class="string">  &lt;button (click)="tab = 3"&gt;Tab 3&lt;/button&gt;</span></span><br><span class="line"><span class="string">  &lt;app-block *ngIf="tab === 1"&gt;</span></span><br><span class="line"><span class="string">    Tab 1</span></span><br><span class="line"><span class="string">    &lt;button #button (click)="tab = 2"&gt;Next&lt;/button&gt;</span></span><br><span class="line"><span class="string">  &lt;/app-block&gt;</span></span><br><span class="line"><span class="string">  &lt;app-block *ngIf="tab === 2"&gt;</span></span><br><span class="line"><span class="string">    Tab 2</span></span><br><span class="line"><span class="string">    &lt;button #button (click)="tab = 3"&gt;Next&lt;/button&gt;</span></span><br><span class="line"><span class="string">  &lt;/app-block&gt;</span></span><br><span class="line"><span class="string">  &lt;app-block *ngIf="tab === 3"&gt;</span></span><br><span class="line"><span class="string">    Tab 3</span></span><br><span class="line"><span class="string">    &lt;button #button (click)="tab = 1"&gt;Tab 1&lt;/button&gt;</span></span><br><span class="line"><span class="string">    &lt;button #button (click)="tab = 2"&gt;Tab 2&lt;/button&gt;</span></span><br><span class="line"><span class="string">  &lt;/app-block&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppComponent&#123;</span><br><span class="line">  tab = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程式碼位置：</p>
+<p><a href="https://stackblitz.com/edit/ironman-2019-lifecycles-aftercontent?file=src%2Fapp%2Fapp.component.ts" target="_blank" rel="noopener">https://stackblitz.com/edit/ironman-2019-lifecycles-aftercontent?file=src%2Fapp%2Fapp.component.ts</a></p>
+<h2 id="AfterViewInit-與-AfterViewChecked"><a href="#AfterViewInit-與-AfterViewChecked" class="headerlink" title="AfterViewInit 與 AfterViewChecked"></a>AfterViewInit 與 AfterViewChecked</h2><p>在 AfterContentInit 觸發後，會觸發 AfterViewInit，之後觸發 AfterViewChecked，而在每次變更偵測後也會觸發 AfterViewChecked。</p>
+<p>在開發元件時，我們常常會使用 <code>@ViewChild</code> 取得樣板上的某個<strong>子元件</strong>宣告，如果想取得樣板上指定的某個子元件的所有宣告，則可以使用 <code>@ViewChildren</code> 取得一個包含所有子元件的 QueryList，這些子原件在其父元件的 OnInit 週期時還不會產生實體，必須在 AfterViewInit 之後，才能正確取得實體，如以下程式：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; AfterViewChecked, AfterViewInit, Component, OnInit, Input, ViewChild, ViewChildren, QueryList &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-child'</span>,</span><br><span class="line">  template: <span class="string">`&lt;div&gt;Child &#123;&#123; value &#125;&#125;&lt;/div&gt;`</span>,</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> ChildComponent &#123;</span><br><span class="line">  <span class="meta">@Input</span>() value</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-app'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;button (click)="create()" #button&gt;Create New Child&lt;/button&gt;</span></span><br><span class="line"><span class="string">  &lt;app-child *ngFor="let item of list" [value]="item"&gt;&lt;/app-child&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppComponent <span class="keyword">implements</span> OnInit, AfterViewInit, AfterViewChecked &#123;</span><br><span class="line">  <span class="meta">@ViewChild</span>(<span class="string">'button'</span>) button;</span><br><span class="line">  <span class="meta">@ViewChild</span>(ChildComponent) child;</span><br><span class="line">  <span class="meta">@ViewChildren</span>(ChildComponent) children: QueryList&lt;ChildComponent&gt;;</span><br><span class="line"></span><br><span class="line">  list = [<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="comment">// 在這裡可以使用 @ViewChild 取得某個原生的 DOM</span></span><br><span class="line">    <span class="comment">// 但取不到子元件實體</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Button in OnInit'</span>, <span class="keyword">this</span>.button);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Child in OnInit'</span>, <span class="keyword">this</span>.child);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Children in OnInit'</span>, <span class="keyword">this</span>.children);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ngAfterViewInit() &#123;</span><br><span class="line">    <span class="comment">// 在 AfterViewInit 中可以取得子元件實體</span></span><br><span class="line">    <span class="comment">// 使用 @ViewChild 時，永遠只會取到第一個子元件</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Child in AfterViewInit'</span>, <span class="keyword">this</span>.child);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Children in AfterViewInit'</span>, <span class="keyword">this</span>.children);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ngAfterViewChecked() &#123;</span><br><span class="line">    <span class="comment">// 在每次樣板上元件的變更偵測都完成後觸發</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Child in AfterViewChecked'</span>, <span class="keyword">this</span>.child);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Children in AfterViewChecked'</span>, <span class="keyword">this</span>.children);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  create() &#123;</span><br><span class="line">    <span class="keyword">this</span>.list = [...this.list, <span class="keyword">this</span>.list.length];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程式碼位置：</p>
+<p><a href="https://stackblitz.com/edit/ironman-2019-lifecycles-afterview?file=src%2Fapp%2Fapp.component.ts" target="_blank" rel="noopener">https://stackblitz.com/edit/ironman-2019-lifecycles-afterview?file=src%2Fapp%2Fapp.component.ts</a></p>
+<h2 id="OnDestroy"><a href="#OnDestroy" class="headerlink" title="OnDestroy"></a>OnDestroy</h2><p>OnDestroy 會在元件不需要被使用時，觸發 <code>ngOnDestroy()</code> 方法，通常用來處理一些清理資料行為，若有些程式是不會在元件消失時被清除的，則需要在這個週期內額外處理，最常見的就是使用 RxJS 且有 subscribe 行為時，可能需要額外處理退訂的動作，以免重複訂閱或產生預期外的行為，如下程式：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, OnInit &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; interval &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-timer'</span>,</span><br><span class="line">  template: <span class="string">`&#123;&#123; counter &#125;&#125;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> TimerComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  counter = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    interval(<span class="number">1000</span>).subscribe(<span class="function"><span class="params">val</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.counter = val;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.counter);</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-app'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  Timer: &lt;app-timer *ngIf="displayTimer"&gt;&lt;/app-timer&gt;</span></span><br><span class="line"><span class="string">  &lt;button (click)="displayTimer = !displayTimer"&gt;Toggle Display Timer&lt;/button&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppComponent&#123;</span><br><span class="line">  displayTimer = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>執行結果如下：</p>
+<img src="/blog/2018/10/19/mastering-angular-04-life-cycles/04.gif">
+<p>可以看到當 <code>&lt;app-timer&gt;</code> 消失時，裡面的 <code>interval</code> 程式還依然在執行，且當再次產生 <code>&lt;app-timer&gt;</code> 時，就會再次產生新的訂閱，長期下來就容易產生 memory leak，因此就應該在 <code>ngOnDestroy()</code> 時，進行退訂的動作。如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, OnInit, OnDestroy &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; interval, Subscription &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-timer'</span>,</span><br><span class="line">  template: <span class="string">`&#123;&#123; counter &#125;&#125;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> TimerComponent <span class="keyword">implements</span> OnInit, OnDestroy &#123;</span><br><span class="line">  counter = <span class="number">0</span>;</span><br><span class="line">  subscription: Subscription;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="comment">// 取得訂閱</span></span><br><span class="line">    <span class="keyword">this</span>.subscription = interval(<span class="number">1000</span>).subscribe(<span class="function"><span class="params">val</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.counter = val;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.counter);</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  ngOnDestroy() &#123;</span><br><span class="line">    <span class="comment">// 取消訂閱</span></span><br><span class="line">    <span class="keyword">this</span>.subscription.unsubscribe();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info"><p>關於 RxJS 的自動退訂，其實還有許多技巧，之後的詳細介紹 RxJS 時再來說明。</p></div>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>今天我們認識了所有 Angular 在執行元件時的生命週期，以及不同的應用情境；在需要撰寫共用元件時，這些生命週期的觀念就非常重要，有了正確的觀念及順序，才能夠正確的設計出好用的元件，也更不容易發生錯誤囉。</p>
+<h1 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h1><ul>
+<li><a href="https://angular.io/guide/lifecycle-hooks" target="_blank" rel="noopener">Angular - Lifecycle Hooks</a></li>
+<li><a href="https://angular-2-training-book.rangle.io/handout/advanced-components/component_lifecycle.html" target="_blank" rel="noopener">Component Lifecycle</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Life-Cycles/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Life Cycles</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/10/18/mastering-angular-03-application-start/" rel="next" title="[Angular 大師之路] Angular 應用程式啟動過程">
+                <i class="fa fa-chevron-left"></i> [Angular 大師之路] Angular 應用程式啟動過程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/10/20/mastering-angular-05-knowning-ng-module/" rel="prev" title="[Angular 大師之路] 認識 NgModule">
+                [Angular 大師之路] 認識 NgModule <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何使用-lifecycle-hooks"><span class="nav-number">1.</span> <span class="nav-text">如何使用 lifecycle hooks</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用介面宣告-lifecycle-hooks"><span class="nav-number">1.1.</span> <span class="nav-text">使用介面宣告 lifecycle hooks</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#元件的完整生命週期"><span class="nav-number">2.</span> <span class="nav-text">元件的完整生命週期</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OnChanges"><span class="nav-number">2.1.</span> <span class="nav-text">OnChanges</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#得知-Input-的變化內容"><span class="nav-number">2.1.1.</span> <span class="nav-text">得知 Input() 的變化內容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OnInit"><span class="nav-number">2.2.</span> <span class="nav-text">OnInit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DoCheck"><span class="nav-number">2.3.</span> <span class="nav-text">DoCheck</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AfterContentInit-與-AfterContentChecked"><span class="nav-number">2.4.</span> <span class="nav-text">AfterContentInit 與 AfterContentChecked</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AfterViewInit-與-AfterViewChecked"><span class="nav-number">2.5.</span> <span class="nav-text">AfterViewInit 與 AfterViewChecked</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OnDestroy"><span class="nav-number">2.6.</span> <span class="nav-text">OnDestroy</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">3.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相關資源"><span class="nav-number">4.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2018/10/19/mastering-angular-04-life-cycles/';
+          this.page.identifier = '2018/10/19/mastering-angular-04-life-cycles/';
+          this.page.title = '[Angular 大師之路] 認識 Angular 的生命週期';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

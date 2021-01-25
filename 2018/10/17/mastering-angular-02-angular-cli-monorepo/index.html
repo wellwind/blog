@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular,Angular CLI,Angular CLI 6,Monorepo,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="Angular CLI 基本上已經成為開發 Angular 應用程式的標準配備了，我們會透過 Angular CLI 建立專案、檔案骨架，或是用來執行以及打包應用程式，以及運行測試等等。透過 Angular CLI 可以減少許多開發時期以及執行程式的前置準備時間成本，讓生活變得更加美好！ 而到了 Angular CLI 第 6 版後，多了非常多和過去不同的設定，雖然在常用的功能體驗上完全沒有不同，">
+<meta name="keywords" content="Angular,Angular CLI,Angular CLI 6,Monorepo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular 大師之路] 更加理解 Angular CLI 之 Monorepo 應用">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2018/10/17/mastering-angular-02-angular-cli-monorepo/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="Angular CLI 基本上已經成為開發 Angular 應用程式的標準配備了，我們會透過 Angular CLI 建立專案、檔案骨架，或是用來執行以及打包應用程式，以及運行測試等等。透過 Angular CLI 可以減少許多開發時期以及執行程式的前置準備時間成本，讓生活變得更加美好！ 而到了 Angular CLI 第 6 版後，多了非常多和過去不同的設定，雖然在常用的功能體驗上完全沒有不同，">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/10/17/mastering-angular-02-angular-cli-monorepo/01.jpg">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.332Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular 大師之路] 更加理解 Angular CLI 之 Monorepo 應用">
+<meta name="twitter:description" content="Angular CLI 基本上已經成為開發 Angular 應用程式的標準配備了，我們會透過 Angular CLI 建立專案、檔案骨架，或是用來執行以及打包應用程式，以及運行測試等等。透過 Angular CLI 可以減少許多開發時期以及執行程式的前置準備時間成本，讓生活變得更加美好！ 而到了 Angular CLI 第 6 版後，多了非常多和過去不同的設定，雖然在常用的功能體驗上完全沒有不同，">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2018/10/17/mastering-angular-02-angular-cli-monorepo/01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2018/10/17/mastering-angular-02-angular-cli-monorepo/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular 大師之路] 更加理解 Angular CLI 之 Monorepo 應用 | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2018/10/17/mastering-angular-02-angular-cli-monorepo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular 大師之路] 更加理解 Angular CLI 之 Monorepo 應用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-10-17T11:26:20+00:00">
+                2018-10-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/10/17/mastering-angular-02-angular-cli-monorepo/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/17/mastering-angular-02-angular-cli-monorepo/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Angular CLI 基本上已經成為開發 Angular 應用程式的標準配備了，我們會透過 Angular CLI 建立專案、檔案骨架，或是用來執行以及打包應用程式，以及運行測試等等。透過 Angular CLI 可以減少許多開發時期以及執行程式的前置準備時間成本，讓生活變得更加美好！</p>
+<p>而到了 Angular CLI 第 6 版後，多了非常多和過去不同的設定，雖然在常用的功能體驗上完全沒有不同，但卻有了更多可以調整的地方，今天就來更加深入理解 Angular CLI 的相關指令、設定與應用吧。</p>
+<a id="more"></a>
+<p><strong>類型</strong>：技巧</p>
+<p><strong>難度</strong>：3 顆星</p>
+<p><strong>實用度</strong>：4 顆星</p>
+<p>在 Angular CLI 中，我們應該已經非常熟悉使用 <code>ng new</code>、<code>ng generate</code> 或 <code>ng serv</code> 等指令了，因此我們就不多做說明，只針對 Angular CLI 6 之後的指令說明囉。</p>
+<h1 id="ng-add-與-ng-update"><a href="#ng-add-與-ng-update" class="headerlink" title="ng-add 與 ng-update"></a>ng-add 與 ng-update</h1><p><code>ng add</code> 與 <code>ng update</code> 是 Angular CLI 升到第 6 版後，多了兩個非常有用的指令，只要某個 Angular 相關的套件，實作了特定的程式(<a href="https://www.npmjs.com/package/@angular-devkit/schematics" target="_blank" rel="noopener">@angular-devkit/schematics</a>)，就能用 <code>ng add 套件名稱</code> 的指令，快速將套件裝到專案中，同時完成許多的前置設定。</p>
+<p>舉例來說，根據熱門套件 <a href="https://material.angular.io/guide/getting-started" target="_blank" rel="noopener">Angular Material 的安裝說明</a>，需要 6 個步驟才算安裝完成；但由於 Angular Material 的套件實做了 schematics ，因此能輕易地使用 <code>ng add @angular/material</code> 指令，輕鬆搞定所有麻煩的安裝步驟！</p>
+<p>除此之外，支援 schematics 的程式，也可以把每次升級要異動的腳本寫好，之後就能使用 <code>ng update 套件名稱</code> 的指令，一次將套件更新時需要手動調整的部分一口氣完成！可以說是非常的方便！！</p>
+<p>一樣以 Angular Material 的例子來看，在第 5 版準備升級到第 6 版時，為了讓所有的 API 更加有一致性，根據官方的 <a href="https://github.com/angular/material2/blob/master/CHANGELOG.md#600-beta5-2018-03-23" target="_blank" rel="noopener">CHANGELOG</a> 出現了將近 70 條的 breaking changes，就算不是每條在專案中都會用到，要逐一比對也是一件極大的工程！而有了 <code>ng update</code> 指令，我們只需要使用 <code>ng update @angular/material</code> 即可一鍵升級，完成整個更新度動作，並且自動把 breaking chages 的部分自動修正，真的是非常強大。</p>
+<p>多虧了這樣的架構，未來我們在使用 Angular 或相關套件時，都能更加快速無痛的升級，關於這一切背後的技術－Schematics，之後有機會再來說明囉。</p>
+<h1 id="認識-angular-json-結構"><a href="#認識-angular-json-結構" class="headerlink" title="認識 angular.json 結構"></a>認識 angular.json 結構</h1><p>在 Angular CLI 1.x 版時建立出來的專案，所有的相關設定都在 <code>.angular-cli.json</code> 之中；而使用 Angular CLI 6 建立的專案，則是改到了 <code>angular.json</code> 之中。</p>
+<p>一個使用 Angular CLI 6+ 建立好的 Angular 專案中的 angular.json 內容大致如下(省略部分內容)：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"$schema"</span>: <span class="string">"./node_modules/@angular/cli/lib/config/schema.json"</span>,</span><br><span class="line">  <span class="attr">"version"</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">"newProjectRoot"</span>: <span class="string">"projects"</span>,</span><br><span class="line">  <span class="attr">"projects"</span>: &#123;</span><br><span class="line">    <span class="attr">"demo"</span>: &#123;</span><br><span class="line">      <span class="attr">"root"</span>: <span class="string">""</span>,</span><br><span class="line">      <span class="attr">"sourceRoot"</span>: <span class="string">"src"</span>,</span><br><span class="line">      <span class="attr">"projectType"</span>: <span class="string">"application"</span>,</span><br><span class="line">      <span class="attr">"prefix"</span>: <span class="string">"app"</span>,</span><br><span class="line">      <span class="attr">"schematics"</span>: &#123;&#125;,</span><br><span class="line">      <span class="attr">"architect"</span>: &#123;</span><br><span class="line">        ...</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    ...</span><br><span class="line">  &#125;,</span><br><span class="line">  "defaultProject": "demo"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>關於這些設定中的重點說明如下：</p>
+<h2 id="schema"><a href="#schema" class="headerlink" title="$schema"></a>$schema</h2><p><code>$schema</code> 主要用來放置 <code>angular.json</code> 可以使用的相關設定說明檔案位置，這是一個 <a href="https://json-schema.org/" target="_blank" rel="noopener">JSON Schema</a> 檔案，由於使用 json 檔當作設定已經漸漸變成主流，但這些設定檔往往沒有一個準則可以遵循，於是出現了 JSON Schema 的規範，JSON Schema 檔也是一個 JSON 檔案，但它是用來描述另一個 JSON 檔內可以使用的欄位、型別、可用資料等等，因此也可以想像成是 JSON 檔的 metadata，假設編輯器或 IDE 有支援 JSON Schema 的話，再使用時就能夠跳出對應的自動完成選項，如下圖使用 Visual Studio Code 編輯 <code>angular.json</code> 時的畫面：</p>
+<img src="/blog/2018/10/17/mastering-angular-02-angular-cli-monorepo/01.jpg">
+<h2 id="projects"><a href="#projects" class="headerlink" title="projects"></a>projects</h2><p><code>projects: {}</code> 中放置所有可以被管理的專案，由於 Angular CLI 6 後加入了 monorepo 的觀念，因此在建立專案時，不在像過去一樣只有一個專案目錄以及測試案例；我們可以透過 <code>ng generate application</code> 或 <code>ng generate library</code> 指令來建立更多不同類型的專案。</p>
+<div class="note info"><p>傳統的專案管理方式多為所謂的Singlerepo，也就是一個 git repository 管理一個專案(或 package)的觀念，好處是每個 git repository 比較單純；而在專案中有許多共用程式時，使用 Monorepo 則可能是一個比較理想的管理方式，一個 git repository 裡會有多個專案(或 package)，在有程式共用需求時，比較能快速找到相關的原始碼。</p></div>
+<p>在 <code>projects</code> 物件裡面的每個屬性，都是一個專案名稱，而這個專案名稱裡面可能會有以下設定</p>
+<ul>
+<li><p><code>root</code>：代表整個專案所在的位置，通常此目錄會在包含額外的設定檔</p>
+</li>
+<li><p><code>sourceRoot</code>：代表這個專案真正程式碼所在目錄</p>
+</li>
+<li><p><code>projectType</code>：專案的類型，目前有 <code>application</code> 與 <code>library</code> 兩種</p>
+</li>
+<li><p><code>prefix</code>：建立檔案時的 CSS selector 前綴，例如當我們下 <code>ng g c demo</code> 時，產生的 demo.component.ts 檔中，會有個 selector 設定為 <code>selector: &#39;app-demo&#39;</code>，這裡的 <code>app-</code> 前綴即可在 <code>prefix</code> 中設定</p>
+</li>
+<li><p><code>schematics</code>：Angular CLI 建立程式骨架的來源是使用 <code>@angular-devkit/schematics</code> 套件，而 <code>schematics: {}</code> 中可以設定相關指令預設的選項，例如我們希望建立出來的元件都使用 scss</p>
+</li>
+<li><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"@schematics/angular:component": &#123;</span><br><span class="line">  "styleext": "scss"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>@schematics/angular</code> 是 Angular 真正用來產生相關程式碼所使用的套件，後面接的 <code>component</code> 代表是要建立的程式類型，在裡面則可以設定這個類型允許使用的參數內容。</p>
+</li>
+<li><p><code>architect</code>：可以使用的指令名稱，每個名稱內會有各自要執行的程式設定，例如一段名為 <code>serve</code> 的指令設定如下</p>
+</li>
+<li><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">"serve": &#123;</span><br><span class="line">  "builder": "@angular-devkit/build-angular:dev-server",</span><br><span class="line">  "options": &#123;</span><br><span class="line">     "browserTarget": "demo:build"</span><br><span class="line">  &#125;,</span><br><span class="line">  "configurations": &#123;</span><br><span class="line">    "production": &#123;</span><br><span class="line">      "browserTarget": "demo:build:production"</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>builder</code>：代表實際上要運行的程式，從這樣的架構我們也不難看出來 <code>builder</code> 是可以依照自己的需要擴充的。</p>
+</li>
+<li><p><code>options</code>：代表預設的參數</p>
+</li>
+<li><code>configurations</code>：代表在不同的模式要替換的參數，以上述設定的例子來說，就是在 production 模式下，原來 <code>browserTarget</code> 設定為 <code>demo:build</code>，要改為使用 <code>demo:build:production</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="newProjectRoot"><a href="#newProjectRoot" class="headerlink" title="newProjectRoot"></a>newProjectRoot</h2><p>使用 <code>ng generate application</code> 或 <code>ng generate library</code> 建立新專案時的專案位置。</p>
+<h2 id="defaultProject"><a href="#defaultProject" class="headerlink" title="defaultProject"></a>defaultProject</h2><p>由於 Angular CLI 6+ 架構加入了 monorepo 的觀念，因此一個目錄內可能會有數個 Angular 專案，這麼一來當使用 <code>ng serve</code> 等指令時，就無法得知要處理哪個專案才對，因此 defaultProject 就是當沒有指定要用哪個專案時，預設使用的專案名稱。</p>
+<h1 id="Monorepo-應用"><a href="#Monorepo-應用" class="headerlink" title="Monorepo 應用"></a>Monorepo 應用</h1><p>在一般情境下，我們都只需要使用 <code>angular.json</code> 內建的設定就好，之後要使用 <code>ng serve 或</code> <code>ng build</code> 指令都沒什麼問題，但在 Angular CLI 6+ 加入 monorepo 支援後，若要使用 monorepo 的話，就需要額外知道一些技巧：</p>
+<div class="note info"><p>當然，若沒有 monorepo 需求的話，就不需要特別注意這部分</p></div>
+<h2 id="建立多個應用程式"><a href="#建立多個應用程式" class="headerlink" title="建立多個應用程式"></a>建立多個應用程式</h2><p>我們可以使用 <code>ng generate application [project-name]</code>指令來建立多個專案，建立的專案會放在 <code>angular.json</code> 所設定的 <code>newProjectRoot</code> 目錄中，並且在 <code>angular.json</code> 的 <code>projects: {}</code> 中加入這個專案的相關設定。</p>
+<h2 id="建立共用元件庫"><a href="#建立共用元件庫" class="headerlink" title="建立共用元件庫"></a>建立共用元件庫</h2><p>當專案有共同程式，或整個專案本身建立的目標就是打造公用的程式時，可以使用 <code>ng generate library [lib-name]</code> 來建立共用的程式庫，此時 Angular CLI 會幫我們建立一個程式庫專案，在這個專案裡面我們一樣可以建立元件、服務等等程式，但最終目的則是共用這裡面的程式碼。</p>
+<p>同時 Angular CLI 將可以幫著我們把此專案建立(build)成一般 Angular 應用程式看得懂的模組，只需要再使用 <code>npm publish</code> 指令，就能夠輕鬆將整個套件上傳到 npm 中，提供給他人使用，要與他人共享程式再也不是一件難事啦！</p>
+<h2 id="Monorepo-應用情境"><a href="#Monorepo-應用情境" class="headerlink" title="Monorepo 應用情境"></a>Monorepo 應用情境</h2><p>什麼時候會有 monorepo 的需求呢，大致上有兩種情況適合：</p>
+<h3 id="多應用程式"><a href="#多應用程式" class="headerlink" title="多應用程式"></a>多應用程式</h3><p>例如當有一個專案需求是建立一個官方網站，以及一個對應的後台時，除了有兩個站台的需求以外，甚至可能會有兩個站台需要使用同樣程式碼的需求，就能夠使用以下指令，同時建立兩個專案，以及共用的元件庫：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ng generate application frontdesk</span><br><span class="line">ng generate application dashboard</span><br><span class="line">ng generate library share-libs</span><br></pre></td></tr></table></figure>
+<h3 id="共用元件庫"><a href="#共用元件庫" class="headerlink" title="共用元件庫"></a>共用元件庫</h3><p>當我們的目的是建立共用元件庫時，可以先使用 <code>ng generate library</code> 建立元件庫的核心，再使用 <code>ng generate application</code> 建立不同應用的示範網站，如果有依照此核心延伸的元件庫，則可以在建立更多的 library。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ng generate library core</span><br><span class="line">ng generate library extend</span><br><span class="line">ng generate application demo</span><br></pre></td></tr></table></figure>
+<h2 id="ng-run-指令"><a href="#ng-run-指令" class="headerlink" title="ng run 指令"></a>ng run 指令</h2><p>當有多個應用程式或元件庫時，如果要使用 <code>ng build</code>，該怎麼知道是要處理哪個專案呢？我們已經知道可以在 <code>angular.json</code> 中設定 <code>defaultProject</code> 來決定預設的專案，但是難道要處理別的專案時都要手動去改嗎？當然不是囉，這時候我們可以使用 <code>ng run</code> 指令，來決定使用哪個專案即哪個執行方式，<code>ng run</code> 的基本使用方式如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng run &lt;project&gt;:&lt;architect&gt;[:configuration] [...options]</span><br></pre></td></tr></table></figure>
+<p><code>&lt;project&gt;</code> 指得就是在 <code>angular.json</code> 中 <code>projects: {}</code> 中指定的名稱，而 <code>&lt;architect&gt;</code> 則是從專案中設定的 <code>architect: {}</code> 中選擇，假設有一個專案在 <code>angular.json</code> 中設定如下</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">"projects": &#123;</span><br><span class="line">  "dashboard": &#123;</span><br><span class="line">    "architect": &#123;</span><br><span class="line">       "build": &#123; ... &#125;,</span><br><span class="line">       "serve": &#123; ... &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這時候就可以使用 <code>ng run dashboard:build</code> 或 <code>ng run dashboard:serve</code> 來執行這裡面的程式；若有設定 <code>configurations: {}</code> 時，則可以針對設定的模式使用不同的選項參數，另外也可以再額外指定不同的執行選項 (options)，例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng run demo:serve:production --port=4201</span><br></pre></td></tr></table></figure>
+<p>以上指令會執行 demo 專案中的 serve 程式，並使用其 <code>configurations</code> 中的 <code>production</code> 設定來取代原有的選項，同時額外設定使用 <code>--port</code> 選項，指定內容為 4201。</p>
+<p>了解 <code>ng run</code> 指令後，就能夠隨心所欲決定要執行哪些專案以及參數啦！</p>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>今天我們介紹了 Angular CLI 6+ 以上的新架構，以及學會了 monorepo 的操作技巧，有了這些知識，就能夠更加細緻的去設定 Angular CLI 的各種選項，又能夠彈性的用不同的組合執行程式，搭配出無限的組合，讓設定更加輕鬆寫意！</p>
+<h1 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h1><ul>
+<li><a href="https://github.com/angular/angular-cli/wiki" target="_blank" rel="noopener">Angular CLI Wiki</a></li>
+<li><a href="https://gomonorepo.org/" target="_blank" rel="noopener">Monorepo - All You Ever Wanted to Know About Monorepos but Were Afraid to Ask</a><ul>
+<li>關於 Monorepo 相關的名詞解釋</li>
+</ul>
+</li>
+<li><a href="https://codeburst.io/customizing-angular-cli-6-build-an-alternative-to-ng-eject-a48304cd3b21" target="_blank" rel="noopener">Customizing Angular CLI 6 build — an alternative to ng eject</a><ul>
+<li>若有需要自行擴充 builder 可以參考此篇文章</li>
+</ul>
+</li>
+<li><p><a href="https://blog.ninja-squad.com/2018/05/04/angular-cli-6.0/" target="_blank" rel="noopener">What’s new in Angular CLI 6.0?</a></p>
+</li>
+<li><p><a href="https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2" target="_blank" rel="noopener">Schematics - An Introduction</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Angular-CLI/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular CLI</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Angular-CLI-6/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular CLI 6</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Monorepo/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Monorepo</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/10/16/mastering-angular-01-intro/" rel="next" title="[Angular 大師之路] 開場閒聊">
+                <i class="fa fa-chevron-left"></i> [Angular 大師之路] 開場閒聊
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/10/18/mastering-angular-03-application-start/" rel="prev" title="[Angular 大師之路] Angular 應用程式啟動過程">
+                [Angular 大師之路] Angular 應用程式啟動過程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ng-add-與-ng-update"><span class="nav-number">1.</span> <span class="nav-text">ng-add 與 ng-update</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#認識-angular-json-結構"><span class="nav-number">2.</span> <span class="nav-text">認識 angular.json 結構</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#schema"><span class="nav-number">2.1.</span> <span class="nav-text">$schema</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#projects"><span class="nav-number">2.2.</span> <span class="nav-text">projects</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newProjectRoot"><span class="nav-number">2.3.</span> <span class="nav-text">newProjectRoot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#defaultProject"><span class="nav-number">2.4.</span> <span class="nav-text">defaultProject</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Monorepo-應用"><span class="nav-number">3.</span> <span class="nav-text">Monorepo 應用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#建立多個應用程式"><span class="nav-number">3.1.</span> <span class="nav-text">建立多個應用程式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立共用元件庫"><span class="nav-number">3.2.</span> <span class="nav-text">建立共用元件庫</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Monorepo-應用情境"><span class="nav-number">3.3.</span> <span class="nav-text">Monorepo 應用情境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多應用程式"><span class="nav-number">3.3.1.</span> <span class="nav-text">多應用程式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#共用元件庫"><span class="nav-number">3.3.2.</span> <span class="nav-text">共用元件庫</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ng-run-指令"><span class="nav-number">3.4.</span> <span class="nav-text">ng run 指令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">4.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相關資源"><span class="nav-number">5.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2018/10/17/mastering-angular-02-angular-cli-monorepo/';
+          this.page.identifier = '2018/10/17/mastering-angular-02-angular-cli-monorepo/';
+          this.page.title = '[Angular 大師之路] 更加理解 Angular CLI 之 Monorepo 應用';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

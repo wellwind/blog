@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular Material,Material Design,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="昨天我們介紹了Angular Material的Form Field，為我們的輸入類型控制項帶來一致的顯示成果；今天我們來介紹三個相對簡單但是使用頻率也非常高的元件－Checkbox、Radio和Slide Toggle，這三個元件有很多類似的地方，因此很適合放在一起學習，遇到類似的地方，還可以當做複習哩。">
+<meta name="keywords" content="Angular Material,Material Design">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular Material完全攻略]打造問卷頁面(6) - Checkbox、Radio和Slide Toggle">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="昨天我們介紹了Angular Material的Form Field，為我們的輸入類型控制項帶來一致的顯示成果；今天我們來介紹三個相對簡單但是使用頻率也非常高的元件－Checkbox、Radio和Slide Toggle，這三個元件有很多類似的地方，因此很適合放在一起學習，遇到類似的地方，還可以當做複習哩。">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/01-components-switches-check3.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/02-checkbox-basic.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/03-checkbox-label-position.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/04-checkbox-indeterminate.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/05-checkbox-click-action-noop.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/06-checkbox-color.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/07-radio-basic.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/08-radio-label-position.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/09-radio-color.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/10-slide-toggle-basic.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/11-slide-toggle-label-position.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/12-slide-toggle-color.gif">
+<meta property="og:updated_time" content="2021-01-25T02:06:09.948Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular Material完全攻略]打造問卷頁面(6) - Checkbox、Radio和Slide Toggle">
+<meta name="twitter:description" content="昨天我們介紹了Angular Material的Form Field，為我們的輸入類型控制項帶來一致的顯示成果；今天我們來介紹三個相對簡單但是使用頻率也非常高的元件－Checkbox、Radio和Slide Toggle，這三個元件有很多類似的地方，因此很適合放在一起學習，遇到類似的地方，還可以當做複習哩。">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/01-components-switches-check3.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular Material完全攻略]打造問卷頁面(6) - Checkbox、Radio和Slide Toggle | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2018/01/01/angular-material-14-checkbox-radio-switch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular Material完全攻略]打造問卷頁面(6) - Checkbox、Radio和Slide Toggle</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-01T20:06:38+00:00">
+                2018-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular-Material完全攻略/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular Material完全攻略</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/01/01/angular-material-14-checkbox-radio-switch/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/01/angular-material-14-checkbox-radio-switch/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>昨天我們介紹了Angular Material的Form Field，為我們的輸入類型控制項帶來一致的顯示成果；今天我們來介紹三個相對簡單但是使用頻率也非常高的元件－Checkbox、Radio和Slide Toggle，這三個元件有很多類似的地方，因此很適合放在一起學習，遇到類似的地方，還可以當做複習哩。</p>
+<a id="more"></a>
+<h2 id="關於Material-Design的Checkbox與Radio"><a href="#關於Material-Design的Checkbox與Radio" class="headerlink" title="關於Material Design的Checkbox與Radio"></a>關於Material Design的Checkbox與Radio</h2><p>在Material Design中，Checkbox、Radio和Slide Toggle都被歸類在<a href="https://material.io/guidelines/components/selection-controls.html#" target="_blank" rel="noopener">Selection controls</a>中，基本上的概念跟我們使用HTML原生的Checkbox和Radio沒什麼不同；Checkbox主要是用來提供使用者選擇多個選項使用的，而Radio則是提供使用者進行單一選項的選擇。</p>
+<p>不同的是，Material Design對於focused和pressed狀態提出了更容易被識別的效果，如下圖：</p>
+<img src="/blog/2018/01/01/angular-material-14-checkbox-radio-switch/01-components-switches-check3.png">
+<p>圖片來源：<a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox" target="_blank" rel="noopener">https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox</a></p>
+<p>另外在Selection controls中還有提到一個元件－Switch，跟同是開關型的Checkbox類似，但建議上<strong>Checkbox是提供多個選項時使用</strong>，而<strong>Switch則是單純的狀態開跟關</strong>而已。</p>
+<p>例如<code>興趣</code>可以選擇很多種，這時候就可以用<code>Checkbox</code>；而某個<code>功能的關閉或打開</code>，則適合使用<code>Switch</code>。</p>
+<h2 id="使用Angular-Material的Checkbox"><a href="#使用Angular-Material的Checkbox" class="headerlink" title="使用Angular Material的Checkbox"></a>使用Angular Material的Checkbox</h2><p>在Angular Material中Checkbox的功能包裝在一個<code>&lt;mat-checkbox&gt;</code>元件中，要使用這個元件必須先載入<code>MatCheckboxModule</code>模組。</p>
+<h3 id="使用mat-checkbox"><a href="#使用mat-checkbox" class="headerlink" title="使用mat-checkbox"></a>使用mat-checkbox</h3><p><code>&lt;mat-checkbox&gt;</code>是表單元件的一種，因此支援和<code>FormsModule</code>或<code>ReactiveFormsModule</code>搭配使用，在這邊我們使用ReactiveFormsModule先建立一個資料模型，大致內容如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.surveyForm = <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">  ...,</span><br><span class="line">  mainQuestinos: <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">    payForBook: <span class="keyword">new</span> FormControl(<span class="literal">false</span>),</span><br><span class="line">    payForMusic: <span class="keyword">new</span> FormControl(<span class="literal">false</span>),</span><br><span class="line">    payForMovie: <span class="keyword">new</span> FormControl(<span class="literal">true</span>),</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>接著我們就可以直接使用<code>&lt;mat-checkbox&gt;</code>來binding這些資料囉</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>除了生活消費外，你最常花費在哪些項目上？<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-checkbox</span> <span class="attr">formControlName</span>=<span class="string">"payForBook"</span>&gt;</span>書籍<span class="tag">&lt;/<span class="name">mat-checkbox</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-checkbox</span> <span class="attr">formControlName</span>=<span class="string">"payForMusic"</span>&gt;</span>音樂<span class="tag">&lt;/<span class="name">mat-checkbox</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-checkbox</span> <span class="attr">formControlName</span>=<span class="string">"payForMovie"</span>&gt;</span>電影<span class="tag">&lt;/<span class="name">mat-checkbox</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="/blog/2018/01/01/angular-material-14-checkbox-radio-switch/02-checkbox-basic.gif">
+<p>一個落落大方的checkbox完成，由於我們的payForMovie的值是<code>true</code>，因此預設會是被勾選的狀態；我們可以試著勾選/取消勾選某個項目看看它的特效，或是使用tab來切換不同的checkbox，看看被focus的checkbox的狀態。</p>
+<h3 id="調整label的位置"><a href="#調整label的位置" class="headerlink" title="調整label的位置"></a>調整label的位置</h3><p>在<code>&lt;mat-checkbox&gt;</code>中，我們不需要跟<code>&lt;input type=&quot;checkbox&quot;&gt;</code>一樣需要特地用一個<code>&lt;label&gt;</code>設定標籤內容，只需要在<code>&lt;mat-checkbpx&gt;</code>裡面寫入要顯示的label內容即可，不過這麼一來我們不就無法控制label和checkbox誰要在前面誰要在後面了嗎？還好Angular Material早就想到這一點了，我們可以透過設定<code>labelPosition</code>屬性為<code>after</code>(預設)或<code>before</code>來決定label要顯示在checkbox的後面還是前面。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-checkbox</span> <span class="attr">formControlName</span>=<span class="string">"payForBook"</span> <span class="attr">labelPosition</span>=<span class="string">"before"</span>&gt;</span>書籍<span class="tag">&lt;/<span class="name">mat-checkbox</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/01/angular-material-14-checkbox-radio-switch/03-checkbox-label-position.png">
+<p>label就跑到checkbox之前啦！(老實說還真的不太習慣@@)</p>
+<h3 id="設定Indeterminate狀態"><a href="#設定Indeterminate狀態" class="headerlink" title="設定Indeterminate狀態"></a>設定Indeterminate狀態</h3><p>Indeterminate是checkbox一種有趣的狀態，這種狀態<strong>代表的是介於”選取”和”未選取”之間</strong>，常常使用在一個checkbox代表全選/取消全選的時候，透過Indeterminate可以得知目前的狀態是”部分被選取”。</p>
+<p>以下舉個例子，我們在原來的功能加上一個全選的checkbox，並設定<code>inteterminate</code>狀態及一些事件綁定：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-checkbox</span> <span class="attr">formControlName</span>=<span class="string">"payForAll"</span> [<span class="attr">indeterminate</span>]=<span class="string">"indeterminateSelectedPayFor"</span> (<span class="attr">change</span>)=<span class="string">"checkAllChange($event)"</span>&gt;</span>全部<span class="tag">&lt;/<span class="name">mat-checkbox</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-checkbox</span> <span class="attr">formControlName</span>=<span class="string">"payForBook"</span> (<span class="attr">change</span>)=<span class="string">"payForChange()"</span>&gt;</span>書籍<span class="tag">&lt;/<span class="name">mat-checkbox</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-checkbox</span> <span class="attr">formControlName</span>=<span class="string">"payForMusic"</span> (<span class="attr">change</span>)=<span class="string">"payForChange()"</span>&gt;</span>音樂<span class="tag">&lt;/<span class="name">mat-checkbox</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-checkbox</span> <span class="attr">formControlName</span>=<span class="string">"payForMovie"</span> (<span class="attr">change</span>)=<span class="string">"payForChange()"</span>&gt;</span>電影<span class="tag">&lt;/<span class="name">mat-checkbox</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>接著調整一下程式碼，如果選擇全部時會依照狀態決定是否要「全選」，或「全不選」；只選擇部分選項時，則會將<code>indeterminate</code>狀態設定為<code>true</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> SurveyComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  indeterminateSelectedPayFor: <span class="built_in">boolean</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> httpClient: HttpClient</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.surveyForm = <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">      ...</span><br><span class="line">      mainQuestions: <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">        payForAll: <span class="keyword">new</span> FormControl(<span class="literal">false</span>),</span><br><span class="line">        payForBook: <span class="keyword">new</span> FormControl(<span class="literal">false</span>),</span><br><span class="line">        payForMusic: <span class="keyword">new</span> FormControl(<span class="literal">false</span>),</span><br><span class="line">        payForMovie: <span class="keyword">new</span> FormControl(<span class="literal">true</span>)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="keyword">this</span>._setSelectAllState();</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  checkAllChange($event: MatCheckboxChange) &#123;</span><br><span class="line">    <span class="keyword">this</span>.surveyForm</span><br><span class="line">      .get(<span class="string">'mainQuestions'</span>)</span><br><span class="line">      .get(<span class="string">'payForBook'</span>)</span><br><span class="line">      .setValue($event.checked);</span><br><span class="line">    <span class="keyword">this</span>.surveyForm</span><br><span class="line">      .get(<span class="string">'mainQuestions'</span>)</span><br><span class="line">      .get(<span class="string">'payForMusic'</span>)</span><br><span class="line">      .setValue($event.checked);</span><br><span class="line">    <span class="keyword">this</span>.surveyForm</span><br><span class="line">      .get(<span class="string">'mainQuestions'</span>)</span><br><span class="line">      .get(<span class="string">'payForMovie'</span>)</span><br><span class="line">      .setValue($event.checked);</span><br><span class="line">    <span class="keyword">this</span>._setSelectAllState();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  payForChange() &#123;</span><br><span class="line">    <span class="keyword">this</span>._setSelectAllState();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> _setSelectAllState() &#123;</span><br><span class="line">    <span class="keyword">const</span> payForBook = <span class="keyword">this</span>.surveyForm.get(<span class="string">'mainQuestions'</span>).get(<span class="string">'payForBook'</span>).value;</span><br><span class="line">    <span class="keyword">const</span> payForMusic = <span class="keyword">this</span>.surveyForm.get(<span class="string">'mainQuestions'</span>).get(<span class="string">'payForMusic'</span>).value;</span><br><span class="line">    <span class="keyword">const</span> payForMovie = <span class="keyword">this</span>.surveyForm.get(<span class="string">'mainQuestions'</span>).get(<span class="string">'payForMovie'</span>).value;</span><br><span class="line">    <span class="keyword">const</span> count = (payForBook ? <span class="number">1</span> : <span class="number">0</span>) + (payForMusic ? <span class="number">1</span> : <span class="number">0</span>) + (payForMovie ? <span class="number">1</span> : <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">this</span>.surveyForm.get(<span class="string">'mainQuestions'</span>).get(<span class="string">'payForAll'</span>).setValue(count === <span class="number">3</span>);</span><br><span class="line">    <span class="keyword">this</span>.indeterminateSelectedPayFor = count &gt; <span class="number">0</span> &amp;&amp; count &lt; <span class="number">3</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接著就來看看結果吧：</p>
+<img src="/blog/2018/01/01/angular-material-14-checkbox-radio-switch/04-checkbox-indeterminate.gif">
+<p>很酷吧！透過<code>indeterminate</code>的狀態調整，Checkbox功能變得更加豐富了！</p>
+<h3 id="設定Checkbox點擊後的預設行為"><a href="#設定Checkbox點擊後的預設行為" class="headerlink" title="設定Checkbox點擊後的預設行為"></a>設定Checkbox點擊後的預設行為</h3><p><code>&lt;mat-checkbox&gt;</code>預設點擊的行為如下：</p>
+<ol>
+<li>改變<code>checked</code>狀態，原來為開會變成關，反之亦然。</li>
+<li>改變<code>indeterminate</code>狀態，不管原來是<code>true</code>或<code>false</code>，只要使用者滑鼠點擊，都會變成<code>false</code></li>
+</ol>
+<p>我們可以透過設定<code>MAT_CHECKBOX_CLICK_ACTION</code>來改變這個行為，例如：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; MAT_CHECKBOX_CLICK_ACTION &#125; <span class="keyword">from</span> <span class="string">'@angular/material'</span>;</span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  ...</span><br><span class="line">  providers: [</span><br><span class="line">    &#123; provide: MAT_CHECKBOX_CLICK_ACTION, useValue: <span class="string">'noop'</span> &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> SurveyComponent <span class="keyword">implements</span> OnInit &#123;</span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/01/angular-material-14-checkbox-radio-switch/05-checkbox-click-action-noop.gif">
+<p>由於我們設定<code>MAT_CHECKBOX_CLICK_ACTION</code>為<code>noop</code>，代表按下去時除了特效以外什麼都不會做，因此我們必須自己加上click事件必撰寫程式來調整狀態，但是我們也有了最大的調整彈性。</p>
+<p><code>MAT_CHECKBOX_CLICK_ACTION</code>有3種狀態可以設定</p>
+<ul>
+<li><strong>noop</strong>：按下去後什麼都不做，必須在click事件完成該處理的事情，最麻煩但也最有彈性。</li>
+<li><strong>check</strong>：只會切換<code>checked</code>狀態，而不會改變<code>indeterminate</code>狀態。</li>
+<li><strong>check-indeterminate</strong>：預設行為，會切換<code>checked</code>狀態以及把<code>indeterminate</code>設為<code>false</code>。</li>
+</ul>
+<h3 id="改變mat-checkbox顏色"><a href="#改變mat-checkbox顏色" class="headerlink" title="改變mat-checkbox顏色"></a>改變mat-checkbox顏色</h3><p>改變顏色沒有什麼特別的技巧，跟其他Angular Material的元件一樣，只要加上<code>color</code>屬性即可：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-checkbox</span> <span class="attr">color</span>=<span class="string">"primary"</span>&gt;</span>書籍<span class="tag">&lt;/<span class="name">mat-checkbox</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-checkbox</span> <span class="attr">color</span>=<span class="string">"accent"</span>&gt;</span>音樂<span class="tag">&lt;/<span class="name">mat-checkbox</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-checkbox</span> <span class="attr">color</span>=<span class="string">"warn"</span>&gt;</span>電影<span class="tag">&lt;/<span class="name">mat-checkbox</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/01/angular-material-14-checkbox-radio-switch/06-checkbox-color.png">
+<h2 id="使用Angular-Material的Radio"><a href="#使用Angular-Material的Radio" class="headerlink" title="使用Angular Material的Radio"></a>使用Angular Material的Radio</h2><p>接下來我們來聊聊Radio的使用方式，我們可以在加入<code>MatRadioModule</code>後，搭配<code>&lt;mat-radio-group&gt;</code>和<code>&lt;mat-radio-button&gt;</code>來完成一組單選題。</p>
+<h3 id="使用mat-radio-group和mat-radio-button"><a href="#使用mat-radio-group和mat-radio-button" class="headerlink" title="使用mat-radio-group和mat-radio-button"></a>使用mat-radio-group和mat-radio-button</h3><p>由於<code>&lt;mat-radio&gt;</code>是單選的狀態，為了避免畫面上所有的<code>&lt;mat-radio&gt;</code>只能有一個被選擇，我們還需要再使用<code>&lt;mat-radio-group&gt;</code>來包住<code>&lt;mat-radio&gt;</code>，在<code>&lt;mat-radio-group&gt;</code>中，只能會有一個<code>&lt;mat-radio&gt;</code>被選取。這樣的概念跟<code>&lt;select&gt;</code>和<code>&lt;optoin&gt;</code>的組合很像，因此實際上的表單元件是<code>&lt;mat-radio-group&gt;</code>。</p>
+<p>直接來看看怎麼使用吧！</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>對於Angular，你的評價是？<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-radio-group</span> <span class="attr">formControlName</span>=<span class="string">"angularLikeScore"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-radio-button</span> [<span class="attr">value</span>]=<span class="string">"1"</span>&gt;</span>超討厭<span class="tag">&lt;/<span class="name">mat-radio-button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-radio-button</span> [<span class="attr">value</span>]=<span class="string">"2"</span>&gt;</span>討厭<span class="tag">&lt;/<span class="name">mat-radio-button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-radio-button</span> [<span class="attr">value</span>]=<span class="string">"3"</span>&gt;</span>普通<span class="tag">&lt;/<span class="name">mat-radio-button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-radio-button</span> [<span class="attr">value</span>]=<span class="string">"4"</span>&gt;</span>喜歡<span class="tag">&lt;/<span class="name">mat-radio-button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-radio-button</span> [<span class="attr">value</span>]=<span class="string">"5"</span>&gt;</span>超喜歡<span class="tag">&lt;/<span class="name">mat-radio-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-radio-group</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>對於Angular Material，你的評價是？<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-radio-group</span> <span class="attr">formControlName</span>=<span class="string">"angularMaterialLikeScore"</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-radio-group</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/01/angular-material-14-checkbox-radio-switch/07-radio-basic.gif">
+<p>可以看到每個<code>&lt;mat-radio-group&gt;</code>是彼此獨立內的，裡面<code>&lt;mat-radio-button&gt;</code>都只能有一個被選取。</p>
+<h3 id="調整label的位置-1"><a href="#調整label的位置-1" class="headerlink" title="調整label的位置"></a>調整label的位置</h3><p>跟前面介紹的<code>&lt;mat-checkbox&gt;</code>一樣，我們都可以用<code>labelPosition</code>來調整label的位置，而且在<code>&lt;mat-radio-group&gt;</code>和<code>&lt;mat-radio-button&gt;</code>中都可以使用；在<code>&lt;mat-radio-group&gt;</code>設定的話，裡面所有的<code>&lt;mat-radio-button&gt;</code>都會照著這個規則走；在<code>&lt;mat-radio-button&gt;</code>設定的話，則會蓋過<code>&lt;mat-radio-group&gt;</code>的設定。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-radio-group</span> <span class="attr">formControlName</span>=<span class="string">"angularMaterialLikeScore"</span> <span class="attr">labelPosition</span>=<span class="string">"before"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-radio-button</span> [<span class="attr">value</span>]=<span class="string">"1"</span>&gt;</span>超討厭<span class="tag">&lt;/<span class="name">mat-radio-button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-radio-button</span> [<span class="attr">value</span>]=<span class="string">"2"</span>&gt;</span>討厭<span class="tag">&lt;/<span class="name">mat-radio-button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-radio-button</span> [<span class="attr">value</span>]=<span class="string">"3"</span>&gt;</span>普通<span class="tag">&lt;/<span class="name">mat-radio-button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-radio-button</span> [<span class="attr">value</span>]=<span class="string">"4"</span>&gt;</span>喜歡<span class="tag">&lt;/<span class="name">mat-radio-button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-radio-button</span> [<span class="attr">value</span>]=<span class="string">"5"</span> <span class="attr">labelPosition</span>=<span class="string">"after"</span>&gt;</span>超喜歡<span class="tag">&lt;/<span class="name">mat-radio-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-radio-group</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/01/angular-material-14-checkbox-radio-switch/08-radio-label-position.png">
+<h3 id="改變radio的顏色"><a href="#改變radio的顏色" class="headerlink" title="改變radio的顏色"></a>改變radio的顏色</h3><p>一樣，調整<code>color</code>即可，不過目前無法針對<code>&lt;mat-radio-group&gt;</code>整個群組一起調整，有點可惜；只能單一調整每個<code>&lt;mat-radio-button&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-radio-button</span> [<span class="attr">value</span>]=<span class="string">"1"</span> <span class="attr">color</span>=<span class="string">"primary"</span>&gt;</span>超討厭<span class="tag">&lt;/<span class="name">mat-radio-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-radio-button</span> [<span class="attr">value</span>]=<span class="string">"2"</span> <span class="attr">color</span>=<span class="string">"accent"</span>&gt;</span>討厭<span class="tag">&lt;/<span class="name">mat-radio-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-radio-button</span> [<span class="attr">value</span>]=<span class="string">"3"</span> <span class="attr">color</span>=<span class="string">"warn"</span>&gt;</span>普通<span class="tag">&lt;/<span class="name">mat-radio-button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/01/angular-material-14-checkbox-radio-switch/09-radio-color.gif">
+<h2 id="使用Angular-Material的Slide-Toggle"><a href="#使用Angular-Material的Slide-Toggle" class="headerlink" title="使用Angular Material的Slide Toggle"></a>使用Angular Material的Slide Toggle</h2><p>最後我們來講Material Design的Switch功能，這個功能在Angular Material被設計成<code>mat-slide-toggle</code>元件，因此我們必須先加入<code>MatSlideToggleModule</code>。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>訂閱電子報<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-slide-toggle</span> <span class="attr">formControlName</span>=<span class="string">"subscribeAngular"</span>&gt;</span>Angular技巧全集<span class="tag">&lt;/<span class="name">mat-slide-toggle</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-slide-toggle</span> <span class="attr">formControlName</span>=<span class="string">"subscribeAngularMaterial"</span>&gt;</span>Angular Material全攻略<span class="tag">&lt;/<span class="name">mat-slide-toggle</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-slide-toggle</span> <span class="attr">formControlName</span>=<span class="string">"subscribeNgRx"</span>&gt;</span>NgRx入門班<span class="tag">&lt;/<span class="name">mat-slide-toggle</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/01/angular-material-14-checkbox-radio-switch/10-slide-toggle-basic.gif">
+<p>我們不僅可以直接點擊來切換狀態，也可以用滑鼠拖曳，來慢慢的把狀態移到另外一邊，在放開滑鼠前，都可以後悔拉回原來的位置，很方便吧！</p>
+<div class="note info"><p><code>&lt;mat-slide-toggle&gt;</code>沒有<code>indeterminate</code>狀態。</p></div>
+<h3 id="設定label位置"><a href="#設定label位置" class="headerlink" title="設定label位置"></a>設定label位置</h3><p>老規矩，透過<code>labelPosition</code>就可以達成了。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-slide-toggle</span> <span class="attr">labelPosition</span>=<span class="string">"before"</span>&gt;</span>Angular技巧全集<span class="tag">&lt;/<span class="name">mat-slide-toggle</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/01/angular-material-14-checkbox-radio-switch/11-slide-toggle-label-position.png">
+<h3 id="設定mat-slide-toggle的顏色"><a href="#設定mat-slide-toggle的顏色" class="headerlink" title="設定mat-slide-toggle的顏色"></a>設定mat-slide-toggle的顏色</h3><p>還是老規矩，加上<code>color</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-slide-toggle</span> <span class="attr">formControlName</span>=<span class="string">"subscribeAngular"</span> <span class="attr">color</span>=<span class="string">"primary"</span>&gt;</span>Angular技巧全集<span class="tag">&lt;/<span class="name">mat-slide-toggle</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-slide-toggle</span> <span class="attr">formControlName</span>=<span class="string">"subscribeAngularMaterial"</span> <span class="attr">color</span>=<span class="string">"accent"</span>&gt;</span>Angular Material全攻略<span class="tag">&lt;/<span class="name">mat-slide-toggle</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-slide-toggle</span> <span class="attr">formControlName</span>=<span class="string">"subscribeNgRx"</span> <span class="attr">color</span>=<span class="string">"warn"</span>&gt;</span>NgRx入門班<span class="tag">&lt;/<span class="name">mat-slide-toggle</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/01/angular-material-14-checkbox-radio-switch/12-slide-toggle-color.gif">
+<h2 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h2><p>今天我們把Checkbox、Radio和Slide Toggle這3個元件的功能都做了介紹，這3個元件都跟狀態的改變非常相關，而除了Checkbox有比較多變化外，其他的其實都不複雜，而且有許多共同之處，因此學習上應該也滿輕鬆的。</p>
+<p>學會了Checkbox、Radio和Slide Toggle，之後遇到狀態改變相關的畫面，應該就能靈活運用囉。</p>
+<p>本日的程式碼GitHub：<a href="https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-14-checkbox-radio-slide-toggle" target="_blank" rel="noopener">https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-14-checkbox-radio-slide-toggle</a></p>
+<p>分支：day-14-checkbox-radio-slide-toggle</p>
+<h2 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h2><ul>
+<li><a href="https://material.io/guidelines/components/selection-controls.html#" target="_blank" rel="noopener">Material Design - Selection controls</a></li>
+<li><a href="https://material.angular.io/components/checkbox/overview" target="_blank" rel="noopener">Angular Material - Checkbox</a></li>
+<li><a href="https://material.angular.io/components/radio/overview" target="_blank" rel="noopener">Angular Material - Radio button</a></li>
+<li><a href="https://material.angular.io/components/slide-toggle/overview" target="_blank" rel="noopener">Angular Material - Slide toggle</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular-Material/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular Material</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Material-Design/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Material Design</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/12/31/angular-material-13-form-field/" rel="next" title="[Angular Material完全攻略]打造問卷頁面(5) - Form Field">
+                <i class="fa fa-chevron-left"></i> [Angular Material完全攻略]打造問卷頁面(5) - Form Field
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/01/02/angular-material-15-slider/" rel="prev" title="[Angular Material完全攻略]打造問卷頁面(7) - Slider">
+                [Angular Material完全攻略]打造問卷頁面(7) - Slider <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#關於Material-Design的Checkbox與Radio"><span class="nav-number">1.</span> <span class="nav-text">關於Material Design的Checkbox與Radio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Angular-Material的Checkbox"><span class="nav-number">2.</span> <span class="nav-text">使用Angular Material的Checkbox</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-checkbox"><span class="nav-number">2.1.</span> <span class="nav-text">使用mat-checkbox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#調整label的位置"><span class="nav-number">2.2.</span> <span class="nav-text">調整label的位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定Indeterminate狀態"><span class="nav-number">2.3.</span> <span class="nav-text">設定Indeterminate狀態</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定Checkbox點擊後的預設行為"><span class="nav-number">2.4.</span> <span class="nav-text">設定Checkbox點擊後的預設行為</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改變mat-checkbox顏色"><span class="nav-number">2.5.</span> <span class="nav-text">改變mat-checkbox顏色</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Angular-Material的Radio"><span class="nav-number">3.</span> <span class="nav-text">使用Angular Material的Radio</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-radio-group和mat-radio-button"><span class="nav-number">3.1.</span> <span class="nav-text">使用mat-radio-group和mat-radio-button</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#調整label的位置-1"><span class="nav-number">3.2.</span> <span class="nav-text">調整label的位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改變radio的顏色"><span class="nav-number">3.3.</span> <span class="nav-text">改變radio的顏色</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Angular-Material的Slide-Toggle"><span class="nav-number">4.</span> <span class="nav-text">使用Angular Material的Slide Toggle</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#設定label位置"><span class="nav-number">4.1.</span> <span class="nav-text">設定label位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定mat-slide-toggle的顏色"><span class="nav-number">4.2.</span> <span class="nav-text">設定mat-slide-toggle的顏色</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本日小結"><span class="nav-number">5.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相關資源"><span class="nav-number">6.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2018/01/01/angular-material-14-checkbox-radio-switch/';
+          this.page.identifier = '2018/01/01/angular-material-14-checkbox-radio-switch/';
+          this.page.title = '[Angular Material完全攻略]打造問卷頁面(6) - Checkbox、Radio和Slide Toggle';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

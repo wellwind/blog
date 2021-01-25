@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="RxJS,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="RxJS 是 ReactiveX (又稱 Reactive Extensions，簡稱 Rx) 這個概念的 JavaScript 實現版本；而 ReactiveX 本身的概念是透過組合一些常用的程式技巧，來處理「非同步」及「串流(或事件)」情境容易變得很複雜的問題，讓寫出來的程式碼更好理解、也更容易維護。 儘管在近幾年 RxJS 的能見度已經越來越高，但許多人初進入 RxJS 世界就因為它太過抽象">
+<meta name="keywords" content="RxJS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[RxJS] 打通 RxJS 任督二脈">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2020/09/16/mastering-rxjs-01-intro/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="RxJS 是 ReactiveX (又稱 Reactive Extensions，簡稱 Rx) 這個概念的 JavaScript 實現版本；而 ReactiveX 本身的概念是透過組合一些常用的程式技巧，來處理「非同步」及「串流(或事件)」情境容易變得很複雜的問題，讓寫出來的程式碼更好理解、也更容易維護。 儘管在近幾年 RxJS 的能見度已經越來越高，但許多人初進入 RxJS 世界就因為它太過抽象">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/16/mastering-rxjs-01-intro/01.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/16/mastering-rxjs-01-intro/02.jpg">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.344Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[RxJS] 打通 RxJS 任督二脈">
+<meta name="twitter:description" content="RxJS 是 ReactiveX (又稱 Reactive Extensions，簡稱 Rx) 這個概念的 JavaScript 實現版本；而 ReactiveX 本身的概念是透過組合一些常用的程式技巧，來處理「非同步」及「串流(或事件)」情境容易變得很複雜的問題，讓寫出來的程式碼更好理解、也更容易維護。 儘管在近幾年 RxJS 的能見度已經越來越高，但許多人初進入 RxJS 世界就因為它太過抽象">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2020/09/16/mastering-rxjs-01-intro/01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2020/09/16/mastering-rxjs-01-intro/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[RxJS] 打通 RxJS 任督二脈 | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2020/09/16/mastering-rxjs-01-intro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[RxJS] 打通 RxJS 任督二脈</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-09-16T18:00:00+00:00">
+                2020-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/" itemprop="url" rel="index">
+                    <span itemprop="name">打通 RxJS 任督二脈</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/第-12-屆鐵人賽/" itemprop="url" rel="index">
+                    <span itemprop="name">第 12 屆鐵人賽</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2020/09/16/mastering-rxjs-01-intro/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/09/16/mastering-rxjs-01-intro/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>RxJS 是 ReactiveX (又稱 Reactive Extensions，簡稱 Rx) 這個概念的 JavaScript 實現版本；而 ReactiveX 本身的概念是透過組合一些常用的程式技巧，來處理<strong>「非同步」及「串流(或事件)」</strong>情境容易變得很複雜的問題，讓寫出來的程式碼更好理解、也更容易維護。</p>
+<p>儘管在近幾年 RxJS 的能見度已經越來越高，但許多人初進入 RxJS 世界就因為它太過抽象，而提早登出；甚至遇過客戶外包時因為害怕接手維護 RxJS，而禁止使用 RxJS 的情境！這是非常令人厄婉的一件事情。</p>
+<p>而我自己在比較理解 RxJS 後，則是深深的被其流暢的寫法及可維護性給吸引，開始在公司努力推坑同事使用 RxJS，也因此促成這系列文章，整理出我自己認為比較適合 (推坑成功率比較高？) 的學習路徑，希望幫助大家「打通 RxJS 任督二脈」！</p>
+<a id="more"></a>
+<h1 id="關於-ReactiveX"><a href="#關於-ReactiveX" class="headerlink" title="關於 ReactiveX"></a>關於 ReactiveX</h1><p>ReactiveX 本身只是一個觀念，以及一些作法的規範，讓我們先來看一下 ReactiveX 官網的介紹。</p>
+<img src="/blog/2020/09/16/mastering-rxjs-01-intro/01.jpg">
+<div class="note info"><p>An API for asynchronous programming with observable streams</p></div>
+<p>從一段簡短的介紹可以看到 ReactiveX 使用了「<strong>觀察者 (Observable)</strong>」及「<strong>串流 (Stream)</strong>」的概念，定義了用來處理「<strong>非同步程式 (Asynchronous programming)</strong>」的 API。</p>
+<p>再往下捲一點，可以看到 ReactiveX 是組合了三個重要觀念而實做出來的。</p>
+<img src="/blog/2020/09/16/mastering-rxjs-01-intro/02.jpg">
+<div class="note info"><p>ReactiveX is a combination of the best ideas from the Observer pattern, the Iterator pattern, and functional programming</p></div>
+<p>這三個重要觀念分別是：</p>
+<ul>
+<li>觀察者模式 (Observer pattern)</li>
+<li>疊代器模式 (Iterator pattern)</li>
+<li>函式語言程式設計 (Functional programming)</li>
+</ul>
+<p>看到這邊，是否已經頭昏了呢？目前整理起來我們會發現整個 ReactiveX 涵蓋幾個重要觀念：</p>
+<p>包含兩個<strong>要解決的議題</strong>：</p>
+<ul>
+<li>非同步程式 (Asynchronous programming)</li>
+<li>串流 (Stream)</li>
+</ul>
+<p>和三個<strong>程式設計的方式</strong>：</p>
+<ul>
+<li>觀察者模式 (Observer pattern)</li>
+<li>疊代器模式 (Iterator pattern)</li>
+<li>函式語言程式設計 (Functional programming)</li>
+</ul>
+<p>以上五個主題對於許多程式初學者(甚至是老手)來說都相對抽象很多，都可以獨立寫個數篇甚至數十篇的文章，有些主題就算獨立出一本書來介紹都很有可能！由這麼多個抽象的念組合起來，不難想像 ReactiveX 肯定只會更加抽象！！這也導致了不少初接觸 ReactiveX 的新手沒多久就棄坑投降。</p>
+<p>但反過來想，只要能基本掌握 (真的不一定要深入) 這五個重要觀念，就相當於<strong>把 ReactiveX 的內功心法掌握住了</strong>，而掌握了內功心法，之後不管要出什麼招式，都能夠更加得心應手，寫出更加洗鍊、好讀且好維護的程式碼，而在同樣理解 ReactiveX 的人之間溝通，也會更加的容易！</p>
+<p>掌握這些基本觀念後，ReactiveX 還定義了一系列非常語意化的<strong>操作符 (Operators)</strong>，方便我們在解決非同步程式、串流等議題時更加容易，這也是 ReactiveX 的一個強大賣點。</p>
+<p>關於 ReactiveX，之後會再更深入的介紹。</p>
+<h1 id="關於-RxJS"><a href="#關於-RxJS" class="headerlink" title="關於 RxJS"></a>關於 RxJS</h1><p>實際上 ReactiveX 只是將整體架構定義出來而已，而 RxJS 則是 JavaScript 的實作版本，許多語言都有對應 ReactiveX 的實作版，如 Java、.NET、Swift 等，支援的語言都可以在 <a href="https://github.com/ReactiveX" target="_blank" rel="noopener">ReactiveX 的 GitHub 上找到</a>。</p>
+<div class="note info"><p>大概是因為 ReactiveX 初期是由微軟基於 LINQ 基礎提出的，所以只有 <a href="https://github.com/dotnet/reactive" target="_blank" rel="noopener">.NET 的實作在另外一個 GitHub respository</a>。</p></div>
+<p>由於 ReactiveX 已經先將規範定義好了，因此可以確保不管是哪種語言，儘管因為語言特性導致使用方式可能會略有不同，但只要給予一樣的輸入，預期的輸出結果基本上一定會一樣！如果發現輸出跟預期的不同，由於這些語言的實作也都是開源的，我們可以輕易地在 GitHub 上發 issue，或去看看這些輸出不一樣背後的理由是什麼。</p>
+<p>當然，各種語言的常見的適應情境不同，也因此各種語言會發展出一些各自不同的 API，例如 JavaScript 多半用於網頁程式設計上，所以多了一些語言或情境獨有的處理方式如 Promise、網頁事件等等。</p>
+<p>而隨著前端的世界越來越複雜，RxJS 也因此逐漸被更加重視，以現在前端三大框架 Angular、React 和 Vue 來說，在其生態圈也都可以看得到 RxJS 的影子，就算脫離這些框架，也有越來越多機會看到 RxJS 的應用。因此身為前端工程師，多花些心思投資在 RxJS 應該算是不錯的選擇。</p>
+<p>在接下來的系列文章中，都會以 ReactiveX 的 JavaScript 實作，也就是 RxJS 為主來介紹。 </p>
+<div class="note info"><p>雖然以 RxJS 介紹為主，但還是希望各位能著重在 ReactiveX 的觀念；因此在之後的文章中，若提到 ReactiveX，代表想強調的是觀念，若是提到 RxJS，就會比較偏向實作面。如果沒太大感覺，先當作一樣也是 OK 的！</p></div>
+<h1 id="關於本系列文章"><a href="#關於本系列文章" class="headerlink" title="關於本系列文章"></a>關於本系列文章</h1><p>如同前面所述，只要掌握了 ReactiveX 的基本心法，在使用 ReactiveX 觀念撰寫程式就會更加順利；而本系列文章將以 ReactiveX 的 JavaScript 實作為範例，也就是 RxJS，除了介紹如何使用 RxJS 外，會更加著重於 ReactiveX 的重要觀念，建立足夠的觀念基礎後，再搭配實例說明各種應用情境，希望能幫助大家<strong>打通 ReactiveX 的任督二脈</strong>！</p>
+<p>目前規劃會依照以下順序介紹：</p>
+<ol>
+<li><strong>RxJS 快速上手 (約 2~3 篇)</strong>：雖然系列文章的目標是希望能建立正確的觀念，但在整個基礎都沒有的情況下，立刻講觀念大概只會加速登出，因此會先以最簡單的方式，介紹 RxJS 的使用方式及重要特色。</li>
+<li><strong>RxJS 基礎觀念 (約 3~5 篇)</strong>：ReactiveX 組合了很多抽象觀念，這也是許多人登出的原因，因此這部分會先好好介紹這些抽象觀念，目的不在讓大家精通這些抽象觀念，而是把這些觀念內有用的東西擷取出來，理解它們的優點及解決的問題，以便之後靈活運用到程式的撰寫中。</li>
+<li><strong>RxJS 完整觀念 (約 10~20 篇)</strong>：有了基本觀念後，再重新開始認識 RxJS 以及一些重要的進階觀念，接著介紹如何閱讀彈珠圖，最後會介紹各種類型的 operators 使用；Operators 可以說是 ReactiveX 強大的主要原因之一，有了正確觀念後，再來看 operators 會更加得心應手！Operators 數量龐大，不太可能全部都介紹完，因此每篇文章大概會介紹 3~6 個 operators 常用或我自己覺得有趣的。</li>
+<li><strong>RxJS 實戰案例 (約 3~5 篇)</strong>：比起前面注重心法，這部分會比較貼近實戰練習，在有正確觀念為基礎的前提下，搭配各種 operators 的組合及花式操作，實際應用到網頁開發上。</li>
+<li><strong>RxJS 其他技巧 (約 3~5 篇)</strong>：一些不一定常用，但可能很重要的觀念，像是 scheduler、如何自訂 operators 和撰寫單元測試等等。</li>
+</ol>
+<p>對了，關於有些名詞，由於個人覺得中文不一定好翻譯，所以在之後的文章還是會以英文呈現，如串流 (Stream)、操作符 (Operators) 這類，在基礎介紹之後，就會統一使用英文撰寫。</p>
+<p>另外，本系列文章使用的 RxJS 版本為目前最新的第 6 版。在撰寫這篇文章時，RxJS 7 已經進入 beta 版，隨時都有推出正式版的可能，如果確定出來了，則會視情況以最新版為主，但相信不會有太大的落差，如果有明顯差別會另外再標注。</p>
+<h1 id="預備知識"><a href="#預備知識" class="headerlink" title="預備知識"></a>預備知識</h1><p>本系列文章希望能盡量以最簡單的方式把 ReactiveX 及 RxJS 相關知識分享出來，因此不會針對每個觀念非常深入的去說明，畢竟這些觀念都有實作好的成果可以讓我們直接使用了，因此重點應該放在對這些觀念的目標及解決的問題有基礎的理解，當然若想要更深入，可以再自行搜尋相關資料。</p>
+<p>以 ReactiveX 來說，如同之前提過的，需要理解以下 5 個基本觀念：</p>
+<ul>
+<li>非同步程式 (Asynchronous programming)</li>
+<li>串流 (Stream)</li>
+<li>觀察者模式 (Observer pattern)</li>
+<li>疊代器模式 (Iterator pattern)</li>
+<li>函式語言程式設計 (Functional programming)</li>
+</ul>
+<p>如果對這些主題有深入理解當然是最好，但有不理解部分也沒關係，在之後的文章我們都會做些基本的介紹，包含基礎觀念及它在 ReactiveX 中需要應用到的地方或需要注意的思考方向。</p>
+<p>接下來就是程式語言的實作 JavaScript，本系列文章會使用到：</p>
+<ul>
+<li>TypeScript：有些朋友可能沒那麼喜歡 TypeScript，我會盡可能不要直接把 TypeScript 語法寫進來，也就是盡可能可以直接以 JavaScript 的閱讀方式來理解，大部分的時候除了副檔名外應該根本看不到 TypeScript 的影子。只有在必要的時候，會加入一些 TypeScript 的型別定義。</li>
+<li>ES6 相關語法：包含 arrow function、import / export 的模組化管理等等，這些對於已經習慣使用 JavaScript 開發的工程師來說應該不是難事，因此在文章中我也會直接使用不多做說明，如果各位在閱讀時有疑慮，可以自行上網尋找資料，或在文章下面留言討論。</li>
+</ul>
+<h1 id="歡迎討論"><a href="#歡迎討論" class="headerlink" title="歡迎討論"></a>歡迎討論</h1><p>ReactiveX 確實比較抽象，雖然在理解觀念後它的益處還是大於壞處，但在學習時肯定會遇到一些難以理解的情況，這時有幾個方法可以幫助我們進步：</p>
+<ol>
+<li>針對程式碼多撰寫幾次，並仔細思考每段程式的目標，及資料的流向</li>
+<li>針對觀念不熟悉的地方加強學習</li>
+<li>直接在文章下方留言，我們可以一起討論</li>
+</ol>
+<p>也歡迎大家提供自己的理解，藉由更多不同人們的見解，更能找到適合自己的理解方式；也歡迎大家針對文章中觀念有誤或是任何有問題、錯字等等提出來，一起讓這系列文章更加完整^^</p>
+<h1 id="開賽啦！"><a href="#開賽啦！" class="headerlink" title="開賽啦！"></a>開賽啦！</h1><p>這是第四次參加鐵人賽，也是第一次自己開團找朋友組隊報名，組隊真的是很有壓力的一種完賽方式，感謝他們逼迫我加強完賽的決心；以下是這次一起奮鬥的隊友，這次的隊友都大有來頭，也歡迎大家去看看他們寫的文章，以下主題依照加入團隊的時間排序：</p>
+<ul>
+<li><a href="https://ithelp.ithome.com.tw/users/20129148/ironman/2979" target="_blank" rel="noopener">從巨人的 Tip 看 Angular</a></li>
+<li><a href="https://ithelp.ithome.com.tw/users/20105988/ironman/3068" target="_blank" rel="noopener">深入 Azure 雲端服務</a></li>
+<li><a href="https://ithelp.ithome.com.tw/users/20105694/ironman/3245" target="_blank" rel="noopener">如何用Laravel寫一個簡單的部落格網站</a></li>
+<li><a href="https://ithelp.ithome.com.tw/users/20129755/ironman/3256" target="_blank" rel="noopener">推動資安從0起步邁向70分，不用花大錢也能有聲有色保平安。</a></li>
+<li><a href="https://ithelp.ithome.com.tw/users/20130168/ironman/3637" target="_blank" rel="noopener">Azure Serverless 平步青雲，漫步雲端</a></li>
+</ul>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>不可否認 ReactiveX 及 RxJS 真的是相對抽象很多的東西，希望這系列文章可以幫助大家比較順利的掌握這項技術；或許有些內容需要反覆閱讀才能理解，但只要通了就會是一片廣闊的天空！如果遇到任何問題或心得，也歡迎隨時跟我分享，大家一起朝向 RxJS 大坑邁進！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/RxJS/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> RxJS</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2020/03/08/angular-material-writing-your-own-component-harness/" rel="next" title="[Angular Material 完全攻略] 替我們的元件設計 Component Harness">
+                <i class="fa fa-chevron-left"></i> [Angular Material 完全攻略] 替我們的元件設計 Component Harness
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2020/09/17/mastering-rxjs-02-environment-prepare/" rel="prev" title="[RxJS] 開始前的環境準備">
+                [RxJS] 開始前的環境準備 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#關於-ReactiveX"><span class="nav-number">1.</span> <span class="nav-text">關於 ReactiveX</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#關於-RxJS"><span class="nav-number">2.</span> <span class="nav-text">關於 RxJS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#關於本系列文章"><span class="nav-number">3.</span> <span class="nav-text">關於本系列文章</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#預備知識"><span class="nav-number">4.</span> <span class="nav-text">預備知識</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#歡迎討論"><span class="nav-number">5.</span> <span class="nav-text">歡迎討論</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#開賽啦！"><span class="nav-number">6.</span> <span class="nav-text">開賽啦！</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">7.</span> <span class="nav-text">本日小結</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2020/09/16/mastering-rxjs-01-intro/';
+          this.page.identifier = '2020/09/16/mastering-rxjs-01-intro/';
+          this.page.title = '[RxJS] 打通 RxJS 任督二脈';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

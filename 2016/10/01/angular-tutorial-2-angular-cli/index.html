@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular,Angular CLI,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="Angular CLI是隨著Angular發展時一併產生的一個指令列工具，一樣基於「習慣取代配置」的優良傳統，我們可以用Angular CLI快速產生開發Angular程式時所需要的檔案範本，另外也包含了軟體開發生命週期會用到的bundle, lint, unit test, end to end test等功能，也全都包在Angular CLI裡面了，因此透過Angular CLI工具，我們可以">
+<meta name="keywords" content="Angular,Angular CLI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular速成班]用Angular CLI節省你的開發時間">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2016/10/01/angular-tutorial-2-angular-cli/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="Angular CLI是隨著Angular發展時一併產生的一個指令列工具，一樣基於「習慣取代配置」的優良傳統，我們可以用Angular CLI快速產生開發Angular程式時所需要的檔案範本，另外也包含了軟體開發生命週期會用到的bundle, lint, unit test, end to end test等功能，也全都包在Angular CLI裡面了，因此透過Angular CLI工具，我們可以">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2016/10/01/angular-tutorial-2-angular-cli/001.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2016/10/01/angular-tutorial-2-angular-cli/002.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2016/10/01/angular-tutorial-2-angular-cli/003.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2016/10/01/angular-tutorial-2-angular-cli/004.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2016/10/01/angular-tutorial-2-angular-cli/005.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2016/10/01/angular-tutorial-2-angular-cli/006.png">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.088Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular速成班]用Angular CLI節省你的開發時間">
+<meta name="twitter:description" content="Angular CLI是隨著Angular發展時一併產生的一個指令列工具，一樣基於「習慣取代配置」的優良傳統，我們可以用Angular CLI快速產生開發Angular程式時所需要的檔案範本，另外也包含了軟體開發生命週期會用到的bundle, lint, unit test, end to end test等功能，也全都包在Angular CLI裡面了，因此透過Angular CLI工具，我們可以">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2016/10/01/angular-tutorial-2-angular-cli/001.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2016/10/01/angular-tutorial-2-angular-cli/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular速成班]用Angular CLI節省你的開發時間 | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2016/10/01/angular-tutorial-2-angular-cli/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular速成班]用Angular CLI節省你的開發時間</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-10-01T21:45:02+00:00">
+                2016-10-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular速成班/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular速成班</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2016/10/01/angular-tutorial-2-angular-cli/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/01/angular-tutorial-2-angular-cli/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>Angular CLI</strong>是隨著Angular發展時一併產生的一個指令列工具，一樣基於「習慣取代配置」的優良傳統，我們可以用Angular CLI快速產生開發Angular程式時所需要的檔案範本，另外也包含了軟體開發生命週期會用到的<strong>bundle, lint, unit test, end to end test</strong>等功能，也全都包在Angular CLI裡面了，因此透過Angular CLI工具，我們可以大幅節省許多準備檔案的時間！由於之後的Angular速成班教學中我們也會大量使用Angular CLI來產生相關需要的檔案，因此今天就先來簡單介紹一下Angular CLI這個強大的產生器功能。</p>
+<a id="more"></a>
+<p>在這篇文章會提到一些Angular程式的構成要件，但由於我們還沒正式進入寫程式的階段，所以這裡如果對於一些名詞不太理解，只需要稍微有個底就好，不用太過深入</p>
+<p>本篇會簡單介紹一些常用的Angular CLI語法，如需要完整的說明可參考<a href="https://github.com/angular/angular-cli" target="_blank" rel="noopener">官方文件</a>。</p>
+<h1 id="安裝Angular-CLI並產生Angular專案"><a href="#安裝Angular-CLI並產生Angular專案" class="headerlink" title="安裝Angular CLI並產生Angular專案"></a>安裝Angular CLI並產生Angular專案</h1><p>安裝Angular CLI動作非常簡單，<a href="http://wellwind.idv.tw/blog/angular-tutorial-1-hello-world/">前一篇</a>文章也介紹過了，基本上只需要確認<del>node的版本是4.x.x以上，npm須為3.x.x以上</del>(<strong>總之版本越高越好</strong>)即可透過以下指令安裝Angular CLI</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g @angular/cli</span><br></pre></td></tr></table></figure>
+<p>接下來就可以使用<code>ng</code>這個指令來執行各種開發Angular專案需要的動作啦。</p>
+<p>首先我們先用<code>ng --help</code>來看看所有可用的指令：</p>
+<img src="/blog/2016/10/01/angular-tutorial-2-angular-cli/001.png">
+<p>可以看到洋洋灑灑一大堆的指令說明，也可以用<code>ng --help [command]</code>看比較<strong>精簡</strong>一點的說明。例如我想知道generate這個指令的用法，就輸入<code>ng --help generate</code>，就可以單純看某個指令的用法囉。</p>
+<img src="/blog/2016/10/01/angular-tutorial-2-angular-cli/002.png">
+<p>接下來我們就稍微說明一些常用的Angular CLI指令吧！</p>
+<h1 id="ng-new"><a href="#ng-new" class="headerlink" title="ng new"></a>ng new</h1><p>安裝好Angular CLI以後當然是立刻使用<code>ng new [專案名稱]</code> 來產生一個Angular專案啦。</p>
+<p>這個指令會<strong>依我們輸入的專案名稱產生一個專案目錄</strong>，同時幫我們<strong>把所有預設需要的相關套件都紀錄在package.json</strong>，然後將所有需要的套件都下載下來；除此之外也會幫我們產生一個Angular專案最基本需要的程式碼、還有簡單的測試案例、測試環境設定、編輯器環境設定(如果編輯器支援的話)、預設的與法規範設定檔(tslint.json)等等；想想看這些步驟如果要自己一個一個處理要花多少時間，還要擔心人腦智慧出錯的可能性，但透過<code>ng new</code>，只需要下指令並稍等一下就可以啦！</p>
+<p>關於<code>ng new</code>產生的專案目錄，在下一篇文章我們會做一個比較詳細的介紹。</p>
+<h1 id="ng-generate-ng-g"><a href="#ng-generate-ng-g" class="headerlink" title="ng generate(ng g)"></a>ng generate(ng g)</h1><p><code>ng generate</code>可以說是<strong>整個Angular CLI裡面最常用到的指令</strong>，它的功能就是用來產生Angular的<strong>元件(component)</strong>、<strong>服務(service)</strong>等等的程式雛形，由於generate指令非常常用，但generate字母又不少，因此我們也可很簡單的使用 <code>ng g</code>來執行產生動作，目前<code>ng g</code>可產生以下類型的程式</p>
+<img src="/blog/2016/10/01/angular-tutorial-2-angular-cli/003.png">
+<p>例如需要產生一個Angular的元件，可以使用<code>ng g component</code>，來產生一個component所需要的檔案，另外我們也可以在把剛剛的指令簡化成<code>ng g c</code>。只需要短短幾個字，就可以產生許多的程式碼囉！</p>
+<p>根據<a href="https://github.com/angular/angular-cli/blob/master/packages/angular-cli/commands/generate.ts" target="_blank" rel="noopener">官方的Angular CLI原始碼</a>，我們也可以看到不同程式碼雛形的指令簡化</p>
+<img src="/blog/2016/10/01/angular-tutorial-2-angular-cli/004.png">
+<p>不過很可惜，由於Angular2的route在RC階段一直有改變，雖然正式版已經release了，但目前Angular CLI還不支援route的產生，因此使用ng g r來產生route的話，會出現以下錯誤訊息，期待某天可以正常產生囉！</p>
+<img src="/blog/2016/10/01/angular-tutorial-2-angular-cli/005.png">
+<p>使用<code>ng generate</code>產生的物件會依照預設值放在特定目錄下，若需要指定目錄也可以透過相對路徑的表示方式來改變目錄，例如<code>ng g c todo-items</code>預設檔案會產生在<u>/src/app/todo-list</u>下面，我們可以改用<code>ng g c todo-list\todo-items</code>來將檔案改為產生在<u>/src/app/todo-item/todo-list</u>下面。不過需要稍微注意兩點</p>
+<h1 id="ng-destroy-ng-d"><a href="#ng-destroy-ng-d" class="headerlink" title="ng destroy(ng d)"></a>ng destroy(ng d)</h1><p><code>ng destroy</code>是用來移除ng generate所產生的檔案的，不過只是進行把檔案刪除的動作而已，對於用到產生的物件，還是必須手動在程式碼中清除。</p>
+<p>例如我們使用<code>ng g c todo-item</code>建立一個todi-item的component，但後悔了，就可以使用<code>ng d component todo-item</code> (目前不支援 ng d c這種寫法)來移除檔案。</p>
+<h1 id="ng-build"><a href="#ng-build" class="headerlink" title="ng build"></a>ng build</h1><p>當Angular的程式開發完成，需要部屬到別台機器上時，我們可以使用ng build來打包所有的程式碼，<strong>這個步驟會將所有TypeScript的檔案轉譯成JavaScript</strong>，同時也會使用<a href="https://angular.io/docs/ts/latest/cookbook/aot-compiler.html#!#tree-shaking" target="_blank" rel="noopener">Tree Shaking</a>的技術只留下開發時有使用到的相依物件，並將所有程式分類打包，最後產出到專案下的dist目錄，我們就可以將這個目錄部屬到測試或正式環境上執行。另外若是要上線的系統了，還可以使用<code>ng build --prod</code>再將產出的JavaScript做最小化壓縮的動作，以節省下載程式碼的等待時間。如果我們希望在程式有修改時就自動進行build的動作，也可以使用<code>ng build -</code>w來偵測變更並自動執行build。</p>
+<p>Angular CLI使用<a href="https://webpack.github.io/" target="_blank" rel="noopener">webpack</a>作為打包程式的工具，有趣的是使用<code>ng new</code>建立的專案找不到webpack.js之類的檔案，這也算是習慣取代配置的好處之一，對於打包程式這件事情我們不用花太多心思，Angular CLI都已經內建好了，只要我們程式撰寫配合通用的習慣，剩下的直接使用別人寫好的範本來跑就好啦！如果想看看Angular CLI預設的webpack程式，可以參考專案目錄下node_modules\angular-cli\tasks下面的檔案。除此之外<a href="https://angular.io/docs/ts/latest/guide/webpack.html" target="_blank" rel="noopener">Angular官方的webpack介紹</a>也說得非常仔細，建議有時間可以去看看。</p>
+<h1 id="ng-serve"><a href="#ng-serve" class="headerlink" title="ng serve"></a>ng serve</h1><p>在程式開發階段，我們經常需要打開瀏覽器來觀看程式執行的結果，使用<code>ng serve</code>可以自動幫你把程式打包，並<strong>開啟一個live reload的http server</strong>，如此一來當我們程式有修改時，就會自動幫你重新build一次，同時如果有用瀏覽器打開目前的程式時，也會通知<strong>自動重整</strong>，就不用一直按F5重新整理啦！</p>
+<h1 id="ng-lint"><a href="#ng-lint" class="headerlink" title="ng lint"></a>ng lint</h1><p>使用Angular CLI建立的專案會預設加入一個<strong>tslint.json</strong>檔案，用來設定TypeScript撰寫風格的相關限制，我們可以自行在tslint.json裡面修改來調整符合團隊開發的規範，若要檢查專案中的程式碼是否符合規範，可以使用<code>ng lint</code> 來檢查，看看那些檔案中有不符合規則的程式存在。</p>
+<img src="/blog/2016/10/01/angular-tutorial-2-angular-cli/006.png">
+<h1 id="ng-test-amp-ng-e2e"><a href="#ng-test-amp-ng-e2e" class="headerlink" title="ng test &amp; ng e2e"></a>ng test &amp; ng e2e</h1><p><code>ng test</code>和<code>ng e2e</code>兩個指令都是用來執行測試程式的，不同的是<code>ng test</code>是屬於<strong>unit test</strong>的部分，會執行src/app下面所有的測試程式碼，使用的測試套件為<a href="https://karma-runner.github.io/1.0/index.html" target="_blank" rel="noopener">karma</a>與<a href="http://jasmine.github.io/" target="_blank" rel="noopener">jasmine</a>。</p>
+<p>而n<code>g e2e</code>則是用來<strong>執行end to end測試</strong>，會執行e2e資料夾下面的測試程式，使用的測試套件為<a href="https://karma-runner.github.io/1.0/index.html" target="_blank" rel="noopener">karma</a>與<a href="http://www.protractortest.org/#/" target="_blank" rel="noopener">protractor</a>。</p>
+<p>如果已經有寫過JavaScript的人對於這些測試程式應該不會太陌生，未來有機會寫到Angular的測試時，在多介紹一些。</p>
+<h1 id="單元回顧"><a href="#單元回顧" class="headerlink" title="單元回顧"></a>單元回顧</h1><p>本篇文章介紹了Angular CLI的一些常用指令，日後在使用Angular CLI時應該能更加清楚指令的用途與原理，透過Angular CLI可以幫助我們在開發的時候節省很多配置時間。</p>
+<p><a href="https://github.com/angular/angular-cli" target="_blank" rel="noopener">官方的文件</a>還有一些小技巧，有興趣的朋友可以去參考看看囉。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Angular-CLI/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular CLI</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2016/09/28/angular-tutorial-1-hello-world/" rel="next" title="[Angular速成班]簡介&Hello World!!">
+                <i class="fa fa-chevron-left"></i> [Angular速成班]簡介&Hello World!!
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2016/10/15/angular-tutorial-3-angular-cli-project-structure/" rel="prev" title="[Angular速成班]了解Angular CLI產生的專案目錄結構">
+                [Angular速成班]了解Angular CLI產生的專案目錄結構 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安裝Angular-CLI並產生Angular專案"><span class="nav-number">1.</span> <span class="nav-text">安裝Angular CLI並產生Angular專案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ng-new"><span class="nav-number">2.</span> <span class="nav-text">ng new</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ng-generate-ng-g"><span class="nav-number">3.</span> <span class="nav-text">ng generate(ng g)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ng-destroy-ng-d"><span class="nav-number">4.</span> <span class="nav-text">ng destroy(ng d)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ng-build"><span class="nav-number">5.</span> <span class="nav-text">ng build</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ng-serve"><span class="nav-number">6.</span> <span class="nav-text">ng serve</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ng-lint"><span class="nav-number">7.</span> <span class="nav-text">ng lint</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ng-test-amp-ng-e2e"><span class="nav-number">8.</span> <span class="nav-text">ng test &amp; ng e2e</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#單元回顧"><span class="nav-number">9.</span> <span class="nav-text">單元回顧</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2016/10/01/angular-tutorial-2-angular-cli/';
+          this.page.identifier = '2016/10/01/angular-tutorial-2-angular-cli/';
+          this.page.title = '[Angular速成班]用Angular CLI節省你的開發時間';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

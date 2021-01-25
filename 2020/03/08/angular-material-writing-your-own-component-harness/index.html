@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular,Angular CDK,Component Harness,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="在前一篇文章中我們介紹「如何透過 Angular Material Component Harness」來測試 Angular Material 的相關元件，省去許多自己使用 querySelector 的方式找到元件的麻煩，也可以避免未來元件改版破壞結構的麻煩，今天我們來看看如何替我們自己寫好的元件也設計對應的 Component Harnss，讓未來使用元件的人也能寫出更強健的測試程式碼！">
+<meta name="keywords" content="Angular,Angular CDK,Component Harness">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular Material 完全攻略] 替我們的元件設計 Component Harness">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2020/03/08/angular-material-writing-your-own-component-harness/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="在前一篇文章中我們介紹「如何透過 Angular Material Component Harness」來測試 Angular Material 的相關元件，省去許多自己使用 querySelector 的方式找到元件的麻煩，也可以避免未來元件改版破壞結構的麻煩，今天我們來看看如何替我們自己寫好的元件也設計對應的 Component Harnss，讓未來使用元件的人也能寫出更強健的測試程式碼！">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.064Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular Material 完全攻略] 替我們的元件設計 Component Harness">
+<meta name="twitter:description" content="在前一篇文章中我們介紹「如何透過 Angular Material Component Harness」來測試 Angular Material 的相關元件，省去許多自己使用 querySelector 的方式找到元件的麻煩，也可以避免未來元件改版破壞結構的麻煩，今天我們來看看如何替我們自己寫好的元件也設計對應的 Component Harnss，讓未來使用元件的人也能寫出更強健的測試程式碼！">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2020/03/08/angular-material-writing-your-own-component-harness/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular Material 完全攻略] 替我們的元件設計 Component Harness | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2020/03/08/angular-material-writing-your-own-component-harness/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular Material 完全攻略] 替我們的元件設計 Component Harness</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-03-08T15:02:16+00:00">
+                2020-03-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular-Material完全攻略/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular Material完全攻略</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2020/03/08/angular-material-writing-your-own-component-harness/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/03/08/angular-material-writing-your-own-component-harness/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在前一篇文章中我們介紹「<a href="https://wellwind.idv.tw/blog/2020/02/08/angular-material-component-harnesses/">如何透過 Angular Material Component Harness</a>」來測試 Angular Material 的相關元件，省去許多自己使用 <code>querySelector</code> 的方式找到元件的麻煩，也可以避免未來元件改版破壞結構的麻煩，今天我們來看看如何替我們自己寫好的元件也設計對應的 Component Harnss，讓未來使用元件的人也能寫出更強健的測試程式碼！</p>
+<a id="more"></a>
+<h1 id="實作一個-Component-Harness"><a href="#實作一個-Component-Harness" class="headerlink" title="實作一個 Component Harness"></a>實作一個 Component Harness</h1><p>我們可以針對寫好的公共元件建立一個對應的 Component Harness，來幫助團隊成員撰寫測試程式碼時不需要理解元件的 HTML，就能執行對應的行為。</p>
+<h2 id="第一步：建立基本的-Component-Harness"><a href="#第一步：建立基本的-Component-Harness" class="headerlink" title="第一步：建立基本的 Component Harness"></a>第一步：建立基本的 Component Harness</h2><p>要替元件建立一個 Component Harness 的第一步，只需要撰寫一個繼承自 <code>ComponentHarness</code> 的類別，並簡易的加上一個 <code>hostSelector</code> 屬性即可：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ./buttons-area/testing/buttons-area-harness.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; ComponentHarness &#125; <span class="keyword">from</span> <span class="string">'@angular/cdk/testing'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> ButtonsAreaHarness <span class="keyword">extends</span> ComponentHarness &#123;</span><br><span class="line">  <span class="comment">// 通常就是元件本身的 selector 設定</span></span><br><span class="line">  <span class="keyword">static</span> hostSelector = <span class="string">'app-buttons-area'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下來在使用到這個 <code>ButtonsAreaComponent</code> 的元件中，就可以透過上面設定的 <code>ButtonsAreaComponentHarness</code> 來找到我們自行設計的元件啦！</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ./app.component.spec.ts</span></span><br><span class="line">it(<span class="string">'should have a buttons-area component'</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> buttonsArea = <span class="keyword">await</span> loader.getAllHarnesses(ButtonsAreaHarness);</span><br><span class="line">  expect(buttonsArea.length).toBe(<span class="number">1</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="第二步：針對元件的行為撰寫相關程式"><a href="#第二步：針對元件的行為撰寫相關程式" class="headerlink" title="第二步：針對元件的行為撰寫相關程式"></a>第二步：針對元件的行為撰寫相關程式</h2><p>我們可以針對元件相關的行為，在 Component Harness 撰寫特定的程式，例如：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ./buttons-area/testing/buttons-area-harness.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; ComponentHarness &#125; <span class="keyword">from</span> <span class="string">'@angular/cdk/testing'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; MatButtonHarness &#125; <span class="keyword">from</span> <span class="string">'@angular/material/button/testing'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; MatSelectHarness &#125; <span class="keyword">from</span> <span class="string">'@angular/material/select/testing'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> ButtonsAreaHarness <span class="keyword">extends</span> ComponentHarness &#123;</span><br><span class="line">  <span class="keyword">static</span> hostSelector = <span class="string">'app-buttons-area'</span>;</span><br><span class="line"></span><br><span class="line">  getSelect = <span class="keyword">this</span>.locatorFor(MatSelectHarness);</span><br><span class="line">  getButton = <span class="keyword">this</span>.locatorFor(MatButtonHarness.with(&#123; text: <span class="string">'GO'</span> &#125;));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> selectActionAndClickButton(action: <span class="built_in">string</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> select = <span class="keyword">await</span> <span class="keyword">this</span>.getSelect();</span><br><span class="line">    <span class="keyword">const</span> button = <span class="keyword">await</span> <span class="keyword">this</span>.getButton();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> select.clickOptions(&#123; text: action &#125;);</span><br><span class="line">    <span class="keyword">await</span> button.click();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面程式碼中，我們使用 <code>this.locatorFor()</code> 的方式，取得元件內其他的 Component Harness，除了直接指定某個 Component Harness 外，我們也可以直接指定 selector，如：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> getSelect = <span class="keyword">this</span>.locatorFor(<span class="string">'mat-select'</span>);</span><br></pre></td></tr></table></figure>
+<p>當然此時拿到的就不是 Component Harness 了，而是一個 <a href="https://material.angular.io/cdk/test-harnesses/api#TestElement" target="_blank" rel="noopener">TestElement</a>。</p>
+<p>另外要注意的是，使用 <code>locatorFor()</code> 時並不會立刻取得畫面上的元素或是 Component Harness，而是先回傳一個 function，當我們呼叫這個 function 後，才會真正去取得畫面上的資訊，這麼一來就可以不用擔心因畫面改變而過時。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 此時的 getSelect 是一個 function</span></span><br><span class="line"><span class="keyword">const</span> getSelect = <span class="keyword">this</span>.locatorFor(MatSelectHarness);</span><br><span class="line"><span class="comment">// 無論畫面改變，都不會影響 getSelect</span></span><br><span class="line"><span class="comment">// 當真正呼叫時，才會得到畫面上的資訊</span></span><br><span class="line"><span class="keyword">const</span> select = getSelect();</span><br></pre></td></tr></table></figure>
+<p>要撰寫測試時程式碼就簡單多啦！</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ./app.component.spec.ts</span></span><br><span class="line">it(<span class="string">'should call #getAction of component'</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  spyOn(component, <span class="string">'getAction'</span>);</span><br><span class="line">  <span class="keyword">const</span> buttonsArea = <span class="keyword">await</span> loader.getHarness(ButtonsAreaHarness);</span><br><span class="line">  <span class="keyword">await</span> buttonsArea.selectActionAndClickButton(<span class="string">'Save'</span>);</span><br><span class="line">  expect(component.getAction).toHaveBeenCalledWith(<span class="string">'Save'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="第三步：替-Component-Harness-撰寫測試"><a href="#第三步：替-Component-Harness-撰寫測試" class="headerlink" title="第三步：替 Component Harness 撰寫測試"></a>第三步：替 Component Harness 撰寫測試</h2><p>這步驟雖然不是必要，但畢竟 Component Harness 依然是程式碼，所以撰寫對應的測試案例也是非常合理的事情，這麼一來也可以提早發現修改程式過程產生的錯誤！</p>
+<p>在撰寫測試 Component Harness 的程式碼時，應該以實際上可能怎麼去使用為思考，通常會先寫一個假的元件來使用寫好的共用元件，然後透過 <code>TestbedHarnessEnvironment.loader(fixture)</code> 的方式取得 loader 並再得到寫好的 Component Harness，並執行相關行為，測試行為是否符合預期。</p>
+<p>這種方式在 Angular 的測試文件中也有說明：<a href="https://angular.io/guide/testing#component-inside-a-test-host" target="_blank" rel="noopener">參考文件</a></p>
+<p>以這邊的例子來說，AppComponent 的測試案例其實就是 Component Harness 的測試案例，就不多做說明了。在實務上，負責撰寫共用元件的人在開發時期不一定有真正用到此元件，因此應該是將 <code>app.component.spec.ts</code> 的程式碼，移動到 <code>buttons-area-harness.spec.ts</code> 內進行測試。當未來其他團隊成員使用這些元件時，再使用寫好的 Component Harness 撰寫自己的測試程式碼。</p>
+<h1 id="Component-Harness-其他功能"><a href="#Component-Harness-其他功能" class="headerlink" title="Component Harness 其他功能"></a>Component Harness 其他功能</h1><p>接下來我們來介紹一些其他重要的功能，讓我們能撰寫出更靈活的 ComponentHarness 程式</p>
+<h2 id="ComponetHarness-相關-API"><a href="#ComponetHarness-相關-API" class="headerlink" title="ComponetHarness 相關 API"></a>ComponetHarness 相關 API</h2><ul>
+<li><code>host</code>：取得 ComponentHarness 本身，型別為 <a href="https://material.angular.io/cdk/test-harnesses/api#TestElement" target="_blank" rel="noopener">TestElement</a>。</li>
+<li><code>locatorFor</code>：如同前面說明，可以依照 ComponentHarness 或 selector 取得指定的「第一個」目標，回傳為一個 function，在真正呼叫此 function 時才會進行尋找的動作；由於是 promise，當找不到時會 reject 掉，同時測試會直接失敗。</li>
+<li><code>locatorForOptionl</code>：與 <code>locatorFor</code> 功能一樣，唯一的他別再找不到時會得到 <code>null</code>，不會直接失敗。</li>
+<li><code>locatorAll</code>：一樣回傳一個 function，但會依照指定的 ComponentHarness 或 select 找到「所有符合」的目標。</li>
+</ul>
+<p><a href="https://material.angular.io/cdk/test-harnesses/overview#finding-elements-in-the-component-39-s-dom" target="_blank" rel="noopener">參考文件</a></p>
+<h2 id="TestElement-相關-API"><a href="#TestElement-相關-API" class="headerlink" title="TestElement 相關 API"></a>TestElement 相關 API</h2><p>TestElement 是所有取得畫面元素的底層，包含了許多基礎的 API，來進行基本的 DOM 元素操作，例如當我們直接觸發元素的 click 事件時，程式碼看起來如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> <span class="keyword">this</span>.host().click();</span><br></pre></td></tr></table></figure>
+<p>由於相關 API 不少，名稱也很直覺，可以直接上文件去看看。</p>
+<p><a href="https://material.angular.io/cdk/test-harnesses/overview#working-with-code-testelement-code-instances" target="_blank" rel="noopener">參考文件</a></p>
+<h2 id="HarnessPredicate-功能"><a href="#HarnessPredicate-功能" class="headerlink" title="HarnessPredicate 功能"></a>HarnessPredicate 功能</h2><p>為了讓 Component Harness 更好用，更容易找到對應的內容，通常會在撰寫一個靜態的 <code>with</code> 方法，例如：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> select = <span class="keyword">await</span> loader.getHarness(</span><br><span class="line">  MatSelectHarness.with(&#123; selector: <span class="string">'.specified-select'</span>&#125;)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>之後在取得 Component Harness 時，可以透過這個方法更進一步篩選要取得的目標，要達成這個目標，就需要搭配 <code>HarnessPredicate</code> 功能。</p>
+<p><a href="https://material.angular.io/cdk/test-harnesses/overview#filtering-harness-instances-with-code-harnesspredicate-code-" target="_blank" rel="noopener">參考文件</a></p>
+<h3 id="繼承-BaseHarnessPredicate"><a href="#繼承-BaseHarnessPredicate" class="headerlink" title="繼承 BaseHarnessPredicate"></a>繼承 BaseHarnessPredicate</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; BaseHarnessFilters &#125; <span class="keyword">from</span> <span class="string">'@angular/cdk/testing'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> ＭySelectHarnessFilters <span class="keyword">extends</span> BaseHarnessFilters &#123;</span><br><span class="line">  <span class="comment">/* 撰寫過濾規則相關的屬性 */</span></span><br><span class="line">  withOptions: <span class="built_in">string</span>[];</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="設計-with-方法"><a href="#設計-with-方法" class="headerlink" title="設計 with 方法"></a>設計 with 方法</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; ComponentHarness, HarnessPredicate &#125; <span class="keyword">from</span> <span class="string">'@angular/cdk/testing'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> MySelectHarness <span class="keyword">extends</span> ComponentHarness &#123;</span><br><span class="line">  <span class="keyword">static</span> hostSelector = <span class="string">'my-select'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">with</span>(</span><br><span class="line">    options: ＭySelectHarnessFilters</span><br><span class="line">  ): HarnessPredicate&lt;MySelectHarness&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> HarnessPredicate(MySelectHarness, options).addOption(</span><br><span class="line">      <span class="string">'with options'</span>,</span><br><span class="line">      <span class="comment">// 指定 withOptions 這個過濾選項屬性</span></span><br><span class="line">      options.withOptions,</span><br><span class="line">      (harness, filterOptions) =&gt; &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="comment">// harness 代表單純使用 hostSelector 找到的內容</span></span><br><span class="line">        <span class="comment">// filterOptions 代表要過濾的設定值</span></span><br><span class="line">        <span class="comment">// 回傳一個 Promise&lt;boolean&gt; </span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(<span class="literal">true</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    )</span><br><span class="line">    <span class="comment">// 有其他過濾選項時，再逐個加入</span></span><br><span class="line">    .addOption(...);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="HarnessLoader"><a href="#HarnessLoader" class="headerlink" title="HarnessLoader"></a>HarnessLoader</h2><p>當使用 <code>&lt;ng-content&gt;</code> 時來允許使用者加入更多內容時，可以使用 <code>harnessLoaderFor</code> 來透過 selector 取得裡面內容，使用起來與 <code>locatorFor</code> 非常類似，只是只能傳入 selector。</p>
+<p><a href="https://material.angular.io/cdk/test-harnesses/overview#creating-a-code-harnessloader-code-for-an-element" target="_blank" rel="noopener">參考文件</a></p>
+<h2 id="找出-ComponentHarness-外的元素"><a href="#找出-ComponentHarness-外的元素" class="headerlink" title="找出 ComponentHarness 外的元素"></a>找出 ComponentHarness 外的元素</h2><p>當使用 CdkOverlay 這類功能時，會在 ComponentHarness 範圍外產生內容，此時可以使用 <code>documentRootLocatorFactory()</code> 來找到外部的內容：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> rootLocator = <span class="keyword">this</span>.documentRootLocatorFactory();</span><br><span class="line"><span class="keyword">const</span> popupContent = rootLocator.harnessLoaderFor(<span class="string">'my-popup-content'</span>);</span><br></pre></td></tr></table></figure>
+<p><a href="https://material.angular.io/cdk/test-harnesses/overview#accessing-elements-outside-of-the-component-39-s-host-element" target="_blank" rel="noopener">參考文件</a></p>
+<h2 id="非同步處理"><a href="#非同步處理" class="headerlink" title="非同步處理"></a>非同步處理</h2><p>呼叫 <code>TestElement</code> 相關的 API 時，都會強制幫我們觸發變更偵測，不過當使用 Angular Animations 時，會有額外的非同步行為發生，可能會導致畫面不正確，此時可以使用 <code>forceStabilize()</code>，等待 <code>NgZone</code> 真正穩定。</p>
+<p>有些時候為了效能考量，會使用 <code>NgZone</code> 的 <code>runOutsideAngular</code> 來讓直行程式碼不被 <code>NgZone</code> 處理，此時可以使用</p>
+<p> <code>waitForTasksOutsideAngular</code>，來等待 <code>runOutsideAngular</code> 內的程式完成後才繼續。</p>
+<p><a href="https://material.angular.io/cdk/test-harnesses/overview#waiting-for-asynchronous-tasks" target="_blank" rel="noopener">參考文件</a></p>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>ComponentHarness 真的是個非常強大的功能，我們可以替開發出來的共用元件撰寫出對應的 ComponentHarness，讓未來其他人要使用元件時，也能更加容易地寫出測試程式，而且同一份程式碼，在 Karma 和 Protractor 都可以使用，實在是太方便啦！</p>
+<h1 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h1><ul>
+<li><a href="https://github.com/wellwind/angular-material-harness-demo" target="_blank" rel="noopener">範例程式碼</a></li>
+<li><a href="https://material.angular.io/cdk/test-harnesses/overview" target="_blank" rel="noopener">官方 API 文件 - Componet Test Harness</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Angular-CDK/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular CDK</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Component-Harness/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Component Harness</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2020/02/08/angular-material-component-harnesses/" rel="next" title="[Angular Material 完全攻略] 使用 Component Harness 寫出健全的測試程式">
+                <i class="fa fa-chevron-left"></i> [Angular Material 完全攻略] 使用 Component Harness 寫出健全的測試程式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2020/09/16/mastering-rxjs-01-intro/" rel="prev" title="[RxJS] 打通 RxJS 任督二脈">
+                [RxJS] 打通 RxJS 任督二脈 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#實作一個-Component-Harness"><span class="nav-number">1.</span> <span class="nav-text">實作一個 Component Harness</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一步：建立基本的-Component-Harness"><span class="nav-number">1.1.</span> <span class="nav-text">第一步：建立基本的 Component Harness</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二步：針對元件的行為撰寫相關程式"><span class="nav-number">1.2.</span> <span class="nav-text">第二步：針對元件的行為撰寫相關程式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三步：替-Component-Harness-撰寫測試"><span class="nav-number">1.3.</span> <span class="nav-text">第三步：替 Component Harness 撰寫測試</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Component-Harness-其他功能"><span class="nav-number">2.</span> <span class="nav-text">Component Harness 其他功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ComponetHarness-相關-API"><span class="nav-number">2.1.</span> <span class="nav-text">ComponetHarness 相關 API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TestElement-相關-API"><span class="nav-number">2.2.</span> <span class="nav-text">TestElement 相關 API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HarnessPredicate-功能"><span class="nav-number">2.3.</span> <span class="nav-text">HarnessPredicate 功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#繼承-BaseHarnessPredicate"><span class="nav-number">2.3.1.</span> <span class="nav-text">繼承 BaseHarnessPredicate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設計-with-方法"><span class="nav-number">2.3.2.</span> <span class="nav-text">設計 with 方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HarnessLoader"><span class="nav-number">2.4.</span> <span class="nav-text">HarnessLoader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#找出-ComponentHarness-外的元素"><span class="nav-number">2.5.</span> <span class="nav-text">找出 ComponentHarness 外的元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非同步處理"><span class="nav-number">2.6.</span> <span class="nav-text">非同步處理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">3.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相關資源"><span class="nav-number">4.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2020/03/08/angular-material-writing-your-own-component-harness/';
+          this.page.identifier = '2020/03/08/angular-material-writing-your-own-component-harness/';
+          this.page.title = '[Angular Material 完全攻略] 替我們的元件設計 Component Harness';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

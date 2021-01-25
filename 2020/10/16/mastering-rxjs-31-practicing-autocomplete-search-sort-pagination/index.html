@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="RxJS,shareReplay,map,switchMap,startWith,debounceTime,distinctUntilChanged,catchError,filter,ajax,scan,take,share,mapTo,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="今天我們用實際的例子來練習各種 RxJS operators 的組合運用！在一般的應用程式裡面，資料查詢應該算是非常常見的情境了，我們就實際使用資料查詢的功能做範例，加上各種變化，來練習一些 operators 的實際使用吧！">
+<meta name="keywords" content="RxJS,shareReplay,map,switchMap,startWith,debounceTime,distinctUntilChanged,catchError,filter,ajax,scan,take,share,mapTo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[RxJS] 實戰練習 - 自動完成 &#x2F; 搜尋 &#x2F; 排序 &#x2F; 分頁">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2020/10/16/mastering-rxjs-31-practicing-autocomplete-search-sort-pagination/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="今天我們用實際的例子來練習各種 RxJS operators 的組合運用！在一般的應用程式裡面，資料查詢應該算是非常常見的情境了，我們就實際使用資料查詢的功能做範例，加上各種變化，來練習一些 operators 的實際使用吧！">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/16/mastering-rxjs-31-practicing-autocomplete-search-sort-pagination/01.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/16/mastering-rxjs-31-practicing-autocomplete-search-sort-pagination/02.jpg">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.376Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[RxJS] 實戰練習 - 自動完成 &#x2F; 搜尋 &#x2F; 排序 &#x2F; 分頁">
+<meta name="twitter:description" content="今天我們用實際的例子來練習各種 RxJS operators 的組合運用！在一般的應用程式裡面，資料查詢應該算是非常常見的情境了，我們就實際使用資料查詢的功能做範例，加上各種變化，來練習一些 operators 的實際使用吧！">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2020/10/16/mastering-rxjs-31-practicing-autocomplete-search-sort-pagination/01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2020/10/16/mastering-rxjs-31-practicing-autocomplete-search-sort-pagination/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[RxJS] 實戰練習 - 自動完成 / 搜尋 / 排序 / 分頁 | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2020/10/16/mastering-rxjs-31-practicing-autocomplete-search-sort-pagination/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[RxJS] 實戰練習 - 自動完成 / 搜尋 / 排序 / 分頁</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-10-16T18:00:00+00:00">
+                2020-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/" itemprop="url" rel="index">
+                    <span itemprop="name">打通 RxJS 任督二脈</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/第-12-屆鐵人賽/" itemprop="url" rel="index">
+                    <span itemprop="name">第 12 屆鐵人賽</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2020/10/16/mastering-rxjs-31-practicing-autocomplete-search-sort-pagination/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/16/mastering-rxjs-31-practicing-autocomplete-search-sort-pagination/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天我們用實際的例子來練習各種 RxJS operators 的組合運用！在一般的應用程式裡面，資料查詢應該算是非常常見的情境了，我們就實際使用資料查詢的功能做範例，加上各種變化，來練習一些 operators 的實際使用吧！</p>
+<a id="more"></a>
+<h1 id="起始專案"><a href="#起始專案" class="headerlink" title="起始專案"></a>起始專案</h1><p>由於我們主要的練習目標是 RxJS，因此許多關於畫面操作的部分，都已經先設計好了，可以到以下網址以起始專案開始練習：</p>
+<p><a href="https://stackblitz.com/edit/mastering-rxjs-practice-search-starter" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-practice-search-starter</a></p>
+<div class="note info"><p>如果想要跟著練習，建議可以 fork 一份到自己的帳號下，以後可以隨時回來看成果。</p></div>
+<p>練習過程中，也可以參考完整版程式碼：</p>
+<p><a href="https://stackblitz.com/edit/mastering-rxjs-practice-search-finished" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-practice-search-finished</a></p>
+<h2 id="預期功能及畫面"><a href="#預期功能及畫面" class="headerlink" title="預期功能及畫面"></a>預期功能及畫面</h2><p>在這個專案中，我們要練習使用 <a href="https://docs.github.com/en/free-pro-team@latest/rest/reference/search#search-repositories" target="_blank" rel="noopener">GitHub Search API</a> 來依照指定的名稱搜尋 repositories，預期完成畫面如下：</p>
+<img src="/blog/2020/10/16/mastering-rxjs-31-practicing-autocomplete-search-sort-pagination/01.jpg">
+<p>包含一些基本功能：</p>
+<ul>
+<li>依照關鍵字搜尋 GitHub repositories</li>
+<li>分頁功能，包含每頁幾筆及顯示第幾頁</li>
+<li>排序功能，可依照 stars 或 forks 進行排序</li>
+</ul>
+<p>另外還包含了搜尋時的「自動完成」功能：</p>
+<img src="/blog/2020/10/16/mastering-rxjs-31-practicing-autocomplete-search-sort-pagination/02.jpg">
+<p>當輸入文字時，可以提供符合文字的 repositories 建議。</p>
+<h2 id="相關檔案"><a href="#相關檔案" class="headerlink" title="相關檔案"></a>相關檔案</h2><p>在起始專案的 <code>index.html</code> 內已經把基本的 HTML 都寫好了，另外在 <code>index.ts</code> 內也預先 import 已經寫好的操作邏輯</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 畫面上的 DOM 物件操作程式</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> domUtils <span class="keyword">from</span> <span class="string">'./dom-utils'</span>;</span><br><span class="line"><span class="comment">// 存取 API 資料的程式碼</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> dataUtils <span class="keyword">from</span> <span class="string">'./data-utils'</span>;</span><br></pre></td></tr></table></figure>
+<p><code>dom-utils.ts</code> 內都是操作畫面的邏輯，但這不是主要練習的部分，現在前端 SPA 框架的盛行，不同框架會有不同的畫面操作方式，單純操作 DOM 物件其實是髒活，所以大概知道有些什麼功能就好囉：</p>
+<ul>
+<li><code>fillAutoSuggestions</code>：顯示自動完成的建議內容</li>
+<li><code>fillSearchResult</code>：顯示搜尋結果</li>
+<li><code>loading</code>：當開始搜尋資料時，呼叫此方法將畫面遮罩，避免多餘的操作</li>
+<li><code>loaded</code>：當完成搜尋後，呼叫次方法隱藏畫面遮罩，以便進行其他操作</li>
+<li><code>updatePageNumber</code>：更新頁碼的畫面資訊</li>
+<li><code>updateStarsSort</code>：更新依照 stars 排序的畫面資訊</li>
+<li><code>updateForksSort</code>：更新依照 forks 排序的畫面資訊</li>
+</ul>
+<p>而在 <code>data-utils.ts</code> 內，則是 GitHub API 的呼叫，這裡使用 RxJS 內提供的 <code>ajax</code> 來抓取呼叫 API 的內容，並使用 <code>map</code> operator 來將需要的內容抓出來，例如「取得建議清單」的程式碼如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> baseUrl = <span class="string">`https://api.github.com/search/repositories`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> getSuggestions = <span class="function">(<span class="params">keyword: <span class="built_in">string</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> searchUrl = <span class="string">`<span class="subst">$&#123;baseUrl&#125;</span>?q=<span class="subst">$&#123;keyword&#125;</span>&amp;per_page=10&amp;page=1`</span>;</span><br><span class="line">  <span class="keyword">return</span> ajax(searchUrl).pipe(</span><br><span class="line">    map(<span class="function"><span class="params">response</span> =&gt;</span> response.response.items),</span><br><span class="line">    map(<span class="function"><span class="params">repositories</span> =&gt;</span></span><br><span class="line">      repositories.map(<span class="function"><span class="params">repository</span> =&gt;</span> repository.full_name))</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>上述程式碼的第 7 行使用的是 RxJS 內的 <code>map</code> operator，而第 8 行使用的是 JavaScript 內建陣列的 <code>map</code>，有些時候在閱讀上會不小心造成誤解，這時候可以把裡面的實作邏輯也抽出來，會變得更好閱讀：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 將陣列的處理抽成 function</span></span><br><span class="line"><span class="keyword">const</span> toSuggestionList = <span class="function">(<span class="params">repositories</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> repositories.map(<span class="function"><span class="params">repository</span> =&gt;</span> repository.full_name)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> getSuggestions = <span class="function">(<span class="params">keyword: <span class="built_in">string</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> searchUrl = <span class="string">`<span class="subst">$&#123;baseUrl&#125;</span>?q=<span class="subst">$&#123;keyword&#125;</span>&amp;per_page=10&amp;page=1`</span>;</span><br><span class="line">  <span class="keyword">return</span> ajax(searchUrl).pipe(</span><br><span class="line">    map(<span class="function"><span class="params">response</span> =&gt;</span> response.response.items),</span><br><span class="line">    map(toSuggestionList)</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>此時原來程式就可以閱讀成「將回傳結果轉換成建議清單 (map to suggestion list)」，在實作程式碼比較複雜，或是閱讀上比較不好理解時，適當的將程式碼抽成好讀好理解的 function 對於未來開發和維護都會有加分效果喔！</p>
+<p><code>data-utils.ts</code> 內還有一個 <code>getSearchResult</code> 方法，是用來取得搜尋結果的，實作基本上大同小異，只是帶入更多的參數而已，就不浪費篇幅在這說明了，有興趣的話可以看一下囉。</p>
+<h1 id="實作自動完成功能"><a href="#實作自動完成功能" class="headerlink" title="實作自動完成功能"></a>實作自動完成功能</h1><p>接著我們來實際做出自動完成的功能，自動完成要做的事情非常簡單，就是在打字時，呼叫 <code>dataUtils.getSuggestions()</code> 方法來取得要顯示的清單，並且呼叫 <code>domUtils.fillAutoSuggestions()</code> 即可。</p>
+<h2 id="取得事件資訊"><a href="#取得事件資訊" class="headerlink" title="取得事件資訊"></a>取得事件資訊</h2><p>我們可以使用 <code>fromEvent</code> 來監聽輸入框的 <code>input</code> 事件：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> keyword$ = fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'#keyword'</span>), <span class="string">'input'</span>);</span><br></pre></td></tr></table></figure>
+<p>此時訂閱的話回得到 <code>input</code> 相關的事件，然而我們實際上需要關注的是輸入的內容，因此可以使用 <code>map</code> 來進行轉換：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> keyword$ = fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'#keyword'</span>), <span class="string">'input'</span>).pipe(</span><br><span class="line">  map(<span class="function"><span class="params">event</span> =&gt;</span> (event.target <span class="keyword">as</span> HTMLInputElement).value)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>這邊使用了 <code>event.target</code> 來取得事件來源的 DOM 物件，由於是一個 <code>input</code> 輸入框，因此可以使用 <code>.value</code> 來取得相關的值，<code>as HTMLInputElement</code> 是 TypeScript 的型別轉換，讓我們可以明確的知道 <code>input</code> 輸入框有哪些屬性可用。</p>
+<p>此時 <code>keyword$</code> 就是一個「關鍵字內容的資料流」，我們可以再將此資料流搭配各種其他的 operators 來產生出不同的變化。</p>
+<h2 id="將事件轉換成查詢-Observable"><a href="#將事件轉換成查詢-Observable" class="headerlink" title="將事件轉換成查詢 Observable"></a>將事件轉換成查詢 Observable</h2><p>現在已經可以拿到輸入的關鍵字了，接下來要把關鍵字帶入 <code>domUtils.getSuggestions()</code> 方法來查詢，最簡單的方法如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">keyword$.subscribe(<span class="function"><span class="params">keyword</span> =&gt;</span> &#123;</span><br><span class="line">  domUtils.getSuggestions(keyword).subscribe(<span class="function"><span class="params">suggestions</span> =&gt;</span> &#123;</span><br><span class="line">    domUtils.fillAutoSuggestions(suggestions);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>不用多說，這種巢狀的 <code>subscribe</code> 是應該盡力避免的，因此我們改用 <code>switchMap</code> operator 來協助我們「將某個事件值換成另一個 Observable」：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">keyword$</span><br><span class="line">  .pipe(</span><br><span class="line">    switchMap(<span class="function"><span class="params">keyword</span> =&gt;</span> dataUtils.getSuggestions(keyword))</span><br><span class="line">  )</span><br><span class="line">  .subscribe(<span class="function"><span class="params">suggestions</span> =&gt;</span> &#123;</span><br><span class="line">    domUtils.fillAutoSuggestions(suggestions);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>使用 <code>switchMap</code> 可以在來源資料變更時，退訂上一次的 Observable 訂閱，因此永遠會以最新的來源資料及轉換後的 Observable 為主，如此可以確保我們拿到的資料一定是使用最新的 <code>keyword</code> 關鍵字查詢的結果。</p>
+<div class="note info"><p>這邊說明一下為何不使用其他 <code>xxxMap</code> 系列的 operators：</p>
+<ul>
+<li><code>concatMap</code>：雖然會拿到最後的資料，但因為不會退訂上一次 Observable 訂閱的關係，需要等之前 keyword 變更的查詢都結束，會花費比較多時間。</li>
+<li><code>mergeMap</code>：每次 keyword 變更都會立刻查詢，不退訂之前的 Observable，加上 API 呼叫是非同步的關係，我們沒辦法確保最後一次會來的結果一定就是最新的查詢結果，因此查詢結果會不穩定。</li>
+<li><code>exhaustMap</code>：在之前 Observable 查詢完成之前，有任何新的事件都會被忽略掉，因此只要事件更新前轉換的 Observable 沒結束，就不會拿到新事件的查詢結果。</li>
+</ul>
+<p>如果不明白這幾個 operators 的差別，請先看過之前寫的文章：</p>
+<p><a href="https://wellwind.idv.tw/blog/2020/10/04/mastering-rxjs-19-switchmap-concatmap-mergemap-exhaustmap/">[RxJS] 轉換類型 Operators (2) - switchMap / concatMap / mergeMap / exhaustMap</a></p></div>
+<p>此時已經可以在每次輸入關鍵字就進行查詢囉，但還有很多需要加強的地方！</p>
+<h2 id="避免資料一變更就查詢"><a href="#避免資料一變更就查詢" class="headerlink" title="避免資料一變更就查詢"></a>避免資料一變更就查詢</h2><p>GitHub API 在未驗證時有限制每分鐘只能進行 10 次查詢(有驗證時限制每分鐘 30 次查詢)，這是為了保護伺服器被大量搜尋的機制(稱為 Rate Limits)，在實際應用上，我們也應該要盡可能避免使用者產生大量的查詢，以免前端的疏失操成後端的效能低落，因此在這裡我們可以再加上一個 <code>debounceTime</code> operator，來避免一有新事件就查詢的問題：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">keyword$</span><br><span class="line">  .pipe(</span><br><span class="line">    <span class="comment">// 避免一有新事件就查詢</span></span><br><span class="line">    debounceTime(<span class="number">700</span>),</span><br><span class="line">    switchMap(<span class="function"><span class="params">keyword</span> =&gt;</span> dataUtils.getSuggestions(keyword)),</span><br><span class="line">  )</span><br><span class="line">  .subscribe(<span class="function"><span class="params">suggestions</span> =&gt;</span> &#123;</span><br><span class="line">    domUtils.fillAutoSuggestions(suggestions);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p><code>debounceTime</code> 可以在指定的時間內都沒有新事件發生後，才以最後一次的事件值進入下一個步驟，透過這種方式，就可以避免一直打字一直查詢的問題囉。</p>
+<h2 id="避免重複文字查詢"><a href="#避免重複文字查詢" class="headerlink" title="避免重複文字查詢"></a>避免重複文字查詢</h2><p>想像一下，假設目前輸入的內容是「rxjs」，並且已經完成一次建議清單的查詢，接著我們繼續輸入變成「rxjsdemo」，但想了一下又刪掉變回「rxjs」，然後 <code>debounceTime</code> 的控制時間才過去，新的事件資料跟上一次的事件資料一樣都是「rxjs」，如果資料其實並沒有改變，還需要再進行一次查詢嗎？這時候當然就可以省略不查詢了，因此可以使用 <code>distinctUntilChanged</code> operator，只有當新的事件值與上一次的事件值不同時，才會繼續讓事件發生：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">keyword$</span><br><span class="line">  .pipe(</span><br><span class="line">    debounceTime(<span class="number">700</span>),</span><br><span class="line">    <span class="comment">// 避免重複的查詢</span></span><br><span class="line">    disintctUntilChanged(),</span><br><span class="line">    switchMap(<span class="function"><span class="params">keyword</span> =&gt;</span> dataUtils.getSuggestions(keyword)),</span><br><span class="line">  )</span><br><span class="line">  .subscribe(<span class="function"><span class="params">suggestions</span> =&gt;</span> &#123;</span><br><span class="line">    domUtils.fillAutoSuggestions(suggestions);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<div class="note info"><p>如果要避免資料重複，為何不使用 <code>distinct</code> 呢？以這邊的例子來說，當我把資料變更成「rxjsdemo」時，如果有產生新的查詢，下一次變更回「rxjs」時，由於 <code>distinct</code> 的設計是「整個資料流的事件值不會重複」，因此「rxjs」事件值在整個資料流過程已經發生過了會被忽略掉，導致沒有正確查詢，畫面顯示錯誤的資料。</p>
+<p>而使用 <code>distinctUntilChanged</code>，則只有跟「上一次」事件值相同才會忽略，因此可以避免掉 <code>distinct</code> 的問題。</p>
+<p><code>distinct</code> 和 <code>distinctUntilChanged</code> 的差別，可以參考之前寫的文章：</p>
+<p><a href="https://wellwind.idv.tw/blog/2020/10/09/mastering-rxjs-24-distinct-distinctuntilchanged-distinctuntilkeychanged/">[RxJS] 過濾類型 Operators (4) - distinct / distinctUntilChanged / distinctUntilKeyChanged</a></p></div>
+<h2 id="避免查出不精準的內容"><a href="#避免查出不精準的內容" class="headerlink" title="避免查出不精準的內容"></a>避免查出不精準的內容</h2><p>最後來微調一下，如果不管資料長度都會進行搜尋，就會導致一開始只輸入一個「r」這樣的資料時就會開始進行搜尋，而得到比較不精準的內容，因此可以再做個調整，讓查詢內容大於某個長度時才進行搜尋，例如至少要 3 個字，此時使用最基本的 <code>filter</code> operator 就可以了：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">keyword$</span><br><span class="line">  .pipe(</span><br><span class="line">    debounceTime(<span class="number">700</span>),</span><br><span class="line">    disintctUntilChanged(),</span><br><span class="line">    <span class="comment">// 避免內容太少查出不精準的結果</span></span><br><span class="line">    filter(<span class="function"><span class="params">keyword</span> =&gt;</span> keyword.length &gt;= <span class="number">3</span>),</span><br><span class="line">    switchMap(<span class="function"><span class="params">keyword</span> =&gt;</span> dataUtils.getSuggestions(keyword)),</span><br><span class="line">  )</span><br><span class="line">  .subscribe(<span class="function"><span class="params">suggestions</span> =&gt;</span> &#123;</span><br><span class="line">    domUtils.fillAutoSuggestions(suggestions);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>透過這些 operators 的控制，就能設計出兼顧效能及準度的自動建議功能啦。</p>
+<p>像這樣的程式碼，可以想想看沒有各種 operators 加持的情況下，要判斷多少狀態、條件，而有了 RxJS 及各種 operators，真的可以幫助我們大幅減少許多程式碼的撰寫！</p>
+<h1 id="實作關鍵字搜尋功能"><a href="#實作關鍵字搜尋功能" class="headerlink" title="實作關鍵字搜尋功能"></a>實作關鍵字搜尋功能</h1><p>關鍵字的建議及自動完成功能搞定了，接著先來單純的針對關鍵字進行搜尋，這裡我們希望按下「search」按鈕時，才針對我們要的關鍵字進行查詢：</p>
+<h2 id="取得事件資訊-1"><a href="#取得事件資訊-1" class="headerlink" title="取得事件資訊"></a>取得事件資訊</h2><p>一樣的，我們可以使用 <code>fromEvent</code> 來將按鈕事件包裝成 Observable</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> search$ = fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'#search'</span>), <span class="string">'click'</span>);</span><br></pre></td></tr></table></figure>
+<p>接著我們就需要在事件發生時，依照輸入的關鍵字進行搜尋。</p>
+<h2 id="將事件轉換成查詢-Observable-1"><a href="#將事件轉換成查詢-Observable-1" class="headerlink" title="將事件轉換成查詢 Observable"></a>將事件轉換成查詢 Observable</h2><p>我們一樣可以透過 <code>switchMap</code> operators 來將按鈕事件轉換成查詢資料的 Observable：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">search$.pipe(</span><br><span class="line">  switchMap(<span class="function"><span class="params">()</span> =&gt;</span> dataUtils.getSearchResult(</span><br><span class="line">    (<span class="built_in">document</span>.querySelector(<span class="string">'#keyword'</span>) <span class="keyword">as</span> HTMLInputElement).value)</span><br><span class="line">  )</span><br><span class="line">).subscribe(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</span><br><span class="line">  domUtils.fillSearchResult(result);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>第 2 行程式使用 <code>switchMap</code> 將事件轉換成查詢的 Observable，裡面的參數在第 3 行直接取得輸入框 DOM 物件資料。</p>
+<p>在關鍵字內容部分，我們已經有一個 <code>keyword$</code> 的資料流了，不多加運用實在很可惜：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> searchByKeyword$ = search$.pipe(</span><br><span class="line">  switchMap(<span class="function"><span class="params">()</span> =&gt;</span> keyword$),</span><br><span class="line">  switchMap(<span class="function"><span class="params">keyword</span> =&gt;</span> dataUtils.getSearchResult(keyword))</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">searchByKeyword$.pipe(</span><br><span class="line">  switchMap(<span class="function"><span class="params">keyword</span> =&gt;</span> dataUtils.getSearchResult(keyword))</span><br><span class="line">).subscribe(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</span><br><span class="line">  domUtils.fillSearchResult(result);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>我們建立了一個 <code>searchByKeyword$</code> 的 Observable，它會：</p>
+<ol>
+<li>當搜尋按鈕按下時，轉換成 <code>keyword$</code> Observable</li>
+<li>當 <code>keyword$</code> Observable 有新事件時，轉換查詢用的 Observable</li>
+</ol>
+<p>但這樣會有兩個問題：</p>
+<ol>
+<li>轉換為 <code>keyword$</code> 後，還沒有新的事件發生，因此不會進行查詢，需要等 <code>keyword$</code> 有新事件才會查詢</li>
+<li>因為 <code>keyword$</code> 資料流不會結束(因為隨時可能輸入新的文字)，因此搜尋按鈕事件後，每次 <code>keyword$</code> 有新事件都會變成查詢，這不是我們要的，我們希望拿到最新的關鍵字後直接進行查詢，然後結束。</li>
+</ol>
+<p>接著我們來解決這兩個問題</p>
+<h3 id="共享關鍵字資料流"><a href="#共享關鍵字資料流" class="headerlink" title="共享關鍵字資料流"></a>共享關鍵字資料流</h3><p>由於轉換成 <code>keyword$</code> 後，需要等待新事件才會查詢，我們希望能立刻得到最後一次事件資料，因此我們可以使用 <code>shareReplay()</code> 將 <code>keyword$</code> 轉換成 Hot Observable 並將最後 N 次事件資料共享出來：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> keyword$ = fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'#keyword'</span>), <span class="string">'input'</span>).pipe(</span><br><span class="line">  map(<span class="function"><span class="params">event</span> =&gt;</span> (event.target <span class="keyword">as</span> HTMLInputElement).value),</span><br><span class="line">  <span class="comment">// 共享最後一次事件資料</span></span><br><span class="line">  shareReplay(<span class="number">1</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>在這裡我們建立了 <code>keywordForSearch$</code> 的 Observable，專門給 <code>search$</code> 轉換使用，<code>keywordForSearch$</code> 內使用 <code>shareReplay(1)</code> 確保每次訂閱時會先拿到事件的最後一筆資料。</p>
+<div class="note info"><p>為何不使用 <code>share()</code> 呢？由於 <code>share()</code> 實際上是建立一個 <code>Subject</code>，而 <code>Subject</code> 的特性是訂閱後需要等 <code>Subject</code> 有新事件才會得到資料，因此使用 <code>shareReplay()</code> 來建立 <code>ReplaySubject</code> ，<code>ReplaySubject</code> 會依照設定紀錄最近 N 次事件資料。</p>
+<p>關於 <code>share()</code> 和 <code>shareReplay()</code> 背後默默做的事情及差異，可以參考之前的文章：</p>
+<p><a href="https://wellwind.idv.tw/blog/2020/10/15/mastering-rxjs-30-multicast-publish-refcount-share-sharereplay/">[RxJS] Multicast 類 Operator (1) - multicast / publish / refCount / share / shareReplay</a></p></div>
+<h3 id="確保-switchMap-內資料流會結束"><a href="#確保-switchMap-內資料流會結束" class="headerlink" title="確保 switchMap 內資料流會結束"></a>確保 switchMap 內資料流會結束</h3><p>確定可以拿到 <code>keyword$</code> 最後一次事件資料後，接著來處理事件不會結束的問題，這個問題很好解決，使用 <code>take</code> 就好，<code>take</code> operator 可以在訂閱後取得前 N 次事件資料，然後結束資料流，因此只需要設定成 1，就可以在拿到第一次資料後結束。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> keywordForSearch$ = keyword$.pipe(</span><br><span class="line">  <span class="comment">// 取得一次資料流事件後結束</span></span><br><span class="line">  take(<span class="number">1</span>)</span><br><span class="line">);</span><br><span class="line"><span class="keyword">const</span> searchByKeyword$ = search$.pipe(switchMap(<span class="function"><span class="params">()</span> =&gt;</span> keywordForSearch$));</span><br></pre></td></tr></table></figure>
+<p>整體流程就會變成：</p>
+<ol>
+<li><code>search$</code> 發生新事件，轉換成 <code>keywordForSearch$</code> Observable</li>
+<li><code>keywordForSearch$</code> Observable 使用 <code>keyword$</code> 作為來源，並且有 <code>shareReplay(1)</code> 的關係，會立刻得到最近一次 <code>keyword$</code> 的事件資料</li>
+<li>再加上 <code>take(1)</code>，因此在取得最近一次事件資料的同時，結束 Observable</li>
+</ol>
+<h3 id="排除按鈕事件比關鍵字事件早發生的問題"><a href="#排除按鈕事件比關鍵字事件早發生的問題" class="headerlink" title="排除按鈕事件比關鍵字事件早發生的問題"></a>排除按鈕事件比關鍵字事件早發生的問題</h3><p>最後，還有一個問題：當搜尋按鈕按下時，如果 <code>keyword$</code> 還沒有事件資料，那麼轉換後的 <code>keywordForSearch$</code> 就不會立刻結束，此時會變成按下按鈕後，再變更搜尋文字才會進行查詢，這是不合理的，因此我們要給 <code>keyword$</code> 資料流一個初始資料：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> keyword$ = fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'#keyword'</span>), <span class="string">'input'</span>).pipe(</span><br><span class="line">  map(<span class="function"><span class="params">event</span> =&gt;</span> (event.target <span class="keyword">as</span> HTMLInputElement).value),</span><br><span class="line">  <span class="comment">// 讓資料流有初始值</span></span><br><span class="line">  startWith(<span class="string">''</span>),</span><br><span class="line">  <span class="comment">// 共享最後一次事件資料</span></span><br><span class="line">  shareReplay(<span class="number">1</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>接著我們必須避免空字串的查詢，因此加上 <code>filter</code> 不讓空字串的事件發生：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> searchByKeyword$ = search$.pipe(</span><br><span class="line">  switchMap(<span class="function"><span class="params">()</span> =&gt;</span> keywordForSearch$),</span><br><span class="line">  <span class="comment">// 排除空字串查詢</span></span><br><span class="line">  filter(<span class="function"><span class="params">keyword</span> =&gt;</span> !!keyword)</span><br><span class="line">);</span><br><span class="line">searchByKeyword$.pipe(</span><br><span class="line">  switchMap(<span class="function"><span class="params">keyword</span> =&gt;</span> dataUtils.getSearchResult(keyword))</span><br><span class="line">).subscribe(...);</span><br></pre></td></tr></table></figure>
+<p>如此一來，就將「關鍵字變更的資料流 (<code>keyword$</code>) 」和「按鈕事件的資料流 (<code>search$</code>)」整合成「依照關鍵字進行搜尋(<code>searchByKeyword$</code>)」的資料流囉。</p>
+<h1 id="實作排序與分頁功能"><a href="#實作排序與分頁功能" class="headerlink" title="實作排序與分頁功能"></a>實作排序與分頁功能</h1><p>最後我們將分頁與排序都整合進搜尋功能，整個畫面就會很完整啦！</p>
+<h2 id="建立搜尋條件的-Observables"><a href="#建立搜尋條件的-Observables" class="headerlink" title="建立搜尋條件的 Observables"></a>建立搜尋條件的 Observables</h2><p>之前已經有 <code>searchByKeyword$</code> 依照關鍵字查詢的 Observable 了，接著我們要處理排序、分頁等條件的 Observables。</p>
+<h3 id="取得排序相關事件"><a href="#取得排序相關事件" class="headerlink" title="取得排序相關事件"></a>取得排序相關事件</h3><p>在排序部分，我們希望預設能以 stars 數量降冪排序，也就是預設 stars 越多的越前面，同時能針對 stars 和 forks 進行升冪/降冪排序，stars 和 forks 是兩個不同的欄位，但排序是「一個資訊」，因此我們可以使用 <code>Subject</code> 類別，並分別訂閱兩個欄位的事件，來改變 <code>Subject</code> 資訊。</p>
+<p>我們需要有一個預設的排序條件，同時在改變排序時也會需要這個排序資訊來決定下一次的排序方式，因此可以使用 <code>BehaviorSubject</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 建立 BehaviorSubject，預設使用 stars 進行降冪排序</span></span><br><span class="line"><span class="keyword">const</span> sortBy$ = <span class="keyword">new</span> BehaviorSubject(&#123; sort: <span class="string">'stars'</span>, order: <span class="string">'desc'</span> &#125;);</span><br></pre></td></tr></table></figure>
+<p>接著訂閱畫面上 stars 和 forks 的點擊事件，來改變這個 <code>sortBy$</code> 的事件值：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sortBy$ = <span class="keyword">new</span> BehaviorSubject(&#123; sort: <span class="string">'stars'</span>, order: <span class="string">'desc'</span> &#125;);</span><br><span class="line"><span class="keyword">const</span> changeSort = <span class="function">(<span class="params">sortField: <span class="built_in">string</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (sortField === sortBy$.value.sort) &#123;</span><br><span class="line">    sortBy$.next(&#123;</span><br><span class="line">      sort: sortField,</span><br><span class="line">      order: sortBy$.value.order === <span class="string">'asc'</span> ? <span class="string">'desc'</span> : <span class="string">'asc'</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    sortBy$.next(&#123;</span><br><span class="line">      sort: sortField,</span><br><span class="line">      order: <span class="string">'desc'</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'#sort-stars'</span>), <span class="string">'click'</span>).subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  changeSort(<span class="string">'stars'</span>);</span><br><span class="line">&#125;);</span><br><span class="line">fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'#sort-forks'</span>), <span class="string">'click'</span>).subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  changeSort(<span class="string">'forks'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在 <code>changeSort</code> 方法裡面，我們可以使用 <code>sortBy$.value</code> 得到 <code>BehaviorSubject</code> 最近的事件值，並依此判斷接下來排序的規則。</p>
+<h3 id="取得每頁幾筆的事件"><a href="#取得每頁幾筆的事件" class="headerlink" title="取得每頁幾筆的事件"></a>取得每頁幾筆的事件</h3><p>接著我們先來處理「每頁顯示幾筆」的下拉選單，我們可以很容易的使用 <code>fromEvent</code> 來將 <code>select</code> 的事件資料進行轉換，這部分跟 <code>keyword$</code> 非常類似，差別只在處理的來源和事件不同而已：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> perPage$ = fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'#per-page'</span>), <span class="string">'change'</span>).pipe(</span><br><span class="line">  map(<span class="function"><span class="params">event</span> =&gt;</span> +(event.target <span class="keyword">as</span> HTMLSelectElement).value)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h3 id="取得切換頁碼事件"><a href="#取得切換頁碼事件" class="headerlink" title="取得切換頁碼事件"></a>取得切換頁碼事件</h3><p>最後是切換頁碼，實際上是兩個按鈕分別代表「上一頁」和「下一頁」，頁數分別會「減 1」和「加 1」，因此我們可以分別把按鈕事件變成 1 和 -1，以便用來計算下一頁的頁碼：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> previousPage$ = fromEvent(</span><br><span class="line">  <span class="built_in">document</span>.querySelector(<span class="string">'#previous-page'</span>),</span><br><span class="line">  <span class="string">'click'</span></span><br><span class="line">).pipe(</span><br><span class="line">  mapTo(<span class="number">-1</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> nextPage$ = fromEvent(</span><br><span class="line">  <span class="built_in">document</span>.querySelector(<span class="string">'#next-page'</span>), </span><br><span class="line">  <span class="string">'click'</span></span><br><span class="line">).pipe(</span><br><span class="line">  mapTo(<span class="number">1</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>因為轉換的是一個固定不動的常數，因此可以直接使用 <code>mapTo</code> operator 進行轉換。</p>
+<p>接著我們可以把這兩個 Observables 使用 <code>merge</code> 組合成一個 Observable，並使用 <code>scan</code> 來變更頁碼資訊：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> page$ = merge(previousPage$, nextPage$).pipe(</span><br><span class="line">  scan(<span class="function">(<span class="params">currentPageIndex, value</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> nextPage = currentPageIndex + value;</span><br><span class="line">    <span class="keyword">return</span> nextPage &lt; <span class="number">1</span> ? <span class="number">1</span> : nextPage;</span><br><span class="line">  &#125;, <span class="number">1</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>透過這種方式，也可以輕鬆完成「下 5 頁」、「下 10 頁」的功能囉。</p>
+<h2 id="將搜尋條件的-Observable-組合"><a href="#將搜尋條件的-Observable-組合" class="headerlink" title="將搜尋條件的 Observable 組合"></a>將搜尋條件的 Observable 組合</h2><p>所有查詢相關的資料來源都準備完畢後，最後我們只需要把這些條件組合在一起就可以了，我們需要每個事件最後一次的資訊，因此可以使用 <code>combinteLatest</code> 來組合每個資料流最後的事件值，再將這些資料丟給 <code>dataUtils.getSearchResult()</code> 查詢：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 組合搜尋條件</span></span><br><span class="line"><span class="keyword">const</span> startSearch$ = combineLatest([</span><br><span class="line">  searchByKeyword$,</span><br><span class="line">  sortBy$,</span><br><span class="line">  page$,</span><br><span class="line">  perPage$</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 將搜尋條件轉換成查詢 Observable</span></span><br><span class="line"><span class="keyword">const</span> searchResult$ = startSearch$.pipe(</span><br><span class="line">  switchMap(<span class="function">(<span class="params">[keyword, sort, page, perPage]</span>) =&gt;</span></span><br><span class="line">    dataUtils.getSearchResult(keyword, sort.sort, sort.order, page, perPage)</span><br><span class="line">  )</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">searchResult$.subscribe(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</span><br><span class="line">  domUtils.fillSearchResult(result);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>由於 <code>combineLatest</code> 是將裡面 Observables 的「最後一次事件」組合起來，因此若某個 Observable 還沒發生過事件，整個 <code>combineLatest</code> 組合的 Observable 都還不會有事件值，此時 <code>page$</code> 和 <code>perPage$</code> 都沒有啟始資料，因此就算按下搜尋，還不會有任何反應，所以最後針對 <code>page$</code> 和 <code>perPage$</code> 再使用 <code>startWith</code> 給予初始資料：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> startSearch$ = combineLatest([</span><br><span class="line">  searchByKeyword$,</span><br><span class="line">  sortBy$,</span><br><span class="line">  <span class="comment">// 給予 page$ 初始資料</span></span><br><span class="line">  page$.pipe(startWith(<span class="number">1</span>)),</span><br><span class="line">  <span class="comment">// 給予 perPage$ 初始資料</span></span><br><span class="line">  perPage$.pipe(startWith(<span class="number">10</span>))</span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+<p>基本的查詢、分頁和排序功能就完成啦！！</p>
+<p>最後讓我們再來針對一些細節來做調整。</p>
+<h1 id="顯示頁碼-排序資訊"><a href="#顯示頁碼-排序資訊" class="headerlink" title="顯示頁碼/排序資訊"></a>顯示頁碼/排序資訊</h1><p>這部分很簡單，訂閱原來的事件，然後把事件資訊更新到畫面上就好了：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">page$.subscribe(<span class="function"><span class="params">page</span> =&gt;</span> &#123;</span><br><span class="line">  domUtils.updatePageNumber(page);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">sortBy$.pipe(filter(<span class="function"><span class="params">sort</span> =&gt;</span> sort.sort === <span class="string">'stars'</span>)).subscribe(<span class="function"><span class="params">sort</span> =&gt;</span> &#123;</span><br><span class="line">  domUtils.updateStarsSort(sort);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">sortBy$.pipe(filter(<span class="function"><span class="params">sort</span> =&gt;</span> sort.sort === <span class="string">'forks'</span>)).subscribe(<span class="function"><span class="params">sort</span> =&gt;</span> &#123;</span><br><span class="line">  domUtils.updateForksSort(sort);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>以上程式直接訂閱 <code>page$</code>，並使用 <code>domUtils.updatePageNumber()</code> 更新頁碼資訊，而排序資訊則依照排序類型有兩個不同的方法呼叫，因此使用 <code>filter</code> 將不同的的排序欄位分成兩個 Observable，並各自訂閱然後呼叫各自對應的方法來更新排序欄位資訊。</p>
+<h1 id="查詢中的遮罩畫面"><a href="#查詢中的遮罩畫面" class="headerlink" title="查詢中的遮罩畫面"></a>查詢中的遮罩畫面</h1><p>接下來我們需要在查詢資料時呼叫 <code>domUtils.loading()</code> 遮罩畫面，並在查詢結束時呼叫 <code>domUtils.loaded()</code> 隱藏遮罩，在查詢條件變更時就需要遮罩住畫面，因此訂閱 <code>startSearch$</code> Observable 即可：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">startSearch$.subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  domUtils.loading();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>接著在查詢完畢後，除了畫面更新外，也要將此遮罩隱藏：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">searchResult$</span><br><span class="line">  .subscribe(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</span><br><span class="line">    domUtils.fillSearchResult(result);</span><br><span class="line">    domUtils.loaded();</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<h1 id="錯誤處理"><a href="#錯誤處理" class="headerlink" title="錯誤處理"></a>錯誤處理</h1><p>當查詢過程發生錯誤時，整條訂閱的 Observable 會完全中斷，這也代表如果中途產生無法處理的錯誤，會造成之後無法繼續進行查詢作業，為了避免這個問題，我們可以使用 <code>catchError()</code> 來攔截並處理錯誤：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">searchResult$</span><br><span class="line">  .pipe(</span><br><span class="line">    <span class="comment">// 處理搜尋事件的錯誤，以避免整個資料流從此中斷</span></span><br><span class="line">    catchError(<span class="function"><span class="params">()</span> =&gt;</span> of([]))</span><br><span class="line">  )</span><br><span class="line">  .subscribe(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</span><br><span class="line">    domUtils.fillSearchResult(result);</span><br><span class="line">    domUtils.loaded();</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>乍看之下沒什麼問題，當 <code>searchResult$</code> 發生錯誤時，攔截錯誤並給予空陣列，這樣便可以確保 <code>subscribe</code> 的 <code>next()</code> 可以收到資料，但 <code>catchError()</code> 回傳的 Observable 會讓目前訂閱的 Observable 剩下一個空陣列的資料然後結束，因此依然會讓整個訂閱結束，而導致無法繼續查詢。</p>
+<p>這時候就要朝錯誤的源頭下手，也就是 <code>startSearch$.pipe(switchMap(...))</code> 內的 Observable，在這裡面進行錯誤處理，才不會讓整個 Observable 訂閱被結束，所以我們把查詢的程式拉出來，並加上錯誤處理機制：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> getSearchResult = (</span><br><span class="line">  keyword: <span class="built_in">string</span>,</span><br><span class="line">  sort: <span class="built_in">string</span>,</span><br><span class="line">  order: <span class="built_in">string</span>,</span><br><span class="line">  page: <span class="built_in">number</span>,</span><br><span class="line">  perPage: <span class="built_in">number</span></span><br><span class="line">) =&gt;</span><br><span class="line">  dataUtils</span><br><span class="line">    .getSearchResult(keyword, sort, order, page, perPage)</span><br><span class="line">    .pipe(</span><br><span class="line">      <span class="comment">// 從查詢開始處理錯誤</span></span><br><span class="line">      catchError(<span class="function"><span class="params">()</span> =&gt;</span> of([]))</span><br><span class="line">    );</span><br></pre></td></tr></table></figure>
+<p>如此原來的 <code>searchResult$</code> 就不會有其他需要處理的錯誤，整個訂閱就不會因此而結束。</p>
+<h1 id="顯示錯誤訊息"><a href="#顯示錯誤訊息" class="headerlink" title="顯示錯誤訊息"></a>顯示錯誤訊息</h1><p>上個階段我們已經能處理錯誤了，但目前只是當錯誤發生時查不到資料而已，使用者感覺不出有錯誤發生，因此我們需要提示錯誤訊息，最簡單的方式是在 <code>catchError()</code> 內進行提示：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> getSearchResult = (</span><br><span class="line">  keyword: <span class="built_in">string</span>,</span><br><span class="line">  sort: <span class="built_in">string</span>,</span><br><span class="line">  order: <span class="built_in">string</span>,</span><br><span class="line">  page: <span class="built_in">number</span>,</span><br><span class="line">  perPage: <span class="built_in">number</span></span><br><span class="line">) =&gt;</span><br><span class="line">  dataUtils</span><br><span class="line">    .getSearchResult(keyword, sort, order, page, perPage)</span><br><span class="line">    .pipe(</span><br><span class="line">      <span class="comment">// 從查詢開始處理錯誤</span></span><br><span class="line">      catchError(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">        alert(error.response.message);</span><br><span class="line">        <span class="keyword">return</span> of([]);</span><br><span class="line">      &#125;)</span><br><span class="line">    );</span><br></pre></td></tr></table></figure>
+<p>這樣依然會有 side effect 的問題，所以可以換個方式，把資料包裝起來，當錯誤發生時，加上一個錯誤的 flag：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> getSearchResult = (</span><br><span class="line">  keyword: <span class="built_in">string</span>,</span><br><span class="line">  sort: <span class="built_in">string</span>,</span><br><span class="line">  order: <span class="built_in">string</span>,</span><br><span class="line">  page: <span class="built_in">number</span>,</span><br><span class="line">  perPage: <span class="built_in">number</span></span><br><span class="line">) =&gt;</span><br><span class="line">  dataUtils</span><br><span class="line">    .getSearchResult(keyword, sort, order, page, perPage)</span><br><span class="line">    .pipe(</span><br><span class="line">      <span class="comment">// 正常收到資料時，將資料包裝起來且 success 設成 true</span></span><br><span class="line">      map(<span class="function"><span class="params">result</span> =&gt;</span> (&#123; success: <span class="literal">true</span>, message: <span class="literal">null</span>, data: result &#125;)),</span><br><span class="line">      catchError(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// 發生錯誤時，將資料包裝起來且 success 設成 false</span></span><br><span class="line">        <span class="comment">// 同時傳遞錯誤資訊，讓後續訂閱可以處理提示</span></span><br><span class="line">        <span class="keyword">return</span> of(&#123;</span><br><span class="line">          success: <span class="literal">false</span>,</span><br><span class="line">          message: error.response.message,</span><br><span class="line">          data: []</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;));</span><br></pre></td></tr></table></figure>
+<p>這麼一來就可以保留整個流程，直到 <code>subscribe</code> 時在進行處理，原來訂閱是直接拿 <code>result</code> 去更新，現在 <code>result</code> 變成包含是否成功資訊的物件，因此只要取其中的 <code>data</code> 來更新就好：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">searchResult$.subscribe(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 原來的 result 改變了，因此取其中的 data 就好</span></span><br><span class="line">  <span class="comment">// domUtils.fillSearchResult(result);</span></span><br><span class="line">  domUtils.fillSearchResult(result.data);</span><br><span class="line">  domUtils.loaded();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>而處理錯誤的部分，我們可以拉出另外一條 Observable 來處理：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 處理錯誤提示</span></span><br><span class="line">searchResult$</span><br><span class="line">  .pipe(</span><br><span class="line">    filter(<span class="function"><span class="params">result</span> =&gt;</span> !result.success)</span><br><span class="line">	).subscribe(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</span><br><span class="line">    alert(result.message);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>把「顯示資料」和「錯誤處理」當作兩個不同的資料來源處理，可以讓我們在閱讀程式時更加專注在原本的意圖上。</p>
+<p>這裡最後需要注意的是，<code>searchResult$</code> 因為針對不同情境處理而被訂閱了兩次，而原來的 <code>searchResult$</code> 是 Cold Observable，且其中有 <code>ajax</code> 的呼叫，代表每次訂閱都會重跑一次 <code>ajax</code>，這麼一來 API 呼叫就會重複，造成不必要的浪費，所以最後再 <code>searchResult$</code> 補上 <code>share()</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> searchResult$ = startSearch$.pipe(</span><br><span class="line">  switchMap(<span class="function">(<span class="params">[keyword, sort, page, perPage]</span>) =&gt;</span></span><br><span class="line">    getSearchResult(keyword, sort.sort, sort.order, page, perPage)</span><br><span class="line">  ),</span><br><span class="line">  <span class="comment">// searchResult$ 有多次訂閱</span></span><br><span class="line">  <span class="comment">// 因此使用 share 避免重複請求資料</span></span><br><span class="line">  share()</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<div class="note info"><p>在前面 <code>keyword$</code> 示範時使用 <code>shareReplay(1)</code> 是因為訂閱時機會隨著按鈕事件的 <code>switchMap()</code> 訂閱時間而不同，且需要最後一次事件的資訊。</p>
+<p>在這裡使用 <code>share()</code> 則是因為訂閱會立刻發生，且沒有使用最後一次事件資訊需要的關係；當然，要在這裡使用 <code>shareReplay(1)</code> 在邏輯上也是完全沒問題的。</p></div>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>今天我們透過實際在網頁程式上常常遇到的查詢、分頁和排序等功能，來說明實務上 RxJS 的應用，以及各種 operators 的組合技巧。</p>
+<p>當所有事件都使用資料流及 Observable 的觀點來思考時，整個思路會變得更加單純，我們只需要習慣應用各種已經學會的 operators 來組合這些資料流即可，而且每個資料流、每個訂閱都只處理自己該做的事情，讓每段程式碼都變得更簡短好閱讀，且發生問題時，也可以很容易從問題發生點循序找到每個執行過程，更容易找到錯誤發生的地方！</p>
+<p>剛開始在學習 RxJS 時一定會對於何時該使用哪些 operators 的問題覺得不知所措，建議可以多加練習，把上述的程式碼反覆寫過，了解每個資料的流向，接著更可以嘗試組合不同的 operators，用不同的寫法達到一樣的功能，久而久之習慣後，RxJS 功力就會大增囉！！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/RxJS/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> RxJS</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/shareReplay/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> shareReplay</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/map/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> map</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/switchMap/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> switchMap</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/startWith/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> startWith</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/debounceTime/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> debounceTime</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/distinctUntilChanged/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> distinctUntilChanged</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/catchError/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> catchError</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/filter/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> filter</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/ajax/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> ajax</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/scan/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> scan</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/take/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> take</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/share/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> share</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/mapTo/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> mapTo</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2020/10/15/mastering-rxjs-30-multicast-publish-refcount-share-sharereplay/" rel="next" title="[RxJS] Multicast 類 Operator (1) - multicast / publish / refCount / share / shareReplay">
+                <i class="fa fa-chevron-left"></i> [RxJS] Multicast 類 Operator (1) - multicast / publish / refCount / share / shareReplay
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/" rel="prev" title="[RxJS] 實戰練習 - 使用 RxJS 實作 Flux Pattern">
+                [RxJS] 實戰練習 - 使用 RxJS 實作 Flux Pattern <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#起始專案"><span class="nav-number">1.</span> <span class="nav-text">起始專案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#預期功能及畫面"><span class="nav-number">1.1.</span> <span class="nav-text">預期功能及畫面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相關檔案"><span class="nav-number">1.2.</span> <span class="nav-text">相關檔案</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#實作自動完成功能"><span class="nav-number">2.</span> <span class="nav-text">實作自動完成功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#取得事件資訊"><span class="nav-number">2.1.</span> <span class="nav-text">取得事件資訊</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#將事件轉換成查詢-Observable"><span class="nav-number">2.2.</span> <span class="nav-text">將事件轉換成查詢 Observable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#避免資料一變更就查詢"><span class="nav-number">2.3.</span> <span class="nav-text">避免資料一變更就查詢</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#避免重複文字查詢"><span class="nav-number">2.4.</span> <span class="nav-text">避免重複文字查詢</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#避免查出不精準的內容"><span class="nav-number">2.5.</span> <span class="nav-text">避免查出不精準的內容</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#實作關鍵字搜尋功能"><span class="nav-number">3.</span> <span class="nav-text">實作關鍵字搜尋功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#取得事件資訊-1"><span class="nav-number">3.1.</span> <span class="nav-text">取得事件資訊</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#將事件轉換成查詢-Observable-1"><span class="nav-number">3.2.</span> <span class="nav-text">將事件轉換成查詢 Observable</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#共享關鍵字資料流"><span class="nav-number">3.2.1.</span> <span class="nav-text">共享關鍵字資料流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#確保-switchMap-內資料流會結束"><span class="nav-number">3.2.2.</span> <span class="nav-text">確保 switchMap 內資料流會結束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排除按鈕事件比關鍵字事件早發生的問題"><span class="nav-number">3.2.3.</span> <span class="nav-text">排除按鈕事件比關鍵字事件早發生的問題</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#實作排序與分頁功能"><span class="nav-number">4.</span> <span class="nav-text">實作排序與分頁功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#建立搜尋條件的-Observables"><span class="nav-number">4.1.</span> <span class="nav-text">建立搜尋條件的 Observables</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#取得排序相關事件"><span class="nav-number">4.1.1.</span> <span class="nav-text">取得排序相關事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取得每頁幾筆的事件"><span class="nav-number">4.1.2.</span> <span class="nav-text">取得每頁幾筆的事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取得切換頁碼事件"><span class="nav-number">4.1.3.</span> <span class="nav-text">取得切換頁碼事件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#將搜尋條件的-Observable-組合"><span class="nav-number">4.2.</span> <span class="nav-text">將搜尋條件的 Observable 組合</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#顯示頁碼-排序資訊"><span class="nav-number">5.</span> <span class="nav-text">顯示頁碼/排序資訊</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查詢中的遮罩畫面"><span class="nav-number">6.</span> <span class="nav-text">查詢中的遮罩畫面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#錯誤處理"><span class="nav-number">7.</span> <span class="nav-text">錯誤處理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#顯示錯誤訊息"><span class="nav-number">8.</span> <span class="nav-text">顯示錯誤訊息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">9.</span> <span class="nav-text">本日小結</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2020/10/16/mastering-rxjs-31-practicing-autocomplete-search-sort-pagination/';
+          this.page.identifier = '2020/10/16/mastering-rxjs-31-practicing-autocomplete-search-sort-pagination/';
+          this.page.title = '[RxJS] 實戰練習 - 自動完成 / 搜尋 / 排序 / 分頁';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

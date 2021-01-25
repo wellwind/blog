@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="RxJS,Observer Pattern,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="今天我們來認識 ReactiveX 的重要組成之一，也就是「觀察者模式 - Observer Pattern」。有學過物件導向程式設計的朋友應該都聽過設計模式 (Design Pattern)，而觀察者模式就是其中一種，也是蠻常見的一種，同時也是 ReactiveX 的主要核心，所以如果你還不知道什麼是觀察者模式，務必繼續看下去喔！">
+<meta name="keywords" content="RxJS,Observer Pattern">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[RxJS] 認識觀察者模式 - Observer Pattern">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2020/09/21/mastering-rxjs-06-observer-pattern/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="今天我們來認識 ReactiveX 的重要組成之一，也就是「觀察者模式 - Observer Pattern」。有學過物件導向程式設計的朋友應該都聽過設計模式 (Design Pattern)，而觀察者模式就是其中一種，也是蠻常見的一種，同時也是 ReactiveX 的主要核心，所以如果你還不知道什麼是觀察者模式，務必繼續看下去喔！">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/21/mastering-rxjs-06-observer-pattern/01.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/21/mastering-rxjs-06-observer-pattern/02.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/21/mastering-rxjs-06-observer-pattern/03.png">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.356Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[RxJS] 認識觀察者模式 - Observer Pattern">
+<meta name="twitter:description" content="今天我們來認識 ReactiveX 的重要組成之一，也就是「觀察者模式 - Observer Pattern」。有學過物件導向程式設計的朋友應該都聽過設計模式 (Design Pattern)，而觀察者模式就是其中一種，也是蠻常見的一種，同時也是 ReactiveX 的主要核心，所以如果你還不知道什麼是觀察者模式，務必繼續看下去喔！">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2020/09/21/mastering-rxjs-06-observer-pattern/01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2020/09/21/mastering-rxjs-06-observer-pattern/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[RxJS] 認識觀察者模式 - Observer Pattern | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2020/09/21/mastering-rxjs-06-observer-pattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[RxJS] 認識觀察者模式 - Observer Pattern</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-09-21T18:00:00+00:00">
+                2020-09-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/" itemprop="url" rel="index">
+                    <span itemprop="name">打通 RxJS 任督二脈</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/第-12-屆鐵人賽/" itemprop="url" rel="index">
+                    <span itemprop="name">第 12 屆鐵人賽</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2020/09/21/mastering-rxjs-06-observer-pattern/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/09/21/mastering-rxjs-06-observer-pattern/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天我們來認識 ReactiveX 的重要組成之一，也就是「觀察者模式 - Observer Pattern」。有學過物件導向程式設計的朋友應該都聽過設計模式 (Design Pattern)，而觀察者模式就是其中一種，也是蠻常見的一種，同時也是 ReactiveX 的主要核心，所以如果你還不知道什麼是觀察者模式，務必繼續看下去喔！</p>
+<a id="more"></a>
+<h1 id="關於觀察者模式"><a href="#關於觀察者模式" class="headerlink" title="關於觀察者模式"></a>關於觀察者模式</h1><p>以下文字摘取自<a href="https://zh.wikipedia.org/wiki/观察者模式" target="_blank" rel="noopener">維基百科對於觀察者模式的介紹</a>：</p>
+<div class="note info"><p><strong>觀察者模式</strong>是<a href="https://zh.wikipedia.org/wiki/軟件設計模式" target="_blank" rel="noopener">軟體設計模式</a>的一種。在此種模式中，一個目標物件管理所有相依於它的觀察者物件，並且在它本身的狀態改變時主動發出通知。這通常透過呼叫各觀察者所提供的方法來實現。此種模式通常被用來實時事件處理系統。</p></div>
+<p>我個人認為這個模式最重要概念的是：「當我們要觀察一個資料的變化時，與其主動去關注它的狀態，不如<strong>由觀察的目標主動告知我們資料變化</strong>，可以更加即時且可靠的得知資料變化。」</p>
+<h2 id="觀察者模式解決的問題"><a href="#觀察者模式解決的問題" class="headerlink" title="觀察者模式解決的問題"></a>觀察者模式解決的問題</h2><p>我們在日常生活中有各種「觀察」的現象存在，例如看看某個 Youtuber 有沒有新的影片上線，走在路上要注意紅綠燈的狀態等等，許多都是「主動」觀察的行為，然而這樣的觀察並不一定這麼方便且即時。</p>
+<p>以 Youtuber 上架新影片為例，如果我們想在第一時間就知道某個 Youtuber 上架了新影片，就必須不斷、定時的重新整理某個頁面，才能看到有沒有新的影片上架，想當然這種「被動」的方法並不是一個方便且即時的方式。</p>
+<img src="/blog/2020/09/21/mastering-rxjs-06-observer-pattern/01.jpg">
+<p>而有在使用 Youtube 平台的應該都知道有個「開啟小鈴鐺」功能，這個功能可以在新影片上架時「主動」的通知我們，隨著現在瀏覽器、APP 的「通知」功能越來越完善，要即時收到第一手資訊也變得越來越容易！</p>
+<img src="/blog/2020/09/21/mastering-rxjs-06-observer-pattern/02.jpg">
+<p>這就是觀察者模式想要達到的境界，同樣是「觀察」，由被觀察目標主動通知效率好多了！</p>
+<h2 id="觀察者模式定義的角色"><a href="#觀察者模式定義的角色" class="headerlink" title="觀察者模式定義的角色"></a>觀察者模式定義的角色</h2><p>下圖一樣來自維基百科</p>
+<img src="/blog/2020/09/21/mastering-rxjs-06-observer-pattern/03.png">
+<p>基本上只有兩個角色，每個角色有各自的方法需要實作：</p>
+<ul>
+<li><strong>觀察者 (Observer)</strong><ul>
+<li><code>notify</code>： 當目標資料變更，會呼叫觀察者的 notify 方法，告知資料變更了</li>
+</ul>
+</li>
+<li><strong>目標 (Subject)</strong><ul>
+<li><code>notifyObservers</code>：用來通知所有目前的觀察者資料變更了，也就是呼叫所有觀察者物件的 <code>notify</code> 方法</li>
+<li><code>addObserver</code>：將某個物件加入觀察者清單</li>
+<li><code>deleteObserver</code>：將某個物件從觀察者清單中移除</li>
+</ul>
+</li>
+</ul>
+<h1 id="使用-JavaScript-實作觀察者模式"><a href="#使用-JavaScript-實作觀察者模式" class="headerlink" title="使用 JavaScript 實作觀察者模式"></a>使用 JavaScript 實作觀察者模式</h1><p>接著我們以「影片上架通知」功能作為範例，實際上用 JavaScript 實作看看。</p>
+<p>實作程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-06-observer-pattern-video-notify-demo" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-06-observer-pattern-video-notify-demo</a></p>
+<h2 id="實作觀察者-Observer"><a href="#實作觀察者-Observer" class="headerlink" title="實作觀察者 (Observer)"></a>實作觀察者 (Observer)</h2><p>假設現在有兩個人想要知道影片上架了，也就是這兩個人都是所謂的「觀察者」，每個觀察者必須實作 <code>notify</code> 方法，用來接受新影片的通知</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 觀察者 A</span></span><br><span class="line"><span class="keyword">const</span> observerA = &#123;</span><br><span class="line">  notify: <span class="function"><span class="params">id</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`我是觀察者 A，我收到影片 <span class="subst">$&#123;id&#125;</span> 上架通知了`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 觀察者 B</span></span><br><span class="line"><span class="keyword">const</span> observerB = &#123;</span><br><span class="line">  notify: <span class="function"><span class="params">id</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`我是觀察者 B，我收到影片 <span class="subst">$&#123;id&#125;</span> 上架通知了`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="實作目標-Subject"><a href="#實作目標-Subject" class="headerlink" title="實作目標 (Subject)"></a>實作目標 (Subject)</h2><p>接著實作要觀察的「目標」，這個目標要負責管理所有的觀察者，並且在需要的時候通知它們</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> youtuberSubject = &#123;</span><br><span class="line">  <span class="comment">// 存放所有的觀察者，也就是開啟通知的使用者</span></span><br><span class="line">  observers: [],</span><br><span class="line">  <span class="comment">// 通知所有觀察者新影片上架了</span></span><br><span class="line">  notifyObservers: <span class="function"><span class="params">id</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 列舉出每個觀察者，並進行通知動作</span></span><br><span class="line">    youtuberSubject.observers.forEach(<span class="function"><span class="params">observer</span> =&gt;</span> &#123;</span><br><span class="line">      observer.notify(id);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 加入新的觀察者，也就是有新使用者開啟通知了</span></span><br><span class="line">  addObserver: <span class="function"><span class="params">observer</span> =&gt;</span> &#123;</span><br><span class="line">    youtuberSubject.observers.push(observer);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 將某個觀察者移除，也就是某個使用者關閉通知了</span></span><br><span class="line">  deleteObserver: <span class="function"><span class="params">observer</span> =&gt;</span> &#123;</span><br><span class="line">    youtuberSubject.observers = youtuberSubject.observers.filter(</span><br><span class="line">      obs =&gt; obs !== observer</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="實際執行看看"><a href="#實際執行看看" class="headerlink" title="實際執行看看"></a>實際執行看看</h2><p>有了「觀察者」和「目標」後，我們就可以實際看看雙方互動的結果啦！</p>
+<p>首先在沒有任何觀察者進行觀察的情況，上架一個新影片：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 影片 1 上架，此時還沒有觀察者</span></span><br><span class="line">youtuberSubject.notifyObservers(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// 輸出結果：</span></span><br><span class="line"><span class="comment">// (沒有任何輸出)</span></span><br></pre></td></tr></table></figure>
+<p>想當然，因為現在沒人開啟通知，因此也不會有人收到通知。</p>
+<p>接著加入一個觀察者，然後上架新影片：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 加入觀察者 A，也就是觀察者 A 開啟通知了</span></span><br><span class="line">youtuberSubject.addObserver(observerA);</span><br><span class="line"><span class="comment">// 影片 2 上架，此時觀察者 A 會收到通知</span></span><br><span class="line">youtuberSubject.notifyObservers(<span class="number">2</span>);</span><br><span class="line"><span class="comment">// 輸出結果：</span></span><br><span class="line"><span class="comment">// 我是觀察者 A，我收到影片 2 上架通知了</span></span><br></pre></td></tr></table></figure>
+<p>有了一個觀察者後，當新影片上架，自然就會收到通知啦！</p>
+<p>如果有兩個觀察者呢？</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 加入觀察者 B，也就是觀察者 B 開啟通知了</span></span><br><span class="line">youtuberSubject.addObserver(observerB);</span><br><span class="line"><span class="comment">// 影片 3 上架，此時觀察者 A 跟 B 都會收到通知</span></span><br><span class="line">youtuberSubject.notifyObservers(<span class="number">3</span>);</span><br><span class="line"><span class="comment">// 輸出結果：</span></span><br><span class="line"><span class="comment">// 我是觀察者 A，我收到影片 3 上架通知了</span></span><br><span class="line"><span class="comment">// 我是觀察者 B，我收到影片 3 上架通知了</span></span><br></pre></td></tr></table></figure>
+<p>當然是兩個觀察者都會收到通知啦，而這兩個觀察者收到通知後，就可以依照自己的喜好來決定如何繼續處理這段影片，這也是一種「關注點分離」的實現，同樣收到新影片 A 跟 B 想做的事情可能截然不同，如果硬要寫在一起，程式碼肯定也會越來越複雜，而拆開後只要各做的事情就好囉。</p>
+<p>最後我們移除一個觀察者看看：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 移除觀察者 B，也就是觀察者 B 關閉通知了</span></span><br><span class="line">youtuberSubject.deleteObserver(observerB);</span><br><span class="line"><span class="comment">// 影片 4 上架，此時只剩下觀察者 A 會收到通知</span></span><br><span class="line">youtuberSubject.notifyObservers(<span class="number">4</span>);</span><br><span class="line"><span class="comment">// 輸出結果：</span></span><br><span class="line"><span class="comment">// 我是觀察者 A，我收到影片 4 上架通知了</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，適當的使用觀察者模式對於未來程式的維護性會高很多，當影片上架需要做額外的事情時，只要增加一個觀察者，讓新的觀察者來做就好，若某件事情不需要做了，也只需要將做這件事情的觀察者移除，被觀察的目標完全不用修改任何程式碼！</p>
+<h1 id="ReactiveX-與觀察者模式"><a href="#ReactiveX-與觀察者模式" class="headerlink" title="ReactiveX 與觀察者模式"></a>ReactiveX 與觀察者模式</h1><p>還記得昨天文章我們講到 ReactiveX 將任何事情都視為<strong>串流 (Stream)</strong> 嗎？在今天的例子應該不難看出串流的影子，這個通知功能就是一條串流，將每次影片上架的消息「流」到每個觀察者中。</p>
+<p>因此除了任何事情都是串流外，我們也會將每一條串流都視為<strong>「可被觀察的」(Observable)</strong>，所以在使用 ReactiveX 時，我們會常常聽到：</p>
+<ul>
+<li>這個物件是一個 observable</li>
+<li>這裡是將資料轉換成另外一個 observable</li>
+<li>這裡要訂閱一個 observable</li>
+<li>這個 observable 在這裡結束了</li>
+<li>…</li>
+</ul>
+<p>Observable 這個名詞會非常大量的被使用，而有了<strong>觀察者模式</strong>的概念後，未來在使用 ReactiveX 設計程式時，就不會搞不清楚這個名詞囉！</p>
+<h1 id="隨堂測驗-使用-RxJS-實作影片通知功能"><a href="#隨堂測驗-使用-RxJS-實作影片通知功能" class="headerlink" title="隨堂測驗 - 使用 RxJS 實作影片通知功能"></a>隨堂測驗 - 使用 RxJS 實作影片通知功能</h1><p>看到這裡，再回顧一下之前「快速上手 RxJS」的文章，應該也不難發現 RxJS 基礎的使用方式就是觀察者模式的延伸：</p>
+<ul>
+<li>每個被觀察的目標就是 RxJS 的 <code>Subject</code> 物件</li>
+<li>觀察目標中的 <code>addObserver</code> 就是 RxJS 的 <code>subscribe</code> 方法，都是把「觀察者」加入清單內</li>
+<li><code>deleteObserver</code> 就是訂閱 (subscribe) 後拿到 Subscription 物件的 <code>unsubscribe</code> 方法</li>
+<li>觀察者實作的 <code>notify</code> 方法就是 RxJS 中提到 Observer 的 <code>next()</code> 方法 (負責接收通知)</li>
+<li>觀察目標實作的 <code>notifyObservers</code> 就是每個 Subject 的 <code>next()</code> 方法 (負責送出通知)</li>
+<li>除了 <code>next()</code> 通知處理之外，ReactiveX 還另外定義了 <code>error()</code> 和 <code>complete()</code> 方便我們另外處理錯誤和完成兩種類型的通知。</li>
+</ul>
+<p>因此今天的隨堂測驗就是：「請嘗試使用 RxJS 完成今天練習的影片上架通知功能」。</p>
+<p>相信有了這些共通的觀念，要完成一樣的功能應該不難才對，明天我們再來公佈解答。</p>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>今天我們學習到了觀察者模式的基本概念，也嘗試用實際的程式碼感受了一下這個模式的方便之處，觀察者模式在許多地方都有大量的被應用到；而 ReactiveX 就是以觀察者模式為基礎設計的，因此也不難看到許多共通的影子。</p>
+<p>有了觀察者模式的基本觀念後，在使用 RxJS 開發網頁應用程式時也會更加得心應手，至少會知道自己在做什麼！</p>
+<p>最後我們出了一道題目，目的是有觀察者模式的觀念後，再用同樣觀念實際感受看看 RxJS 的觀察者模式應用，明天我們再來解答做法囉。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/RxJS/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> RxJS</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Observer-Pattern/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Observer Pattern</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2020/09/20/mastering-rxjs-05-reactivex-asynchronous-programming-and-stream/" rel="next" title="[RxJS] 認識非同步 (Asynchronous) 及串流 (Stream)">
+                <i class="fa fa-chevron-left"></i> [RxJS] 認識非同步 (Asynchronous) 及串流 (Stream)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2020/09/22/mastering-rxjs-07-video-notify-practice/" rel="prev" title="[RxJS] 隨堂測驗 - 影片上架通知功能">
+                [RxJS] 隨堂測驗 - 影片上架通知功能 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#關於觀察者模式"><span class="nav-number">1.</span> <span class="nav-text">關於觀察者模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#觀察者模式解決的問題"><span class="nav-number">1.1.</span> <span class="nav-text">觀察者模式解決的問題</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#觀察者模式定義的角色"><span class="nav-number">1.2.</span> <span class="nav-text">觀察者模式定義的角色</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-JavaScript-實作觀察者模式"><span class="nav-number">2.</span> <span class="nav-text">使用 JavaScript 實作觀察者模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#實作觀察者-Observer"><span class="nav-number">2.1.</span> <span class="nav-text">實作觀察者 (Observer)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#實作目標-Subject"><span class="nav-number">2.2.</span> <span class="nav-text">實作目標 (Subject)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#實際執行看看"><span class="nav-number">2.3.</span> <span class="nav-text">實際執行看看</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ReactiveX-與觀察者模式"><span class="nav-number">3.</span> <span class="nav-text">ReactiveX 與觀察者模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#隨堂測驗-使用-RxJS-實作影片通知功能"><span class="nav-number">4.</span> <span class="nav-text">隨堂測驗 - 使用 RxJS 實作影片通知功能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">5.</span> <span class="nav-text">本日小結</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2020/09/21/mastering-rxjs-06-observer-pattern/';
+          this.page.identifier = '2020/09/21/mastering-rxjs-06-observer-pattern/';
+          this.page.title = '[RxJS] 認識觀察者模式 - Observer Pattern';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

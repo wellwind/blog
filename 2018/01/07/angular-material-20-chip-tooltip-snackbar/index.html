@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular Material,Material Design,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="今天是Angular Material部落格篇的最後一天，我們要一口氣介紹三個元件，分別是Chip、Tooltip和Snackbar，其中Chip很適合用來當作類似標籤的功能；而Tooltip和Snackbar則是用在不同的地方，作為提示時使用。">
+<meta name="keywords" content="Angular Material,Material Design">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular Material完全攻略]設計一個部落格(5) - Chip、Tooltip、Snackbar">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="今天是Angular Material部落格篇的最後一天，我們要一口氣介紹三個元件，分別是Chip、Tooltip和Snackbar，其中Chip很適合用來當作類似標籤的功能；而Tooltip和Snackbar則是用在不同的地方，作為提示時使用。">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/01-mat-chip.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/02-mat-chip-selected.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/03-colored-mat-chip.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/04-mat-basic-chip.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/05-delete-mat-list.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/06-mat-form-field-with-chip.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/07-tooltip-basic.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/08-tooltip-position.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/09-show-hide-tooltip.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/10-tooltip-with-delay.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/11-snackbar-basic.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/12-snackbar-with-component.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/13-inject-data-by-snackbar.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/14-snackbar-position.gif">
+<meta property="og:updated_time" content="2021-01-25T02:06:10.240Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular Material完全攻略]設計一個部落格(5) - Chip、Tooltip、Snackbar">
+<meta name="twitter:description" content="今天是Angular Material部落格篇的最後一天，我們要一口氣介紹三個元件，分別是Chip、Tooltip和Snackbar，其中Chip很適合用來當作類似標籤的功能；而Tooltip和Snackbar則是用在不同的地方，作為提示時使用。">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/01-mat-chip.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular Material完全攻略]設計一個部落格(5) - Chip、Tooltip、Snackbar | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular Material完全攻略]設計一個部落格(5) - Chip、Tooltip、Snackbar</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-07T18:05:24+00:00">
+                2018-01-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular-Material完全攻略/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular Material完全攻略</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/07/angular-material-20-chip-tooltip-snackbar/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天是Angular Material部落格篇的最後一天，我們要一口氣介紹三個元件，分別是Chip、Tooltip和Snackbar，其中Chip很適合用來當作類似標籤的功能；而Tooltip和Snackbar則是用在不同的地方，作為提示時使用。</p>
+<a id="more"></a>
+<h2 id="關於Material-Design中的Chip"><a href="#關於Material-Design中的Chip" class="headerlink" title="關於Material Design中的Chip"></a>關於Material Design中的Chip</h2><p>在<a href="https://material.io/guidelines/components/chips.html" target="_blank" rel="noopener">Material Design的Chips設計指南</a>中，Chip主要用來<strong>把複雜的實體分成多個小區塊顯示</strong>，像是聯絡人清單等等的資訊，就很適合用Chips存放。</p>
+<p>Chip是可以被選擇的，當被選擇時，我們應該要能提供更多關於這個Chip的資訊；當然，既然可選擇，應該也是要能夠提供直覺的刪除Chip的方法。</p>
+<h2 id="開始使用Angular-Material的Chip"><a href="#開始使用Angular-Material的Chip" class="headerlink" title="開始使用Angular Material的Chip"></a>開始使用Angular Material的Chip</h2><p>我們可以在加入<code>MatChipsModule</code>後，使用<code>&lt;mat-chip-list&gt;</code>和<code>&lt;mat-chip&gt;</code>的組合，即可完成一個基本的清單。</p>
+<h3 id="使用mat-chip-list和mat-chip"><a href="#使用mat-chip-list和mat-chip" class="headerlink" title="使用mat-chip-list和mat-chip"></a>使用mat-chip-list和mat-chip</h3><p>這種類型的組合我們已經練習過很多次了，不多說，直接上程式：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>文章標籤<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-chip-list</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-chip</span>&gt;</span>JavaScript<span class="tag">&lt;/<span class="name">mat-chip</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-chip</span>&gt;</span>Material Design<span class="tag">&lt;/<span class="name">mat-chip</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-chip</span>&gt;</span>Angular Material<span class="tag">&lt;/<span class="name">mat-chip</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-chip-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/01-mat-chip.png">
+<p>簡單到不行吧！接下來我們再看看還有什麼其他的玩法吧！！</p>
+<h3 id="替mat-chip加上選取狀態"><a href="#替mat-chip加上選取狀態" class="headerlink" title="替mat-chip加上選取狀態"></a>替mat-chip加上選取狀態</h3><p>非常容易，只需要加上<code>selected=&quot;true&quot;</code>即可</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-chip-list</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-chip</span> <span class="attr">selected</span>=<span class="string">"true"</span>&gt;</span>JavaScript<span class="tag">&lt;/<span class="name">mat-chip</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-chip</span>&gt;</span>Material Design<span class="tag">&lt;/<span class="name">mat-chip</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-chip</span>&gt;</span>Angular Material<span class="tag">&lt;/<span class="name">mat-chip</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-chip-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/02-mat-chip-selected.png">
+<p>可以看到JavaScript選項因為加上<code>selected=&quot;true&quot;</code>之後，變成了被選取的顏色了！當然這個被選取的顏色，也是可以調整的。</p>
+<h3 id="變更選取的mat-chip顏色"><a href="#變更選取的mat-chip顏色" class="headerlink" title="變更選取的mat-chip顏色"></a>變更選取的mat-chip顏色</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-chip-list</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-chip</span> <span class="attr">color</span>=<span class="string">"primary"</span> <span class="attr">selected</span>=<span class="string">"true"</span>&gt;</span>JavaScript<span class="tag">&lt;/<span class="name">mat-chip</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-chip</span> <span class="attr">color</span>=<span class="string">"accent"</span> <span class="attr">selected</span>=<span class="string">"true"</span>&gt;</span>Material Design<span class="tag">&lt;/<span class="name">mat-chip</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-chip</span> <span class="attr">color</span>=<span class="string">"warn"</span> <span class="attr">selected</span>=<span class="string">"true"</span>&gt;</span>Angular Material<span class="tag">&lt;/<span class="name">mat-chip</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-chip-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/03-colored-mat-chip.png">
+<p>這裡有個比較容易搞混的部分是，設定<code>color</code>並不會改變整個chip的顏色，只會改變<strong>被選取時的顏色</strong>，目前是沒有辦法再不被選取的狀態下透過<code>color</code>屬性改變顏色的，只能直接調整CSS。</p>
+<h3 id="設計自己的Chip樣式"><a href="#設計自己的Chip樣式" class="headerlink" title="設計自己的Chip樣式"></a>設計自己的Chip樣式</h3><p>預設的<code>&lt;mat-chip&gt;</code>已經有了基本Material Design風格的樣式，而Angular Material提供了一個<code>&lt;mat-basic-chip&gt;</code>，只提供基本的<code>mat-basic-chip</code>的CSS class，讓我們可以自訂chip樣式：</p>
+<p>例如一個CSS如下</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.mat-basic-chip</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: lime;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">8px</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">7px</span> <span class="number">12px</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接著畫面上加入<code>&lt;mat-basic-chip&gt;</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-basic-chip</span>&gt;</span>HTML<span class="tag">&lt;/<span class="name">mat-basic-chip</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/04-mat-basic-chip.png">
+<p>自己使用Chip就可以自己做啦！</p>
+<h3 id="可被刪除的Chip"><a href="#可被刪除的Chip" class="headerlink" title="可被刪除的Chip"></a>可被刪除的Chip</h3><p>Chip是可以被刪除的，我們可以在<code>&lt;mat-chip&gt;</code>裡面加上一個包含<code>matChipRemove</code>的元件，通常是<code>&lt;mat-icon&gt;</code>，之後就可以搭配<code>remove</code>事件，來處理刪除的程式邏輯。</p>
+<p>如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-chip-list</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-chip</span> *<span class="attr">ngFor</span>=<span class="string">"let tag of tags"</span> (<span class="attr">remove</span>)=<span class="string">"removeTag(tag)"</span>&gt;</span></span><br><span class="line">    &#123;&#123; tag &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-icon</span> <span class="attr">matChipRemove</span>&gt;</span>cancel<span class="tag">&lt;/<span class="name">mat-icon</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-chip</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-chip-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>接著在程式加上移除的邏輯：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AddPostDialogComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  tags = [<span class="string">'JavaScript'</span>, <span class="string">'Material Design'</span>, <span class="string">'Angular Material'</span>];</span><br><span class="line">  removeTag(tagName) &#123;</span><br><span class="line">    <span class="keyword">this</span>.tags = <span class="keyword">this</span>.tags.filter(<span class="function"><span class="params">tag</span> =&gt;</span> tag !== tagName);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/05-delete-mat-list.gif">
+<p>我們也可以為<code>&lt;mat-chip&gt;</code>設定<code>removable</code>屬性，來決定是否允許刪除，例如以下程式代表設定成<code>remove</code>事件不會發生，自然也無法刪除囉</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-chip</span> <span class="attr">removable</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-chip-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="搭配mat-form-field使用"><a href="#搭配mat-form-field使用" class="headerlink" title="搭配mat-form-field使用"></a>搭配mat-form-field使用</h3><p><code>&lt;mat-chip-list&gt;</code>和<code>&lt;mat-chip&gt;</code>很棒的一點是，他同時可以跟表單元件一起使用，讓我們能直接輸入文字，並立即轉為Chip，我們直接來看看程式碼：</p>
+<p>這次我們反過來，先看TypeScript再來看HTML</p>
+<p>TypeScript部分：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; ENTER, COMMA &#125; <span class="keyword">from</span> <span class="string">'@angular/cdk/keycodes'</span>;</span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AddPostDialogComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  tags = [<span class="string">'JavaScript'</span>, <span class="string">'Material Design'</span>, <span class="string">'Angular Material'</span>];</span><br><span class="line">  separatorKeysCodes = [ENTER, COMMA];</span><br><span class="line">  </span><br><span class="line">  addTag($event: MatChipInputEvent) &#123;</span><br><span class="line">    <span class="keyword">if</span> (($event.value || <span class="string">''</span>).trim()) &#123;</span><br><span class="line">      <span class="keyword">const</span> value = $event.value.trim();</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">this</span>.tags.indexOf(value) === <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">this</span>.tags.push(value);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $event.input.value = <span class="string">''</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程式我們宣告了一個<code>separatorKeysCodes</code>變數，來指令當按下哪些鍵時，會傳入新的<code>MatChipInputEvent</code>資料，以這裡的設定來說是<code>ENTER</code>鍵和<code>逗點(,)</code>。這兩個鍵盤keyCode都在<code>@angular/cdk/keycodes</code>先定義好了，節省我們尋找鍵盤keyCode的時間。</p>
+<p>另外我們也寫了一個<code>addTag()</code>方法，接收當畫面上輸入資料遇到<code>separatorKeysCodes</code>時，傳入的事件，這個事件有兩個屬性</p>
+<ul>
+<li><strong>input</strong>：輸入的來源，基本上就是DOM</li>
+<li><strong>value</strong>：輸入的資料</li>
+</ul>
+<p>程式中我們確定輸入的資料若不是空的且沒有重複，就把輸入的內容加入清單中，然後重設輸入的資料。</p>
+<p>接著看看HTML中有哪些東西：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-chip-list</span> #<span class="attr">chipList</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-chip</span> *<span class="attr">ngFor</span>=<span class="string">"let tag of tags"</span> (<span class="attr">remove</span>)=<span class="string">"removeTag(tag)"</span>&gt;</span></span><br><span class="line">      &#123;&#123; tag &#125;&#125;</span><br><span class="line">      <span class="tag">&lt;<span class="name">mat-icon</span> <span class="attr">matChipRemove</span>&gt;</span>cancel<span class="tag">&lt;/<span class="name">mat-icon</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mat-chip</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-chip-list</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">placeholder</span>=<span class="string">"文章標籤"</span> </span></span><br><span class="line"><span class="tag">         [<span class="attr">matChipInputFor</span>]=<span class="string">"chipList"</span> </span></span><br><span class="line"><span class="tag">         [<span class="attr">matChipInputAddOnBlur</span>]=<span class="string">"true"</span> </span></span><br><span class="line"><span class="tag">         [<span class="attr">matChipInputSeparatorKeyCodes</span>]=<span class="string">"separatorKeysCodes"</span></span></span><br><span class="line"><span class="tag">         (<span class="attr">matChipInputTokenEnd</span>)=<span class="string">"addTag($event)"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我們把原來的<code>&lt;mat-chip-list&gt;</code>包裝在<code>&lt;mat-form-field&gt;</code>之中，同時也加上一個<code>&lt;input&gt;</code>，也因此我們可以直接使用placeholder當做整個輸入控制項的標籤，呈現更具有一致性！</p>
+<p>在<code>&lt;input&gt;</code>中，關於chip有幾個重要的屬性可以設定</p>
+<ul>
+<li><code>[matChipInputFor]</code>：實際上要放置的<code>&lt;mat-chip-list&gt;</code></li>
+<li><code>[matChipInputAddOnBlur]</code>：是否要在blur時加入chip</li>
+<li><code>[matChipInputSeparatorKeyCodes]</code>：當按下指定的鍵盤按鍵時，視為要新增chip</li>
+<li><code>(matChipInputTokenEnd)</code>：當真正要加入一個chip時的邏輯程式。</li>
+</ul>
+<p>最後來看看成果：</p>
+<img src="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/06-mat-form-field-with-chip.gif">
+<p>看起來就很強大啊！</p>
+<h2 id="關於Material-Design中的Tooltip"><a href="#關於Material-Design中的Tooltip" class="headerlink" title="關於Material Design中的Tooltip"></a>關於Material Design中的Tooltip</h2><p>在<a href="https://material.io/guidelines/components/tooltips.html" target="_blank" rel="noopener">Material Design的Tooltips設計指南</a>中，Tooltip主要是用來<strong>作為提示訊息使用</strong>，會在使用者與某個UI發生互動如滑鼠移過去或focus等行為時顯示；用來給予使用這一些提示文字。</p>
+<h2 id="開始使用Angular-Material的Tooltip"><a href="#開始使用Angular-Material的Tooltip" class="headerlink" title="開始使用Angular Material的Tooltip"></a>開始使用Angular Material的Tooltip</h2><p>要使用Tooltip，我們需要加入<code>MatTooltipModule</code>，接著就可以直接來使用<code>matTooltip</code>這個directive。</p>
+<h3 id="使用matTooltip"><a href="#使用matTooltip" class="headerlink" title="使用matTooltip"></a>使用matTooltip</h3><p>我們可以在任何元件上加入<code>matTooltip</code>這個directive來決定tooltip的文字，如下</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"標題"</span> [(<span class="attr">ngModel</span>)]=<span class="string">"title"</span> <span class="attr">matTooltip</span>=<span class="string">"替你的文章下一個漂亮的標題吧！"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/07-tooltip-basic.gif">
+<h3 id="設定tooltip的方向"><a href="#設定tooltip的方向" class="headerlink" title="設定tooltip的方向"></a>設定tooltip的方向</h3><p>我們可以透過<code>matTooltipPosition</code>屬性來決定tooltip顯示的位置，<code>matTooltipPosition</code>可以設定成如下：</p>
+<table>
+<thead>
+<tr>
+<th>Position</th>
+<th>顯示位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>above</code></td>
+<td>顯示在目標之上</td>
+</tr>
+<tr>
+<td><code>below</code></td>
+<td>顯示在目標之下</td>
+</tr>
+<tr>
+<td><code>left</code></td>
+<td>顯示在目標左邊</td>
+</tr>
+<tr>
+<td><code>right</code></td>
+<td>顯示在目標右邊</td>
+</tr>
+<tr>
+<td><code>before</code></td>
+<td>LTR模式在左邊，RTL模式在右邊</td>
+</tr>
+<tr>
+<td><code>after</code></td>
+<td>LTR模式在右邊，RTL模式在左邊</td>
+</tr>
+</tbody>
+</table>
+<p>例如我們改為<code>matTooltipPosition=&quot;right&quot;</code>，就會改為顯示在目標的右邊</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"標題"</span> [(<span class="attr">ngModel</span>)]=<span class="string">"title"</span> </span></span><br><span class="line"><span class="tag">         <span class="attr">matTooltip</span>=<span class="string">"替你的文章下一個漂亮的標題吧！"</span> </span></span><br><span class="line"><span class="tag">         <span class="attr">matTooltipPosition</span>=<span class="string">"right"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/08-tooltip-position.gif">
+<h3 id="在程式中決定tooltip的顯示"><a href="#在程式中決定tooltip的顯示" class="headerlink" title="在程式中決定tooltip的顯示"></a>在程式中決定tooltip的顯示</h3><p>我們可以直接使用<code>matTooltip</code>提供的<code>show()</code>和<code>hide()</code>方法來動態打開或關閉tooltip</p>
+<p>以下程式按下”打開”按鈕，會直接顯示tooltip；按下”關閉”按鈕則會關閉tooltip：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-button</span> (<span class="attr">click</span>)=<span class="string">"titleTooltip.show()"</span>&gt;</span>打開提示<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-button</span> (<span class="attr">click</span>)=<span class="string">"titleTooltip.hide()"</span>&gt;</span>關閉提示<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"標題"</span> [(<span class="attr">ngModel</span>)]=<span class="string">"title"</span> </span></span><br><span class="line"><span class="tag">         #<span class="attr">titleTooltip</span>=<span class="string">"matTooltip"</span> </span></span><br><span class="line"><span class="tag">         <span class="attr">matTooltip</span>=<span class="string">"替你的文章下一個漂亮的標題吧！"</span> </span></span><br><span class="line"><span class="tag">         <span class="attr">matTooltipPosition</span>=<span class="string">"right"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/09-show-hide-tooltip.gif">
+<h3 id="決定tooltip顯示和隱藏的延長時間"><a href="#決定tooltip顯示和隱藏的延長時間" class="headerlink" title="決定tooltip顯示和隱藏的延長時間"></a>決定tooltip顯示和隱藏的延長時間</h3><p>我們可以使用<code>matTooltipShowDelay</code>屬性來決定要延遲多久顯示tooltip，另外也可以使用<code>matTooltipHideDelay</code>來決定延遲多久隱藏tooltip：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"標題"</span> [(<span class="attr">ngModel</span>)]=<span class="string">"title"</span> </span></span><br><span class="line"><span class="tag">         #<span class="attr">titleTooltip</span>=<span class="string">"matTooltip"</span> </span></span><br><span class="line"><span class="tag">         <span class="attr">matTooltip</span>=<span class="string">"替你的文章下一個漂亮的標題吧！"</span> </span></span><br><span class="line"><span class="tag">         <span class="attr">matTooltipPosition</span>=<span class="string">"right"</span> </span></span><br><span class="line"><span class="tag">         <span class="attr">matTooltipShowDelay</span>=<span class="string">"500"</span> </span></span><br><span class="line"><span class="tag">         <span class="attr">matTooltipHideDelay</span>=<span class="string">"500"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<p>當滑鼠移過去時，會延遲500毫秒才顯示tooltip，同樣的當滑鼠離開時，也會延遲500毫秒才關閉tooltip。</p>
+<img src="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/10-tooltip-with-delay.gif">
+<h2 id="關於Material-Design中的Snackbar"><a href="#關於Material-Design中的Snackbar" class="headerlink" title="關於Material Design中的Snackbar"></a>關於Material Design中的Snackbar</h2><p>在<a href="https://material.io/guidelines/components/snackbars-toasts.html" target="_blank" rel="noopener">Material Design的Snackbars &amp; toasts設計指南</a>中，Snackbar是在畫面最下方提供一個文字訊息，讓使用者知道目前系統大致的狀態。<strong>這種功能在Android中也叫toast</strong>。</p>
+<h2 id="開始使用Angular-Material的Snackbar"><a href="#開始使用Angular-Material的Snackbar" class="headerlink" title="開始使用Angular Material的Snackbar"></a>開始使用Angular Material的Snackbar</h2><p>SnackBar主要由一個<code>MatSnackBar</code> service來控制顯示，要使用這個service，必須要先加入<code>MatSnackBarModule</code>。</p>
+<h3 id="直接使用MatSnackBar-service"><a href="#直接使用MatSnackBar-service" class="headerlink" title="直接使用MatSnackBar service"></a>直接使用MatSnackBar service</h3><p>不多說，直接上程式：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AddPostConfirmDialogComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params">..., <span class="keyword">private</span> snackBar: MatSnackBar</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  confirm() &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">this</span>.snackBar.open(<span class="string">'已新增部落格文章'</span>, <span class="string">'我知道了'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/11-snackbar-basic.gif">
+<p>我們只用了<code>MatSnackBar</code>的<code>open()</code>方法，第一個參數代表提示的訊息，第二個參數代表用來關閉訊息的按鈕文字。另外還有第三個參數<code>config?: MatSnackBarConfig</code>，用來做比較細部的微調，稍後我們再來說明。</p>
+<h3 id="使用Component當作SnackBar"><a href="#使用Component當作SnackBar" class="headerlink" title="使用Component當作SnackBar"></a>使用Component當作SnackBar</h3><p>我們也可以使用<code>MatSnackBar</code>的<code>openFromComponent</code>方法，把一個component當作是SnackBar要顯示的對象，概念上跟昨天介紹過的Dialog非常像，下面程式我們自訂了一個新的Component，HTML內容如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-icon-button</span> (<span class="attr">click</span>)=<span class="string">"closeSnackBar()"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-icon</span> <span class="attr">align</span>=<span class="string">"right"</span>&gt;</span>cancel<span class="tag">&lt;/<span class="name">mat-icon</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>已新增部落格文章<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>溫馨小提示：每30分鐘記得起來運動一下喔！<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>接著在程式內，使用<code>MatSnackBar</code>的<code>dismiss()</code>方法，將SnackBar關閉</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">   ...</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AfterPostNotifyComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> snackBar: MatSnackBar</span>) &#123;&#125;</span><br><span class="line">  closeSnackBar() &#123;</span><br><span class="line">    <span class="keyword">this</span>.snackBar.dismiss();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/12-snackbar-with-component.gif">
+<div class="note info"><p>記得自訂的component要加入entryComponents中。</p></div>
+<h3 id="使用config-MatSnackBarConfig來調整顯示細節"><a href="#使用config-MatSnackBarConfig來調整顯示細節" class="headerlink" title="使用config: MatSnackBarConfig來調整顯示細節"></a>使用config: MatSnackBarConfig來調整顯示細節</h3><p><code>MatSnackBar</code>的<code>open()</code>或<code>openFromComponent()</code>的最後一個參數都是<code>config: MatSnackBarConfig</code>，我們可以透過這個參數來做一些調整，完成的參數可以上<a href="https://material.angular.io/components/snack-bar/api" target="_blank" rel="noopener">SnackBar的API文件</a>去看，以下列出一些個人覺得重要的參數：</p>
+<h4 id="duration"><a href="#duration" class="headerlink" title="duration"></a>duration</h4><p>代表多少ms後，會自動關閉SnackBar，如此一來我們就不需要手動去關掉SnackBar了。</p>
+<h4 id="data"><a href="#data" class="headerlink" title="data"></a>data</h4><p>在使用自訂component當作SnackBar時非常重要，概念同dialog，我們可以透過注入<code>MAT_SNACK_BAR_DATA</code>來傳入我們要的資訊給自訂的component。</p>
+<p>在component中注入的方法：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AfterPostNotifyComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="keyword">get</span> title() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.snackBarData.title;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> snackBar: MatSnackBar, <span class="meta">@Inject</span>(MAT_SNACK_BAR_DATA) <span class="keyword">private</span> snackBarData: <span class="built_in">any</span></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;&#125;</span><br><span class="line"></span><br><span class="line">  closeSnackBar() &#123;</span><br><span class="line">    <span class="keyword">this</span>.snackBar.dismiss();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在使用<code>openFromComponent()</code>時只需要加入這個data參數即可：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.snackBar.openFromComponent(AfterPostNotifyComponent, &#123;</span><br><span class="line">  data: &#123; title: <span class="keyword">this</span>.title &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/13-inject-data-by-snackbar.gif">
+<p>有了昨天dialog的概念後，這裡應該很容易理解才對吧！</p>
+<h4 id="horizontalPosition及verticalPosition"><a href="#horizontalPosition及verticalPosition" class="headerlink" title="horizontalPosition及verticalPosition"></a>horizontalPosition及verticalPosition</h4><p>設定SnackBar的水平和垂直的定位方式。</p>
+<p>水平定位方式<code>horizontalPosition</code>有幾個選項：</p>
+<table>
+<thead>
+<tr>
+<th>Position</th>
+<th>顯示位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>center</code></td>
+<td>顯示在螢幕中間</td>
+</tr>
+<tr>
+<td><code>left</code></td>
+<td>顯示在螢幕左邊</td>
+</tr>
+<tr>
+<td><code>right</code></td>
+<td>顯示在螢幕右邊</td>
+</tr>
+<tr>
+<td><code>before</code></td>
+<td>LTR模式在左邊，RTL模式在右邊</td>
+</tr>
+<tr>
+<td><code>after</code></td>
+<td>LTR模式在右邊，RTL模式在左邊</td>
+</tr>
+</tbody>
+</table>
+<p>垂直定位方式<code>verticalPosition</code>的選項如下：</p>
+<table>
+<thead>
+<tr>
+<th>Position</th>
+<th>顯示位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>top</code></td>
+<td>顯示在螢幕之上</td>
+</tr>
+<tr>
+<td><code>bottom</code></td>
+<td>顯示在螢幕之下</td>
+</tr>
+</tbody>
+</table>
+<p>預設會是在中間正下方，如果我們希望改成左下方可以自行設定：</p>
+<p>成果如下：</p>
+<img src="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/14-snackbar-position.gif">
+<p>有沒有覺得再調整一下就跟某個社群網站很像啦XD</p>
+<h2 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h2><p>今天我們介紹了一個可以當作標籤使用的<code>&lt;mat-chip&gt;</code>，這個元件在需要顯示多筆資料時非常好用，也能搭配<code>&lt;mat-form-field&gt;</code>，在表單中能夠有更一致的呈現方式。</p>
+<p>另外我們也介紹了兩個用來作為提示用的好功能，分別是<strong>tooltip和snackbar</strong>。</p>
+<p>Tooltip可以當作不同元件的提示訊息，當某個元件可能會有不明確的狀況需要提醒，又不希望提示訊息影響到畫面呈現時，可以使用這種方式來<strong>在不破壞畫面的前提給予明確的訊息</strong>。</p>
+<p>Snackbar則適合當作整個網站程式的狀態提示，不會特別針對某個元件，<strong>比起使用alert這種方式，Snackbar則更具有設計質感，也不會破壞畫面的操作</strong>，更棒的是我們還能<strong>自己設計元件來客製化SnackBar的內容</strong>，真的是非常的方便！</p>
+<p>部落格篇到這邊告一個段落，不知不覺也用掉了20天，介紹了25個Angular Material的實用功能，明天開始我們將進入收件夾篇，把最後的5個功能介紹完；到時候我們就能大聲的跟人家說我們把Angular Material基本的30種功能 <del>玩弄在鼓掌之間</del> 理解得很不錯啦！</p>
+<p>本日的程式碼GitHub：<a href="https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-20-chip-tooltip-snackbar" target="_blank" rel="noopener">https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-20-chip-tooltip-snackbar</a></p>
+<p>分支：day-20-chip-tooltip-snackbar</p>
+<h2 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h2><ul>
+<li><a href="https://material.io/guidelines/components/chips.html" target="_blank" rel="noopener">Material Design - Chips</a></li>
+<li><a href="https://material.io/guidelines/components/tooltips.html" target="_blank" rel="noopener">Material Design - Tooltips</a></li>
+<li><a href="https://material.io/guidelines/components/snackbars-toasts.html" target="_blank" rel="noopener">Material Design - Snackbars &amp; toasts</a></li>
+<li><a href="https://material.angular.io/components/chips/overview" target="_blank" rel="noopener">Angular Material - Chips</a></li>
+<li><a href="https://material.angular.io/components/tooltip/overview" target="_blank" rel="noopener">Angular Material - Tooltip</a></li>
+<li><a href="https://material.angular.io/components/snack-bar/overview" target="_blank" rel="noopener">Angular Material - Snackbar</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular-Material/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular Material</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Material-Design/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Material Design</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/01/06/angular-material-19-dialog/" rel="next" title="[Angular Material完全攻略]設計一個部落格(4) - Dialog">
+                <i class="fa fa-chevron-left"></i> [Angular Material完全攻略]設計一個部落格(4) - Dialog
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/01/08/angular-material-21-expansion-panels/" rel="prev" title="[Angular Material完全攻略]收件夾頁面(1) - Expansion Panels">
+                [Angular Material完全攻略]收件夾頁面(1) - Expansion Panels <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#關於Material-Design中的Chip"><span class="nav-number">1.</span> <span class="nav-text">關於Material Design中的Chip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#開始使用Angular-Material的Chip"><span class="nav-number">2.</span> <span class="nav-text">開始使用Angular Material的Chip</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-chip-list和mat-chip"><span class="nav-number">2.1.</span> <span class="nav-text">使用mat-chip-list和mat-chip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#替mat-chip加上選取狀態"><span class="nav-number">2.2.</span> <span class="nav-text">替mat-chip加上選取狀態</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#變更選取的mat-chip顏色"><span class="nav-number">2.3.</span> <span class="nav-text">變更選取的mat-chip顏色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設計自己的Chip樣式"><span class="nav-number">2.4.</span> <span class="nav-text">設計自己的Chip樣式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可被刪除的Chip"><span class="nav-number">2.5.</span> <span class="nav-text">可被刪除的Chip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搭配mat-form-field使用"><span class="nav-number">2.6.</span> <span class="nav-text">搭配mat-form-field使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#關於Material-Design中的Tooltip"><span class="nav-number">3.</span> <span class="nav-text">關於Material Design中的Tooltip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#開始使用Angular-Material的Tooltip"><span class="nav-number">4.</span> <span class="nav-text">開始使用Angular Material的Tooltip</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用matTooltip"><span class="nav-number">4.1.</span> <span class="nav-text">使用matTooltip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定tooltip的方向"><span class="nav-number">4.2.</span> <span class="nav-text">設定tooltip的方向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在程式中決定tooltip的顯示"><span class="nav-number">4.3.</span> <span class="nav-text">在程式中決定tooltip的顯示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#決定tooltip顯示和隱藏的延長時間"><span class="nav-number">4.4.</span> <span class="nav-text">決定tooltip顯示和隱藏的延長時間</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#關於Material-Design中的Snackbar"><span class="nav-number">5.</span> <span class="nav-text">關於Material Design中的Snackbar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#開始使用Angular-Material的Snackbar"><span class="nav-number">6.</span> <span class="nav-text">開始使用Angular Material的Snackbar</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#直接使用MatSnackBar-service"><span class="nav-number">6.1.</span> <span class="nav-text">直接使用MatSnackBar service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Component當作SnackBar"><span class="nav-number">6.2.</span> <span class="nav-text">使用Component當作SnackBar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用config-MatSnackBarConfig來調整顯示細節"><span class="nav-number">6.3.</span> <span class="nav-text">使用config: MatSnackBarConfig來調整顯示細節</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#duration"><span class="nav-number">6.3.1.</span> <span class="nav-text">duration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#data"><span class="nav-number">6.3.2.</span> <span class="nav-text">data</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#horizontalPosition及verticalPosition"><span class="nav-number">6.3.3.</span> <span class="nav-text">horizontalPosition及verticalPosition</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本日小結"><span class="nav-number">7.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相關資源"><span class="nav-number">8.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/';
+          this.page.identifier = '2018/01/07/angular-material-20-chip-tooltip-snackbar/';
+          this.page.title = '[Angular Material完全攻略]設計一個部落格(5) - Chip、Tooltip、Snackbar';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

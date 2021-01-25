@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular Material,Material Design,MatDatepicker,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="昨天我們介紹了兩個常用的輸入元件，分別是Input及Autocomplete，在提到Input時有介紹當&amp;lt;input type&amp;gt;設為date時，會依照瀏覽器的不同產生不一樣的日期顯示方式，為了消除這種瀏覽器間的差異，我們會選擇不使用原生的畫面，而是自己刻(或找人家寫好的)一個元件來選擇日期。 而在日期選擇方面，Material Design也有訂出一些設計參考，同時Angular Ma">
+<meta name="keywords" content="Angular Material,Material Design,MatDatepicker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular Material完全攻略]打造問卷頁面(3) - Datepicker">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="昨天我們介紹了兩個常用的輸入元件，分別是Input及Autocomplete，在提到Input時有介紹當&amp;lt;input type&amp;gt;設為date時，會依照瀏覽器的不同產生不一樣的日期顯示方式，為了消除這種瀏覽器間的差異，我們會選擇不使用原生的畫面，而是自己刻(或找人家寫好的)一個元件來選擇日期。 而在日期選擇方面，Material Design也有訂出一些設計參考，同時Angular Ma">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/01-material-design-components-pickers.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/02-datepicker-demo.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/03-datepicker-locale.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/04-datepicker-format.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/05-start-view.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/06-start-at.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/07-min-max-input.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/08-date-filter.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/09-native-input-change-event.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/10-dateiniput-datechange.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/11-disable-whole-input.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/12-disabled-toggle-before.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/13-disabled-toggle-after.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/14-enable-picker-only.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/15-touch-ui-mode.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/16-open-datepicker.gif">
+<meta property="og:updated_time" content="2021-01-25T02:06:09.876Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular Material完全攻略]打造問卷頁面(3) - Datepicker">
+<meta name="twitter:description" content="昨天我們介紹了兩個常用的輸入元件，分別是Input及Autocomplete，在提到Input時有介紹當&amp;lt;input type&amp;gt;設為date時，會依照瀏覽器的不同產生不一樣的日期顯示方式，為了消除這種瀏覽器間的差異，我們會選擇不使用原生的畫面，而是自己刻(或找人家寫好的)一個元件來選擇日期。 而在日期選擇方面，Material Design也有訂出一些設計參考，同時Angular Ma">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/01-material-design-components-pickers.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular Material完全攻略]打造問卷頁面(3) - Datepicker | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2017/12/29/angular-material-11-datepicker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular Material完全攻略]打造問卷頁面(3) - Datepicker</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-12-29T19:40:48+00:00">
+                2017-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular-Material完全攻略/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular Material完全攻略</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2017/12/29/angular-material-11-datepicker/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/29/angular-material-11-datepicker/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>昨天我們介紹了兩個常用的輸入元件，分別是Input及Autocomplete，在提到Input時有介紹當<code>&lt;input type&gt;</code>設為date時，會依照瀏覽器的不同產生不一樣的日期顯示方式，為了消除這種瀏覽器間的差異，我們會選擇不使用原生的畫面，而是自己刻(或找人家寫好的)一個元件來選擇日期。</p>
+<p>而在日期選擇方面，Material Design也有訂出一些設計參考，同時Angular Material提供了一個Datepicker，方便我們可以快速的選擇日期。</p>
+<p>至於該如何使用呢？就讓我們繼續看下去吧！</p>
+<a id="more"></a>
+<h2 id="關於Material-Design的Pickers"><a href="#關於Material-Design的Pickers" class="headerlink" title="關於Material Design的Pickers"></a>關於Material Design的Pickers</h2><p>在<a href="https://material.io/guidelines/components/pickers.html#" target="_blank" rel="noopener">Material Design的Pickers設計指南</a>中，針對時間和日期，都提供了一些設計的參考，主要的方向是提供一個給使用者選擇日期或時間的工具，選擇的方式必須直覺好理解。</p>
+<p>在行動裝置下，可以用dialog的方式顯示；在螢幕比較大的畫面下，可以在輸入欄位下方直接顯示就好。</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/01-material-design-components-pickers.png">
+<p>圖片來源：<a href="https://material.io/guidelines/components/pickers.html" target="_blank" rel="noopener">https://material.io/guidelines/components/pickers.html</a></p>
+<h2 id="開始使用Angular-Material的Datepicker"><a href="#開始使用Angular-Material的Datepicker" class="headerlink" title="開始使用Angular Material的Datepicker"></a>開始使用Angular Material的Datepicker</h2><p>Angular Material中目前只有Datepicker可以用來選擇日期，還沒有提供選擇時間的元件，因此今天主要會來介紹這個選擇日期的Datepicker。</p>
+<h3 id="使用Angular-Material-Datepicker的前置準備"><a href="#使用Angular-Material-Datepicker的前置準備" class="headerlink" title="使用Angular Material Datepicker的前置準備"></a>使用Angular Material Datepicker的前置準備</h3><p>老規矩，要使用Datepicker，必須先在程式中加入<code>MatDatepickerModule</code>。</p>
+<p>不過對於Datepicker來說，這樣還不太夠，因為<strong>跟日期有關的部分雖然JavaScript有原生的Date型別可用，但Date在不同瀏覽器偏偏又有不同的實作方式，而且還會遇到語系呈現的問題等等</strong>，因此比較常見的做法是使用<a href="https://momentjs.com/" target="_blank" rel="noopener">Moment.js</a>來處理日期相關的資訊，這部分Angular Material也都設想好了，對於日期處理的部份，我們可以選擇要使用原生的處理日期方式<code>MatNativeDateModule</code>或是使用moment.js處理日期的方式<code>MatMomentDateModule</code>，為了讓畫面對日期顯示有更好的支援，我們選擇使用<code>MatMomentDateModule</code>，不過<code>MatMomentDateModule</code>沒有內建在Angular Material中，需要透過npm套件安裝<code>@angular/material-moment-adapter</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i --save @angular/material-moment-adapter moment</span><br></pre></td></tr></table></figure>
+<p>安裝完成後再將<code>MatMomentDateModule</code>加入我們共用的Ｍodule中就好囉！</p>
+<h3 id="使用mat-datepicker選擇日期"><a href="#使用mat-datepicker選擇日期" class="headerlink" title="使用mat-datepicker選擇日期"></a>使用mat-datepicker選擇日期</h3><p>跟昨天的Autocomplete一樣，我們一樣需要的個<code>&lt;input&gt;</code>作為文字輸入的主體，而datepicker則可以使用<code>&lt;mat-datepicker&gt;</code>元件，我們只要在input中設定<code>[matDatepicker]</code>屬性及可指定input要顯示的datepicker來源，另外我們加上一個<code>&lt;mat-datepicker-toggle&gt;</code>來開關<code>&lt;mat-datepicker&gt;</code>的顯示方式。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"birthday"</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"生日"</span> [<span class="attr">matDatepicker</span>]=<span class="string">"birthdayPicker"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-datepicker-toggle</span> [<span class="attr">for</span>]=<span class="string">"birthdayPicker"</span> <span class="attr">matSuffix</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker-toggle</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-datepicker</span> #<span class="attr">birthdayPicker</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<div class="note info"><p>這邊我們用了一個 <code>matSuffix</code> directive，這部分會在介紹FormField時做詳細的說明。</p></div>
+<p>來看看結果：</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/02-datepicker-demo.gif">
+<p>一個美觀大方的datepicker就產生啦！</p>
+<h3 id="設定datepicker語系"><a href="#設定datepicker語系" class="headerlink" title="設定datepicker語系"></a>設定datepicker語系</h3><p>在moment.js的強力支援下，要為Angular Material的datepicker套上中文的語系一點都不難，我們只需要在providers中為<code>MAT_DATE_LOCALE</code>注入目標語系的值即可</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  providers: [</span><br><span class="line">    &#123; provide: MAT_DATE_LOCALE, useValue: <span class="string">'zh-TW'</span> &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> SharedMaterialModule &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/03-datepicker-locale.png">
+<p>有了中文版，就不怕被英文不好的客戶罵啦XD</p>
+<h3 id="設定datepicker顯示格式"><a href="#設定datepicker顯示格式" class="headerlink" title="設定datepicker顯示格式"></a>設定datepicker顯示格式</h3><p>datepicker會依照不同語系的設定產生不同的顯示格式，這樣有可能會造成不必要的混淆，我們也能夠自行決定顯示的格式，方法與變更語系類似，注入<code>MAT_DATE_FORMATS</code>的設定即可：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> TW_FORMATS = &#123;</span><br><span class="line">  parse: &#123;</span><br><span class="line">    dateInput: <span class="string">'YYYY/MM/DD'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  display: &#123;</span><br><span class="line">    dateInput: <span class="string">'YYYY/MM/DD'</span>,</span><br><span class="line">    monthYearLabel: <span class="string">'YYYY MMM'</span>,</span><br><span class="line">    dateA11yLabel: <span class="string">'YYYY/MM/DD'</span>,</span><br><span class="line">    monthYearA11yLabel: <span class="string">'YYYY MMM'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  providers: [</span><br><span class="line">    &#123; provide: MAT_DATE_LOCALE, useValue: <span class="string">'zh-TW'</span> &#125;,</span><br><span class="line">    &#123; provide: MAT_DATE_FORMATS, useValue: TW_FORMATS &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> SharedMaterialModule &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>我們分別設定了解析(parse)與顯示(display)的規則，<code>monthYearLabel</code>是picker左上方選擇年/月時的顯示格式，A11y相關的設定則是在使用螢幕朗讀程式時(或mac的voice over)使用的格式</p>
+<p>結果如下：</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/04-datepicker-format.png">
+<p>把語系和格式都設定成習慣的格式後，接下來我們再來看看datepicker還有些什麼好玩的功能可以設定吧！</p>
+<h3 id="調整datepicker的起始畫面"><a href="#調整datepicker的起始畫面" class="headerlink" title="調整datepicker的起始畫面"></a>調整datepicker的起始畫面</h3><p>datepicker預設打開的畫面會是日曆形式的日期選擇，我們可以將<code>&lt;mat-datepicker&gt;</code>的<code>startView</code>屬性設定為”year”(預設為month)，則會先出現一整年的可選月份，選擇月份後，才選擇日期：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-datepicker</span> #<span class="attr">demoDatepicker</span> <span class="attr">startView</span>=<span class="string">"year"</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/05-start-view.gif">
+<h3 id="調整datepicker起始時間"><a href="#調整datepicker起始時間" class="headerlink" title="調整datepicker起始時間"></a>調整datepicker起始時間</h3><p>除了起始畫面之外，我們也可以設定<code>startAt</code>屬性，來決定datepicker打開時，要從哪一天開始顯示，我們可以先在component.ts中設定一個預設起始時間：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> SurveyComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  startDate = moment(<span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">1999</span>, <span class="number">0</span>, <span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接著在畫面中設定<code>startAt</code>屬性</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-datepicker</span> #<span class="attr">demoDatepicker</span> [<span class="attr">startAt</span>]=<span class="string">"startDate"</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>就能夠預設以1999年1月1號打開datepicker啦！</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/06-start-at.png">
+<h3 id="設定datepicker可以選擇的範圍"><a href="#設定datepicker可以選擇的範圍" class="headerlink" title="設定datepicker可以選擇的範圍"></a>設定datepicker可以選擇的範圍</h3><p>我們可以使用<code>min</code>和<code>ma</code>x屬性，來設定一個input的最小值和最大值，當在使用datepicker時，也會根據這兩個值來決定picker可選擇的範圍，例如我們在component中設定了時間範圍：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> SurveyComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  startDate = moment(<span class="string">'1999-1-10'</span>);</span><br><span class="line">  minDate = moment(<span class="string">'1999-1-5'</span>);</span><br><span class="line">  maxDate = moment(<span class="string">'1999-1-15'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接著設定input的min和max屬性：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"birthday"</span> <span class="attr">matInput</span> [<span class="attr">min</span>]=<span class="string">"minDate"</span> [<span class="attr">max</span>]=<span class="string">"maxDate"</span> <span class="attr">placeholder</span>=<span class="string">"生日"</span> [<span class="attr">matDatepicker</span>]=<span class="string">"demoDatepicker"</span> <span class="attr">formControlName</span>=<span class="string">"birthday"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-datepicker-toggle</span> [<span class="attr">for</span>]=<span class="string">"demoDatepicker"</span> <span class="attr">matSuffix</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker-toggle</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-datepicker</span> #<span class="attr">demoDatepicker</span> [<span class="attr">startAt</span>]=<span class="string">"startDate"</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/07-min-max-input.png">
+<p>可以看到1999/01/05之前和1999/01/15之後的日期就變成灰底無法選擇，這樣就能固定住datepicker可以選擇的範圍囉。</p>
+<h3 id="使用filter過濾不可以被選擇的日期"><a href="#使用filter過濾不可以被選擇的日期" class="headerlink" title="使用filter過濾不可以被選擇的日期"></a>使用filter過濾不可以被選擇的日期</h3><p>我們也可以使用<code>matDatepickerFilter</code>來指定一個過濾可用日期的function，這個function會回傳true或false來告知datepicker什麼時間是不可以被選擇的，例如每週二和五是家庭日不可選，可以寫一個filter如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">familyDayFilter(date: moment.Moment): <span class="built_in">boolean</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> day = date.day();</span><br><span class="line">  <span class="keyword">return</span> day !== <span class="number">2</span> &amp;&amp; day !== <span class="number">5</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接著在畫面程式碼中指定這個filter：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"birthday"</span> <span class="attr">matInput</span> [<span class="attr">matDatepickerFilter</span>]=<span class="string">"familyDayFilter"</span> <span class="attr">placeholder</span>=<span class="string">"生日"</span> [<span class="attr">matDatepicker</span>]=<span class="string">"demoDatepicker"</span> <span class="attr">formControlName</span>=<span class="string">"birthday"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-datepicker-toggle</span> [<span class="attr">for</span>]=<span class="string">"demoDatepicker"</span> <span class="attr">matSuffix</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker-toggle</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-datepicker</span> #<span class="attr">demoDatepicker</span> [<span class="attr">startAt</span>]=<span class="string">"startDate"</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/08-date-filter.png">
+<h3 id="關於datepicker中的input和change相關事件"><a href="#關於datepicker中的input和change相關事件" class="headerlink" title="關於datepicker中的input和change相關事件"></a>關於datepicker中的input和change相關事件</h3><p>文字輸入控制項(<code>&lt;input type=&quot;xxx&quot; /&gt;</code>)都會有原生的input和change事件，不過這些事件都只有在使用者跟input本身互動時才會觸發，因此以下程式碼：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"birthday"</span> <span class="attr">matInput</span> (<span class="attr">input</span>)=<span class="string">"logDateInput($event)"</span> (<span class="attr">change</span>)=<span class="string">"logDateChange($event)"</span> <span class="attr">placeholder</span>=<span class="string">"生日"</span> [<span class="attr">matDatepicker</span>]=<span class="string">"demoDatepicker"</span> <span class="attr">formControlName</span>=<span class="string">"birthday"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-datepicker-toggle</span> [<span class="attr">for</span>]=<span class="string">"demoDatepicker"</span> <span class="attr">matSuffix</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker-toggle</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-datepicker</span> #<span class="attr">demoDatepicker</span> [<span class="attr">startAt</span>]=<span class="string">"startDate"</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>得到的紀錄只會是一般的InputEvent等等，不是非常清楚，如下：</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/09-native-input-change-event.png">
+<p>若希望紀錄的是真實的日期選擇變化，則可以使用<code>dateInput</code>和<code>dateChange</code>事件，傳入的事件會是<code>MatDatepickerInputEvent&lt;T&gt;</code>如下，<code>&lt;T&gt;</code>則看我們使用處理時間的Module是<code>MatNativeDateModule</code>還是<code>MatMomentDateModule</code>，如果是<code>MatNativeDateModule</code>會使用<code>Date</code>，<code>MatMomentDateModule</code>則是Momen型別：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> SurveyComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  logDateInput($event: MatDatepickerInputEvent&lt;moment.Moment&gt;) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log($event);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  logDateChange($event: MatDatepickerInputEvent&lt;moment.Moment&gt;) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log($event);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接著把畫面上的input和change事件改為<code>dateInput</code> 和 <code>dateChange</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"birthday"</span> <span class="attr">matInput</span> (<span class="attr">dateInput</span>)=<span class="string">"logDateInput($event)"</span> (<span class="attr">dateChange</span>)=<span class="string">"logDateChange($event)"</span> <span class="attr">placeholder</span>=<span class="string">"生日"</span> [<span class="attr">matDatepicker</span>]=<span class="string">"demoDatepicker"</span> <span class="attr">formControlName</span>=<span class="string">"birthday"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-datepicker-toggle</span> [<span class="attr">for</span>]=<span class="string">"demoDatepicker"</span> <span class="attr">matSuffix</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker-toggle</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-datepicker</span> #<span class="attr">demoDatepicker</span> [<span class="attr">startAt</span>]=<span class="string">"startDate"</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/10-dateiniput-datechange.png">
+<p>由於紀錄的是Date或Moment物件，因此要做後續處理也比較容易哩！</p>
+<h3 id="關於datepicker的disabled模式說明"><a href="#關於datepicker的disabled模式說明" class="headerlink" title="關於datepicker的disabled模式說明"></a>關於datepicker的disabled模式說明</h3><h4 id="整個Input進行dissabled"><a href="#整個Input進行dissabled" class="headerlink" title="整個Input進行dissabled"></a>整個Input進行dissabled</h4><p>在input中設定disabled狀態其實不難，但配上datepicker則有了些不同的變化，例如以下是最簡單的disabled狀態，把整個input設為disabled：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.surveyForm = <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">  basicQuestions: <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">    ...</span><br><span class="line">    birthday: <span class="keyword">new</span> FormControl(&#123;value: <span class="string">''</span>, disabled : <span class="literal">true</span>&#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/11-disable-whole-input.png">
+<h4 id="只disable-mat-datepicker-toggle按鈕"><a href="#只disable-mat-datepicker-toggle按鈕" class="headerlink" title="只disable mat-datepicker-toggle按鈕"></a>只disable mat-datepicker-toggle按鈕</h4><p>另外我們也可以針對<code>mat-datepicker-toggle</code>單獨設定disabled狀態，我們先把birthday的disabled狀態改掉，再把畫面調整為</p>
+<p>原本我們的<code>mat-datepicker-toggle</code>日曆icon如下，是黑色可以點選的：</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/12-disabled-toggle-before.png">
+<p>改變為disabled後如下：</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/13-disabled-toggle-after.png">
+<p>變成了不可以點選的灰底，這時候日期選擇器會無法叫出來，但input文字方塊依然是可以正常輸入了。</p>
+<h4 id="disable文字input，但picker不做disable"><a href="#disable文字input，但picker不做disable" class="headerlink" title="disable文字input，但picker不做disable"></a>disable文字input，但picker不做disable</h4><p>另外一種變形的做法是，我們可以把input文字欄位disable掉，但是依然保留picker可選擇的狀態，這麼做的好處是，<strong>可以避免使用者隨意輸入不必要的內容，造成後續處理的麻煩</strong>；在component.ts中我們再次把birthday的狀態設為disabled，這時原本是不可以輸入，也沒有picker可以用的，而這時候我們可以把<code>mat-datepicker</code>的<code>disabled</code>狀態設為<code>false</code>，就會變成picker可以使用的狀態囉：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"birthday"</span> <span class="attr">matInput</span> (<span class="attr">dateInput</span>)=<span class="string">"logDateInput($event)"</span> (<span class="attr">dateChange</span>)=<span class="string">"logDateChange($event)"</span> <span class="attr">placeholder</span>=<span class="string">"生日"</span> [<span class="attr">matDatepicker</span>]=<span class="string">"demoDatepicker"</span> <span class="attr">formControlName</span>=<span class="string">"birthday"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-datepicker-toggle</span> [<span class="attr">for</span>]=<span class="string">"demoDatepicker"</span> <span class="attr">matSuffix</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker-toggle</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-datepicker</span> #<span class="attr">demoDatepicker</span> [<span class="attr">startAt</span>]=<span class="string">"startDate"</span> <span class="attr">disabled</span>=<span class="string">"false"</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/14-enable-picker-only.png">
+<h3 id="設定Touch-UI模式"><a href="#設定Touch-UI模式" class="headerlink" title="設定Touch UI模式"></a>設定Touch UI模式</h3><p>預設的行為下，datepicker是依附在input之下的，這在一般桌面上的網頁沒有問題，但是移到行動裝置，尤其是螢幕小的觸控式手機上就會顯得不好操作，這時候我們可以為<code>mat-datepicker</code>設定<code>touchUi</code>，就會變成適合觸控式裝置的模式：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"birthday"</span> <span class="attr">matInput</span> (<span class="attr">dateInput</span>)=<span class="string">"logDateInput($event)"</span> (<span class="attr">dateChange</span>)=<span class="string">"logDateChange($event)"</span> <span class="attr">placeholder</span>=<span class="string">"生日"</span> [<span class="attr">matDatepicker</span>]=<span class="string">"demoDatepicker"</span> <span class="attr">formControlName</span>=<span class="string">"birthday"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-datepicker-toggle</span> [<span class="attr">for</span>]=<span class="string">"demoDatepicker"</span> <span class="attr">matSuffix</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker-toggle</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-datepicker</span> #<span class="attr">demoDatepicker</span> [<span class="attr">startAt</span>]=<span class="string">"startDate"</span> <span class="attr">disabled</span>=<span class="string">"false"</span> <span class="attr">touchUi</span>=<span class="string">"true"</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/15-touch-ui-mode.gif">
+<p>更進階的做法是，偵測瀏覽器可用的寬度，當寬度低的時候，自動切換Touch UI模式，這部分Angular Material將這樣的功能切到的Angular CDK中，我們會在後面的文章另外做介紹。</p>
+<h3 id="自行在程式中打開datepicker"><a href="#自行在程式中打開datepicker" class="headerlink" title="自行在程式中打開datepicker"></a>自行在程式中打開datepicker</h3><p><code>&lt;mat-datepicker&gt;</code>本身就是一個component，因此我們不一定非得需要搭配<code>&lt;mat-datepicker-toggle&gt;</code>來作切換，也能自行在程式中處理，只要去設定<code>&lt;mat-datepicker&gt;</code>的<code>opened</code>屬性即可：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"birthday"</span> <span class="attr">matInput</span> (<span class="attr">dateInput</span>)=<span class="string">"logDateInput($event)"</span> (<span class="attr">dateChange</span>)=<span class="string">"logDateChange($event)"</span> <span class="attr">placeholder</span>=<span class="string">"生日"</span> [<span class="attr">matDatepicker</span>]=<span class="string">"demoDatepicker"</span> <span class="attr">formControlName</span>=<span class="string">"birthday"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-datepicker</span> #<span class="attr">demoDatepicker</span> [<span class="attr">startAt</span>]=<span class="string">"startDate"</span> <span class="attr">disabled</span>=<span class="string">"false"</span> <span class="attr">touchUi</span>=<span class="string">"true"</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-datepicker</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-raised-button</span> (<span class="attr">click</span>)=<span class="string">"demoDatepicker.opened = true"</span>&gt;</span>打開Datepicker<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2017/12/29/angular-material-11-datepicker/16-open-datepicker.gif">
+<p>不會很困難吧！</p>
+<h2 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h2><p>關於選擇日期這件事情，一直以來都是前端的一個很大的議題，怎麼讓這件事情變得直覺又簡單，有著不同的設計方法，Angular Material依循了Ｍaterial Design中的建議，打造了一個datepickerm元件，讓我們能提供給使用者一個直覺大方的日期選擇器。</p>
+<p>今天我們在介紹datepicker同時，也介紹了如何整合moment.js近來，讓datepicker能夠發揮更強大的威力；同時這個datepicker也有許多強大的功能，甚至能對應不同裝置有不同的顯示方式。光是一個datepicker就有這麼多東西可以設定，可以說這個datepicker真的是很重要也很實用啊！</p>
+<div class="note info"><p>看到這裡你可能會想問，有沒有選擇時間的元件呢？很可惜目前Angular Material還沒有實作選擇時間的元件，不過既然Material Design也有針對時間元件提出建議，相信在不久的將來也是能夠看到的！</p></div>
+<p>本日的程式碼GitHub：<a href="https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-11-datepicker" target="_blank" rel="noopener">https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-11-datepicker</a></p>
+<p>分支：day-11-datepicker</p>
+<h2 id="參考資源"><a href="#參考資源" class="headerlink" title="參考資源"></a>參考資源</h2><ul>
+<li><a href="https://material.io/guidelines/components/pickers.html#" target="_blank" rel="noopener">Material Design - Pickers</a></li>
+<li><a href="https://material.angular.io/components/datepicker/overview" target="_blank" rel="noopener">Angular Material - Datepicker</a></li>
+<li><a href="https://blog.miniasp.com/post/2016/09/25/JavaScript-Date-usage-in-details.aspx" target="_blank" rel="noopener">前端工程研究：關於 JavaScript 中 Date 型別的常見地雷與建議作法</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular-Material/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular Material</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Material-Design/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Material Design</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/MatDatepicker/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> MatDatepicker</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/12/28/angular-material-10-input-autocomplete/" rel="next" title="[Angular Material完全攻略]打造問卷頁面(2) - Input、Autocomplete">
+                <i class="fa fa-chevron-left"></i> [Angular Material完全攻略]打造問卷頁面(2) - Input、Autocomplete
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/12/30/angular-material-12-select/" rel="prev" title="[Angular Material完全攻略]打造問卷頁面(4) - Select">
+                [Angular Material完全攻略]打造問卷頁面(4) - Select <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#關於Material-Design的Pickers"><span class="nav-number">1.</span> <span class="nav-text">關於Material Design的Pickers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#開始使用Angular-Material的Datepicker"><span class="nav-number">2.</span> <span class="nav-text">開始使用Angular Material的Datepicker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Angular-Material-Datepicker的前置準備"><span class="nav-number">2.1.</span> <span class="nav-text">使用Angular Material Datepicker的前置準備</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-datepicker選擇日期"><span class="nav-number">2.2.</span> <span class="nav-text">使用mat-datepicker選擇日期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定datepicker語系"><span class="nav-number">2.3.</span> <span class="nav-text">設定datepicker語系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定datepicker顯示格式"><span class="nav-number">2.4.</span> <span class="nav-text">設定datepicker顯示格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#調整datepicker的起始畫面"><span class="nav-number">2.5.</span> <span class="nav-text">調整datepicker的起始畫面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#調整datepicker起始時間"><span class="nav-number">2.6.</span> <span class="nav-text">調整datepicker起始時間</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定datepicker可以選擇的範圍"><span class="nav-number">2.7.</span> <span class="nav-text">設定datepicker可以選擇的範圍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用filter過濾不可以被選擇的日期"><span class="nav-number">2.8.</span> <span class="nav-text">使用filter過濾不可以被選擇的日期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#關於datepicker中的input和change相關事件"><span class="nav-number">2.9.</span> <span class="nav-text">關於datepicker中的input和change相關事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#關於datepicker的disabled模式說明"><span class="nav-number">2.10.</span> <span class="nav-text">關於datepicker的disabled模式說明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#整個Input進行dissabled"><span class="nav-number">2.10.1.</span> <span class="nav-text">整個Input進行dissabled</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#只disable-mat-datepicker-toggle按鈕"><span class="nav-number">2.10.2.</span> <span class="nav-text">只disable mat-datepicker-toggle按鈕</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#disable文字input，但picker不做disable"><span class="nav-number">2.10.3.</span> <span class="nav-text">disable文字input，但picker不做disable</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定Touch-UI模式"><span class="nav-number">2.11.</span> <span class="nav-text">設定Touch UI模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自行在程式中打開datepicker"><span class="nav-number">2.12.</span> <span class="nav-text">自行在程式中打開datepicker</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本日小結"><span class="nav-number">3.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#參考資源"><span class="nav-number">4.</span> <span class="nav-text">參考資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2017/12/29/angular-material-11-datepicker/';
+          this.page.identifier = '2017/12/29/angular-material-11-datepicker/';
+          this.page.title = '[Angular Material完全攻略]打造問卷頁面(3) - Datepicker';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

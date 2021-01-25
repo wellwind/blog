@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="RxJS,startWith,switchAll,concatAll,mergeAll,combineAll,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="今天要介紹的是「組合類型」的 operators，這類型的 operators 會根據指定的條件將來源 Observable 的資料進行「組合」，變成一條新的 Observable 資料流。">
+<meta name="keywords" content="RxJS,startWith,switchAll,concatAll,mergeAll,combineAll">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[RxJS] 組合類型 Operators (1) - switchAll &#x2F; concatAll &#x2F; mergeAll &#x2F; combineAll &#x2F; startWith">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="今天要介紹的是「組合類型」的 operators，這類型的 operators 會根據指定的條件將來源 Observable 的資料進行「組合」，變成一條新的 Observable 資料流。">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/01-switch-all.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/02-concat-all.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/03-merge-all.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/04-combine-all.jpg">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.372Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[RxJS] 組合類型 Operators (1) - switchAll &#x2F; concatAll &#x2F; mergeAll &#x2F; combineAll &#x2F; startWith">
+<meta name="twitter:description" content="今天要介紹的是「組合類型」的 operators，這類型的 operators 會根據指定的條件將來源 Observable 的資料進行「組合」，變成一條新的 Observable 資料流。">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/01-switch-all.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[RxJS] 組合類型 Operators (1) - switchAll / concatAll / mergeAll / combineAll / startWith | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[RxJS] 組合類型 Operators (1) - switchAll / concatAll / mergeAll / combineAll / startWith</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-10-05T18:00:00+00:00">
+                2020-10-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/" itemprop="url" rel="index">
+                    <span itemprop="name">打通 RxJS 任督二脈</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/第-12-屆鐵人賽/" itemprop="url" rel="index">
+                    <span itemprop="name">第 12 屆鐵人賽</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天要介紹的是「組合類型」的 operators，這類型的 operators 會根據指定的條件將來源 Observable 的資料進行「組合」，變成一條新的 Observable 資料流。</p>
+<a id="more"></a>
+<h1 id="switchAll"><a href="#switchAll" class="headerlink" title="switchAll"></a>switchAll</h1><p>還記得昨天文章提到的 <code>switchMap</code> 嗎？<code>switchMap</code> 可以將來源 Observable 事件的「資料」轉換成 Observable，<code>switchAll</code> 則非常相似，是將來源事件的「Observable」轉換成另一個 Observble。</p>
+<p>乍聽之下感覺有點饒舌，直接來看一下程式碼：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> generateStream = <span class="function"><span class="params">round</span> =&gt;</span></span><br><span class="line">  timer(<span class="number">0</span>, <span class="number">1000</span>).pipe(</span><br><span class="line">    map(<span class="function"><span class="params">data</span> =&gt;</span> <span class="string">`資料流 <span class="subst">$&#123;round&#125;</span>: <span class="subst">$&#123;data + <span class="number">1</span>&#125;</span>`</span>),</span><br><span class="line">    take(<span class="number">3</span>)</span><br><span class="line">  );</span><br><span class="line">  </span><br><span class="line"><span class="keyword">const</span> source$ = <span class="keyword">new</span> Subject();</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> stream$ = source$.pipe(map(<span class="function"><span class="params">round</span> =&gt;</span> generateStream(round)));</span><br><span class="line"></span><br><span class="line">stream$.pipe(switchAll())</span><br><span class="line">  .subscribe(<span class="function"><span class="params">result</span> =&gt;</span> <span class="built_in">console</span>.log(result));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第一次事件</span></span><br><span class="line">source$.next(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二次事件</span></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  source$.next(<span class="number">2</span>);</span><br><span class="line">&#125;, <span class="number">4000</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第三次事件</span></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  source$.next(<span class="number">3</span>);</span><br><span class="line">&#125;, <span class="number">5000</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 資料流 1: 1</span></span><br><span class="line"><span class="comment">// 資料流 1: 2</span></span><br><span class="line"><span class="comment">// 資料流 1: 3 (資料流 1 結束)</span></span><br><span class="line"><span class="comment">// 資料流 2: 1 (第二次事件開始，產生資料流 2)</span></span><br><span class="line"><span class="comment">// 資料流 3: 1 (資料流 2 未結束，第三次事件就開始了，產生資料流 3)</span></span><br><span class="line"><span class="comment">// 資料流 3: 2</span></span><br><span class="line"><span class="comment">// 資料流 3: 3</span></span><br></pre></td></tr></table></figure>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-switchall" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-switchall</a></p>
+<p>上面的程式中，我們建立一個 <code>source$</code> 的 Subject 以便我們在想要的時間控制事件發生，而 <code>stream$</code> 則是將每次 <code>source$</code> 的事件轉換成另外一個 Observable 物件，由於是使用 <code>map</code> 因此只是單純得到一個 Observable 物件而已，不會做任何的訂閱。</p>
+<p>之後我們再將這條「將資料轉換成 Observable 物件」的 Observable 透過 <code>switchAll</code> 串在一起，<code>switchAll</code> 會建立一條資料流，當每次收到一個 Observable 時，<code>switchAll</code> 就會幫我們訂閱這個 Observable，當這個 Observable 有新事件時，就讓事件發生在 <code>switchAll</code> 自行建立的資料流上；而訂閱的 Observable 還沒結束同時卻收到下一個要訂閱的 Observable 時，就會將上一個 Observable 退訂閱。</p>
+<div class="note info"><p>這種 Observable 的事件值也是 Observable 的情境，稱為 Observable of Observable。</p></div>
+<p>彈珠圖：</p>
+<img src="/blog/2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/01-switch-all.jpg">
+<p><code>switchAll</code> 和 <code>switchMap</code> 的差別在於：</p>
+<p><code>switchMap</code> 會將 callback function 呼叫回傳的 Observable 進行訂閱，因此 Observable 的來源是從 callback function 轉換過來的：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source$.pipe(switchMap(<span class="function"><span class="params">data</span> =&gt;</span> of(data));</span><br><span class="line">                    <span class="comment">// ^ 這個 callback function 是 swtichMap 訂閱的資料來源</span></span><br></pre></td></tr></table></figure>
+<p>而 <code>switchAll</code> 沒有這個 callback function，它的來源是從前一個資料流過來的，因此前一個資料流的「資料」必須是個 Observable：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">source$.pipe(</span><br><span class="line">  map(<span class="function"><span class="params">data</span> =&gt;</span> of(data)), <span class="comment">// 這裡將資料轉換成 Observable</span></span><br><span class="line">  switchAll() <span class="comment">// 訂閱上一個 operator 傳給我的 Observable</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>因此 <code>switchMap</code> 適合用在明確知道下一步要使用哪個 Observable 的情境，由我們自行撰寫程式決定要轉換成什麼 Observable；而 <code>switchAll</code> 則適用在來源 Observable 不明確的情境，以上面的例子來說，<code>stream$</code> 可能是別人寫好的程式碼，我們只需要知道它的「事件值是一個 Observable」(也就是 Observable of Observable) 需要訂閱，不需要知道背後的實作細節。</p>
+<p>而 <code>switchAll</code> 和 <code>switchMap</code> 相同的地方在於，當收到新的 Observable 要訂閱時，都會退訂上一個 Observable，因此可以確保永遠都只有最後一個 Observable 正在執行！</p>
+<h1 id="concatAll"><a href="#concatAll" class="headerlink" title="concatAll"></a>concatAll</h1><p>如同 <code>switchMap</code> 和 <code>switchAll</code> 的差別一樣，<code>concatMap</code> 和 <code>concatAll</code> 都會等待前一個 Observable 完成，在開始繼續新的 Observable 資料流訂閱，因此可以確保每個資料流都執行至完成：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> generateStream = <span class="function"><span class="params">round</span> =&gt;</span></span><br><span class="line">  timer(<span class="number">0</span>, <span class="number">1000</span>).pipe(</span><br><span class="line">    map(<span class="function"><span class="params">data</span> =&gt;</span> <span class="string">`資料流 <span class="subst">$&#123;round&#125;</span>: <span class="subst">$&#123;data + <span class="number">1</span>&#125;</span>`</span>),</span><br><span class="line">    take(<span class="number">3</span>)</span><br><span class="line">  );</span><br><span class="line">  </span><br><span class="line"><span class="keyword">const</span> source$ = <span class="keyword">new</span> Subject();</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> stream$ = source$.pipe(map(<span class="function"><span class="params">round</span> =&gt;</span> generateStream(round)));</span><br><span class="line"></span><br><span class="line">stream$.pipe(concatAll())</span><br><span class="line">  .subscribe(<span class="function"><span class="params">result</span> =&gt;</span> <span class="built_in">console</span>.log(result));</span><br><span class="line"></span><br><span class="line">source$.next(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  source$.next(<span class="number">2</span>);</span><br><span class="line">&#125;, <span class="number">4000</span>);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  source$.next(<span class="number">3</span>);</span><br><span class="line">&#125;, <span class="number">5000</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 資料流 1: 1</span></span><br><span class="line"><span class="comment">// 資料流 1: 2</span></span><br><span class="line"><span class="comment">// 資料流 1: 3</span></span><br><span class="line"><span class="comment">// 資料流 2: 1</span></span><br><span class="line"><span class="comment">// 資料流 2: 2 (此時第三次事件已經發生了，但資料流 2 還沒結束，等待中)</span></span><br><span class="line"><span class="comment">// 資料流 2: 3</span></span><br><span class="line"><span class="comment">// 資料流 3: 1 (資料流 2 結束後，才讓資料流 3 開始)</span></span><br><span class="line"><span class="comment">// 資料流 3: 2</span></span><br><span class="line"><span class="comment">// 資料流 3: 3</span></span><br></pre></td></tr></table></figure>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-concatall" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-concatall</a></p>
+<p>彈珠圖：</p>
+<img src="/blog/2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/02-concat-all.jpg">
+<h1 id="mergeAll"><a href="#mergeAll" class="headerlink" title="mergeAll"></a>mergeAll</h1><p>如同 <code>switchMap</code> 和 <code>switchAll</code> 的差別一樣，<code>mergeMap</code> 和 <code>mergeAll</code> 在得到新的資料流後會直接訂閱，且不退訂之前的資料流，因此所有資料流會依照各自發生的時間直接的發生在 <code>mergeAll</code> 建立的資料流上：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> generateStream = <span class="function"><span class="params">round</span> =&gt;</span></span><br><span class="line">  timer(<span class="number">0</span>, <span class="number">1000</span>).pipe(</span><br><span class="line">    map(<span class="function"><span class="params">data</span> =&gt;</span> <span class="string">`資料流 <span class="subst">$&#123;round&#125;</span>: <span class="subst">$&#123;data + <span class="number">1</span>&#125;</span>`</span>),</span><br><span class="line">    take(<span class="number">3</span>)</span><br><span class="line">  );</span><br><span class="line">  </span><br><span class="line"><span class="keyword">const</span> source$ = <span class="keyword">new</span> Subject();</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> stream$ = source$.pipe(map(<span class="function"><span class="params">round</span> =&gt;</span> generateStream(round)));</span><br><span class="line"></span><br><span class="line">stream$.pipe(mergeAll())</span><br><span class="line">  .subscribe(<span class="function"><span class="params">result</span> =&gt;</span> <span class="built_in">console</span>.log(result));</span><br><span class="line"></span><br><span class="line">source$.next(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  source$.next(<span class="number">2</span>);</span><br><span class="line">&#125;, <span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  source$.next(<span class="number">3</span>);</span><br><span class="line">&#125;, <span class="number">3000</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 資料流 1: 1</span></span><br><span class="line"><span class="comment">// 資料流 1: 2 </span></span><br><span class="line"><span class="comment">// 資料流 2: 1 (第二次事件發生，產生資料流 2，原來資料流不退訂)</span></span><br><span class="line"><span class="comment">// 資料流 1: 3 (原來的資料流 1 在此結束)</span></span><br><span class="line"><span class="comment">// 資料流 3: 1 (第三次事件發生，產生資料流 3，原來的資料流不退訂)</span></span><br><span class="line"><span class="comment">// 資料流 2: 2</span></span><br><span class="line"><span class="comment">// 資料流 3: 2</span></span><br><span class="line"><span class="comment">// 資料流 2: 3</span></span><br><span class="line"><span class="comment">// 資料流 3: 3</span></span><br></pre></td></tr></table></figure>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-mergeall" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-mergeall</a></p>
+<p>彈珠圖：</p>
+<img src="/blog/2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/03-merge-all.jpg">
+<p>由於 <code>mergeAll</code> 會同時訂閱多個 Observable，當要訂閱的 Observable 數量龐大時容易產生效能的問題，因此 <code>mergeAll</code> 還可以帶入一個 <code>concurrent</code> 參數，代表同時最多可以訂閱幾個 Observable，預設值為正無限大。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">source$.pipe(mergeAll(<span class="number">5</span>));</span><br><span class="line"><span class="comment">// 對於傳入的 Observable，最多只會訂閱 5 個，其餘的依然必須排隊等待</span></span><br><span class="line">source$.pipe(mergeAll(<span class="number">1</span>));</span><br><span class="line"><span class="comment">// 效果等同於使用 concatAll()</span></span><br></pre></td></tr></table></figure>
+<h1 id="combineAll"><a href="#combineAll" class="headerlink" title="combineAll"></a>combineAll</h1><p><code>combineAll</code> 和 <code>combineLateset</code> 非常類似，都是把資料流的資料組合在一起，規則是每當有資料流發生新事件值時，將這個事件值和其他資料流最後一次的事件值組合起來。</p>
+<p><code>combineLatest</code> 需要明確指定要組合哪些 Observable，而 <code>combineAll</code> 則適用在來源不明確的 Observable of Observable 的情境；另外因為來源並不明確，因此必須等到整個 Observable 結束，明確知道所有要組合的 Observable 後，才會進行相關動作。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> generateStream = <span class="function"><span class="params">round</span> =&gt;</span></span><br><span class="line">  timer(<span class="number">0</span>, <span class="number">1000</span>).pipe(</span><br><span class="line">    map(<span class="function"><span class="params">data</span> =&gt;</span> <span class="string">`資料流 <span class="subst">$&#123;round&#125;</span>: <span class="subst">$&#123;data + <span class="number">1</span>&#125;</span>`</span>),</span><br><span class="line">    take(<span class="number">3</span>)</span><br><span class="line">  );</span><br><span class="line">  </span><br><span class="line"><span class="keyword">const</span> source$ = <span class="keyword">new</span> Subject();</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> stream$ = source$.pipe(map(<span class="function"><span class="params">round</span> =&gt;</span> generateStream(round)));</span><br><span class="line"></span><br><span class="line">stream$.pipe(combineAll())</span><br><span class="line">  .subscribe(<span class="function"><span class="params">result</span> =&gt;</span> <span class="built_in">console</span>.log(result));</span><br><span class="line"></span><br><span class="line">source$.next(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  source$.next(<span class="number">2</span>);</span><br><span class="line">  <span class="comment">// 結束資料流，不然 combineAll 會持續等待到結束</span></span><br><span class="line">  source$.complete();</span><br><span class="line">&#125;, <span class="number">3000</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// (等候 3 秒，到 source$ 結束)</span></span><br><span class="line"><span class="comment">// ["資料流 1: 1", "資料流 2: 1"]</span></span><br><span class="line"><span class="comment">// ["資料流 1: 2", "資料流 2: 1"]</span></span><br><span class="line"><span class="comment">// ["資料流 1: 2", "資料流 2: 2"]</span></span><br><span class="line"><span class="comment">// ["資料流 1: 3", "資料流 2: 2"]</span></span><br><span class="line"><span class="comment">// ["資料流 1: 3", "資料流 2: 3"]</span></span><br></pre></td></tr></table></figure>
+<p>彈珠圖：</p>
+<img src="/blog/2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/04-combine-all.jpg">
+<h1 id="startWith"><a href="#startWith" class="headerlink" title="startWith"></a>startWith</h1><p><code>startWith</code> 會在一個 Observable 內加上一個起始值，也就是訂閱產生時會立刻最先收到的一個值，例如在前兩天練習 <code>pairwise</code> 時，會因為第一個事件值沒有「上一個事件值」被忽略，因此改用 <code>scan</code> 來解決，但也可以使用 <code>startWith</code>，會更加簡單：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">interval(<span class="number">1000</span>).pipe(</span><br><span class="line">  take(<span class="number">6</span>),</span><br><span class="line">  map(<span class="function"><span class="params">data</span> =&gt;</span> data + <span class="number">1</span>),</span><br><span class="line">  startWith(<span class="number">0</span>), <span class="comment">// 給予初始事件值</span></span><br><span class="line">  pairwise() <span class="comment">// 再搭配 pairwise 時，就能讓原始 Observable 的第一個事件有搭配資料可用</span></span><br><span class="line">).subscribe(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(result);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [0, 1]</span></span><br><span class="line"><span class="comment">// [1, 2]</span></span><br><span class="line"><span class="comment">// [2, 3]</span></span><br><span class="line"><span class="comment">// [3, 4]</span></span><br><span class="line"><span class="comment">// [4, 5]</span></span><br><span class="line"><span class="comment">// [5, 6]</span></span><br></pre></td></tr></table></figure>
+<p>彈珠圖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">---1---2---3---4---5---6|</span><br><span class="line">startWith(0)</span><br><span class="line">0--1---2---3---4---5---6|</span><br></pre></td></tr></table></figure>
+<p>有些時候在訂閱 Observable 時需要立刻有一個預設值來處理時，<code>startWith</code> 就是很好用的 operator 囉！</p>
+<h1 id="本日小節"><a href="#本日小節" class="headerlink" title="本日小節"></a>本日小節</h1><ul>
+<li><code>xxxAll</code> 系列和 <code>xxxMap</code> 系列處理「上一個」資料流的方式一樣，差別在於 <code>xxxAll</code> 是使用別人傳給我們的 Observable of Observable，而 <code>xxxMap</code> 必須自行撰寫轉換成 Observable 的規則 。</li>
+<li><code>cominbeAll</code> 和 <code>combineLatest</code> 行為也非常類似，<code>combineAll</code> 的資料來源是 Observable of Observable，而 <code>combineLatest</code> 則必須明確指定要組合哪寫 Observables。</li>
+<li><code>startWith</code> 適合用在一些希望訂閱 Observable 時就能夠有第一筆預設值的情境。</li>
+</ul>
+<h1 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h1><ul>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/switchAll" target="_blank" rel="noopener">Operators - switchAll</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/concatAll" target="_blank" rel="noopener">Operators - concatAll</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/mergeAll" target="_blank" rel="noopener">Operators - mergeAll</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/combineAll" target="_blank" rel="noopener">Operators - combineAll</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/startWith" target="_blank" rel="noopener">Operators - startWith</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/RxJS/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> RxJS</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/startWith/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> startWith</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/switchAll/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> switchAll</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/concatAll/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> concatAll</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/mergeAll/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> mergeAll</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/combineAll/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> combineAll</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2020/10/04/mastering-rxjs-19-switchmap-concatmap-mergemap-exhaustmap/" rel="next" title="[RxJS] 轉換類型 Operators (2) - switchMap / concatMap / mergeMap / exhaustMap">
+                <i class="fa fa-chevron-left"></i> [RxJS] 轉換類型 Operators (2) - switchMap / concatMap / mergeMap / exhaustMap
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2020/10/06/mastering-rxjs-21-filter-first-last-single/" rel="prev" title="[RxJS] 過濾類型 Operators (1) - filter / first / last / single">
+                [RxJS] 過濾類型 Operators (1) - filter / first / last / single <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#switchAll"><span class="nav-number">1.</span> <span class="nav-text">switchAll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#concatAll"><span class="nav-number">2.</span> <span class="nav-text">concatAll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mergeAll"><span class="nav-number">3.</span> <span class="nav-text">mergeAll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#combineAll"><span class="nav-number">4.</span> <span class="nav-text">combineAll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#startWith"><span class="nav-number">5.</span> <span class="nav-text">startWith</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小節"><span class="nav-number">6.</span> <span class="nav-text">本日小節</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相關資源"><span class="nav-number">7.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/';
+          this.page.identifier = '2020/10/05/mastering-rxjs-20-combineall-switchall-concatall-mergeall-startwith/';
+          this.page.title = '[RxJS] 組合類型 Operators (1) - switchAll / concatAll / mergeAll / combineAll / startWith';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

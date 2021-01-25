@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="RxJS,Functional Programming,side effect,pure function,high order function,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="函式語言程式設計 (Functional Programming) 是 ReactiveX 應用中非常重要的一部份，在個人過去的經驗中，遇過不少覺得 RxJS 不好用，甚至寫出不好維護的程式，有很大的機會是因為沒有掌握到 functional programming 的一些觀念，當然有些觀念在一般學習程式語言時也會被提出來，但使用 functional programming 時這些觀念會顯得更加">
+<meta name="keywords" content="RxJS,Functional Programming,side effect,pure function,high order function">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[RxJS] 認識函式語言程式設計 - Functional Programming">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2020/09/24/mastering-rxjs-09-functional-programming-introduction/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="函式語言程式設計 (Functional Programming) 是 ReactiveX 應用中非常重要的一部份，在個人過去的經驗中，遇過不少覺得 RxJS 不好用，甚至寫出不好維護的程式，有很大的機會是因為沒有掌握到 functional programming 的一些觀念，當然有些觀念在一般學習程式語言時也會被提出來，但使用 functional programming 時這些觀念會顯得更加">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/24/mastering-rxjs-09-functional-programming-introduction/01.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/24/mastering-rxjs-09-functional-programming-introduction/02.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/24/mastering-rxjs-09-functional-programming-introduction/03.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/24/mastering-rxjs-09-functional-programming-introduction/04.jpg">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.356Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[RxJS] 認識函式語言程式設計 - Functional Programming">
+<meta name="twitter:description" content="函式語言程式設計 (Functional Programming) 是 ReactiveX 應用中非常重要的一部份，在個人過去的經驗中，遇過不少覺得 RxJS 不好用，甚至寫出不好維護的程式，有很大的機會是因為沒有掌握到 functional programming 的一些觀念，當然有些觀念在一般學習程式語言時也會被提出來，但使用 functional programming 時這些觀念會顯得更加">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2020/09/24/mastering-rxjs-09-functional-programming-introduction/01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2020/09/24/mastering-rxjs-09-functional-programming-introduction/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[RxJS] 認識函式語言程式設計 - Functional Programming | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2020/09/24/mastering-rxjs-09-functional-programming-introduction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[RxJS] 認識函式語言程式設計 - Functional Programming</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-09-24T18:00:00+00:00">
+                2020-09-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/" itemprop="url" rel="index">
+                    <span itemprop="name">打通 RxJS 任督二脈</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/第-12-屆鐵人賽/" itemprop="url" rel="index">
+                    <span itemprop="name">第 12 屆鐵人賽</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2020/09/24/mastering-rxjs-09-functional-programming-introduction/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/09/24/mastering-rxjs-09-functional-programming-introduction/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>函式語言程式設計 (Functional Programming) 是 ReactiveX 應用中非常重要的一部份，在個人過去的經驗中，遇過不少覺得 RxJS 不好用，甚至寫出不好維護的程式，有很大的機會是因為沒有掌握到 functional programming 的一些觀念，當然有些觀念在一般學習程式語言時也會被提出來，但使用 functional programming 時這些觀念會顯得更加重要。</p>
+<p>在寫 RxJS 時，我們不用成為 functional programming 的專家，但瞭解一些 functional programming 的重要觀念，絕對可以幫助我們寫出更強健的程式碼！不管是否使用 RxJS 都是如此喔！！</p>
+<a id="more"></a>
+<div class="note info"><p>在我個人學習 RxJS 的過程中，剛開始其實也不太順利，一直到真正接觸 functional programming 觀念後，才開始對很多 operators 的操作有種豁然開朗的感覺！因此也推薦各位務必多多複習接下來兩天會講到的 functional programming 基本觀念，而在未來學習 operators 時，也多回想看看它運用了哪些 functional programming 的觀念，絕對能讓你對 RxJS 有更加融會貫通的體會！</p></div>
+<h1 id="關於函式語言程式設計"><a href="#關於函式語言程式設計" class="headerlink" title="關於函式語言程式設計"></a>關於函式語言程式設計</h1><p>以下介紹摘取自<a href="https://zh.wikipedia.org/wiki/函数式编程" target="_blank" rel="noopener">維基百科對於函式語言程式設計的介紹</a>：</p>
+<div class="note info"><p>函式語言程式設計（英語：functional programming）或稱函式程式設計、泛函編程，是一種編程範式，它將電腦運算視為函式運算，並且避免使用<strong>程式狀態</strong>以及<strong>易變物件</strong>。其中，<strong>λ演算（lambda calculus）</strong>為該語言最重要的基礎。而且，λ演算的函式可以接受函式當作輸入（引數）和輸出（傳出值）。</p>
+<p>比起指令式編程，函數式編程更加<strong>強調程式執行的結果而非執行的過程</strong>，倡導利用若干<strong>簡單的執行單元</strong>讓計算結果<strong>不斷漸進</strong>，逐層推導複雜的運算，而不是設計一個複雜的執行過程。</p>
+<p>在函式語言程式設計中，函式是<strong>第一類物件</strong>，意思是說一個函式，既可以<strong>作為其它函式的參數</strong>（輸入值），也可以<strong>從函式中返回</strong>（輸入值），被修改或者被分配給一個變數。</p></div>
+<p>如果直接搜尋 functional programming 要找中文資料，可能會看到很多名稱如：<code>函式語言程式設計</code>、<code>函式程式設計</code>、<code>函數式程式設計</code>，再加上簡體習慣講「編程」…由於中文名稱太多種，之後會統一稱為 functional programming 或 FP。</p>
+<p>對於剛開使踏入 functional programming 的初學者來說，上面的描述可能會包含了許多沒聽過或不理解的東西，所以這篇文章會針對上面介紹我有標粗體的部分，逐步進行介紹，幫助大家對於 functional programming 的輪廓有個完整個基本概念。</p>
+<h1 id="狀態相依和物件改變"><a href="#狀態相依和物件改變" class="headerlink" title="狀態相依和物件改變"></a>狀態相依和物件改變</h1><p>在開發時，完全避免<strong>外部狀態相依</strong>和<strong>物件的改變</strong>是一件非常困難的事情，以下舉一個不太好的程式碼，當我們要計算一個陣列中的偶數平方合時，可能會寫出這樣的程式碼：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>];</span><br><span class="line"><span class="keyword">let</span> sum = &#123;</span><br><span class="line">  value: <span class="number">0</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 計算陣列內偶數值得平方合</span></span><br><span class="line"><span class="keyword">const</span> sumEvenSquare = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; data.length; ++i) &#123;</span><br><span class="line">    <span class="keyword">const</span> value = data[i];</span><br><span class="line">    <span class="keyword">if</span> (value % <span class="number">2</span> === <span class="number">0</span>) &#123;</span><br><span class="line">      sum.value += value * value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">sumEvenSquare();</span><br><span class="line"><span class="built_in">console</span>.log(sum.value); <span class="comment">// 220</span></span><br></pre></td></tr></table></figure>
+<p><code>sum</code> 和 <code>data</code> 我們會稱為是一個外部的「狀態」，這個狀態可能永遠都不會被改變，卻也可能在某個時間點忽然被改變了。</p>
+<p>而 <code>sumEvenSquare</code> 是一個用來計算我們所需結果的 function，它直接相依了 <code>data</code> 和 <code>sum</code> 兩個<strong>外部的狀態</strong>，同時在運算過程中，它改變了 <code>sum</code> 這個<strong>外部物件</strong>，這代表外部的狀態也跟個被改變了！</p>
+<p>這其實是非常可怕的一件事情，我們在計算過程中不斷的在改變 <code>sum</code> 資料，如果今天 <code>sumEvenSquare</code> 執行兩次，我們是否會得到一樣的結果呢？</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sumEvenSquare();</span><br><span class="line"><span class="built_in">console</span>.log(sum.value); <span class="comment">// 220</span></span><br><span class="line">sumEvenSquare();</span><br><span class="line"><span class="built_in">console</span>.log(sum.value); <span class="comment">// 440</span></span><br></pre></td></tr></table></figure>
+<p>答案顯而易見的是「不會」，因為我們在運算第一次後改變了 <code>sum</code> 的資訊，卻沒有重設 <code>sum</code> 的值，因此第二次運算的時候會繼續改變 <code>sum</code> 的內容。</p>
+<p>再假設一下，複雜的情境下，我們可能會讓 <code>sumEvenSquare</code> 獨立一個執行緒去計算，以增進整體效能，此時若是呼叫兩次 <code>sumEvenSquare</code> 會變成怎樣呢？當 <code>sumEvenSquare</code> 是個更複雜、耗時更長的運算時，我們不小心改變了 <code>sum</code> 或 <code>data</code>，會發生什麼事情呢？</p>
+<p>答案是：我也不知道！</p>
+<p>因為運作過程中可能被改變的情境太多了！在程式設計中不能掌控程式運作過程中資料被變動的情況，也就代表著在越容易產生 bug，同時也越難查出 bug 發生的情況，也就越難修正、越容易改 A 壞 B。</p>
+<p>這種情況我們會成為「非執行緒安全(Non-thread Safe)」的計算，是我們應該極力去避免的！那麼怎樣達到「執行緒安全(Thread Safe)」呢？</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-09-functional-programming-intro-impreative" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-09-functional-programming-intro-impreative</a></p>
+<h2 id="避免外部狀態相依和改變"><a href="#避免外部狀態相依和改變" class="headerlink" title="避免外部狀態相依和改變"></a>避免外部狀態相依和改變</h2><p>最簡單的方式是將這些狀態從外部拉到內部，讓他的作用域只能發生在內部：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sumEvenSquare = <span class="function">(<span class="params">dataArray: <span class="built_in">number</span>[]</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 把計算總和的物件從外部移動到內部</span></span><br><span class="line">  <span class="keyword">let</span> innerSum = &#123;</span><br><span class="line">    value: <span class="number">0</span></span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 計算總和</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; dataArray.length; ++i) &#123;</span><br><span class="line">    <span class="keyword">const</span> value = dataArray[i];</span><br><span class="line">    <span class="keyword">if</span> (value % <span class="number">2</span> === <span class="number">0</span>) &#123;</span><br><span class="line">      innerSum.value += value * value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 回傳這個總和的內部物件</span></span><br><span class="line">  <span class="keyword">return</span> innerSum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 每次傳入陣列時，都先複製一份新的陣列，避免資料被改變</span></span><br><span class="line"><span class="keyword">const</span> sum1 = sumEvenSquare([...data]);</span><br><span class="line"><span class="built_in">console</span>.log(sum1.value); <span class="comment">// 220</span></span><br><span class="line"><span class="keyword">const</span> sum2 = sumEvenSquare([...data]);</span><br><span class="line"><span class="built_in">console</span>.log(sum2.value); <span class="comment">// 220</span></span><br></pre></td></tr></table></figure>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-09-functional-programming-intro-pure-function" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-09-functional-programming-intro-pure-function</a></p>
+<p>透過這種方式，我們就能避免在運算時發生「外部狀態改變」的情境，由於也不會去更改到外部狀態，因此不用擔心重複呼叫造成外部狀態資料無法掌握的問題！</p>
+<p>而這種相依或改變外部狀態資料的行為，我們通常又稱為 <u><strong>side effect (副作用)</strong></u>。</p>
+<p>Side effect 的範圍非常廣範，只要是與外部狀態有關的，都算是 side effect，例如：</p>
+<ul>
+<li>全域變數</li>
+<li>DOM 物件操作</li>
+<li>console.log</li>
+<li>HTTP 請求呼叫</li>
+<li>其他…</li>
+</ul>
+<div class="note info"><p>第一次聽到副作用這個名詞時，還覺得很不理解，是寫 code 寫到滑鼠手那種副作用嗎？好一陣子後才明白，原來是外部狀態被改變啊！</p></div>
+<p>而這種避免 side effect，把所有資料都變成參數或內部狀態的 function，又稱為「<strong>pure function (純函數)</strong>」。</p>
+<p>另外，我們透過 <code>[...data]</code> 的方式傳入一個新的陣列，可以避免原來的 <code>data</code> 陣列被改變，除此之外，我們也可以用一些不會改變身列本身內容的操作來操作陣列內容，例如新增一個新元素，比起使用 <code>data.push(100)</code>，使用 <code>const data2 = [...data, 100]</code> 這種寫法可以讓我們不要改到 <code>data</code> 本身，這種操作我們成為「 <strong>immutable (不可變的)</strong>」。</p>
+<p>不管要不要朝 functional programming 前進，在設計程式時，都建議應該要盡量將 function 設計成 pure function ，同時在操作資料時，也要盡量朝向 immutable 的方式去設計，以避免難以掌握狀態的情境發生！</p>
+<p>Pure function 還有一個很重要的特性，<strong>就是不管執行幾次，一樣的輸入就一定會有一樣的輸出</strong>，不會因為任何原因在不同時間產生不同的輸出，由於 pure function 基本上就不會相依任何外部狀態，加上 immutable 的操作，因此這可以說是必然的結果；如果無法達成這些條件，就不可稱它為 pure function，而會稱為 「<strong>impure function (不純的函數)</strong>」。</p>
+<p>Pure function 和 immutable 是用來避免 side effect 很重要的方式，也有不少技巧和第三方套件如 <a href="https://github.com/immutable-js/immutable-js" target="_blank" rel="noopener">Immutable.js</a> 等，有興趣可以上網搜尋一下，或之後再來補充囉。</p>
+<h2 id="與-Side-Effect-保持正確關係"><a href="#與-Side-Effect-保持正確關係" class="headerlink" title="與 Side Effect 保持正確關係"></a>與 Side Effect 保持正確關係</h2><p>當然在實務上，要完全避免 side effect 是不可能的事情，以網頁開發來說，畫面上的每個元素對目前設計的 <code>sumEvenSquare</code> 都是外部狀態，但我們不可能不透過這些元素來進行互動，例如從某個輸入框得到畫面的資料，再把結果放到畫面上等等，這些都是 side effect，但是核心的處理資料邏輯，我們就應該以 pure function 來作為設計的中心。</p>
+<p>方法很簡單：<strong>把 side effect 的操作整理成要傳入 pure function 的參數 (input)，再將執行結果(output) 拿去做其他的 side effect。</strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 計算 "加 1" 的 pure function</span></span><br><span class="line"><span class="keyword">const</span> plusOne = <span class="function">(<span class="params">value: <span class="built_in">number</span></span>) =&gt;</span> value + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'#plusOneBtn'</span>).addEventListener(<span class="string">'click'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;  </span><br><span class="line">  <span class="comment">// 整理傳給 pure function 的 input，這裡是 side effect</span></span><br><span class="line">  <span class="keyword">const</span> input = +(<span class="built_in">document</span>.querySelector(<span class="string">'#val'</span>) <span class="keyword">as</span> HTMLInputElement).value;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 計算出 output，因為是 pure function，因此這裡的運算式 thread safe 的</span></span><br><span class="line">  <span class="keyword">const</span> output = plusOne(input);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 運算出結果再與畫面互動，這裡也是 side effect</span></span><br><span class="line">  <span class="built_in">document</span>.querySelector(<span class="string">'#result'</span>).innerHTML = output.toString();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>這麼一來，重要的運算邏輯又不會與外部狀態相依，也更加容易找出問題！</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-09-function-programming-intro-with-side-effect" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-09-function-programming-intro-with-side-effect</a></p>
+<h1 id="函數是一等公民"><a href="#函數是一等公民" class="headerlink" title="函數是一等公民"></a>函數是一等公民</h1><p>以前面的 <code>sumEvenSquare</code> 例子來說，假設我們希望可以更有彈性，除了「偶數」「平方」和以外，還能給予更多不同的運算方式時，我們可以把偶數和平方的計算方式拉出來，單純計算陣列的和，但陣列本身每個值的運算(如過濾出偶數和轉換成平方)等變成可以被外部呼叫，大概會寫成這樣：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 把陣列中值的運算拉成 processFn，運算時呼叫它 (等於把實作細節拉出去)</span></span><br><span class="line"><span class="keyword">const</span> sum = <span class="function">(<span class="params">processFn: (<span class="params">input: <span class="built_in">number</span></span>) =&gt; <span class="built_in">number</span>, inputArray: <span class="built_in">number</span>[]</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> result = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; inputArray.length; ++i) &#123;</span><br><span class="line">    <span class="comment">// 讓傳入的 processFn 來決定運算細節</span></span><br><span class="line">    result += processFn(inputArray[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述程式我們把原來計算偶數平方的邏輯拿掉，變成一個可以傳入的 function，當要計算總和時，再針對每個值去呼叫這個 function 進行運算，等於把實作每個值運算的細節拉出去了。而因為function 是一等公民，所以可以把 function 當作參數傳入另一個 function 中。</p>
+<p>除此之外，由於 function 是一等公民，因此一個 function 也能回傳另一個 function，以上述例子來說，處理方法和資料是拆開的，我們可以先得到一個運算結果的 function：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 把陣列中值的運算拉成 processFn，運算時呼叫它 (等於把實作細節拉出去)</span></span><br><span class="line"><span class="keyword">const</span> sum = <span class="function">(<span class="params">processFn: (<span class="params">input: <span class="built_in">number</span></span>) =&gt; <span class="built_in">number</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 直接回傳一個 function，拿到此 function 的實作可以在任何時候選擇把資料傳入</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">inputArray: <span class="built_in">number</span>[]</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; inputArray.length; ++i) &#123;</span><br><span class="line">      <span class="comment">// 讓傳入的 processFn 來決定運算細節</span></span><br><span class="line">      result += processFn(inputArray[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另外要計算偶數平方時，可以再寫一段 function 來運算每個值：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 計算偶數平方，奇數回傳 0</span></span><br><span class="line"><span class="keyword">const</span> evenSquare = <span class="function">(<span class="params">item: <span class="built_in">number</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item % <span class="number">2</span> === <span class="number">0</span> ? item * item : <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>此時計算偶數平均和的函數會變成一個組合出來的結果</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先得到一個 function</span></span><br><span class="line"><span class="keyword">const</span> sumEvenSquare = sum(evenSquare);</span><br></pre></td></tr></table></figure>
+<p>最後再把資料帶入這個 <code>sumEvenSquare</code> 內：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 再以剛才得到的 function 實際進行運算</span></span><br><span class="line"><span class="keyword">const</span> myResult1 = sumEvenSquare(data);</span><br><span class="line"><span class="built_in">console</span>.log(myResult1);</span><br></pre></td></tr></table></figure>
+<p>透過這種設計方式，我們可以將許多細節都抽出來，只留下一個比較抽象的運作過程，而被抽出來的部分，因為只需要關注在它自己要做的事情就好，所以程式碼會更加簡短，加上 pure function 的設計，整體的可維護性就會更加好啦！</p>
+<p>這種 function 被視為一等公民寫法，必須要程式語言本身支援，現在許多程式語言也都支援這種寫法了，而這種特色也稱為「<strong>higher order function (高階函數)</strong>」。</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-09-fp-intro-higher-order-function-lambda" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-09-fp-intro-higher-order-function-lambda</a></p>
+<h1 id="lambda"><a href="#lambda" class="headerlink" title="lambda"></a>lambda</h1><p>Lambda 看起來是個詭異的單詞，實際上就是一種數學運算的表示法而已，舉個例子而言，我們在學習數學時，會看到以下寫法：</p>
+<img src="/blog/2020/09/24/mastering-rxjs-09-functional-programming-introduction/01.jpg">
+<p><code>f</code> 和 <code>g</code> 就是一個 function (函式)，小括號裡面的 <code>x</code> 和 <code>y</code> 就是參數，後面則是運算邏輯。</p>
+<p>如果寫成程式就像：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> f = <span class="function">(<span class="params">x</span>) =&gt;</span> x * x;</span><br><span class="line"><span class="keyword">const</span> g = <span class="function">(<span class="params">x, y</span>) =&gt;</span> x * x + y * y;</span><br></pre></td></tr></table></figure>
+<p>如果要改個更加明確的名稱，就會顯得比較冗長：</p>
+<img src="/blog/2020/09/24/mastering-rxjs-09-functional-programming-introduction/02.jpg">
+<p>如果名稱不是那麼重要，就乾脆省略吧：</p>
+<img src="/blog/2020/09/24/mastering-rxjs-09-functional-programming-introduction/03.jpg">
+<p>當我們看到 <code>λ</code> (lambda) 這個符號時，就知道是一個函數的定義，這種表示法在數學上有更多重要的意義，而在程式開發中，我們可以很簡單的把它當作是一個「<u><strong>匿名函式 (anonymous function)</strong></u>」即可！</p>
+<p>什麼是匿名函式呢？簡單來說就是個不需要名稱的函示，如果每次都要額外命名一個 function，實在是有點麻煩，所以乾脆直接把函數實作傳入參數，就不需要命名了(這就是匿名函數)，以前面的例子來說，處理每個值運算還要給他一個函數名稱太麻煩了，乾脆就直接把運算邏輯寫進去吧：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 要額外命名 function 太麻煩了，就可以透過匿名函數來處理</span></span><br><span class="line"><span class="keyword">const</span> sumResult2 = sum(<span class="function"><span class="params">item</span> =&gt;</span> item % <span class="number">2</span> === <span class="number">0</span> ? item * item : <span class="number">0</span>, data);</span><br><span class="line"><span class="built_in">console</span>.log(sumResult2); <span class="comment">// 220</span></span><br></pre></td></tr></table></figure>
+<h1 id="命令式-Imperative-v-s-宣告式-Declarative"><a href="#命令式-Imperative-v-s-宣告式-Declarative" class="headerlink" title="命令式 (Imperative) v.s 宣告式 (Declarative)"></a>命令式 (Imperative) v.s 宣告式 (Declarative)</h1><p>在前面介紹時，說明了 functional programming 強調<strong>程式執行的結果</strong>而非<strong>執行的過程</strong>，這對應到了兩種程式語言的思考方式</p>
+<ul>
+<li><strong>命令式 Imperative</strong>：強調的是執行過程，通常會暴露非常多細節，比較具象</li>
+<li><strong>宣告式 Declarative</strong>：強調的是執行結果，在思考過程中會隱藏細節，比較抽象</li>
+</ul>
+<p>具象的好處是我們可以比較容易看到程式運作的過程和所有細節；而抽象的最大的好處正好相反，是<strong>隱藏細節</strong>；可以想想看當我們想要快速理解一本書中介紹些什麼東西，最快的方式是什麼？相信大多數人都會接受比起直接從正文一頁一頁看起，先閱讀目錄是比較好的方法，透過目錄可以讓我們對於一本書整體想傳達的知識有個基本認知，甚至可以協助我們快速判斷需不需要繼續閱讀下去。</p>
+<p>在程式開發也是一樣，如果我們用「目錄」的概念 (也就是 declarative 宣告式的概念) 去寫程式，就會變成如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 以下步驟呼叫的 even、square、sum 在閱讀時不用計較實作細節</span></span><br><span class="line"><span class="comment">// 濾出偶數值</span></span><br><span class="line"><span class="keyword">const</span> evenData = even(data);</span><br><span class="line"><span class="comment">// 計算平方值</span></span><br><span class="line"><span class="keyword">const</span> evenSquareData = square(evenData);</span><br><span class="line"><span class="comment">// 加總計算</span></span><br><span class="line"><span class="keyword">const</span> sumResult = sum(evenSquareData);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(sumResult);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 懶得每次都訂一個變數名稱裝資料的話，也可以寫成</span></span><br><span class="line"><span class="built_in">console</span>.log(sum(square(even(data))));</span><br></pre></td></tr></table></figure>
+<p>比較一下前面 imperative 式的寫法：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; data.length; ++i) &#123;</span><br><span class="line">  <span class="keyword">const</span> value = data[i];</span><br><span class="line">  <span class="keyword">if</span> (value % <span class="number">2</span> === <span class="number">0</span>) &#123;</span><br><span class="line">    sum.value += value * value;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>雖然程式碼行數變多了，但整體閱讀起來是不是覺得 declarative 式的寫法好懂非常多啊！至少我們不用去思考 <code>for</code> 和 <code>if</code> 是做些什麼的，只要從 function 名稱做基本推斷就可以了。思考方式也很容易變成圖解：</p>
+<img src="/blog/2020/09/24/mastering-rxjs-09-functional-programming-introduction/04.jpg">
+<p>可以看到每個 function 都是一個簡單的「運算單元」，都有單一的 input 和 output，最後資料「漸進式」的變成了我們想要的結果。</p>
+<p>當發生 bug 時，也只需要針對每個 function 的<strong>結果</strong>去判斷問題是否在該 function 裡面就好，當習慣這種寫法後，真的會覺得程式的撰寫跟閱讀起來都會非常過癮啊！！</p>
+<p>前面所有隱藏的實作，我們都是用 <code>for</code> 和 <code>if</code> 來處理資料，如果是熟悉 JavaScript 陣列處理相關 API 的人，應該知道 <code>filter</code>、<code>map</code> 和 <code>reduce</code> 這三個 API，其實也是幫助我們把細節處理變得更加 declarative，接下來我們把實作細節也從 <code>for</code> 和 <code>if</code> 中解放：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 把原來細節的處理也變得更加 declarative</span></span><br><span class="line"><span class="keyword">const</span> even = <span class="function">(<span class="params">inputArray: <span class="built_in">number</span>[]</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> inputArray.filter(<span class="function"><span class="params">item</span> =&gt;</span> item % <span class="number">2</span> === <span class="number">0</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> square = <span class="function">(<span class="params">inputArray: <span class="built_in">number</span>[]</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> inputArray.map(<span class="function"><span class="params">item</span> =&gt;</span> item * item);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> sum = <span class="function">(<span class="params">inputArray: <span class="built_in">number</span>[]</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> inputArray.reduce(<span class="function">(<span class="params">previous, current</span>) =&gt;</span> previous + current, <span class="number">0</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>有沒有發現，原來我們平常就默默的在使用 functional programming 的一些觀念實作程式啦！</p>
+<p>其實，如果你覺得特地把 <code>even</code>、<code>square</code> 和 <code>sum</code> 抽出來很囉唆，也可以直接寫成：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>];</span><br><span class="line"><span class="keyword">const</span> result = data</span><br><span class="line">  .filter(<span class="function"><span class="params">item</span> =&gt;</span> item % <span class="number">2</span> === <span class="number">0</span>)</span><br><span class="line">  .map(<span class="function"><span class="params">item</span> =&gt;</span> item * item)</span><br><span class="line">  .reduce(<span class="function">(<span class="params">previous, current</span>) =&gt;</span> previous + current, <span class="number">0</span>);</span><br><span class="line"><span class="built_in">console</span>.log(result);</span><br></pre></td></tr></table></figure>
+<p>依然是很宣告式的寫法，對於情境不複雜的情況來說，也很 ok 的！<code>filter</code>、<code>map</code> 和 <code>reduce</code> 本身設計已經幫我們隱藏了走訪每個陣列值的細節，將處理陣列值的實作方式交給我們自己決定，而這些實作要開放到什麼程度，或是否要隱藏起來，就看實際設計時是否覺得已經夠好閱讀了，或是實作是否太複雜來決定囉！</p>
+<p>最後，我們把上述寫法再複雜化一下，假設 <code>filter</code>、<code>map</code> 和 <code>reduce</code> 內目前的實作邏輯很複雜，我們可以把這些實作邏輯再次抽出來：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> byEven = <span class="function"><span class="params">item</span> =&gt;</span> item % <span class="number">2</span> === <span class="number">0</span>; <span class="comment">// 假設它很複雜</span></span><br><span class="line"><span class="keyword">const</span> toSquare = <span class="function"><span class="params">item</span> =&gt;</span> item * item; <span class="comment">// 假設它很複雜</span></span><br><span class="line"><span class="keyword">const</span> sumTwoValues = <span class="function">(<span class="params">value1, value2</span>) =&gt;</span> value1 + value2; <span class="comment">// 假設它很複雜</span></span><br></pre></td></tr></table></figure>
+<p>最後程式就只剩下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> result = data</span><br><span class="line">  .filter(byEven)</span><br><span class="line">  .map(toSquare)</span><br><span class="line">  .reduce(sumTwoValues, <span class="number">0</span>);</span><br><span class="line"><span class="built_in">console</span>.log(result);</span><br></pre></td></tr></table></figure>
+<p>是不是就像在閱讀一篇文章一樣，而非在閱讀複雜邏輯的程式碼啦！！</p>
+<div class="note info"><p>其實不管複雜或簡單的邏輯，都建議將各種「意圖」抽成一個一個小 function，最後再一口氣組合起來，爽度絕對是爆表啊！！</p></div>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-09-functional-programming-intro-declarative" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-09-functional-programming-intro-declarative</a></p>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>今天的文章中把 functional programming 的一些基本觀念介紹了一輪，讓我們對 functional programming 的整體輪廓有了比較明確的概念；應該不難發現透過 functional programming 的觀念可以幫助我們打造出更好理解及維護的程式，當然通常 functional programming 的寫法效能會相對比較差，但在現今運算技術越來越強的情況下，很多時候這些差異是可以被忽略的 (0.03 秒執行時間是 0.01 秒的三倍，但通常是感覺不出來的)，在沒有明顯效能的考量下，誠心建議也推廣大家使用這種 functional programming 的思考方式來寫程式，以寫出更加穩固的程式碼喔！</p>
+<p>要撰寫 functional programming，這些觀念非常重要：</p>
+<ul>
+<li>撰寫 pure function，盡量避免 side effect，讓除錯更加容易</li>
+<li>善用 higher order function，將部份實作委外，讓程式更有彈性</li>
+<li>使用 lamda 寫出更簡短的 function</li>
+<li>宣告式 (declarative) 思考，將程式步驟拆成更小、更明確運算單元，讓程式更好閱讀</li>
+</ul>
+<p>而透過這些 functional programming 的基本觀念，還能組合出更多有趣的應用，明天就讓我們明天再來介紹一些常見的 functional programming 技巧吧！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/RxJS/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> RxJS</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Functional-Programming/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Functional Programming</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/side-effect/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> side effect</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/pure-function/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> pure function</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/high-order-function/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> high order function</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2020/09/23/mastering-rxjs-08-iterator-pattern/" rel="next" title="[RxJS] 認識疊代器模式 - Iterator Pattern">
+                <i class="fa fa-chevron-left"></i> [RxJS] 認識疊代器模式 - Iterator Pattern
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2020/09/25/mastering-rxjs-10-functional-programming-basic-patterns/" rel="prev" title="[RxJS] Functional Programming 常用基本技巧及應用">
+                [RxJS] Functional Programming 常用基本技巧及應用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#關於函式語言程式設計"><span class="nav-number">1.</span> <span class="nav-text">關於函式語言程式設計</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#狀態相依和物件改變"><span class="nav-number">2.</span> <span class="nav-text">狀態相依和物件改變</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#避免外部狀態相依和改變"><span class="nav-number">2.1.</span> <span class="nav-text">避免外部狀態相依和改變</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#與-Side-Effect-保持正確關係"><span class="nav-number">2.2.</span> <span class="nav-text">與 Side Effect 保持正確關係</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函數是一等公民"><span class="nav-number">3.</span> <span class="nav-text">函數是一等公民</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lambda"><span class="nav-number">4.</span> <span class="nav-text">lambda</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#命令式-Imperative-v-s-宣告式-Declarative"><span class="nav-number">5.</span> <span class="nav-text">命令式 (Imperative) v.s 宣告式 (Declarative)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">6.</span> <span class="nav-text">本日小結</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2020/09/24/mastering-rxjs-09-functional-programming-introduction/';
+          this.page.identifier = '2020/09/24/mastering-rxjs-09-functional-programming-introduction/';
+          this.page.title = '[RxJS] 認識函式語言程式設計 - Functional Programming';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

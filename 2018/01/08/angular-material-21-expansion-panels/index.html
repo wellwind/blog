@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular Material,Material Design,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="今天開始我們又要進入一個新的頁面－「收件夾」囉！先從比較輕鬆的Expansion Panel開始，我們會使用這個元件在畫面左邊建立一個類似收件夾大綱/分類的清單；透過Expansion Panel我們可以展開/收合不同類型的資料，在瀏覽及管理上都非常方便，就讓我們繼續看下去吧！">
+<meta name="keywords" content="Angular Material,Material Design">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular Material完全攻略]收件夾頁面(1) - Expansion Panels">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2018/01/08/angular-material-21-expansion-panels/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="今天開始我們又要進入一個新的頁面－「收件夾」囉！先從比較輕鬆的Expansion Panel開始，我們會使用這個元件在畫面左邊建立一個類似收件夾大綱/分類的清單；透過Expansion Panel我們可以展開/收合不同類型的資料，在瀏覽及管理上都非常方便，就讓我們繼續看下去吧！">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/08/angular-material-21-expansion-panels/01-expansion-panels.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/08/angular-material-21-expansion-panels/02-mat-expansion-panel-basic.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/08/angular-material-21-expansion-panels/03-panel-with-description.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/08/angular-material-21-expansion-panels/04-panel-with-action-row.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/08/angular-material-21-expansion-panels/05-hide-toggle-before.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/08/angular-material-21-expansion-panels/06-hide-toggle-after.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/08/angular-material-21-expansion-panels/07-disabled-panel.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/08/angular-material-21-expansion-panels/08-accordion.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/08/angular-material-21-expansion-panels/09-accordion-default-display-mode.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/08/angular-material-21-expansion-panels/10-accordion-flat-display-mode.png">
+<meta property="og:updated_time" content="2021-01-25T02:06:10.356Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular Material完全攻略]收件夾頁面(1) - Expansion Panels">
+<meta name="twitter:description" content="今天開始我們又要進入一個新的頁面－「收件夾」囉！先從比較輕鬆的Expansion Panel開始，我們會使用這個元件在畫面左邊建立一個類似收件夾大綱/分類的清單；透過Expansion Panel我們可以展開/收合不同類型的資料，在瀏覽及管理上都非常方便，就讓我們繼續看下去吧！">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2018/01/08/angular-material-21-expansion-panels/01-expansion-panels.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2018/01/08/angular-material-21-expansion-panels/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular Material完全攻略]收件夾頁面(1) - Expansion Panels | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2018/01/08/angular-material-21-expansion-panels/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular Material完全攻略]收件夾頁面(1) - Expansion Panels</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-08T12:54:09+00:00">
+                2018-01-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular-Material完全攻略/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular Material完全攻略</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/01/08/angular-material-21-expansion-panels/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/08/angular-material-21-expansion-panels/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天開始我們又要進入一個新的頁面－「收件夾」囉！先從比較輕鬆的Expansion Panel開始，我們會使用這個元件在畫面左邊建立一個類似收件夾大綱/分類的清單；透過Expansion Panel我們可以展開/收合不同類型的資料，在瀏覽及管理上都非常方便，就讓我們繼續看下去吧！</p>
+<a id="more"></a>
+<h2 id="關於Material-Design中的Expansion-panels"><a href="#關於Material-Design中的Expansion-panels" class="headerlink" title="關於Material Design中的Expansion panels"></a>關於Material Design中的Expansion panels</h2><p>在<a href="https://material.io/guidelines/components/expansion-panels.html" target="_blank" rel="noopener">Material Design的Expansion panels設計指南</a>中，Expansion panels可以用來<strong>將一系列的動作或資訊分門別類放在不同的panels中，可以透過展開與收合某個panel來顯示/隱藏資訊</strong>，收合時我們可以看到這panel的基本資料，展開後則可以看到或編輯詳細的資訊。這樣的概念有點像之前介紹過的Steppers，但又沒有那麼重的“步驟”的概念。</p>
+<img src="/blog/2018/01/08/angular-material-21-expansion-panels/01-expansion-panels.png">
+<h2 id="開始使用Angular-Material的Expansion-panels"><a href="#開始使用Angular-Material的Expansion-panels" class="headerlink" title="開始使用Angular Material的Expansion panels"></a>開始使用Angular Material的Expansion panels</h2><p>Expansion panels的相關功能都放在<code>MatExpansionModule</code>之中，加入後我們就可以開始使用<code>&lt;mat-expansion-panel&gt;</code>來建立一個基本的expansion panel。</p>
+<h3 id="使用mat-expansion-panel"><a href="#使用mat-expansion-panel" class="headerlink" title="使用mat-expansion-panel"></a>使用mat-expansion-panel</h3><p><code>&lt;mat-expansion-panel&gt;</code>使用上非常簡單，唯一要注意的是在<code>&lt;mat-expansion-panel&gt;</code>中一定要加上<code>&lt;mat-expansion-panel-header&gt;</code>，代表整個panel的標題，否則會無法呈現資料哩！</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-expansion-panel</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-expansion-panel-header</span>&gt;</span></span><br><span class="line">    收件夾</span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-expansion-panel-header</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 收件夾內容 --&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-expansion-panel</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-expansion-panel</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-expansion-panel-header</span>&gt;</span></span><br><span class="line">    聯絡人列表   </span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-expansion-panel-header</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 聯絡人列表內容 --&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-expansion-panel</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/08/angular-material-21-expansion-panels/02-mat-expansion-panel-basic.gif">
+<p>很簡單吧！只要點一下panel的標題，就可以立即展開/收起每個panel囉。</p>
+<h3 id="使用mat-panel-title與mat-panel-description為header顯示更多資訊"><a href="#使用mat-panel-title與mat-panel-description為header顯示更多資訊" class="headerlink" title="使用mat-panel-title與mat-panel-description為header顯示更多資訊"></a>使用mat-panel-title與mat-panel-description為header顯示更多資訊</h3><p>在標題<code>&lt;mat-expansion-panel-header&gt;</code>裡面，我們也可以用<code>&lt;mat-panel-title&gt;</code>和<code>&lt;mat-panel-description&gt;</code>分別顯示標題的主文字與補充描述，<code>&lt;mat-panel-description&gt;</code>會在標題旁邊加上灰色的文字補充說明；例如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-expansion-panel</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-expansion-panel-header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-panel-title</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">mat-icon</span>&gt;</span>inbox<span class="tag">&lt;/<span class="name">mat-icon</span>&gt;</span></span><br><span class="line">          收件夾</span><br><span class="line">    <span class="tag">&lt;/<span class="name">mat-panel-title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-panel-description</span>&gt;</span></span><br><span class="line">      3 封未讀</span><br><span class="line">    <span class="tag">&lt;/<span class="name">mat-panel-description</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-expansion-panel-header</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 收件夾內容 --&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-expansion-panel</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-expansion-panel</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-expansion-panel-header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-panel-title</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">mat-icon</span>&gt;</span>person<span class="tag">&lt;/<span class="name">mat-icon</span>&gt;</span></span><br><span class="line">      聯絡人列表</span><br><span class="line">    <span class="tag">&lt;/<span class="name">mat-panel-title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-panel-description</span>&gt;</span></span><br><span class="line">      2 人在線上</span><br><span class="line">    <span class="tag">&lt;/<span class="name">mat-panel-description</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-expansion-panel-header</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 聯絡人列表內容 --&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-expansion-panel</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/08/angular-material-21-expansion-panels/03-panel-with-description.gif">
+<h3 id="使用mat-action-row管理更多動作按鈕"><a href="#使用mat-action-row管理更多動作按鈕" class="headerlink" title="使用mat-action-row管理更多動作按鈕"></a>使用mat-action-row管理更多動作按鈕</h3><p>我們也能夠在<code>&lt;mat-expansion-panel&gt;</code>中加上<code>&lt;mat-action-row&gt;</code>，這會在panel下方隔出一塊空間，方便我們在這裡加上一些管理按鈕：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-expansion-panel</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-expansion-panel-header</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-expansion-panel-header</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-action-row</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-button</span> <span class="attr">color</span>=<span class="string">"primary"</span>&gt;</span>管理我的聯絡人<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-action-row</span>&gt;</span>      </span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-expansion-panel</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/08/angular-material-21-expansion-panels/04-panel-with-action-row.gif">
+<h3 id="隱藏panel-header的展開-收起按鈕"><a href="#隱藏panel-header的展開-收起按鈕" class="headerlink" title="隱藏panel header的展開/收起按鈕"></a>隱藏panel header的展開/收起按鈕</h3><p>每個panel的header部分，右方都會有一個展開/收合的按鈕，如下：</p>
+<img src="/blog/2018/01/08/angular-material-21-expansion-panels/05-hide-toggle-before.png">
+<p>我們可以透過設定hideToggle屬性，把這個按鈕藏起來，畢竟我們其實點擊標題就可以執行展開/收合的動作了。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-expansion-panel</span> <span class="attr">hideToggle</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-expansion-panel</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/08/angular-material-21-expansion-panels/06-hide-toggle-after.png">
+<h3 id="使用expanded屬性讓panel預設展開"><a href="#使用expanded屬性讓panel預設展開" class="headerlink" title="使用expanded屬性讓panel預設展開"></a>使用expanded屬性讓panel預設展開</h3><p>在使用<code>&lt;mat-expansion-panel&gt;</code>時，預設是把內容都收起來的，我們可以透過<code>expanded</code>屬性，動態的決定<code>&lt;mat-expansion-panel&gt;</code>是否要展開(<code>true</code>)，還是收合(<code>false</code>)</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-expansion-panel</span> <span class="attr">expanded</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-expansion-panel</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="設定disabled屬性"><a href="#設定disabled屬性" class="headerlink" title="設定disabled屬性"></a>設定disabled屬性</h3><p>我們也可以為<code>&lt;mat-expansion-panel&gt;</code>設定<code>disabled</code>屬性，若設定<code>disabled=&quot;true&quot;</code>，則會維持原來的狀態，無法點擊：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-expansion-panel</span> <span class="attr">hideToggle</span>=<span class="string">"true"</span> <span class="attr">expanded</span>=<span class="string">"true"</span> <span class="attr">disabled</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-expansion-panel</span>&gt;</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/08/angular-material-21-expansion-panels/07-disabled-panel.gif">
+<h3 id="手風琴效果"><a href="#手風琴效果" class="headerlink" title="手風琴效果"></a>手風琴效果</h3><p>目前我們的<code>&lt;mat-expansion-panel&gt;</code>每個都是獨立的，我們可以把多個<code>&lt;mat-expansion-panel&gt;</code>包裝近一個<code>&lt;mat-accordion&gt;</code>中，變成一個手風琴效果，這個<code>&lt;mat-according&gt;</code>有一個<code>multi</code>屬性，預設為<code>false</code>，代表一次只會顯示一個panel，當某個panel被打開時，其他panel就會自動被收起。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- mat-accotdion的multi預設及為false --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-accordion</span> <span class="attr">multi</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-expansion-panel</span>&gt;</span></span><br><span class="line">    Panel1</span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-expansion-panel</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-expansion-panel</span>&gt;</span></span><br><span class="line">    Panel2</span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-expansion-panel</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-accordion</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/08/angular-material-21-expansion-panels/08-accordion.gif">
+<p>一個手風琴效果就完成啦！</p>
+<h3 id="在手風琴效果中去除panel之間的空隙"><a href="#在手風琴效果中去除panel之間的空隙" class="headerlink" title="在手風琴效果中去除panel之間的空隙"></a>在手風琴效果中去除panel之間的空隙</h3><p>使用手風琴效果時，panel之間會產生一個空隙，方便我們分辨每塊的panel，如下圖：</p>
+<img src="/blog/2018/01/08/angular-material-21-expansion-panels/09-accordion-default-display-mode.png">
+<p>這個空隙可以透過設定<code>displayMode=&quot;flat&quot;</code>拿掉(預設值為<code>displayMode=&quot;default&quot;</code>)：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-accordion</span> <span class="attr">multi</span>=<span class="string">"false"</span> <span class="attr">displayMode</span>=<span class="string">"flat"</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-accordion</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/08/angular-material-21-expansion-panels/10-accordion-flat-display-mode.png">
+<h2 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h2><p>今天我們學習了Expansion Panel這個特效滿滿的元件，來分類管理不同的資訊，方便我們隨時展開或收合特定的資料群組，避免空間混亂。同時我們也學會了使用手風琴效果，將多個expansion panels當作一個群組來管理。</p>
+<p>遇到特定的情境，expansion panel這種配置方式還蠻實用的哩！</p>
+<p>本日的程式碼GitHub：<a href="https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-21-expansion-panel-tab" target="_blank" rel="noopener">https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-21-expansion-panel-tab</a></p>
+<p>分支：day-21-expansion-panel-tab</p>
+<h2 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h2><ul>
+<li><a href="https://material.io/guidelines/components/expansion-panels.html" target="_blank" rel="noopener">Material Design - Expansion panels</a></li>
+<li><a href="https://material.angular.io/components/expansion/overview" target="_blank" rel="noopener">Angular Material - Expansion panels</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular-Material/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular Material</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Material-Design/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Material Design</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/01/07/angular-material-20-chip-tooltip-snackbar/" rel="next" title="[Angular Material完全攻略]設計一個部落格(5) - Chip、Tooltip、Snackbar">
+                <i class="fa fa-chevron-left"></i> [Angular Material完全攻略]設計一個部落格(5) - Chip、Tooltip、Snackbar
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/01/09/angular-material-22-tabs/" rel="prev" title="[Angular Material完全攻略]收件夾頁面(2) - Tabs">
+                [Angular Material完全攻略]收件夾頁面(2) - Tabs <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#關於Material-Design中的Expansion-panels"><span class="nav-number">1.</span> <span class="nav-text">關於Material Design中的Expansion panels</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#開始使用Angular-Material的Expansion-panels"><span class="nav-number">2.</span> <span class="nav-text">開始使用Angular Material的Expansion panels</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-expansion-panel"><span class="nav-number">2.1.</span> <span class="nav-text">使用mat-expansion-panel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-panel-title與mat-panel-description為header顯示更多資訊"><span class="nav-number">2.2.</span> <span class="nav-text">使用mat-panel-title與mat-panel-description為header顯示更多資訊</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-action-row管理更多動作按鈕"><span class="nav-number">2.3.</span> <span class="nav-text">使用mat-action-row管理更多動作按鈕</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隱藏panel-header的展開-收起按鈕"><span class="nav-number">2.4.</span> <span class="nav-text">隱藏panel header的展開/收起按鈕</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用expanded屬性讓panel預設展開"><span class="nav-number">2.5.</span> <span class="nav-text">使用expanded屬性讓panel預設展開</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定disabled屬性"><span class="nav-number">2.6.</span> <span class="nav-text">設定disabled屬性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手風琴效果"><span class="nav-number">2.7.</span> <span class="nav-text">手風琴效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在手風琴效果中去除panel之間的空隙"><span class="nav-number">2.8.</span> <span class="nav-text">在手風琴效果中去除panel之間的空隙</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本日小結"><span class="nav-number">3.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相關資源"><span class="nav-number">4.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2018/01/08/angular-material-21-expansion-panels/';
+          this.page.identifier = '2018/01/08/angular-material-21-expansion-panels/';
+          this.page.title = '[Angular Material完全攻略]收件夾頁面(1) - Expansion Panels';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

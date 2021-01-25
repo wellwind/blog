@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="C#,Design Pattern,Observer Pattern,Delegate,Event,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="關於C#的delegate和event，我個人一直覺得是比較不好理解的部分，雖然直接使用別人設計好的功能時覺得很方便，但要自己使用delegate或event時總是不太順手；雖然過去曾經因為必須使用delegate奮鬥了一段時間，但幾年沒有用到後就又不太熟了XD。所以這篇文章就來從觀念開始紀錄一下delegate和event這兩個神奇的玩意。">
+<meta name="keywords" content="C#,Design Pattern,Observer Pattern,Delegate,Event">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[C#]Observer Pattern到Delegate和Event">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2016/05/22/csharp-observer-pattern-delegate-event/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="關於C#的delegate和event，我個人一直覺得是比較不好理解的部分，雖然直接使用別人設計好的功能時覺得很方便，但要自己使用delegate或event時總是不太順手；雖然過去曾經因為必須使用delegate奮鬥了一段時間，但幾年沒有用到後就又不太熟了XD。所以這篇文章就來從觀念開始紀錄一下delegate和event這兩個神奇的玩意。">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2016/05/22/csharp-observer-pattern-delegate-event/observer-result.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2016/05/22/csharp-observer-pattern-delegate-event/delegate-result.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2016/05/22/csharp-observer-pattern-delegate-event/event-001.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2016/05/22/csharp-observer-pattern-delegate-event/event-002.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2016/05/22/csharp-observer-pattern-delegate-event/event-result.png">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.108Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[C#]Observer Pattern到Delegate和Event">
+<meta name="twitter:description" content="關於C#的delegate和event，我個人一直覺得是比較不好理解的部分，雖然直接使用別人設計好的功能時覺得很方便，但要自己使用delegate或event時總是不太順手；雖然過去曾經因為必須使用delegate奮鬥了一段時間，但幾年沒有用到後就又不太熟了XD。所以這篇文章就來從觀念開始紀錄一下delegate和event這兩個神奇的玩意。">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2016/05/22/csharp-observer-pattern-delegate-event/observer-result.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2016/05/22/csharp-observer-pattern-delegate-event/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[C#]Observer Pattern到Delegate和Event | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2016/05/22/csharp-observer-pattern-delegate-event/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[C#]Observer Pattern到Delegate和Event</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-05-22T22:02:43+00:00">
+                2016-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2016/05/22/csharp-observer-pattern-delegate-event/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/22/csharp-observer-pattern-delegate-event/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>關於C#的delegate和event，我個人一直覺得是比較不好理解的部分，雖然直接使用別人設計好的功能時覺得很方便，但要自己使用delegate或event時總是不太順手；雖然過去曾經因為必須使用delegate奮鬥了一段時間，但幾年沒有用到後就又不太熟了XD。所以這篇文章就來從觀念開始紀錄一下delegate和event這兩個神奇的玩意。</p>
+<a id="more"></a>
+<p>會忽然想到好久不見的delegate和event其實是因為昨天去上了Skiltree的<a href="https://skilltree.my/events/ecba" target="_blank" rel="noopener">物件導向實作課程(使用C#)</a>，雖然目前只上了第一天，而第一天的課程內容主要都偏向C#語言的使用注意事項及技巧，對於好歹也用了好幾年C#的話我來說大部分的內容都不算太新，但也多學到了一些更深入的原理和講師的經驗，而當天課堂最後的主題就是delegate和event，瞬間讓我回憶起過去使用這個東西時的痛苦學習歷程XD</p>
+<p>不過經過練習後也算是重新熟悉並再次理解到了delegate和event的特色，所以就趁著記憶猶新時來紀錄一下。</p>
+<p>言歸正傳，讓我們先來假設一個模擬的情境：</p>
+<div class="note info"><p>假設你的公司開發了一個溫度監測的機器，可以連接到各種裝置上；公司希望其他外部開發人員也可以利用這個溫度監測器來撰寫自己的應用程式；而你的工作就是開發一組.Net的SDK，當偵測到溫度變化時，能立即讓所有使用SDK的程式收到即時的溫度通知。</p></div>
+<h1 id="使用Observer-Pattern-觀察者模式"><a href="#使用Observer-Pattern-觀察者模式" class="headerlink" title="使用Observer Pattern(觀察者模式)"></a>使用Observer Pattern(觀察者模式)</h1><p>在這種情境下，通常我們可能會考慮到使用Observer Pattern來解決問題，關於Observer Pattern網路上其實可以找到很多的資料，所以這邊就簡單節錄一下<a href="https://zh.wikipedia.org/wiki/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F" target="_blank" rel="noopener">Wiki上對Observer Pattern的解釋</a>：</p>
+<blockquote class="blockquote-center"><p>觀察者模式是軟體設計模式的一種。在此種模式中，一個目標物件管理所有相依於它的觀察者物件，並且在它本身的狀態改變時主動發出通知。這通常透過呼叫各觀察者所提供的方法來實現。此種模式通常被用來實時事件處理系統</p>
+</blockquote>
+<p>白話的說就是，我是個很親民的<strong>超級巨星(目標物件)</strong>，所以針對所有在<strong>追蹤我的粉絲(觀察者物件)</strong>，我都會很開心的<strong>主動通知</strong>這些粉絲我最新的動態啦！</p>
+<p>至於要如何實現Observer Pattern，就直接來看看程式碼吧，首先我們先定義兩個interface來描述對於溫度監測器的監測和通知的行為</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ITempatureMonitorSubject.cs</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">ITempatureMonitorSubject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">RegisterObserver</span>(<span class="params">ITempatureMonitorObserver observer</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">UnregisterObserver</span>(<span class="params">ITempatureMonitorObserver observer</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">NotifyTempature</span>(<span class="params"></span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ITempatureMonitorObserver.cs</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">ITempatureMonitorObserver</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnTempatureChanged</span>(<span class="params"><span class="keyword">double</span> tempature</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第一個<code>ITempatureMonitorSubject</code>介面就是我們的目標物件行為的描述，他主要提供三個行為，分別為</p>
+<ul>
+<li>RegisterObserver(ITempatureMonitorObserver observer)：提供給觀察者讓目標物件知道要通知自己的方法</li>
+<li>UnregisterObserver(ITempatureMonitorObserver observer)：當觀察者不再需要從目標物件收到通知時，可以利用此方法取消</li>
+<li>NotifyTempature()：當目標物件有更新需要通知所有觀察者時，需透過此方法進行通知</li>
+</ul>
+<p>而<code>ITempatureMonitorObserver</code>介面則描述觀察者的用來接受通知的行為，也就是當目標物件發出通知時，會主動去呼叫每個實作ITempatureMonitorObserver的物件的OnTempatureChanged方法，而隨著每個觀察者實作方式的不同，就會有各自不同的行為反應囉。</p>
+<p>接下來我們就來看看溫度監測器實作ItempatureMonitorSubject的樣貌</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TempatureMonitorSubject</span> : <span class="title">ITempatureMonitorSubject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> tempature;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">double</span> Tempature</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> tempature; &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> oldTempature = tempature;</span><br><span class="line">            <span class="keyword">if</span> (oldTempature != <span class="keyword">value</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                tempature = <span class="keyword">value</span>;</span><br><span class="line">                NotifyTempature();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;ITempatureMonitorObserver&gt; observers;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TempatureMonitorSubject</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        observers = <span class="keyword">new</span> List&lt;ITempatureMonitorObserver&gt;();</span><br><span class="line">        Console.WriteLine(<span class="string">"開始偵測溫度"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RegisterObserver</span>(<span class="params">ITempatureMonitorObserver observer</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        observers.Add(observer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">UnregisterObserver</span>(<span class="params">ITempatureMonitorObserver observer</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        observers.Remove(observer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">NotifyTempature</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">var</span> observer <span class="keyword">in</span> observers)</span><br><span class="line">        &#123;</span><br><span class="line">            observer.OnTempatureChanged(tempature);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在這段程式碼裡面我們定義了一個<code>List&lt;ITempatureMonitorObserver&gt; observers</code>來存放所有要觀察自己的觀察者物件，而這些物件都必須實作ITempatureMonitorObserver裡面的行為，然後<code>RegisterObserver</code>和<code>RegisterObserver</code>負責<strong>將觀察者加入或移除觀察者清單</strong>，<code>NotifyTempature</code>則負責<strong>列舉所有的觀察者並呼叫(通知)他們的<code>OnTempatureChanged</code>告知溫度變化</strong>。當溫度Tempature變化時，就會<strong>呼叫NotifyTempature方法進行通知</strong>。</p>
+<p>藉由以上的程式碼我們應該不難看出，只要任何一個物件實做了ITempatureMonitorObserver介面，經由TempatureMonitorSubject註冊後，當TempatureMonitorSubject溫度變化時就可以收到通知，接下來我們就寫兩個實作ITempatureMonitorObserver的觀察者範例來模擬兩個可以收到溫度變化的裝置上的應用程式：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DesktopApp.cs</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DesktopApp</span> : <span class="title">ITempatureMonitorObserver</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnTempatureChanged</span>(<span class="params"><span class="keyword">double</span> tempature</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$"Desktop App被通知溫度變化了: <span class="subst">&#123;tempature&#125;</span>"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// MobileApp.cs</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MobileApp</span> : <span class="title">ITempatureMonitorObserver</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnTempatureChanged</span>(<span class="params"><span class="keyword">double</span> tempature</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$"Mobile App被通知溫度變化了: <span class="subst">&#123;tempature&#125;</span>"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上程式碼我們寫了兩個類別實作ITempatureMonitorObserver介面的行為，並各自有不同的實作內容，當目標物件發出通知時，收到通知的觀察者就會執行自己的實作結果囉。</p>
+<p>接著就寫隻小程式來測試看看：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用一般Observer pattern</span></span><br><span class="line">Console.WriteLine(<span class="string">"Observer Pattern Demo"</span>);</span><br><span class="line"><span class="keyword">var</span> tempatureMonitor = <span class="keyword">new</span> TempatureMonitorSubject();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> desktopApp = <span class="keyword">new</span> DesktopApp();</span><br><span class="line"><span class="keyword">var</span> mobileApp = <span class="keyword">new</span> MobileApp();</span><br><span class="line"></span><br><span class="line">tempatureMonitor.RegisterObserver(desktopApp);</span><br><span class="line">tempatureMonitor.RegisterObserver(mobileApp);</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="string">"溫度變化了，現在是30.5度"</span>);</span><br><span class="line">tempatureMonitor.Tempature = <span class="number">30.5</span>;</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="string">"溫度沒變化，現在依然是30.5度"</span>);</span><br><span class="line">tempatureMonitor.Tempature = <span class="number">30.5</span>;</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="string">"溫度變化了，現在是28.6度"</span>);</span><br><span class="line">tempatureMonitor.Tempature = <span class="number">28.6</span>;</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="string">"mobileApp不再想觀察了"</span>);</span><br><span class="line">tempatureMonitor.UnregisterObserver(mobileApp);</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="string">"溫度變化了，現在是27.6度"</span>);</span><br><span class="line">tempatureMonitor.Tempature = <span class="number">27.6</span>;</span><br><span class="line">Console.WriteLine();</span><br></pre></td></tr></table></figure>
+<p>這個範例程式我們建立了兩個不同的觀察者實作的實體(desktopApp和mobileApp)，並註冊給tempatureMonitor，然後模擬溫度變化的情況，來看看觀察者是否會收到通知並且執行他們各自的實作，程式執行的結果如下：</p>
+<img src="/blog/2016/05/22/csharp-observer-pattern-delegate-event/observer-result.png">
+<p>有了對Observer Pattern的理解後，接下來我們再來看看重頭戲：delegate和event</p>
+<h1 id="使用Delegate"><a href="#使用Delegate" class="headerlink" title="使用Delegate"></a>使用Delegate</h1><p>delegate是<strong>委派</strong>的意思，至於到底要委派什麼？在C#中，我們必須<strong>先用delegate宣告一個方法的簽章(及回傳值和參數)作為要委派的類別</strong>，這個方法物件就類似一個<em>觀察者模式的目標物件</em>，不過不太一樣的是，前面我們的觀察者註冊都是直接傳遞物件，而<em>delegate傳遞的則是<strong>方法</strong>(也就是要委派的方法)</em>，同時delegate還override了幾個運算子，讓我們在註冊和取消註冊時更加容易，我們可以<strong>直接透過=、+=和-=來設定、增加和移除要委派的方法(觀察者)</strong>，當目標物件變動時，則<strong>使用Invoke()方法來通知執行所有加入的委派方法</strong>。</p>
+<p>用文字形容感覺有點難懂，讓我們直接看程式碼，下面程式碼類似我們的觀察者目標物件的實作，但我們使用delegate來作為我們的目標物件：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">TempatureMonitorUsingDelegate</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">void</span> <span class="title">TempatureChangedHandler</span>(<span class="params"><span class="keyword">double</span> tempature</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> TempatureChangedHandler OnTempatureChanged;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> tempature;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">double</span> Tempature</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> tempature; &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> oldTempature = tempature;</span><br><span class="line">            <span class="keyword">if</span> (oldTempature != <span class="keyword">value</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                tempature = <span class="keyword">value</span>;</span><br><span class="line">                OnTempatureChanged.Invoke(<span class="keyword">value</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TempatureMonitorUsingDelegate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">// 使用delegate必須給定一個初始的委派方法</span></span><br><span class="line">        OnTempatureChanged = tempatureChanged;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">tempatureChanged</span>(<span class="params"><span class="keyword">double</span> tempature</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$"溫度發生變化了...<span class="subst">&#123;tempature&#125;</span>"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先我們宣告<code>delegate void TempatureChangedHandler(double tempature)</code>說明要委派的方法簽章，然後依這個TempatureChangedHandler作為類別宣告<code>TempatureChangedHandler OnTempatureChanged</code>的委派方法，然後在建構子中給予他初始的委派方法(這是delegate規定一定要的)，在Tempature變動時，直接使用<code>OnTempatureChanged.Invoke(value)</code>來執行所有委派進來的方法，在這裡我們就沒有實作觀察者模式中註冊和移除的方法，因為delegate已經幫我們先做好了。</p>
+<p>直接來看使用delegate委派的方式</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用Delegate完成Observer pattern</span></span><br><span class="line">Console.WriteLine(<span class="string">"Delegate Demo"</span>);</span><br><span class="line"><span class="keyword">var</span> tempatureMonitorDelegate = <span class="keyword">new</span> TempatureMonitorUsingDelegate();</span><br><span class="line"></span><br><span class="line">tempatureMonitorDelegate.OnTempatureChanged += desktopApp.OnTempatureChanged;</span><br><span class="line">tempatureMonitorDelegate.OnTempatureChanged += mobileApp.OnTempatureChanged;</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="string">"溫度變化了，現在是30.5度"</span>);</span><br><span class="line">tempatureMonitorDelegate.Tempature = <span class="number">30.5</span>;</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="string">"溫度沒變化，現在依然是30.5度"</span>);</span><br><span class="line">tempatureMonitorDelegate.Tempature = <span class="number">30.5</span>;</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="string">"溫度變化了，現在是28.6度"</span>);</span><br><span class="line">tempatureMonitorDelegate.Tempature = <span class="number">28.6</span>;</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="string">"mobileApp不再想觀察了"</span>);</span><br><span class="line">tempatureMonitorDelegate.OnTempatureChanged -= mobileApp.OnTempatureChanged;</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="string">"溫度變化了，現在是27.6度"</span>);</span><br><span class="line">tempatureMonitorDelegate.Tempature = <span class="number">27.6</span>;</span><br><span class="line">Console.WriteLine();</span><br></pre></td></tr></table></figure>
+<p>在這裡大致上與前面的做法相同，只是把觀察者註冊給目標物件的方法換成了針對目標物件提供的委派物件，把要委派的方法加給它，程式碼執行如下</p>
+<img src="/blog/2016/05/22/csharp-observer-pattern-delegate-event/delegate-result.png">
+<p>delegate是event的基礎，也因此在實際寫程式時，我們其實會使用event多於delegate，Visual Studio的IDE對event也有比較多的神奇支援，所以最後壓軸我們就來看看event吧！</p>
+<h1 id="使用Event"><a href="#使用Event" class="headerlink" title="使用Event"></a>使用Event</h1><p>如果開發過WinForm或傳統ASP.NET程式的話，應該對event一點都不陌生，當我們拉出一個button然後去選擇實作它的OnClick方法時，其實就是在實作一個OnClick事件的委派方法；要使用事件時，必須先宣告一個委派，然後再宣告事件，最後再把要委派的事件方法加入事件之中。以剛剛delegate範例的程式碼來說，原本的宣告<code>public TempatureChangedHandler OnTempatureChanged</code>可以直接加個event改成<code>public event TempatureChangedHandler OnTempatureChanged</code>，即可享受到Visual Studio對event額外支援的好處，什麼樣的額外支援呢？當我們輸入程式碼時輸入到<code>tempatureMonitorDelegate.OnTempatureChanged +=</code>時，原本要給一個實作的方法，但我們<strong>可以直接按TAB來自動產生一個事件委派方法</strong>，例如以下畫面</p>
+<img src="/blog/2016/05/22/csharp-observer-pattern-delegate-event/event-001.png">
+<p>當按下TAB時，就會自動幫我們產生基本的程式碼：</p>
+<img src="/blog/2016/05/22/csharp-observer-pattern-delegate-event/event-002.png">
+<p>這在一些簡單的情境下非常的方便好用！</p>
+<p>最後我們來看看使用Event來完成我們的溫度偵測器的SDK，使用delegate在使用event來宣告其實有點麻煩，好在.net framework幫我們先做了一個<code>delegate void EventHandler&lt;TEventArgs&gt;</code>來直接使用，它的宣告簽章如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">void</span> EventHandler&lt;TEventArgs&gt;(<span class="keyword">object</span> sender, TEventArgs e);</span><br></pre></td></tr></table></figure>
+<p>所以我們使用事件版本的溫度監視器程式碼如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TempatureMonitorUsingEvent</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 使用EventHandler&lt;T&gt;來省去自訂delegate的麻煩</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">event</span> EventHandler&lt;<span class="keyword">double</span>&gt; OnTempatureChanged;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> tempature;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">double</span> Tempature</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> tempature; &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> oldTempature = tempature;</span><br><span class="line">            <span class="keyword">if</span> (oldTempature != <span class="keyword">value</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                tempature = <span class="keyword">value</span>;</span><br><span class="line">                <span class="keyword">if</span> (OnTempatureChanged != <span class="literal">null</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    OnTempatureChanged(<span class="keyword">this</span>, <span class="keyword">value</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到原本兩行要先宣告delegate再用delegate的類別宣告委派物件，變成了只有一行，且<strong>和delegate不同的是，event不需要一個初始的委派方法(或者說event幫你把這部分處理掉了)</strong>，因此我們不用再多寫一個委派方法在建構式時指派給事件，整個程式碼就清爽多了，當溫度變化時，我們<strong>直接呼叫OnTempatureChanged(this, value)來通知所有的事件委派方法(觀察者)來執行對應的方法</strong>。</p>
+<div class="note info"><p>由於event不用給予初始的委派方法，因此在事件通知時，我們必須先檢查定義的事件物件是否為null，以免沒人觀察時出錯了。</p></div>
+<p>為了維持我們前面的設計思維，我們另外建立了一個自訂事件方法的行為介面</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">ITempatureMonitorEvent</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnTempatureChangedEvent</span>(<span class="params"><span class="keyword">object</span> sender, <span class="keyword">double</span> e</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然後原本的DesktopApp與MobileApp都再實作這個介面：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DesktopApp.cs</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DesktopApp</span> : <span class="title">ITempatureMonitorObserver</span>, <span class="title">ITempatureMonitorEvent</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnTempatureChanged</span>(<span class="params"><span class="keyword">double</span> tempature</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$"Desktop App被通知溫度變化了: <span class="subst">&#123;tempature&#125;</span>"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnTempatureChangedEvent</span>(<span class="params"><span class="keyword">object</span> sender, <span class="keyword">double</span> tempature</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$"Desktop App使用事件委派方法得知溫度變化了: <span class="subst">&#123;tempature&#125;</span>"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// MobileApp.cs</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MobileApp</span> : <span class="title">ITempatureMonitorObserver</span>, <span class="title">ITempatureMonitorEvent</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnTempatureChanged</span>(<span class="params"><span class="keyword">double</span> tempature</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$"Mobile App被通知溫度變化了: <span class="subst">&#123;tempature&#125;</span>"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnTempatureChangedEvent</span>(<span class="params"><span class="keyword">object</span> sender, <span class="keyword">double</span> tempature</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$"Mobile App使用事件委派方法得知溫度變化了: <span class="subst">&#123;tempature&#125;</span>"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接著看看實際測試的程式碼：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">eventDemo</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 使用Event事件委派</span></span><br><span class="line">    Console.WriteLine(<span class="string">"Event Demo"</span>);</span><br><span class="line">    <span class="keyword">var</span> tempatureMonitorEvent = <span class="keyword">new</span> TempatureMonitorUsingEvent();</span><br><span class="line"></span><br><span class="line">    tempatureMonitorEvent.OnTempatureChanged += desktopApp.OnTempatureChangedEvent;</span><br><span class="line">    tempatureMonitorEvent.OnTempatureChanged += mobileApp.OnTempatureChangedEvent;</span><br><span class="line">    <span class="comment">// 額外自訂事件委派方法, 由於是宣告成事件委派, 輸入到+=時可以直接用TAB產生基本的程式碼</span></span><br><span class="line">    tempatureMonitorEvent.OnTempatureChanged += TempatureMonitorEvent_OnTempatureChanged;</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">"溫度變化了，現在是30.5度"</span>);</span><br><span class="line">    tempatureMonitorEvent.Tempature = <span class="number">30.5</span>;</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">"溫度沒變化，現在依然是30.5度"</span>);</span><br><span class="line">    tempatureMonitorEvent.Tempature = <span class="number">30.5</span>;</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">"溫度變化了，現在是28.6度"</span>);</span><br><span class="line">    tempatureMonitorEvent.Tempature = <span class="number">28.6</span>;</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">"mobileApp不再想觀察了"</span>);</span><br><span class="line">    tempatureMonitorEvent.OnTempatureChanged -= mobileApp.OnTempatureChangedEvent;</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">"溫度變化了，現在是27.6度"</span>);</span><br><span class="line">    tempatureMonitorEvent.Tempature = <span class="number">27.6</span>;</span><br><span class="line">    Console.WriteLine();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TempatureMonitorEvent_OnTempatureChanged</span>(<span class="params"><span class="keyword">object</span> sender, <span class="keyword">double</span> e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$"自訂的委派方法得知溫度變化了: <span class="subst">&#123;e&#125;</span>"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在這裡除了使用事件委派方法以外，我們也額外再加入了一個自訂的委派方法，在Visual Studio中實際上當我輸入到<strong>+=</strong>的時候，就可以用TAB來直接產生委派方法的雛形，非常的方便。</p>
+<p>執行結果如下：</p>
+<img src="/blog/2016/05/22/csharp-observer-pattern-delegate-event/event-result.png">
+<p>本篇文章的範例程式碼都已經放上GitHub，感興趣的朋友可以上去<a href="https://github.com/wellwind/CSharpEventDemo" target="_blank" rel="noopener">下載</a>。</p>
+<p><a href="https://github.com/wellwind/CSharpEventDemo" target="_blank" rel="noopener">https://github.com/wellwind/CSharpEventDemo</a></p>
+<h1 id="回顧一下"><a href="#回顧一下" class="headerlink" title="回顧一下"></a>回顧一下</h1><ul>
+<li>當我們需要設計一個當物件狀態改變時能夠主動通知相依的物件的程式時，可以使用觀察者模式。</li>
+<li>delegate幫我們簡化了觀察者模式的程式碼，但delegate委派的目標必須是方法，因此若通知的條件單純時，可以使用delegate來簡化程式碼；delegate必須要有預設的委派方法。</li>
+<li>event算是delegate的延生，它的設計再次簡化了一些delegate的宣告不便，讓程式碼更容易閱讀(個人覺得event也比delegate好讀多了)，也更簡化；同時還能享受到IDE帶來額外支援的好處！(event不需要給予預設的委派方法)</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/C/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> C#</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Design-Pattern/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Design Pattern</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Observer-Pattern/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Observer Pattern</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Delegate/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Delegate</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Event/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Event</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2016/05/20/react-tutorial-9-jsx-2/" rel="next" title="[React速成班]深入JSX(2)-使用技巧">
+                <i class="fa fa-chevron-left"></i> [React速成班]深入JSX(2)-使用技巧
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2016/08/02/raspberry-pi-3-rc522-rfid/" rel="prev" title="解決Raspberry Pi3無法使用RC522讀取RFID的問題">
+                解決Raspberry Pi3無法使用RC522讀取RFID的問題 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Observer-Pattern-觀察者模式"><span class="nav-number">1.</span> <span class="nav-text">使用Observer Pattern(觀察者模式)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Delegate"><span class="nav-number">2.</span> <span class="nav-text">使用Delegate</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Event"><span class="nav-number">3.</span> <span class="nav-text">使用Event</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#回顧一下"><span class="nav-number">4.</span> <span class="nav-text">回顧一下</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2016/05/22/csharp-observer-pattern-delegate-event/';
+          this.page.identifier = '2016/05/22/csharp-observer-pattern-delegate-event/';
+          this.page.title = '[C#]Observer Pattern到Delegate和Event';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

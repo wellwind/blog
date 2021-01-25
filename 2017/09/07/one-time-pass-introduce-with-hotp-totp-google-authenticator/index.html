@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="JavaScript,One Time Password,OTP,HOTP,TOTP,otplib,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="One Time Password(OTP、一次性密碼)主要用於實現雙因素認證（two-factor authentication）的功能，在使用者一般透過帳號密碼登入後，再透過輸入一組只能使用一次的密碼，完成相對比較安全的登入機制；或是在需要執行特定某些功能時，再次要求使用者輸入一次性的密碼，保護使用者資料不會被他人直接使用，這樣的情境在很多網路銀行線上交易都可以看到。今天就來簡單介紹兩個常見的">
+<meta name="keywords" content="JavaScript,One Time Password,OTP,HOTP,TOTP,otplib">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[OneTimePassword] 一次性密碼演算法：簡介HOTP、TOTP和Google Authenticator">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="One Time Password(OTP、一次性密碼)主要用於實現雙因素認證（two-factor authentication）的功能，在使用者一般透過帳號密碼登入後，再透過輸入一組只能使用一次的密碼，完成相對比較安全的登入機制；或是在需要執行特定某些功能時，再次要求使用者輸入一次性的密碼，保護使用者資料不會被他人直接使用，這樣的情境在很多網路銀行線上交易都可以看到。今天就來簡單介紹兩個常見的">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/hotp-01.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/totp-01.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/totp-facebook-setting.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/totp-fb-app.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/totp-google-authenticator.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/otplib-demo.png">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.384Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[OneTimePassword] 一次性密碼演算法：簡介HOTP、TOTP和Google Authenticator">
+<meta name="twitter:description" content="One Time Password(OTP、一次性密碼)主要用於實現雙因素認證（two-factor authentication）的功能，在使用者一般透過帳號密碼登入後，再透過輸入一組只能使用一次的密碼，完成相對比較安全的登入機制；或是在需要執行特定某些功能時，再次要求使用者輸入一次性的密碼，保護使用者資料不會被他人直接使用，這樣的情境在很多網路銀行線上交易都可以看到。今天就來簡單介紹兩個常見的">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/hotp-01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[OneTimePassword] 一次性密碼演算法：簡介HOTP、TOTP和Google Authenticator | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[OneTimePassword] 一次性密碼演算法：簡介HOTP、TOTP和Google Authenticator</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-09-07T23:36:41+00:00">
+                2017-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>One Time Password(OTP、一次性密碼)主要用於實現雙因素認證（two-factor authentication）的功能，在使用者一般透過帳號密碼登入後，再透過輸入一組只能使用一次的密碼，完成相對比較安全的登入機制；或是在需要執行特定某些功能時，再次要求使用者輸入一次性的密碼，保護使用者資料不會被他人直接使用，這樣的情境在很多網路銀行線上交易都可以看到。今天就來簡單介紹兩個常見的OTP演算法－HOTP和TOTP</p>
+<a id="more"></a>
+<h1 id="HOTP演算法"><a href="#HOTP演算法" class="headerlink" title="HOTP演算法"></a>HOTP演算法</h1><p>HOTP是<strong>HMAC-based One-time Password</strong>的縮寫，演算法定義在<a href="https://tools.ietf.org/html/rfc4226" target="_blank" rel="noopener">RFC4226</a>中，在Wiki中可以看到簡單的定義如下：</p>
+<img src="/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/hotp-01.png">
+<p>忽略一大串的密碼學和數學的話，我們只需要知道三個資訊</p>
+<ul>
+<li>K：secret key</li>
+<li>C：隨機的任意數值，用來確保每次雜湊結果都不同</li>
+<li>雜湊演算法：以上圖的例子使用的是SHA1</li>
+</ul>
+<p>接著我們只需要把金鑰和隨機資訊一起放入雜湊演算法進行運算，再從中取的N個數字，N取決於我們需要的OTP密碼長度。取出來的Ｎ個數字就是OTP密碼啦！</p>
+<h1 id="TOTP演算法"><a href="#TOTP演算法" class="headerlink" title="TOTP演算法"></a>TOTP演算法</h1><p>TOTP是HOTP演算法的進階版，演算法定義在<a href="https://tools.ietf.org/html/rfc6238" target="_blank" rel="noopener">RFC6238</a>中，主要的不同是，透過<strong>時間</strong>因素，來產生不一樣的一次性密碼，因為密碼會著時間異動而不同，所以就不用特地擔心密碼的保存時限問題，因為時間到了之前的密碼就會自動到期了，可以省去一些不必要的伺服器和資料庫浪費。</p>
+<p>根據Wiki描述的演算法內容如下：</p>
+<img src="/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/totp-01.png">
+<p>不難看到其實看HOTP非常類似，只是C值會給予一個時間的參數，這個數值隨著設定的時間到期後就會自動遞增，所以一樣的HOTP演算法，只是將C的參數隨著時間自動化變更，進而產生另一組不一樣的密碼。</p>
+<h2 id="Facebook應用"><a href="#Facebook應用" class="headerlink" title="Facebook應用"></a>Facebook應用</h2><p>透過這樣自動到期的特性，我們可以很容易為使用者自動產生需要的OTP密碼，例如Facebook中的設定雙重驗證機制的代碼產生器功能（如下圖）</p>
+<img src="/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/totp-facebook-setting.png">
+<p>我們就可以透過手機下載Facebook，來取得一個每30秒自動重新產生一次的密碼，當Facebook判斷你需要使用雙重驗證時，就會要求你打開手機輸入這組一次性密碼，來完成驗證工作。</p>
+<img src="/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/totp-fb-app.png">
+<div class="note info"><p>第一次接觸到Facebook的代碼產生器功能時，感到非常不可思議，不管是否使用中都會在伺服器端重新產生密碼的話，不會很消耗資源嗎？但了解TOTP演算法後，就能發現只需要再App中持續產生就好了，完全不需要消耗伺服器端的資源啦！</p></div>
+<h2 id="Google-Authenticator"><a href="#Google-Authenticator" class="headerlink" title="Google Authenticator"></a>Google Authenticator</h2><p>Google也提供了<a href="https://github.com/google/google-authenticator" target="_blank" rel="noopener">Google Authenticator</a>，只需要把secret key以符合格式的方式傳給Google Authenticator的App，就能夠輕鬆輕鬆完成雙重驗證功能，使用者使需要下載App掃描QRCode或輸入secret key，即可自動產生TOTP密碼，我們只需要做好驗證的功能即可囉。</p>
+<img src="/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/totp-google-authenticator.png">
+<h1 id="使用第三方套件產生OTP密碼"><a href="#使用第三方套件產生OTP密碼" class="headerlink" title="使用第三方套件產生OTP密碼"></a>使用第三方套件產生OTP密碼</h1><p>關於HOTP和TOTP演算法，在網路上很容易可以找到各種語言的實作，為了方便介紹，今天要使用<a href="https://www.npmjs.com/package/otplib" target="_blank" rel="noopener">otplib</a>這個JavaScript套件，使用這個套件主要是因為他的文件很清楚，而且都在client和server端都可以執行，相對用於demo也比較方便。</p>
+<p>以下是使用otplib做的一個簡單DEMO</p>
+<p><a href="http://wellwind.idv.tw/OneTimePasswordDemo/">DEMO網址</a> | <a href="https://github.com/wellwind/OneTimePasswordDemo" target="_blank" rel="noopener">GitHub</a></p>
+<img src="/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/otplib-demo.png">
+<p>可以自行試著調整各種資料，看看產生出來的密碼，和驗證是否通過；也可以下載Google Authenticator App掃描QRCode，看看產生出來的密碼是否和畫面上一樣。</p>
+<h2 id="安裝otplib"><a href="#安裝otplib" class="headerlink" title="安裝otplib"></a>安裝otplib</h2><p>otplib可以很簡單的透過npm進行安裝，適合在server端產生和驗證密碼的情境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install otplib --save</span><br></pre></td></tr></table></figure>
+<p>要直接在瀏覽器產生和驗證的話，已可以直接從CND加入</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/otplib@^6.0.0/otplib-browser.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="產生Secret"><a href="#產生Secret" class="headerlink" title="產生Secret"></a>產生Secret</h2><p>我們可以自己產生隨機字串當作secret key，也可以透過otplib產生隨機的secret key，畢竟要為每個使用者產生secret key的話，用人家寫好的程式比起自己寫程式產生方便多了！</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> secret = otplib.authenticator.generateSecret();</span><br></pre></td></tr></table></figure>
+<h2 id="使用HOTP"><a href="#使用HOTP" class="headerlink" title="使用HOTP"></a>使用HOTP</h2><p>要產生HOTP很簡單，使用<code>otplib.hotp.generate</code>並且把secret key和任意數值<em>C</em>傳進去即可</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> token = otplib.hotp.generate(secret, counter);</span><br></pre></td></tr></table></figure>
+<p>要驗證則是使用<code>otplib.hotp.verify</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">otplib.hotp.verify(&#123;</span><br><span class="line">  token: token,</span><br><span class="line">  secret: secret,</span><br><span class="line">  counter: counter</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="使用TOTP"><a href="#使用TOTP" class="headerlink" title="使用TOTP"></a>使用TOTP</h2><p>我們可以使用<code>otplib.totp</code>來產生TOTP密碼，不過參數不能調整，所以可以直接使用<code>otplib.authenticator</code>來設定一些近些的參數，例如一般預設30秒重新產生密碼，但我希望把時間延長</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">otplib.authenticator.options = &#123;</span><br><span class="line">  step: <span class="number">90</span> <span class="comment">// 90秒換一次密碼</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>產生密碼方式跟HOTP也很像，只是給secret key就好，不需要再給<em>C</em>了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> token = otplib.authenticator.generate(secret);</span><br></pre></td></tr></table></figure>
+<p>驗證也是一樣沒有難度</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">otplib.authenticator.verify(&#123;</span><br><span class="line">  secret: secret,</span><br><span class="line">  token: token</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="Google-Authenticator-1"><a href="#Google-Authenticator-1" class="headerlink" title="Google Authenticator"></a>Google Authenticator</h2><p>otplib也提供產生符合Google Authenticator規則的字串，格式可以參考<a href="https://github.com/google/google-authenticator/wiki/Key-Uri-Format" target="_blank" rel="noopener">Key Uri Format文件</a>，不過裡面有些參數目前Google Authentiactor的App也不支援就是了…</p>
+<p>要產生對應的uri，至少需要提供secret key和一個label作為辨識不同服務和使用者用，另外也建議加上Issuer，來辨識提供帳號雙重驗證的服務名稱。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> authParam = otplib.authenticator.keyuri(user, service, secret);</span><br></pre></td></tr></table></figure>
+<p>另外要注意的是user和service不可包含空白等字元，若要包含則需使用encodeURIComponent編碼過。</p>
+<p>產生出來的內容大致看起來如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">otpauth://totp/Awesome%20OTP:USER?secret=G53TAMLYJFDGO42NPA2WS4C2G5GWQUCO&amp;issuer=AwesomeOTP</span><br></pre></td></tr></table></figure>
+<p>只要把這段字串轉成QRCode，再用Google Authenticator App掃描看看就可以囉！</p>
+<p>web上也可以透過<a href="https://developers.google.com/chart/infographics/docs/qr_codes" target="_blank" rel="noopener">Google Chart Api</a>來產生QRCode，不用自己在找library或寫程式，方便多啦！</p>
+<h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><ul>
+<li><a href="https://en.wikipedia.org/wiki/Time-based_One-time_Password_Algorithm" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Time-based_One-time_Password_Algorithm</a></li>
+<li><a href="https://tools.ietf.org/html/rfc6238" target="_blank" rel="noopener">https://tools.ietf.org/html/rfc6238</a></li>
+<li><a href="https://en.wikipedia.org/wiki/HMAC-based_One-time_Password_Algorithm#Definition" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/HMAC-based_One-time_Password_Algorithm#Definition</a></li>
+<li><a href="https://tools.ietf.org/html/rfc4226" target="_blank" rel="noopener">https://tools.ietf.org/html/rfc4226</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Google_Authenticator" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Google_Authenticator</a></li>
+<li><a href="https://github.com/google/google-authenticator" target="_blank" rel="noopener">https://github.com/google/google-authenticator</a></li>
+<li><a href="https://www.npmjs.com/package/otplib" target="_blank" rel="noopener">https://www.npmjs.com/package/otplib</a></li>
+<li><a href="https://developers.google.com/chart/infographics/docs/qr_codes" target="_blank" rel="noopener">https://developers.google.com/chart/infographics/docs/qr_codes</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/JavaScript/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> JavaScript</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/One-Time-Password/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> One Time Password</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/OTP/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> OTP</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/HOTP/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> HOTP</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/TOTP/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> TOTP</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/otplib/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> otplib</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/08/13/angular-advanced-testing-with-jest/" rel="next" title="[Angular進階議題]Karma + Jasmine跑測試太慢？試試看Jest吧！">
+                <i class="fa fa-chevron-left"></i> [Angular進階議題]Karma + Jasmine跑測試太慢？試試看Jest吧！
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/09/10/csharp-expando-object/" rel="prev" title="[C#]簡介ExpandoObject">
+                [C#]簡介ExpandoObject <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HOTP演算法"><span class="nav-number">1.</span> <span class="nav-text">HOTP演算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TOTP演算法"><span class="nav-number">2.</span> <span class="nav-text">TOTP演算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Facebook應用"><span class="nav-number">2.1.</span> <span class="nav-text">Facebook應用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Google-Authenticator"><span class="nav-number">2.2.</span> <span class="nav-text">Google Authenticator</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用第三方套件產生OTP密碼"><span class="nav-number">3.</span> <span class="nav-text">使用第三方套件產生OTP密碼</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝otplib"><span class="nav-number">3.1.</span> <span class="nav-text">安裝otplib</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#產生Secret"><span class="nav-number">3.2.</span> <span class="nav-text">產生Secret</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用HOTP"><span class="nav-number">3.3.</span> <span class="nav-text">使用HOTP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用TOTP"><span class="nav-number">3.4.</span> <span class="nav-text">使用TOTP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Google-Authenticator-1"><span class="nav-number">3.5.</span> <span class="nav-text">Google Authenticator</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#參考資料"><span class="nav-number">4.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/';
+          this.page.identifier = '2017/09/07/one-time-pass-introduce-with-hotp-totp-google-authenticator/';
+          this.page.title = '[OneTimePassword] 一次性密碼演算法：簡介HOTP、TOTP和Google Authenticator';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

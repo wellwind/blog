@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular,Angular CLI,\@NgModule,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="在過去的文章我們已經學到—Angular的應用程式是由一個一個的component所堆積組合起來的，這麼做的好處不用多說就是關注點分離，讓你專心在目前的功能上，也不用擔心影響到其他的component，但是當你的程式架構越來越龐大時，管理這些數以百計的components就變成一門學問了，這時候我們就可以透過模組化的機制，更有組織的管理你的所有components，這也就是我們今天要談的主題—Mo">
+<meta name="keywords" content="Angular,Angular CLI,\@NgModule">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular速成班]透過Module組織管理你的程式">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2017/02/18/angular-tutorial-16-module/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="在過去的文章我們已經學到—Angular的應用程式是由一個一個的component所堆積組合起來的，這麼做的好處不用多說就是關注點分離，讓你專心在目前的功能上，也不用擔心影響到其他的component，但是當你的程式架構越來越龐大時，管理這些數以百計的components就變成一門學問了，這時候我們就可以透過模組化的機制，更有組織的管理你的所有components，這也就是我們今天要談的主題—Mo">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/02/18/angular-tutorial-16-module/0.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/02/18/angular-tutorial-16-module/1.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/02/18/angular-tutorial-16-module/2.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/02/18/angular-tutorial-16-module/3.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/02/18/angular-tutorial-16-module/4.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/02/18/angular-tutorial-16-module/5.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/02/18/angular-tutorial-16-module/6.png">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.084Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular速成班]透過Module組織管理你的程式">
+<meta name="twitter:description" content="在過去的文章我們已經學到—Angular的應用程式是由一個一個的component所堆積組合起來的，這麼做的好處不用多說就是關注點分離，讓你專心在目前的功能上，也不用擔心影響到其他的component，但是當你的程式架構越來越龐大時，管理這些數以百計的components就變成一門學問了，這時候我們就可以透過模組化的機制，更有組織的管理你的所有components，這也就是我們今天要談的主題—Mo">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2017/02/18/angular-tutorial-16-module/0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2017/02/18/angular-tutorial-16-module/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular速成班]透過Module組織管理你的程式 | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2017/02/18/angular-tutorial-16-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular速成班]透過Module組織管理你的程式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-02-18T11:11:11+00:00">
+                2017-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular速成班/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular速成班</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2017/02/18/angular-tutorial-16-module/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/02/18/angular-tutorial-16-module/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在過去的文章我們已經學到—Angular的應用程式是由一個一個的component所堆積組合起來的，這麼做的好處不用多說就是關注點分離，讓你專心在目前的功能上，也不用擔心影響到其他的component，但是當你的程式架構越來越龐大時，管理這些數以百計的components就變成一門學問了，這時候我們就可以透過模組化的機制，更有組織的管理你的所有components，這也就是我們今天要談的主題—Module。</p>
+<a id="more"></a>
+<h1 id="開始使用Module"><a href="#開始使用Module" class="headerlink" title="開始使用Module"></a>開始使用Module</h1><p>其實在我們早就已經有使用過Module了，在使用Angular CLI建立一個Angular專案時，就會在src/app下產生一隻為app.module.ts個的檔案，這裡面放著我們Angular專案預設的入口，也就是第一個Module—AppModule，首先讓我們看看裡面的程式：</p>
+<img src="/blog/2017/02/18/angular-tutorial-16-module/0.png">
+<p>從程式中可以看到我們使用Angular CLI建立的components都已經在這裡的<code>declarations: []</code>宣告了，如果你還記得的話，在<a href="http://wellwind.idv.tw/blog/2017/02/03/angular-tutorial-10-service/">之前講到Service時</a>，我們也曾手動將TodoListService加入AppModules的<code>providers: []</code>中，另外還有<strong>BrowserModule、FormsModule</strong>這些宣告，則是Angular中內建可用的modules，少了這些modules，我們就沒有像是<strong>ngIf、nfFor和ngModel</strong>這類的好東西可用哩。</p>
+<p>看到這些內建的modules也給了我們一些啟發，我們可以藉由將程式封裝成一組一組的modules，就可以把它分享出去給別人使用囉！這在團隊中有共用的一些元件、程式時非常有用，我們可以把共用的程式抽出來封裝到modules裡面，然後上傳到private git中，再使用npm指定git路徑安裝，就能在不同專案間共享程式碼啦！甚至可以把你的心血公開上傳到npm，讓全世界一起使用！聽起來就很熱血阿！！</p>
+<p>至於Angular專案怎麼知道AppModule是我們應用程式的入口呢？我們可以打開angular-cli.json看到<strong>apps[0].main</strong>的設定，裡面設定了<strong>main.ts</strong>，這隻程式在Angular CLI編譯打包程式時，會作為主要的程式進入點，而在main.ts中的程式如下：</p>
+<img src="/blog/2017/02/18/angular-tutorial-16-module/1.png">
+<p>我們可以看到<code>platformBrowserDynamic().bootstrapModule(AppModule);</code>就說明了AppModule就是我們啟動時要執行的module啦！因此若是有需要，我們也可以在這裡換成其他的module，很有彈性吧！</p>
+<p>那麼Angular的Module到底可以用來幹嘛呢？根據<a href="https://angular.io/docs/ts/latest/guide/ngmodule.html" target="_blank" rel="noopener">官方文件</a>的說法，Angular Moduleg是一隻由帶有相關metadata物件的<strong>@NgModule</strong>裝飾的function，這些metadata物件告訴我們：</p>
+<ul>
+<li>哪些components、directives和pipes屬於這個module</li>
+<li>module下哪些類別是可以公開給外部使用的</li>
+<li>在這個module下，我們需要匯入哪些其他的module給我們的components、directives和pipes使用</li>
+<li>提供了哪些services是應用程式中所有的組件都可以使用的</li>
+</ul>
+<p>接下來我們將示範把之前寫好的TodoApp封裝到一個module裡面，同時說明如何在<strong>@NgModule</strong>裡面宣告上述的4個部分，在完成後你將會發現我們的程式及目錄結構變得更加清楚！</p>
+<h1 id="建立一個Module"><a href="#建立一個Module" class="headerlink" title="建立一個Module"></a>建立一個Module</h1><p>要建立一個module非常簡單，透過Angular CLI只要一個指令就搞定</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng g m todo-app</span><br></pre></td></tr></table></figure>
+<p>接著你會看到src/app下面多了一個todo-app的資料夾以及<strong>todo-app.module.ts</strong></p>
+<h1 id="搬移相關檔案"><a href="#搬移相關檔案" class="headerlink" title="搬移相關檔案"></a>搬移相關檔案</h1><p>接著我們把跟TodoApp相關的程式都移進這個資料夾</p>
+<img src="/blog/2017/02/18/angular-tutorial-16-module/2.png">
+<p>搬移後變成：</p>
+<img src="/blog/2017/02/18/angular-tutorial-16-module/3.png">
+<p>把所有相關的程式都放在一起，看起來是不是舒適很多呢？接著我們建立一個屬於TodoAppModule的component看看，透過指令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng g c todo-app/todo-app</span><br></pre></td></tr></table></figure>
+<p>我們在用Angular CLI建立程式時，可以輸入相對路徑，程式會建立在你指定的路徑上</p>
+<img src="/blog/2017/02/18/angular-tutorial-16-module/4.png">
+<p>同時，如果你指定的路徑已經包含了module的話，也會自動幫你把相關宣告放在module定義中，打開<strong>todo-app.module.ts</strong>看看</p>
+<img src="/blog/2017/02/18/angular-tutorial-16-module/5.png">
+<p>可以看到Angular CLI在建立component時也幫我們加到自己建立modules中的<code>declarations: []</code>囉，接著我們把AddFormComponent和TodoItems也加入<strong>todo-app.module.ts</strong>的declarations中，順便把TodoDonePipe也加入，並把AppModule裡面同樣的宣告移除掉</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">declarations: [</span><br><span class="line">  TodoAppComponent,</span><br><span class="line">  AddFormComponent,</span><br><span class="line">  TodoItemsComponent,</span><br><span class="line">  TodoDonePipe</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>到目前我們已經達到了前面說明的<code>哪些components、directives和pipes屬於這個module</code>的部分，也就是說，components、directives和pipes在module中，都必須放到<code>declarations: []</code>中宣告，如果一開始就規劃好module的話，這些Angular CLI都會幫我們做好，如果是要搬移的話，還是要手動作囉。</p>
+<h1 id="將TodoListService加入TodoAppModule"><a href="#將TodoListService加入TodoAppModule" class="headerlink" title="將TodoListService加入TodoAppModule"></a>將TodoListService加入TodoAppModule</h1><p>由於TodoListService只需要給TodoAppModule使用，因此我們將TodoAppService加入TodoAppModule的providers: []裡面，預設建立的TodoAppModule可能沒有<code>providers: []</code>，但我們可以自己在<strong>todo-app.module.ts</strong>中加入</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">providers: [TodoListService]</span><br></pre></td></tr></table></figure>
+<p>這裡的目標是宣告module中<code>提供了哪些services是應用程式中所有的組件都可以使用的</code>。</p>
+<h1 id="將TodoAppModule加入AppModule"><a href="#將TodoAppModule加入AppModule" class="headerlink" title="將TodoAppModule加入AppModule"></a>將TodoAppModule加入AppModule</h1><p>接著我們可以把TodoAppModule加入AppModule的<code>imports: []</code>中，告訴AppModule<code>在這個module下，我們需要匯入哪些其他的module給我們的components、directives和pipes使用</code>。</p>
+<p><strong>app.module.ts</strong>內容變成</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">imports: [</span><br><span class="line">  BrowserModule,</span><br><span class="line">  FormsModule,</span><br><span class="line">  HttpModule,</span><br><span class="line">  TodoAppModule</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+<p>另外，在AddForm中我們使用到了<code>ngModel</code>，這個指令放在FormsModules中；因此我們必須在TodoAppModule中匯入FormsModule，而<code>ngIf</code>和<code>ngFor</code>在CommonModule中，但在建立module時預設已經加入囉</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">imports: [</span><br><span class="line">  CommonModule,</span><br><span class="line">  FormsModule</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>你可能發現我們import了CommonModule和FormsModule，但TodoListService用到的HttpModule卻不需要在這裡匯入，是因為Http是一個Service，而Service在AppModule中import之後就可以在所有應用程式下面的組件使用（可以回去翻第三點），而且只會產生一次，以增進效能。</p>
+<p> ngIf和ngFor在CommonModule中，但AppModule並沒有import CommonModule卻可以使用，原因我們稍後說明。</p>
+<h1 id="讓AddFormComponent和TodoItemsComponent可供外部使用"><a href="#讓AddFormComponent和TodoItemsComponent可供外部使用" class="headerlink" title="讓AddFormComponent和TodoItemsComponent可供外部使用"></a>讓AddFormComponent和TodoItemsComponent可供外部使用</h1><p>如果這時候我們執行程式起來，會發現程式無法正常執行，而打開F12時看到這樣的訊息</p>
+<img src="/blog/2017/02/18/angular-tutorial-16-module/6.png">告訴你沒有app-add-form這個component，這是因為我們雖然把AddFormComponent加入TodoAppModule中了，但還需要宣告module下哪些類別是可以公開給外部使用的，我們必須把要提供給外部使用的類別加入exports: []中，因此我們把AddFormComponent和TodoItemsComponent放入這裡面：<br><br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">exports: [</span><br><span class="line">  AddFormComponent,</span><br><span class="line">  TodoItemsComponent</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>再執行看看，就大功告成啦！我們已經成功的把TodoList相關的元件封裝到一個TodoAppModule中囉。</p>
+<p>在AppModule中不用import CommonModule的原因是因為BrowserModule把CommonModule匯入並重新exports了，因此其實在AppModules中等於已經加入CommonModule了</p>
+<p>最後調整一下，把AddFormComponent和TodoItemsComponent都export出來，會變成兩個component可以獨立在不同地方使用，我們不希望發生這樣的事情（e.x.按下AddFormComponent卻看不到任何變化），因此我們把這兩個component加到之前建立的TodoAppComponent的View（<strong>todo-app.component.html</strong>）中：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">app-add-form</span>&gt;</span><span class="tag">&lt;/<span class="name">app-add-form</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">app-todo-items</span>&gt;</span><span class="tag">&lt;/<span class="name">app-todo-items</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>之後只把TodoAppComponent進行export就好囉，TodoAppModule中的<code>exports: []</code>改為：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">exports: [</span><br><span class="line">  TodoAppComponent</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>如此一來在TodoAppModule外就不能單獨使用AddFormComponent或TodoItemsComponent囉！這麼一來封裝性就更加強大，程式的職責也更加清楚啦！！</p>
+<h1 id="單元回顧"><a href="#單元回顧" class="headerlink" title="單元回顧"></a>單元回顧</h1><p>今天我們學到了使用@NgModule來將程式模組化，@NgModule參數為一個metadata物件，內容如下：</p>
+<ul>
+<li><code>declarations: []</code>：哪些components、directives和pipes屬於這個module</li>
+<li><code>exports:[]</code>：module下哪些類別是可以公開給外部使用的</li>
+<li><code>imports:[]</code>：在這個module下，我們需要匯入哪些其他的module給我們的components、directives和pipes使用</li>
+<li><code>providers:[]</code>：提供了哪些services是應用程式中所有的組件都可以使用的</li>
+</ul>
+<p>透過將程式模組化，可以讓程式架構更加明確，搭配Angular CLI會自動幫你將模組化的內容收納在對應的資料夾下，見少無謂的重工，增強生產力；善用module，我們可以架構出更加清楚好維護的程式碼，也能夠更容易的將程式碼分享出去，實在是送人自用兩相宜的好工具阿！！ </p>
+<p>今日程式碼：<a href="https://github.com/wellwind/AngularDotblogsDemo/tree/ModuleDemo" target="_blank" rel="noopener">https://github.com/wellwind/AngularDotblogsDemo/tree/ModuleDemo</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Angular-CLI/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular CLI</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/NgModule/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> \@NgModule</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/02/14/angular-tutorial-15-directive-intro/" rel="next" title="[Angular速成班]使用attribute directive擴充元件屬性">
+                <i class="fa fa-chevron-left"></i> [Angular速成班]使用attribute directive擴充元件屬性
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/03/02/native-script-with-angular-cli/" rel="prev" title="[NativeScript]使用Angular CLI來操作NativeScript專案">
+                [NativeScript]使用Angular CLI來操作NativeScript專案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#開始使用Module"><span class="nav-number">1.</span> <span class="nav-text">開始使用Module</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#建立一個Module"><span class="nav-number">2.</span> <span class="nav-text">建立一個Module</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#搬移相關檔案"><span class="nav-number">3.</span> <span class="nav-text">搬移相關檔案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#將TodoListService加入TodoAppModule"><span class="nav-number">4.</span> <span class="nav-text">將TodoListService加入TodoAppModule</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#將TodoAppModule加入AppModule"><span class="nav-number">5.</span> <span class="nav-text">將TodoAppModule加入AppModule</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#讓AddFormComponent和TodoItemsComponent可供外部使用"><span class="nav-number">6.</span> <span class="nav-text">讓AddFormComponent和TodoItemsComponent可供外部使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#單元回顧"><span class="nav-number">7.</span> <span class="nav-text">單元回顧</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2017/02/18/angular-tutorial-16-module/';
+          this.page.identifier = '2017/02/18/angular-tutorial-16-module/';
+          this.page.title = '[Angular速成班]透過Module組織管理你的程式';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

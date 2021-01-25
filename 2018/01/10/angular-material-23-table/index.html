@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular Material,Material Design,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="今天我們要來介紹Angular Material中最複雜的元件之一：表格Table。透過組合table、sort header和paginator這三個功能，我們會完成一個大部分情境都適用的data table。 Data table可以說是許多軟體都會被使用到的功能，尤其是管理各種資料的後台程式，更是使用data table的大宗來源，而在商務應用上後台軟體的開發需求也是源源不絕，因此data">
+<meta name="keywords" content="Angular Material,Material Design">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular Material完全攻略]收件夾頁面(3) - Table (基礎功能)">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2018/01/10/angular-material-23-table/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="今天我們要來介紹Angular Material中最複雜的元件之一：表格Table。透過組合table、sort header和paginator這三個功能，我們會完成一個大部分情境都適用的data table。 Data table可以說是許多軟體都會被使用到的功能，尤其是管理各種資料的後台程式，更是使用data table的大宗來源，而在商務應用上後台軟體的開發需求也是源源不絕，因此data">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/10/angular-material-23-table/01-table-header.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/10/angular-material-23-table/02-table-data-row.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/10/angular-material-23-table/03-data-table-explain.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/10/angular-material-23-table/04-styled-cell.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/10/angular-material-23-table/05-basic-pagination.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/10/angular-material-23-table/06-pagination-from-backend.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/10/angular-material-23-table/07-basic-sort.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/10/angular-material-23-table/08-sort-from-backend.gif">
+<meta property="og:updated_time" content="2021-01-25T02:06:10.424Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular Material完全攻略]收件夾頁面(3) - Table (基礎功能)">
+<meta name="twitter:description" content="今天我們要來介紹Angular Material中最複雜的元件之一：表格Table。透過組合table、sort header和paginator這三個功能，我們會完成一個大部分情境都適用的data table。 Data table可以說是許多軟體都會被使用到的功能，尤其是管理各種資料的後台程式，更是使用data table的大宗來源，而在商務應用上後台軟體的開發需求也是源源不絕，因此data">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2018/01/10/angular-material-23-table/01-table-header.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2018/01/10/angular-material-23-table/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular Material完全攻略]收件夾頁面(3) - Table (基礎功能) | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2018/01/10/angular-material-23-table/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular Material完全攻略]收件夾頁面(3) - Table (基礎功能)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-10T18:34:20+00:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular-Material完全攻略/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular Material完全攻略</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/01/10/angular-material-23-table/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/10/angular-material-23-table/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天我們要來介紹Angular Material中最複雜的元件之一：<strong>表格Table</strong>。透過組合table、sort header和paginator這三個功能，我們會完成一個大部分情境都適用的data table。</p>
+<p>Data table可以說是許多軟體都會被使用到的功能，尤其是管理各種資料的後台程式，更是使用data table的大宗來源，而在商務應用上後台軟體的開發需求也是源源不絕，因此data table可以說是前端應用最大的一個議題也不為過！</p>
+<p>也因此在Angular Material中要設計data table自然有非常多彈性可以調整的地方，尤其是我們會一次組合3種元件，來完成data table的功能，讓狀況更加的複雜，因此我們會將data table這個主題拆成2篇介紹，今天我們會先完成一個大部分情境都適用的data table，明天則會針對一些細節的部分做進階的介紹；準備好了嗎？開始囉！</p>
+<a id="more"></a>
+<h2 id="關於Material-Design中的Data-Tables"><a href="#關於Material-Design中的Data-Tables" class="headerlink" title="關於Material Design中的Data Tables"></a>關於Material Design中的Data Tables</h2><p>在<a href="https://material.io/guidelines/components/data-tables.html#" target="_blank" rel="noopener">Material Design的Data tables設計指南</a>中，data table用來呈現多筆的資料列，在許多系統中的會使用到，我們能透過data table呈現資料，也能夠進行資料的管理。</p>
+<p>Data table基本上就是表格的呈現，只是比起傳統HTML的表格，應該具備更多的功能，如<strong>分頁、排序</strong>等等。</p>
+<h2 id="開始使用Angular-Material的Data-Table"><a href="#開始使用Angular-Material的Data-Table" class="headerlink" title="開始使用Angular Material的Data Table"></a>開始使用Angular Material的Data Table</h2><p>基本上大多數的data table，都需要3個主要部分：<strong>資料顯示的主體、允許排序的標題及分頁</strong>。在Angular Material中這三個功能分別放在<code>MatTableModule</code>、<code>MatSortModule</code>及<code>MatPaginatorModule</code>，我們今天會一口氣把這三個功能都介紹過，來完成一個基本功能完整的data table，因此我們可以先把這3個module都加到我們的前端專案中。</p>
+<h3 id="使用mat-table"><a href="#使用mat-table" class="headerlink" title="使用mat-table"></a>使用mat-table</h3><p>我們先從最基本的顯示資料主體開始，使用到<code>&lt;mat-table&gt;</code>這個元件；在Angular Material中，使用<code>&lt;mat-table&gt;</code>與一般table的使用方式會略有不同，因此讓我們一步一步的來完成</p>
+<h4 id="準備data-source"><a href="#準備data-source" class="headerlink" title="準備data source"></a>準備data source</h4><p>我們先把資料來源準備好</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123; &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> InboxComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  emailsDataSource = <span class="keyword">new</span> MatTableDataSource&lt;<span class="built_in">any</span>&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> httpClient: HttpClient</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="keyword">this</span>.httpClient.get&lt;<span class="built_in">any</span>&gt;(<span class="string">'https://api.github.com/search/issues?q=repo:angular/material2&amp;page=1'</span>).subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.emailsDataSource.data = data.items;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這裡我們先把Angular Material的GitHub repository中的issues當作是我們的email資料來源，同時我們建立一個<code>emailDataSource</code>當作資料的來源，他的型別是<code>MatTableDataSource&lt;T&gt;</code>，其中的<code>data: T</code>屬性是用來放置主要呈現資料的屬性，其他屬性我們之後的內容慢慢理解。</p>
+<div class="note "><p><strong>資料來源API</strong>：<a href="https://api.github.com/search/issues?q=repo:angular/material2&amp;page=1" target="_blank" rel="noopener">https://api.github.com/search/issues?q=repo:angular/material2&amp;page=1</a></p></div>
+<p>接著在畫面上可以使用一個<code>&lt;mat-table&gt;</code>當作data table的主體，同時使用<code>dataSource</code>屬性設定資料的來源，來源必須是<code>MatTableDataSource&lt;T&gt;</code>，也就是我們在程式中的<code>emailDataSource</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-table</span> [<span class="attr">dataSource</span>]=<span class="string">"emailsDataSource"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="定義表格的欄位及資料呈現"><a href="#定義表格的欄位及資料呈現" class="headerlink" title="定義表格的欄位及資料呈現"></a>定義表格的欄位及資料呈現</h4><p>接著在<code>&lt;mat-table&gt;</code>裡面，我們可以使用<code>&lt;ng-container matColumnDef=&quot;xxxx&quot;&gt;</code>來定義一個表格的欄位(column)，<code>matColumnDef=&quot;xxxx&quot;</code>代表這個欄位的名稱。</p>
+<p>而在欄位裡面需要提供兩個資訊：</p>
+<ul>
+<li><code>&lt;mat-header-cell *matHeaderCellDef&gt;</code>：代表資料在標題列cell內容。</li>
+<li><code>&lt;mat-cell *matCellDef=&quot;let xxx&quot;&gt;</code>：代表實際呈現資料的cell。</li>
+</ul>
+<p>在這裡我們定義了4個column，其中3個負責呈現資料，最後一個則是用來管理資料用的：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-table</span> [<span class="attr">dataSource</span>]=<span class="string">"emailsDataSource"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ng-container</span> <span class="attr">matColumnDef</span>=<span class="string">"user"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-header-cell</span> *<span class="attr">matHeaderCellDef</span>&gt;</span>寄件人<span class="tag">&lt;/<span class="name">mat-header-cell</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-cell</span> *<span class="attr">matCellDef</span>=<span class="string">"let row"</span>&gt;</span>&#123;&#123; row.user.login &#125;&#125;<span class="tag">&lt;/<span class="name">mat-cell</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ng-container</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ng-container</span> <span class="attr">matColumnDef</span>=<span class="string">"title"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-header-cell</span> *<span class="attr">matHeaderCellDef</span>&gt;</span>標題<span class="tag">&lt;/<span class="name">mat-header-cell</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-cell</span> *<span class="attr">matCellDef</span>=<span class="string">"let row"</span>&gt;</span>&#123;&#123; row.title &#125;&#125;<span class="tag">&lt;/<span class="name">mat-cell</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ng-container</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ng-container</span> <span class="attr">matColumnDef</span>=<span class="string">"created_at"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-header-cell</span> *<span class="attr">matHeaderCellDef</span>&gt;</span>日期<span class="tag">&lt;/<span class="name">mat-header-cell</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-cell</span> *<span class="attr">matCellDef</span>=<span class="string">"let row"</span>&gt;</span>&#123;&#123; row.created_at &#125;&#125;<span class="tag">&lt;/<span class="name">mat-cell</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ng-container</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ng-container</span> <span class="attr">matColumnDef</span>=<span class="string">"management"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-header-cell</span> *<span class="attr">matHeaderCellDef</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">u</span>&gt;</span>管理<span class="tag">&lt;/<span class="name">u</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mat-header-cell</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-cell</span> *<span class="attr">matCellDef</span>=<span class="string">"let row"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-button</span> <span class="attr">color</span>=<span class="string">"primary"</span> (<span class="attr">click</span>)=<span class="string">"reply(row)"</span>&gt;</span>回覆<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-button</span> <span class="attr">color</span>=<span class="string">"warn"</span> (<span class="attr">click</span>)=<span class="string">"delete(row)"</span>&gt;</span>刪除<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mat-cell</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ng-container</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="顯示標題資料列"><a href="#顯示標題資料列" class="headerlink" title="顯示標題資料列"></a>顯示標題資料列</h4><p>我們可以使用<code>&lt;mat-header-row *matHeaderRowDef=&quot;[]&quot;&gt;</code>語法，將資料的標題列顯示出來，其中<code>*matHeaderRowDef=&quot;[]&quot;</code>放置的是每個標題欄位的名稱，也就是我們上個步驟的<code>matColumnDef=&quot;xxx&quot;</code>的名稱，設定後會把對應名稱column裡的<code>&lt;mat-header-cell&gt;</code>找出來並呈現在畫面上：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-table</span> [<span class="attr">dataSource</span>]=<span class="string">"emailsDataSource"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ng-container</span> <span class="attr">matColumnDef</span>=<span class="string">"user"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-header-cell</span> *<span class="attr">matHeaderCellDef</span>&gt;</span>寄件人<span class="tag">&lt;/<span class="name">mat-header-cell</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-cell</span> *<span class="attr">matCellDef</span>=<span class="string">"let row"</span>&gt;</span>&#123;&#123; row.user.login &#125;&#125;<span class="tag">&lt;/<span class="name">mat-cell</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ng-container</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-header-row</span> *<span class="attr">matHeaderRowDef</span>=<span class="string">"['user', 'title', 'created_at', 'management']"</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-header-row</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>這時候我們已經可以看到標題列的呈現囉：</p>
+<img src="/blog/2018/01/10/angular-material-23-table/01-table-header.png">
+<h4 id="顯示資料列"><a href="#顯示資料列" class="headerlink" title="顯示資料列"></a>顯示資料列</h4><p>有了標題列之後，我們再來把資料列本身顯示出來，透過<code>&lt;mat-row *matRowDef=&quot;&quot;&gt;</code>的語法，我們可以決定要顯示的欄位資料，使用方式如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-row</span> *<span class="attr">matRowDef</span>=<span class="string">"let emailRow; columns: ['user', 'title', 'created_at', 'management']"</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-row</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在這邊我們拆成兩個部分</p>
+<ul>
+<li><code>let emailRow</code>：代表每一列的資料列名稱，可以想像成類似<code>&lt;ng-container *ngFor=&quot;let emailRow of dataSource.data&quot;&gt;&lt;/ng-container&gt;</code>的概念。</li>
+<li><code>columns</code>：代表實際上要呈現的資料欄位名稱。</li>
+</ul>
+<p>這時候畫面就可以正確呈現data table資料啦！</p>
+<img src="/blog/2018/01/10/angular-material-23-table/02-table-data-row.png">
+<h4 id="圖解程式碼"><a href="#圖解程式碼" class="headerlink" title="圖解程式碼"></a>圖解程式碼</h4><p>用文字其實稍微有點難描述，畢竟這跟我們一般使用<code>&lt;table&gt;</code>、<code>&lt;tr&gt;</code>和<code>&lt;td&gt;</code>的習慣不太相同，所以筆者把程式碼截圖後，搭配圖示解說，可以把以下圖片與上面的步驟做對應，應該會比較好理解：</p>
+<img src="/blog/2018/01/10/angular-material-23-table/03-data-table-explain.png">
+<p>以上就是基本的data table資料的呈現方式，剛開始可能會不太適應，但用習慣之後，你會發現這種設計其實更加直覺，維護起來也會更加容易哩！</p>
+<div class="note info"><p>雖然是以表格的方式呈現，但在Angular Material的data table已經把資料拆成一塊一塊的，再<strong>透過flexbox排版組合</strong>，因此已經不像原生的HTML的<code>&lt;table&gt;</code>了，也同時代表我們能夠有彈性的調整data table的呈現方式囉。</p></div>
+<h3 id="客製化cell樣式"><a href="#客製化cell樣式" class="headerlink" title="客製化cell樣式"></a>客製化cell樣式</h3><p>預設情況下，每個欄位的寬度都會被平均分配，但這不一定是我們需要的，已上述例子來說，「寄件人」其實不用那麼寬，我們可以把空間省下來，至於該如何做呢？其實在每個<code>matColumnDef</code>區塊內，都會依照我們給的名稱，加上<code>mat-column-xxxx</code>的class，例如寄件人欄位我們定義為<code>matColumnDef=&quot;user&quot;</code>，此時在裡面的<code>&lt;mat-header-cell&gt;</code>和<code>&lt;mat-cell&gt;</code>都會加上一個<code>mat-column-user</code>的class，所以我們只需要定義這個class就可以啦！</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.mat-column-user</span> &#123;</span><br><span class="line">  <span class="attribute">max-width</span>: <span class="number">100px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.mat-header-cell</span><span class="selector-class">.mat-column-user</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.mat-cell</span><span class="selector-class">.mat-column-user</span> &#123;</span><br><span class="line">  <span class="attribute">font-weight</span>: bold;</span><br><span class="line">  <span class="attribute">text-decoration</span>: underline dashed <span class="number">#000</span>;</span><br><span class="line">  <span class="attribute">cursor</span>: pointer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述CSS中我們將所有包含<code>.mat-column-user</code>的cell最大寬度都設為<code>100px</code>，同時我們也設定了標題cell改用紅色文字，以及內容cell的樣式調整，結果是否如我們預期呢？</p>
+<p>成果如下：</p>
+<img src="/blog/2018/01/10/angular-material-23-table/04-styled-cell.png">
+<p>果然完全照著我們的預期顯示，完全不用擔心跟原來習慣不同後會不會產生難以做細部調整的問題，真是太棒了！</p>
+<h3 id="加入分頁功能"><a href="#加入分頁功能" class="headerlink" title="加入分頁功能"></a>加入分頁功能</h3><p>接下來我們要加入另一個data table應該具有的重要功能，<strong>分頁</strong>。</p>
+<h4 id="使用前端資料進行分頁"><a href="#使用前端資料進行分頁" class="headerlink" title="使用前端資料進行分頁"></a>使用前端資料進行分頁</h4><p>我們可以使用<code>&lt;mat-paginator&gt;</code>元件，立刻產生一個基本的分頁畫面，並把這個<code>&lt;mat-paginator&gt;</code>傳給我們的<code>MatTableDataSource</code>，這時候就可以把分頁功能和data table綁在一起啦！</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-paginator</span> #<span class="attr">paginator</span> </span></span><br><span class="line"><span class="tag">               [<span class="attr">length</span>]=<span class="string">"totalCount"</span> </span></span><br><span class="line"><span class="tag">               [<span class="attr">pageIndex</span>]=<span class="string">"0"</span> </span></span><br><span class="line"><span class="tag">               [<span class="attr">pageSize</span>]=<span class="string">"10"</span></span></span><br><span class="line"><span class="tag">               [<span class="attr">pageSizeOptions</span>]=<span class="string">"[5, 10, 15]"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-paginator</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>&lt;mat-paginator&gt;</code>的幾個重要屬性說明如下：</p>
+<ul>
+<li><code>length</code>：資料的總筆數，有這個筆數才能夠搭配其他參數算出總共有幾頁等資訊</li>
+<li><code>pageIndex</code>：目前的頁碼，從0開始，預設值是<code>0</code></li>
+<li><code>pageSize</code>：每頁要呈現幾筆資料，預設值是<code>50</code></li>
+<li><code>pageSizeOptions</code>：允許切換的每頁資料筆數</li>
+</ul>
+<p>接著我們調整一下程式的部分：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123; &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> EmailListComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="meta">@ViewChild</span>(<span class="string">'paginator'</span>) paginator: MatPaginator;</span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="keyword">this</span>.httpClient.get&lt;<span class="built_in">any</span>&gt;(<span class="string">'https://api.github.com/search/issues?q=repo:angular/material2&amp;page=1'</span>).subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.totalCount = data.items.length;</span><br><span class="line">      <span class="keyword">this</span>.emailsDataSource.data = data.items;</span><br><span class="line">      <span class="keyword">this</span>.emailsDataSource.paginator = <span class="keyword">this</span>.paginator;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>這裡主要是設定總筆數跟data source所使用的paginator。成果如下：</p>
+<img src="/blog/2018/01/10/angular-material-23-table/05-basic-pagination.gif">
+<h4 id="使用後端資料進行分頁"><a href="#使用後端資料進行分頁" class="headerlink" title="使用後端資料進行分頁"></a>使用後端資料進行分頁</h4><p>剛剛我們已經完成一個基本的分頁了，不過目前這個分頁有點問題，因為分頁的對象是已經撈到前端的資料，因此撈出30筆，就只能針對這30筆做分頁，但在實務上我們常常是需要將分頁資訊傳遞給後端，由後端依照分頁資訊撈取資料後，再傳給前端顯示，這應該怎麼做呢？</p>
+<p>這時候我們就不再需要把<code>&lt;mat-paginator&gt;</code>指定給data srouce，而是接收<code>&lt;mat-paginator&gt;</code>的<code>page: Observable&lt;PageEvent&gt;</code>變動，當使用者切換分頁資訊時，再依照分頁資訊傳遞給後端重新撈取資料，而使用者切換分頁時會得到一個PageEvent，這個PageEvent有3個參數：</p>
+<ul>
+<li><code>pageIndex</code>：頁碼</li>
+<li><code>pageSize</code>：每頁筆數</li>
+<li><code>length</code>：目前資料總筆數(通常是用不到)</li>
+</ul>
+<p>接著就讓我們來調整一下程式碼，讓分頁時可以到後端讀取資料吧！</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123; &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> EmailListComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="meta">@ViewChild</span>(<span class="string">'paginator'</span>) paginator: MatPaginator;</span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line">  </span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="keyword">this</span>.getIssues(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 分頁切換時，重新取得資料</span></span><br><span class="line">    <span class="keyword">this</span>.paginator.page.subscribe(<span class="function">(<span class="params">page: PageEvent</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.getIssues(page.pageIndex, page.pageSize);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  getIssues(pageIndex, pageSize) &#123;</span><br><span class="line">    <span class="keyword">this</span>.httpClient</span><br><span class="line">      .get&lt;<span class="built_in">any</span>&gt;(<span class="string">`https://api.github.com/search/issues?q=repo:angular/material2&amp;page=<span class="subst">$&#123;pageIndex + <span class="number">1</span>&#125;</span>&amp;per_page=<span class="subst">$&#123;pageSize&#125;</span>`</span>)</span><br><span class="line">      .subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.totalCount = data.total_count;</span><br><span class="line">        <span class="keyword">this</span>.emailsDataSource.data = data.items;</span><br><span class="line">        <span class="comment">// 從後端取得資料時，就不用指定data srouce的paginator了</span></span><br><span class="line">        <span class="comment">// this.emailsDataSource.paginator = this.paginator;</span></span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/10/angular-material-23-table/06-pagination-from-backend.gif">
+<p>我們打開<strong>開發人員工具(F12)</strong>，可以看到每次分頁切換時，就會自動往後端查詢資料，然後再更新到畫面上囉。</p>
+<h3 id="加入排序功能"><a href="#加入排序功能" class="headerlink" title="加入排序功能"></a>加入排序功能</h3><p>有了分頁後，我們再來加入排序的功能。</p>
+<h4 id="使用前端資料進行排序"><a href="#使用前端資料進行排序" class="headerlink" title="使用前端資料進行排序"></a>使用前端資料進行排序</h4><p>要替欄位加上排序功能很簡單，首先在<code>&lt;mat-table&gt;</code>中加入<code>matSort</code>，接著在要排序欄位的<code>&lt;mat-header-cell&gt;</code>加入<code>mat-sort-header</code>這個directive即可。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-table</span> [<span class="attr">dataSource</span>]=<span class="string">"emailsDataSource"</span> <span class="attr">matSort</span> #<span class="attr">sortTable</span>=<span class="string">"matSort"</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">ng-container</span> <span class="attr">matColumnDef</span>=<span class="string">"created_at"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-header-cell</span> *<span class="attr">matHeaderCellDef</span> <span class="attr">mat-sort-header</span>&gt;</span>日期<span class="tag">&lt;/<span class="name">mat-header-cell</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-cell</span> *<span class="attr">matCellDef</span>=<span class="string">"let row"</span>&gt;</span>&#123;&#123; row.created_at &#125;&#125;<span class="tag">&lt;/<span class="name">mat-cell</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ng-container</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>跟前端資料分頁時一樣，要把這個<code>matSort</code>的來源交給data source</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123; &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> EmailListComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="meta">@ViewChild</span>(<span class="string">'sortTable'</span>) sortTable: MatSort;</span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">  getIssues(pageIndex, pageSize) &#123;</span><br><span class="line">    <span class="keyword">this</span>.httpClient</span><br><span class="line">      .get&lt;<span class="built_in">any</span>&gt;(<span class="string">`https://api.github.com/search/issues?q=repo:angular/material2&amp;page=<span class="subst">$&#123;pageIndex + <span class="number">1</span>&#125;</span>&amp;per_page=<span class="subst">$&#123;pageSize&#125;</span>`</span>)</span><br><span class="line">      .subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.totalCount = data.total_count;</span><br><span class="line">        <span class="keyword">this</span>.emailsDataSource.data = data.items;</span><br><span class="line">        <span class="comment">// 設定使用前端資料排序</span></span><br><span class="line">        <span class="keyword">this</span>.emailsDataSource.sort = <span class="keyword">this</span>.sortTable;</span><br><span class="line">        <span class="comment">// 從後端取得資料時，就不用指定data srouce的paginator了</span></span><br><span class="line">        <span class="comment">// this.emailsDataSource.paginator = this.paginator;</span></span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/10/angular-material-23-table/07-basic-sort.gif">
+<h4 id="使用後端資料進行排序"><a href="#使用後端資料進行排序" class="headerlink" title="使用後端資料進行排序"></a>使用後端資料進行排序</h4><p>當然，我們也一樣可以透過把資料傳遞給後端的方式來進行排序，只需要在加入<code>matSort</code>的來源(也就是<code>&lt;mat-table&gt;</code>)加入一個<code>matSortChange</code>事件即可，當使用者按下欄位排序時，會傳入一個<code>Sort</code>型別的變數，包含兩個欄位：</p>
+<ul>
+<li>active：選擇要排序的欄位。</li>
+<li>direction：包含<code>asc</code>，<code>desc</code>和<code>空字串</code>，代表要如何進行排序。</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-table</span> [<span class="attr">dataSource</span>]=<span class="string">"emailsDataSource"</span> <span class="attr">matSort</span> #<span class="attr">sortTable</span>=<span class="string">"matSort"</span> (<span class="attr">matSortChange</span>)=<span class="string">"changeSort($event)"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>接著我們針對<code>matSortChange</code>來處理排序，並把程式做一些比較大的調整：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123; &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> EmailListComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="meta">@ViewChild</span>(<span class="string">'paginator'</span>) paginator: MatPaginator;</span><br><span class="line">  <span class="meta">@ViewChild</span>(<span class="string">'sortTable'</span>) sortTable: MatSort;</span><br><span class="line"></span><br><span class="line">  currentPage: PageEvent;</span><br><span class="line">  currentSort: Sort;</span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="keyword">this</span>.currentPage = &#123;</span><br><span class="line">      pageIndex: <span class="number">0</span>,</span><br><span class="line">      pageSize: <span class="number">10</span>,</span><br><span class="line">      length: <span class="literal">null</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.currentSort = &#123;</span><br><span class="line">      active: <span class="string">''</span>,</span><br><span class="line">      direction: <span class="string">''</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.getIssues();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 分頁切換時，重新取得資料</span></span><br><span class="line">    <span class="keyword">this</span>.paginator.page.subscribe(<span class="function">(<span class="params">page: PageEvent</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.currentPage = page;</span><br><span class="line">      <span class="keyword">this</span>.getIssues();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  changeSort(sortInfo: Sort) &#123;</span><br><span class="line">    <span class="comment">// 因為API排序欄位是created，因此在這邊做調整</span></span><br><span class="line">    <span class="keyword">if</span> (sortInfo.active === <span class="string">'created_at'</span>) &#123;</span><br><span class="line">      sortInfo.active = <span class="string">'created'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.currentSort = sortInfo;</span><br><span class="line">    <span class="keyword">this</span>.getIssues();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  getIssues() &#123;</span><br><span class="line">    <span class="keyword">const</span> baseUrl = <span class="string">'https://api.github.com/search/issues?q=repo:angular/material2'</span>;</span><br><span class="line">    <span class="keyword">let</span> targetUrl = <span class="string">`<span class="subst">$&#123;baseUrl&#125;</span>&amp;page=<span class="subst">$&#123;<span class="keyword">this</span>.currentPage.pageIndex + <span class="number">1</span>&#125;</span>&amp;per_page=<span class="subst">$&#123;<span class="keyword">this</span>.currentPage.pageSize&#125;</span>`</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.currentSort.direction) &#123;</span><br><span class="line">      targetUrl = <span class="string">`<span class="subst">$&#123;targetUrl&#125;</span>&amp;&amp;sort=<span class="subst">$&#123;<span class="keyword">this</span>.currentSort.active&#125;</span>&amp;order=<span class="subst">$&#123;<span class="keyword">this</span>.currentSort.direction&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.httpClient</span><br><span class="line">      .get&lt;<span class="built_in">any</span>&gt;(targetUrl)</span><br><span class="line">      .subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.totalCount = data.total_count;</span><br><span class="line">        <span class="keyword">this</span>.emailsDataSource.data = data.items;</span><br><span class="line">        <span class="comment">// 從後端進行排序時，不用指定sort</span></span><br><span class="line">        <span class="comment">// this.emailsDataSource.sort = this.sortTable;</span></span><br><span class="line">        <span class="comment">// 從後端取得資料時，就不用指定data srouce的paginator了</span></span><br><span class="line">        <span class="comment">// this.emailsDataSource.paginator = this.paginator;</span></span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程式碼看起來有點多，但主要的部分就是把分頁和排序都串在一起，然後再一次跟後端取得資料。</p>
+<p>成果如下：</p>
+<img src="/blog/2018/01/10/angular-material-23-table/08-sort-from-backend.gif">
+<p>同樣的打開<strong>開發人員工具(F12)</strong>，可已看到每次按排序時，就會自動向後端抓資料囉。</p>
+<h2 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h2><p>在資料呈現上，data table可以說是最實用的一種呈現方式，傳統使用<code>&lt;table&gt;</code>呈現資料有許多的限制，但若要自己使用CSS排版來重新設計一個data table也不是一件容易的事情，好在Angular Material幫我們設計了一個<code>&lt;mat-table&gt;</code>來實現各種data table所需要的功能。</p>
+<p>今天我們把一個data table最關鍵的三個部分：顯示資料、分頁及排序都介紹過了，剛開始也許會對於這樣的設計方式不太習慣，但多做幾次後就不難發現這種設計方式會更加直覺，管理上也更加容易。</p>
+<p>不管是從前端整理資料，還是把排序、分頁等資訊都交給後端處理，在Angular Material的data table都有對應的方法，以期漂亮的UI，在設計上可以說是沒死角！</p>
+<p>本日的程式碼GitHub：<a href="https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-23-data-table" target="_blank" rel="noopener">https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-23-data-table</a></p>
+<p>分支：day-23-table</p>
+<p>明天我們會在介紹兩個進階的data table功能，以及針對排序、分頁功能做一些進階的說明。</p>
+<h2 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h2><ul>
+<li><a href="https://material.io/guidelines/components/data-tables.html#" target="_blank" rel="noopener">Material Design - Data tables</a></li>
+<li><a href="https://material.angular.io/components/table/overview" target="_blank" rel="noopener">Angular Material - Table</a></li>
+<li><a href="https://material.angular.io/components/sort/overview" target="_blank" rel="noopener">Angular Material - Sort header</a></li>
+<li><a href="https://material.angular.io/components/sort/overview" target="_blank" rel="noopener">Angular Material - Paginator</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular-Material/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular Material</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Material-Design/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Material Design</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/01/09/angular-material-22-tabs/" rel="next" title="[Angular Material完全攻略]收件夾頁面(2) - Tabs">
+                <i class="fa fa-chevron-left"></i> [Angular Material完全攻略]收件夾頁面(2) - Tabs
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/01/11/angular-material-24-table-advanced/" rel="prev" title="[Angular Material完全攻略]收件夾頁面(4) - Table (進階功能)">
+                [Angular Material完全攻略]收件夾頁面(4) - Table (進階功能) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#關於Material-Design中的Data-Tables"><span class="nav-number">1.</span> <span class="nav-text">關於Material Design中的Data Tables</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#開始使用Angular-Material的Data-Table"><span class="nav-number">2.</span> <span class="nav-text">開始使用Angular Material的Data Table</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-table"><span class="nav-number">2.1.</span> <span class="nav-text">使用mat-table</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#準備data-source"><span class="nav-number">2.1.1.</span> <span class="nav-text">準備data source</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定義表格的欄位及資料呈現"><span class="nav-number">2.1.2.</span> <span class="nav-text">定義表格的欄位及資料呈現</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#顯示標題資料列"><span class="nav-number">2.1.3.</span> <span class="nav-text">顯示標題資料列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#顯示資料列"><span class="nav-number">2.1.4.</span> <span class="nav-text">顯示資料列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#圖解程式碼"><span class="nav-number">2.1.5.</span> <span class="nav-text">圖解程式碼</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客製化cell樣式"><span class="nav-number">2.2.</span> <span class="nav-text">客製化cell樣式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加入分頁功能"><span class="nav-number">2.3.</span> <span class="nav-text">加入分頁功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用前端資料進行分頁"><span class="nav-number">2.3.1.</span> <span class="nav-text">使用前端資料進行分頁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用後端資料進行分頁"><span class="nav-number">2.3.2.</span> <span class="nav-text">使用後端資料進行分頁</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加入排序功能"><span class="nav-number">2.4.</span> <span class="nav-text">加入排序功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用前端資料進行排序"><span class="nav-number">2.4.1.</span> <span class="nav-text">使用前端資料進行排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用後端資料進行排序"><span class="nav-number">2.4.2.</span> <span class="nav-text">使用後端資料進行排序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本日小結"><span class="nav-number">3.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相關資源"><span class="nav-number">4.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2018/01/10/angular-material-23-table/';
+          this.page.identifier = '2018/01/10/angular-material-23-table/';
+          this.page.title = '[Angular Material完全攻略]收件夾頁面(3) - Table (基礎功能)';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

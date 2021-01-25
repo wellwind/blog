@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular Material,Material Design,MatSelect,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="前兩天我們很精實的學習的跟Input相關的3個元件－Input、Autocomplete和Datepicker。今天我們用比較輕鬆的步調來介紹另一個常用的元件－Select。">
+<meta name="keywords" content="Angular Material,Material Design,MatSelect">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular Material完全攻略]打造問卷頁面(4) - Select">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="前兩天我們很精實的學習的跟Input相關的3個元件－Input、Autocomplete和Datepicker。今天我們用比較輕鬆的步調來介紹另一個常用的元件－Select。">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/01-mat-select-basic.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/02-mat-select-placeholder.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/03-disabled-mat-select.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/04-disabled-mat-option.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/05-reset-select.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/06-mat-optgroup.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/07-mutiple-select.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/08-mat-select-trigger.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/09-disableRipple-before.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/10-disableRipple-after.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/11-panelclass-select.gif">
+<meta property="og:updated_time" content="2021-01-25T02:06:09.912Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular Material完全攻略]打造問卷頁面(4) - Select">
+<meta name="twitter:description" content="前兩天我們很精實的學習的跟Input相關的3個元件－Input、Autocomplete和Datepicker。今天我們用比較輕鬆的步調來介紹另一個常用的元件－Select。">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/01-mat-select-basic.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular Material完全攻略]打造問卷頁面(4) - Select | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2017/12/30/angular-material-12-select/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular Material完全攻略]打造問卷頁面(4) - Select</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-12-30T19:41:48+00:00">
+                2017-12-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular-Material完全攻略/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular Material完全攻略</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2017/12/30/angular-material-12-select/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/30/angular-material-12-select/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前兩天我們很精實的學習的跟Input相關的3個元件－Input、Autocomplete和Datepicker。今天我們用比較輕鬆的步調來介紹另一個常用的元件－Select。</p>
+<a id="more"></a>
+<h2 id="關於Angular-Material的Select"><a href="#關於Angular-Material的Select" class="headerlink" title="關於Angular Material的Select"></a>關於Angular Material的Select</h2><p>在Angular Material中，Select的設計是依循著<a href="https://material.io/guidelines/components/menus.html" target="_blank" rel="noopener">menus這個單元</a>來設計的，畢竟select與menu其實本質上是大同小異的，都是用來從多個選項中選擇一個或多個答案，所以在設計上風格也不會差太大，只是menu的概念偏向於<strong>選擇後執行某個動作</strong>，而select則是在作為<strong>表單中保存資料的一個元件</strong>，也因此跟menu最大不同的是，select支援<code>ngModel</code>和<code>formControlName</code>這類的<strong>表單綁定功能</strong>。</p>
+<h2 id="開始使用Angular-Material的Select"><a href="#開始使用Angular-Material的Select" class="headerlink" title="開始使用Angular Material的Select"></a>開始使用Angular Material的Select</h2><p>在Angular Material中，Select跟Input這類元件一樣，都需要跟<code>&lt;mat-form-field&gt;</code>一起合作，才能發揮最大的威力，而Select的元件都在<code>MatSelectModule</code>之中，加入這個Module之後，我們可以簡單地組合使用<code>&lt;mat-select&gt;</code>和<code>&lt;mat-option&gt;</code>來達到類似HTML的<code>&lt;select&gt;</code>功能，但<strong>更具有Material Design的風格</strong>。</p>
+<h3 id="使用mat-select和mat-option"><a href="#使用mat-select和mat-option" class="headerlink" title="使用mat-select和mat-option"></a>使用mat-select和mat-option</h3><p><code>&lt;mat-select&gt;</code>和<code>&lt;mat-option&gt;</code>使用上非常類似於HTML的<code>&lt;select&gt;</code>和<code>&lt;option&gt;</code>，因此使用上非常容易上手：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-select</span> <span class="attr">formControlName</span>=<span class="string">"interest"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-option</span> *<span class="attr">ngFor</span>=<span class="string">"let item of interestList"</span> [<span class="attr">value</span>]=<span class="string">"item.id"</span>&gt;</span>&#123;&#123; item.name &#125;&#125;<span class="tag">&lt;/<span class="name">mat-option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>看起來是不是跟我們直接用<code>&lt;select&gt;</code> / <code>&lt;option&gt;</code> 產生的語法差不多啊！但畫面上可就是滿滿的Material Design了！</p>
+<img src="/blog/2017/12/30/angular-material-12-select/01-mat-select-basic.gif">
+<div class="note info"><p><strong>小技巧</strong>：如果沒有要搭配表單的話，可以直接使用<code>[(value)]</code>來達到two way binding的效果。</p></div>
+<h3 id="設定placeholder屬性"><a href="#設定placeholder屬性" class="headerlink" title="設定placeholder屬性"></a>設定placeholder屬性</h3><p>上面的select雖然充滿了Material Design的風格，但還差了一點，就是沒有像Input類型的placeholder來替代label顯示欄位名稱。在原生HTML中<code>select</code>是沒有placeholder可以使用的，比較常見的技巧是透過一個<code>&lt;option [value]=&quot;null&quot;&gt;text&lt;/option&gt;</code>來<strong>假裝</strong>成placeholder，但在Angular Material中我們可以在<code>&lt;mat-select&gt;</code>元件中直接使用<code>placeholder</code>，實在是非常方便！</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-select</span> <span class="attr">formControlName</span>=<span class="string">"interest"</span> <span class="attr">placeholder</span>=<span class="string">"你的休閒愛好?"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-option</span> *<span class="attr">ngFor</span>=<span class="string">"let item of interestList"</span> [<span class="attr">value</span>]=<span class="string">"item.id"</span>&gt;</span>&#123;&#123; item.name &#125;&#125;<span class="tag">&lt;/<span class="name">mat-option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/30/angular-material-12-select/02-mat-select-placeholder.png">
+<p>畫面上看起來就更加一致啦！</p>
+<h3 id="設定disabled屬性"><a href="#設定disabled屬性" class="headerlink" title="設定disabled屬性"></a>設定disabled屬性</h3><p>不管是<code>&lt;mat-select&gt;</code>還是<code>&lt;mat-option&gt;</code>，都能夠透過<code>disabled</code>來設定其允許被選取的狀態。我們先看看在<code>&lt;mat-select&gt;</code>加上<code>disabled</code>屬性後的樣式：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-select</span> <span class="attr">formControlName</span>=<span class="string">"interest"</span> <span class="attr">placeholder</span>=<span class="string">"你的休閒愛好?"</span> <span class="attr">disabled</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-option</span> *<span class="attr">ngFor</span>=<span class="string">"let item of interestList"</span> [<span class="attr">value</span>]=<span class="string">"item.id"</span>&gt;</span>&#123;&#123; item.name &#125;&#125;<span class="tag">&lt;/<span class="name">mat-option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/30/angular-material-12-select/03-disabled-mat-select.png">
+<p>可以看到整個select變成虛線底線，代表了disabled的狀態。</p>
+<p>接著我們看看<code>mat-option</code>加上<code>disabled</code>屬性後的結果：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-select</span> <span class="attr">formControlName</span>=<span class="string">"interest"</span> <span class="attr">placeholder</span>=<span class="string">"你的休閒愛好?"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-option</span> *<span class="attr">ngFor</span>=<span class="string">"let item of interestList; let index = index"</span> [<span class="attr">value</span>]=<span class="string">"item.id"</span> [<span class="attr">disabled</span>]=<span class="string">"index === 1"</span>&gt;</span>&#123;&#123; item.name &#125;&#125;<span class="tag">&lt;/<span class="name">mat-option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/30/angular-material-12-select/04-disabled-mat-option.png">
+<p>被設定為<code>disabled</code>屬性的選項變成灰底，也就無法選取囉。</p>
+<h3 id="還原mat-select的選取狀態"><a href="#還原mat-select的選取狀態" class="headerlink" title="還原mat-select的選取狀態"></a>還原mat-select的選取狀態</h3><p>目前設定好<code>&lt;mat-option&gt;</code>並進行選擇後，是無法取消目前的選取狀態的，這會使得選項非必填無法反悔，這時候我們可以加入一個沒有設定<code>[value]</code>(其實也就是<code>[value]=&quot;undefined&quot;</code>)的<code>&lt;mat-option&gt;</code>，當選到這個選項時，就會自動跳回沒有選擇任何選項的模式，也就是還看得到placeholder的狀態：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-select</span> <span class="attr">formControlName</span>=<span class="string">"interest"</span> <span class="attr">placeholder</span>=<span class="string">"你的休閒愛好?"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-option</span> [<span class="attr">value</span>]=<span class="string">"undefined"</span>&gt;</span>無<span class="tag">&lt;/<span class="name">mat-option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-option</span> *<span class="attr">ngFor</span>=<span class="string">"let item of interestList; let index = index"</span> [<span class="attr">value</span>]=<span class="string">"item.id"</span> [<span class="attr">disabled</span>]=<span class="string">"index === 1"</span>&gt;</span>&#123;&#123; item.name &#125;&#125;<span class="tag">&lt;/<span class="name">mat-option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/30/angular-material-12-select/05-reset-select.gif">
+<p>當我們選到「無」的時候，就會自動換成最原始顯示placeholder的狀態啦！</p>
+<h3 id="使用mat-optgroup群組為選項分群組"><a href="#使用mat-optgroup群組為選項分群組" class="headerlink" title="使用mat-optgroup群組為選項分群組"></a>使用mat-optgroup群組為選項分群組</h3><p>HTML的select可以使用<code>&lt;optgroup label=&quot;xxx&quot;&gt;</code>來為<code>&lt;option&gt;</code>分組放置，Angular Material當然也不會忽略掉這部分，在Angular Material中我們可以使用<code>&lt;mat-optgroup&gt;</code>來達到一樣的功能，要設定整個群組的disabled狀態也完全沒問題！</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-select</span> <span class="attr">formControlName</span>=<span class="string">"interest"</span> <span class="attr">placeholder</span>=<span class="string">"你的休閒愛好?"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-option</span> [<span class="attr">value</span>]=<span class="string">"undefined"</span>&gt;</span>無<span class="tag">&lt;/<span class="name">mat-option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-optgroup</span> *<span class="attr">ngFor</span>=<span class="string">"let parent of nestInterestList; let index = index"</span> [<span class="attr">label</span>]=<span class="string">"parent.name"</span> [<span class="attr">disabled</span>]=<span class="string">"index===1"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-option</span> *<span class="attr">ngFor</span>=<span class="string">"let child of parent.subItems"</span> [<span class="attr">value</span>]=<span class="string">"child.id"</span>&gt;</span>&#123;&#123; child.name &#125;&#125;<span class="tag">&lt;/<span class="name">mat-option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-optgroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/30/angular-material-12-select/06-mat-optgroup.gif">
+<p>資料依照<code>mat-optgroup</code>方式分群組顯示，而當<code>mat-optgroup</code>有設定<code>disabled</code>時，整個群組也會直接變成不可選取的灰色狀態，使用上真的跟原生的感覺很像呢！</p>
+<h3 id="設定multiple變更多選狀態"><a href="#設定multiple變更多選狀態" class="headerlink" title="設定multiple變更多選狀態"></a>設定multiple變更多選狀態</h3><p>跟原生的select一樣，我們也可以透過設定<code>mutiple</code>屬性，讓<code>&lt;mat-select&gt;</code>變為可複選狀態，此時binding的資料將會變成一個陣列，同時選擇<code>[value]=&quot;undefined&quot;</code>的<code>mat-option</code>也只會讓陣列中多一個undefined元素而已，要還原成原來的狀態只需要<strong>不勾選任何選項即可</strong>。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-select</span> <span class="attr">formControlName</span>=<span class="string">"interest"</span> <span class="attr">placeholder</span>=<span class="string">"你的休閒愛好?"</span> <span class="attr">multiple</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/30/angular-material-12-select/07-mutiple-select.gif">
+<div class="note info"><p>在<code>mutiple</code>中屬性有一點值得注意的是，<strong>這個屬性不可為動態的</strong>，也就是無法以設定<code>[multiple]=&quot;isMultiple&quot;</code>這樣的方式來切換單/多選狀態，因為這個狀態會影響顯示的邏輯，因此是在元件產生時就決定好了，若需要切換mutiple狀態，請使用<code>ngIf</code>或<code>ngSwitch</code>來變換，例如：</p></div>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-select</span> *<span class="attr">ngIf</span>=<span class="string">"isMultiple"</span> <span class="attr">multiple</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-select</span> *<span class="attr">ngIf</span>=<span class="string">"!isMultiple"</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="使用mat-select-trigger自訂label顯示資料"><a href="#使用mat-select-trigger自訂label顯示資料" class="headerlink" title="使用mat-select-trigger自訂label顯示資料"></a>使用mat-select-trigger自訂label顯示資料</h3><p><code>&lt;mat-select&gt;</code>有自己的顯示資料的方式，這部分我們可以透過<code>&lt;mat-select-trigger&gt;</code>覆蓋掉原來的顯示資料方式：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-select</span> <span class="attr">formControlName</span>=<span class="string">"interest"</span> #<span class="attr">selectInterest</span> <span class="attr">placeholder</span>=<span class="string">"你的休閒愛好?"</span> <span class="attr">multiple</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-select-trigger</span>&gt;</span></span><br><span class="line">      共選擇了 &#123;&#123; selectInterest.selected.length &#125;&#125; 項興趣</span><br><span class="line">    <span class="tag">&lt;/<span class="name">mat-select-trigger</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2017/12/30/angular-material-12-select/08-mat-select-trigger.gif">
+<p>我們成功地自訂了資料顯示的邏輯，透過<code>&lt;mat-select-trigger&gt;</code>資料呈現就不再死板啦！</p>
+<h3 id="取消ripple特效"><a href="#取消ripple特效" class="headerlink" title="取消ripple特效"></a>取消ripple特效</h3><p>預設的<code>&lt;mat-select&gt;</code>在選取時會有一個漣漪的效果，如下：</p>
+<img src="/blog/2017/12/30/angular-material-12-select/09-disableRipple-before.gif">
+<p>如果不喜歡，可以設定<code>disableRipple</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-select</span> <span class="attr">...</span> <span class="attr">disableRipple</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/30/angular-material-12-select/10-disableRipple-after.gif">
+<p>沒有特效可能看起來會比較清爽，但也可能會比較無聊，至於怎麼樣顯示比較好，就看個人喜好囉。</p>
+<h3 id="自訂下拉panel的樣式"><a href="#自訂下拉panel的樣式" class="headerlink" title="自訂下拉panel的樣式"></a>自訂下拉panel的樣式</h3><p><code>&lt;mat-select&gt;</code>提供了<code>panelClass</code>屬性，方便我們自訂下拉選單的樣式，我們可以先在<code>&lt;mat-select&gt;</code>中設定這個屬性：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-select</span> <span class="attr">...</span> <span class="attr">panelClass</span>=<span class="string">"blue-dropdown"</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>接著需要提醒的是，由於這些功能都被拉到共用的Angular CDK的關係，因此若直接在component.css中設定會無效，除非額外設定<code>ViewEncapsulation</code>，或是直接在全域的style.css中加入就好：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.blue-dropdown</span> <span class="selector-class">.mat-select-content</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>, <span class="number">0.5</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2017/12/30/angular-material-12-select/11-panelclass-select.gif">
+<h2 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h2><p>今天我們介紹了另一個實用的元件<code>mat-select</code>，這個元件使用上幾乎跟HTML原生的<code>select</code>一樣，大部分的設定都非常直覺好懂，同時Angular Material又針對<code>mat-select</code>增加了更多的功能及細微可以調整的地方，讓下拉選單的功能更加豐富好用！</p>
+<p>關於這幾天我們一直提到一個包在我們的表單控制項之外的元件<code>mat-form-field</code>，是一個讓輸入控制欄位活起來的強大外皮，明天我們再來仔細地介紹它！</p>
+<p>本日的程式碼GitHub：<a href="https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-12-select" target="_blank" rel="noopener">https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-12-select</a></p>
+<p>分支：day-12-select</p>
+<h2 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h2><ul>
+<li><a href="https://material.angular.io/components/select/overview" target="_blank" rel="noopener">Angular Material - Select</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular-Material/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular Material</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Material-Design/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Material Design</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/MatSelect/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> MatSelect</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/12/29/angular-material-11-datepicker/" rel="next" title="[Angular Material完全攻略]打造問卷頁面(3) - Datepicker">
+                <i class="fa fa-chevron-left"></i> [Angular Material完全攻略]打造問卷頁面(3) - Datepicker
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/12/31/angular-material-13-form-field/" rel="prev" title="[Angular Material完全攻略]打造問卷頁面(5) - Form Field">
+                [Angular Material完全攻略]打造問卷頁面(5) - Form Field <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#關於Angular-Material的Select"><span class="nav-number">1.</span> <span class="nav-text">關於Angular Material的Select</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#開始使用Angular-Material的Select"><span class="nav-number">2.</span> <span class="nav-text">開始使用Angular Material的Select</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-select和mat-option"><span class="nav-number">2.1.</span> <span class="nav-text">使用mat-select和mat-option</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定placeholder屬性"><span class="nav-number">2.2.</span> <span class="nav-text">設定placeholder屬性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定disabled屬性"><span class="nav-number">2.3.</span> <span class="nav-text">設定disabled屬性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#還原mat-select的選取狀態"><span class="nav-number">2.4.</span> <span class="nav-text">還原mat-select的選取狀態</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-optgroup群組為選項分群組"><span class="nav-number">2.5.</span> <span class="nav-text">使用mat-optgroup群組為選項分群組</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定multiple變更多選狀態"><span class="nav-number">2.6.</span> <span class="nav-text">設定multiple變更多選狀態</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-select-trigger自訂label顯示資料"><span class="nav-number">2.7.</span> <span class="nav-text">使用mat-select-trigger自訂label顯示資料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取消ripple特效"><span class="nav-number">2.8.</span> <span class="nav-text">取消ripple特效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自訂下拉panel的樣式"><span class="nav-number">2.9.</span> <span class="nav-text">自訂下拉panel的樣式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本日小結"><span class="nav-number">3.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相關資源"><span class="nav-number">4.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2017/12/30/angular-material-12-select/';
+          this.page.identifier = '2017/12/30/angular-material-12-select/';
+          this.page.title = '[Angular Material完全攻略]打造問卷頁面(4) - Select';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

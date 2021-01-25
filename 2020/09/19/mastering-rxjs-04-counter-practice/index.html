@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="RxJS,map,filter,fromEvent,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="在昨天的文章最後我們出了一個「簡易計數器」的練習，今天就來看看該如何實作這些功能吧！">
+<meta name="keywords" content="RxJS,map,filter,fromEvent">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[RxJS] 隨堂測驗 - 簡易計數器">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2020/09/19/mastering-rxjs-04-counter-practice/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="在昨天的文章最後我們出了一個「簡易計數器」的練習，今天就來看看該如何實作這些功能吧！">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/19/mastering-rxjs-04-counter-practice/01.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/19/mastering-rxjs-04-counter-practice/02.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/19/mastering-rxjs-04-counter-practice/03.gif">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.352Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[RxJS] 隨堂測驗 - 簡易計數器">
+<meta name="twitter:description" content="在昨天的文章最後我們出了一個「簡易計數器」的練習，今天就來看看該如何實作這些功能吧！">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2020/09/19/mastering-rxjs-04-counter-practice/01.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2020/09/19/mastering-rxjs-04-counter-practice/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[RxJS] 隨堂測驗 - 簡易計數器 | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2020/09/19/mastering-rxjs-04-counter-practice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[RxJS] 隨堂測驗 - 簡易計數器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-09-19T18:00:00+00:00">
+                2020-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/" itemprop="url" rel="index">
+                    <span itemprop="name">打通 RxJS 任督二脈</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/第-12-屆鐵人賽/" itemprop="url" rel="index">
+                    <span itemprop="name">第 12 屆鐵人賽</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2020/09/19/mastering-rxjs-04-counter-practice/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/09/19/mastering-rxjs-04-counter-practice/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在昨天的文章最後我們出了一個「簡易計數器」的練習，今天就來看看該如何實作這些功能吧！</p>
+<a id="more"></a>
+<p>實作完成的程式範例：<a href="https://stackblitz.com/edit/mastering-rxjs-practice-day04-counter" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-practice-day04-counter</a></p>
+<h1 id="題目回顧"><a href="#題目回顧" class="headerlink" title="題目回顧"></a>題目回顧</h1><ul>
+<li>畫面必須顯示三個資訊：<ul>
+<li>目前狀態：包含「開始計數」、「完成」和「錯誤」(包含錯誤訊息)。</li>
+<li>目前計數：當計數器建立後，顯示「計數」按鈕被點擊的次數。</li>
+<li>偶數計數：每當「目前計數」數值為偶數時，顯示這個偶數值。</li>
+</ul>
+</li>
+<li>畫面包含四個按鈕，功能如下：<ul>
+<li>「開始新的計數器」按鈕：重新建立一個新的計數器，必須使用 <code>new Subject()</code> 來建立；並在「目前狀態」資訊顯示「開始計數」。</li>
+<li>「計數」按鈕：當建立新的計數器後，每按下計數按鈕，顯示的計數值就加 1。</li>
+<li>「發生錯誤」按鈕：要求使用者輸入錯誤訊息，並將錯誤訊息顯示在「目前狀態」資訊內。</li>
+<li>「完成計數」按鈕：在「目前狀態」資訊顯示「完成」</li>
+</ul>
+</li>
+<li>其他要求：<ul>
+<li>當按下「開始新的計數器」時，所有計數器歸 0。</li>
+<li>當按下「發生錯誤」或「完成計數」，除非按下「開始新的計數器」，否則其他按鈕按下不會有任何動作。</li>
+</ul>
+</li>
+</ul>
+<p>最終畫面預期如下：</p>
+<img src="/blog/2020/09/19/mastering-rxjs-04-counter-practice/01.gif">
+<h1 id="實作步驟"><a href="#實作步驟" class="headerlink" title="實作步驟"></a>實作步驟</h1><p>簡單溫習一下 RxJS 使用的三個步驟</p>
+<ol>
+<li>建立新的 Observable</li>
+<li>使用 Operators 來組合/轉換 Observables</li>
+<li>訂閱 Observable</li>
+</ol>
+<p>接下來我們就依循這些步驟，來一步一步完成目標功能囉</p>
+<h2 id="步驟1：HTML-結構與-DOM-預處理"><a href="#步驟1：HTML-結構與-DOM-預處理" class="headerlink" title="步驟1：HTML 結構與 DOM 預處理"></a>步驟1：HTML 結構與 DOM 預處理</h2><p>由於已經知道需要 4 個按鈕，及三種資訊的文字，所以 HTML 部分很簡單：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">'start'</span>&gt;</span>開始新的計數器<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">'count'</span>&gt;</span>計數<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">'error'</span>&gt;</span>發生錯誤<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">'complete'</span>&gt;</span>完成計數<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 顯示目前計數器狀態 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">'status'</span>&gt;</span></span><br><span class="line">  目前狀態：</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 目前計數的值 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">'currentCounter'</span>&gt;</span></span><br><span class="line">  目前計數：</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 偶數計數值 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">'evenCounter'</span>&gt;</span></span><br><span class="line">  偶數計數：</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>並且在 JavaScript 中先取得這些元素</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 開始按鈕</span></span><br><span class="line"><span class="keyword">const</span> startButton = <span class="built_in">document</span>.querySelector(<span class="string">'#start'</span>);</span><br><span class="line"><span class="comment">// 計數按鈕</span></span><br><span class="line"><span class="keyword">const</span> countButton = <span class="built_in">document</span>.querySelector(<span class="string">'#count'</span>);</span><br><span class="line"><span class="comment">// 發生錯誤按鈕</span></span><br><span class="line"><span class="keyword">const</span> errorButton = <span class="built_in">document</span>.querySelector(<span class="string">'#error'</span>);</span><br><span class="line"><span class="comment">// 計數完成按鈕</span></span><br><span class="line"><span class="keyword">const</span> completeButton = <span class="built_in">document</span>.querySelector(<span class="string">'#complete'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 計數器內容</span></span><br><span class="line"><span class="keyword">const</span> currentCounterLabel = <span class="built_in">document</span>.querySelector(<span class="string">'#currentCounter'</span>);</span><br><span class="line"><span class="comment">// 只顯示偶數的計數器內容</span></span><br><span class="line"><span class="keyword">const</span> evenCounterLabel = <span class="built_in">document</span>.querySelector(<span class="string">'#evenCounter'</span>);</span><br><span class="line"><span class="comment">// 目前狀態</span></span><br><span class="line"><span class="keyword">const</span> statusLabel = <span class="built_in">document</span>.querySelector(<span class="string">'#status'</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="步驟-2：實作「開始新的計數器」按鈕"><a href="#步驟-2：實作「開始新的計數器」按鈕" class="headerlink" title="步驟 2：實作「開始新的計數器」按鈕"></a>步驟 2：實作「開始新的計數器」按鈕</h2><p>由於需要紀錄目前計數值，所以我們可以建立一個變數，來儲存目前計數值且顯示在畫面上。</p>
+<p>而當計數值改變時，我們也希望能收到通知進而判斷是否為偶數，並顯示在畫面上，因此建立一個 <code>subject</code> 來通知數值改變。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 計數器的值</span></span><br><span class="line"><span class="keyword">let</span> counter = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// 自訂 subject 來通知計數器值改變</span></span><br><span class="line"><span class="keyword">let</span> counter$: Subject&lt;<span class="built_in">number</span>&gt;;</span><br></pre></td></tr></table></figure>
+<p>在命名上，我們習慣會在變數後面加上一個 <code>$</code> ，代表它是一個可被觀察的 (<code>observable</code>) 物件。</p>
+<p>接著就可以將「開始新的計數器」按鈕事件變成一個 observable，並透過<strong>訂閱</strong> (<code>subscribe</code>)得知事件發生：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 「開始新的計數器」按鈕事件訂閱</span></span><br><span class="line">fromEvent(startButton, <span class="string">'click'</span>).subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 後面還有...</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>接下來就是一些簡單的初始化動作，包含</p>
+<ol>
+<li>重新建立 <code>counter$</code> 實體</li>
+<li>將 <code>counter</code> 歸零</li>
+<li>顯示狀態</li>
+</ol>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 「開始新的計數器」按鈕事件訂閱</span></span><br><span class="line">fromEvent(startButton, <span class="string">'click'</span>).subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  counter$ = <span class="keyword">new</span> Subject();</span><br><span class="line">  counter = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  statusLabel.innerHTML = <span class="string">'目前狀態：開始計數'</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 後面還有...</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>有了 counter$ 後，我們就可以透過「訂閱」這個 observable 來得知計數值的變化，並進行後續動作，以目前的例子來說，就是顯示「目前計數值」及「偶數計數值」</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 「開始新的計數器」按鈕事件訂閱</span></span><br><span class="line">fromEvent(startButton, <span class="string">'click'</span>).subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  counter$ = <span class="keyword">new</span> Subject();</span><br><span class="line">  counter = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  status.innerHTML = <span class="string">'目前狀態：開始計數'</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 訂閱 counter$ 並顯示目前計數值</span></span><br><span class="line">  <span class="comment">// 以下程式有優化的空間，先想想，之後來調整</span></span><br><span class="line">  counter$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    currentCounterLabel.innerHTML = <span class="string">`目前計數：<span class="subst">$&#123;data&#125;</span>`</span>;</span><br><span class="line">    <span class="keyword">if</span> (data % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">      evenCounterLabel.innerHTML = <span class="string">`偶數計數：<span class="subst">$&#123;data&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最後我們讓 <code>counter$</code> 這個 subject 送出新的「計數值事件」，讓畫面一開始就能顯示計數器內容為 0</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 「開始新的計數器」按鈕事件訂閱</span></span><br><span class="line">fromEvent(startButton, <span class="string">'click'</span>).subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  counter$ = <span class="keyword">new</span> Subject();</span><br><span class="line">  counter = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  status.innerHTML = <span class="string">'目前狀態：開始計數'</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 訂閱 counter$ 並顯示目前計數值</span></span><br><span class="line">  <span class="comment">// 以下程式有優化的空間，先想想，之後來調整</span></span><br><span class="line">  counter$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    currentCounterLabel.innerHTML = <span class="string">`目前計數：<span class="subst">$&#123;data&#125;</span>`</span>;</span><br><span class="line">    <span class="keyword">if</span> (data % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">      evenCounterLabel.innerHTML = <span class="string">`偶數計數：<span class="subst">$&#123;data&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 送出預設值</span></span><br><span class="line">  counter$.next(counter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>按按看「開始新的計數器」，就能看到目前狀態，以及預設的計數值。</p>
+<img src="/blog/2020/09/19/mastering-rxjs-04-counter-practice/02.gif">
+<p>這邊可以注意送出「計數值事件」和「訂閱計數值」的時機，如果先發生「計數值事件」，再「訂閱計數值」的話，會因為事件已經現送出過了，而沒有訂閱到第一次事件發生，因次「計數值事件」必須發生在「訂閱計數值」之後，才會正確處理。</p>
+<div class="note info"><p>當然也是有辦法在「訂閱計數值」時處理<strong>最近一次</strong>的計數值事件，而不用等到下次發生事件發生才處理，在之後介紹各種 operators 時再來說明。</p></div>
+<h2 id="步驟-3：實作「計數」按鈕"><a href="#步驟-3：實作「計數」按鈕" class="headerlink" title="步驟 3：實作「計數」按鈕"></a>步驟 3：實作「計數」按鈕</h2><p>基本顯示邏輯有了之後，就是實際處理「計數」按鈕啦！這部分就簡單很多，只需要將「計數」按鈕事件包裝成 observable 訂閱，並通知計數器產生變化即可！</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 「計數」按鈕事件訂閱</span></span><br><span class="line">fromEvent(countButton, <span class="string">'click'</span>).subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  counter$.next(++counter);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>上面的程式碼我們先將 <code>counter</code> 的值加 1 之後，在使用 <code>counter$</code> 的 <code>next</code> 方法，讓所有 <code>counter$</code> 的訂閱得知資料被改變了。</p>
+<p>此時畫面上就已經完成基本的計數功能啦！</p>
+<img src="/blog/2020/09/19/mastering-rxjs-04-counter-practice/03.gif">
+<p>接下來我們再繼續優化及完成剩下兩個按鈕。</p>
+<h2 id="步驟-4：偶數值判斷優化"><a href="#步驟-4：偶數值判斷優化" class="headerlink" title="步驟 4：偶數值判斷優化"></a>步驟 4：偶數值判斷優化</h2><p>每當計數值增加時，需要在畫面上顯示<strong>目前的計數值</strong>，還有<strong>偶數計數值</strong>兩個部分，在前面的程式中，我們單純的使用 <code>if</code> 條件式來判斷，但也可以將兩種顯示方式視為獨立的事件運作，也就是「目前計數值」改變是一個事件，「偶數計數值」改變也是一個事件，然後各自訂閱。</p>
+<p>第一個訂閱顯示<strong>目前計數值</strong>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">counter$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  currentCounterLabel.innerHTML = <span class="string">`目前計數：<span class="subst">$&#123;data&#125;</span>`</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>第二個部分我們要自行再建立一個「偶數計數值」的計數器，它可以從「目前計數值」這個 observable 搭配 <code>filter</code> 這個 operator 來獲得一個新的 observable：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> evenCounter$ = counter$.pipe(</span><br><span class="line">  filter(<span class="function"><span class="params">data</span> =&gt;</span> data % <span class="number">2</span> === <span class="number">0</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>此時的 <code>evenCounter$</code> 就是透過 <code>filter</code> 這個 operator 來建立的「新的 observable」，接著就可以訂閱這個 observable，來取得「偶數計數值」改變時的內容：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">evenCounter$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  evenCounterLabel.innerHTML = <span class="string">`偶數計數：<span class="subst">$&#123;data&#125;</span>`</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>看起來好像比單純使用 <code>if</code> 判斷多一些程式碼，但這麼做的好處是「<strong>關注點分離</strong>」，也就是「目前計數值」和「偶數計數值」其實應該是兩個需要關注的部分，如果我們把這兩個邏輯透過單一個 observable 訂閱全部寫在一起，當程式碼越來越複雜時或需要擴充更多功能時，可讀性跟可維護性就會越來越差。</p>
+<p>而分成兩個 observable 各自訂閱處理，就不需要去管別人的計數器內容，只需要<strong>關注自己需要處理的範圍即可</strong>。且未來若還要有「質數計數器」、「10 的倍數計數器」、「每 3 秒統計一次計數器」等各種需求時，都只要使用基礎的 observable 搭配各種 operators 來產生各自需要的 observable 來訂閱就好，<strong>擴充能力</strong>也會比單一個 observable 訂閱加上一堆 <code>if</code> 條件判斷還要高出非常多！</p>
+<div class="note info"><p>這也是 ReactiveX 的重大好處之一，只要盡量都以 observable 的想法開始，通成比較容易可以設計出「好讀、好維護、好擴充」的程式碼，要達到這些目標還有更多好用的技巧，之後的文章我們再來一一介紹。</p></div>
+<h2 id="步驟-5：實作「發生錯誤」及「完成計數」按鈕"><a href="#步驟-5：實作「發生錯誤」及「完成計數」按鈕" class="headerlink" title="步驟 5：實作「發生錯誤」及「完成計數」按鈕"></a>步驟 5：實作「發生錯誤」及「完成計數」按鈕</h2><p>接下來的「發生錯誤」及「完成計數」按鈕就簡單多啦！它們剛好對應到 <code>counter$</code> 的 <code>error()</code> 和 <code>complete()</code> 兩個部分，因此我們在按鈕內把這兩個呼叫加上去就好。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">fromEvent(errorButton, <span class="string">'click'</span>).subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> reason = prompt(<span class="string">'請輸入錯誤訊息'</span>);</span><br><span class="line">  counter$.error(reason || <span class="string">'error'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">fromEvent(completeButton, <span class="string">'click'</span>).subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  counter$.complete();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>接著就回到原來 <code>counter$</code> 被「訂閱」的地方，加上錯誤處理的判斷就好囉</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 這是原來處理計數的方法</span></span><br><span class="line"><span class="comment">// counter$.subscribe(data =&gt; &#123;</span></span><br><span class="line"><span class="comment">//   currentCounterLabel.innerHTML = `目前計數：$&#123;data&#125;`;</span></span><br><span class="line"><span class="comment">// &#125;);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 這是加上 error 和 complete 處理的方法</span></span><br><span class="line">counter$.subscribe(&#123;</span><br><span class="line">  next: <span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    currentCounterLabel.innerHTML = <span class="string">`目前計數：<span class="subst">$&#123;data&#125;</span>`</span></span><br><span class="line">  &#125;,</span><br><span class="line">  error: <span class="function"><span class="params">message</span> =&gt;</span> &#123;</span><br><span class="line">    statusLabel.innerHTML = <span class="string">`目前狀態：錯誤 -&gt; <span class="subst">$&#123;message&#125;</span>`</span></span><br><span class="line">  &#125;,</span><br><span class="line">  complete: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    statusLabel.innerHTML = <span class="string">'目前狀態：完成'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>實際上，每個 observable 都是可以被多次訂閱的，每個訂閱可以有各自不同的處理方法，以上面的例子來說，也可以將 「顯示計數」和「顯示狀態」處理視為不同的關注點分開訂閱：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原來方法維持，只處理「顯示計數」邏輯</span></span><br><span class="line">counter$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  currentCounterLabel.innerHTML = <span class="string">`目前計數：<span class="subst">$&#123;data&#125;</span>`</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 只處理「顯示狀態」邏輯</span></span><br><span class="line">counter$.subscribe(&#123;</span><br><span class="line">  next: <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;, <span class="comment">// 這行其實可以不加，因為我們目的只是處理「錯誤」跟「完成」，沒處裡「計數」</span></span><br><span class="line">  error: <span class="function"><span class="params">message</span> =&gt;</span> &#123;</span><br><span class="line">    statusLabel.innerHTML = <span class="string">`目前狀態：錯誤 -&gt; <span class="subst">$&#123;message&#125;</span>`</span>;</span><br><span class="line">  &#125;,</span><br><span class="line">  complete: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    statusLabel.innerHTML = <span class="string">'目前狀態：完成'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<div class="note info"><p>以上面的例子來說，若是關注點在於如何處理顯示，拆開來當然合理；而關注的點如果是 <code>counter$</code> 本身遇到各種情境的處理，拆開來反而就顯得太多了。「關注點」本身就帶有很大的討論空間，上面的程式單純是示範說明 observable 是可以重複訂閱各自處理的，實務上還是要依照情境來應用喔！</p></div>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>今天的範例需求其實並不難，不使用 RxJS 也可以輕易辦到，但在實作過程中，我們可以發現透過 observable 的方式，能省去不少事件相關的處理；而搭配各種 operators，除了可以精簡一些程式碼邏輯外，只要搭配正確的觀念，還能讓我們容易寫出更加強健的程式碼。</p>
+<p>RxJS 本身幫助我們處理了很多網頁上會遇到的資料來源，搭配 ReactiveX 規範的各種 operators，當寫習慣後，真的會寫上癮啦！</p>
+<p>明天開始我們會花幾天時間說明 ReactiveX 背後運用的觀念及技術，讓我們未來能更輕易的駕馭 RxJS 巨獸！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/RxJS/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> RxJS</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/map/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> map</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/filter/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> filter</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/fromEvent/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> fromEvent</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2020/09/18/mastering-rxjs-03-quick-start/" rel="next" title="[RxJS] 三步驟快速上手 RxJS">
+                <i class="fa fa-chevron-left"></i> [RxJS] 三步驟快速上手 RxJS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2020/09/20/mastering-rxjs-05-reactivex-asynchronous-programming-and-stream/" rel="prev" title="[RxJS] 認識非同步 (Asynchronous) 及串流 (Stream)">
+                [RxJS] 認識非同步 (Asynchronous) 及串流 (Stream) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#題目回顧"><span class="nav-number">1.</span> <span class="nav-text">題目回顧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#實作步驟"><span class="nav-number">2.</span> <span class="nav-text">實作步驟</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#步驟1：HTML-結構與-DOM-預處理"><span class="nav-number">2.1.</span> <span class="nav-text">步驟1：HTML 結構與 DOM 預處理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步驟-2：實作「開始新的計數器」按鈕"><span class="nav-number">2.2.</span> <span class="nav-text">步驟 2：實作「開始新的計數器」按鈕</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步驟-3：實作「計數」按鈕"><span class="nav-number">2.3.</span> <span class="nav-text">步驟 3：實作「計數」按鈕</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步驟-4：偶數值判斷優化"><span class="nav-number">2.4.</span> <span class="nav-text">步驟 4：偶數值判斷優化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步驟-5：實作「發生錯誤」及「完成計數」按鈕"><span class="nav-number">2.5.</span> <span class="nav-text">步驟 5：實作「發生錯誤」及「完成計數」按鈕</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">3.</span> <span class="nav-text">本日小結</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2020/09/19/mastering-rxjs-04-counter-practice/';
+          this.page.identifier = '2020/09/19/mastering-rxjs-04-counter-practice/';
+          this.page.title = '[RxJS] 隨堂測驗 - 簡易計數器';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

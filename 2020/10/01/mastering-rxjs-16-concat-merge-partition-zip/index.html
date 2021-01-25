@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="RxJS,concat,merge,zip,partition,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="接下來我們來介紹「組合/建立類型」的 operators，這類型 operators 的目標依然是「建立」新的 observable，但來源不再是特定的數值等，而是直將另外一個(或數個) Observable 當作資料來源建立新的 Observable。">
+<meta name="keywords" content="RxJS,concat,merge,zip,partition">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[RxJS] 組合&#x2F;建立類型 Operators (1) - concat &#x2F; merge &#x2F; zip &#x2F; partition">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2020/10/01/mastering-rxjs-16-concat-merge-partition-zip/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="接下來我們來介紹「組合/建立類型」的 operators，這類型 operators 的目標依然是「建立」新的 observable，但來源不再是特定的數值等，而是直將另外一個(或數個) Observable 當作資料來源建立新的 Observable。">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/01/mastering-rxjs-16-concat-merge-partition-zip/01.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/01/mastering-rxjs-16-concat-merge-partition-zip/02.jpg">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.364Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[RxJS] 組合&#x2F;建立類型 Operators (1) - concat &#x2F; merge &#x2F; zip &#x2F; partition">
+<meta name="twitter:description" content="接下來我們來介紹「組合/建立類型」的 operators，這類型 operators 的目標依然是「建立」新的 observable，但來源不再是特定的數值等，而是直將另外一個(或數個) Observable 當作資料來源建立新的 Observable。">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2020/10/01/mastering-rxjs-16-concat-merge-partition-zip/01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2020/10/01/mastering-rxjs-16-concat-merge-partition-zip/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[RxJS] 組合/建立類型 Operators (1) - concat / merge / zip / partition | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2020/10/01/mastering-rxjs-16-concat-merge-partition-zip/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[RxJS] 組合/建立類型 Operators (1) - concat / merge / zip / partition</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-10-01T18:00:00+00:00">
+                2020-10-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/" itemprop="url" rel="index">
+                    <span itemprop="name">打通 RxJS 任督二脈</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/第-12-屆鐵人賽/" itemprop="url" rel="index">
+                    <span itemprop="name">第 12 屆鐵人賽</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2020/10/01/mastering-rxjs-16-concat-merge-partition-zip/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/01/mastering-rxjs-16-concat-merge-partition-zip/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>接下來我們來介紹「組合/建立類型」的 operators，這類型 operators 的目標依然是「建立」新的 observable，但來源不再是特定的數值等，而是直將另外一個(或數個) Observable 當作資料來源建立新的 Observable。</p>
+<a id="more"></a>
+<h1 id="concat"><a href="#concat" class="headerlink" title="concat"></a>concat</h1><p><code>concat</code> 可以將數個 Observables 組合成一個新的 Observable，並且在每個 Observable 結束後才<strong>接續執行</strong>下一個 Observable，想像看看以下三個 Observables：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sourceA$ = of(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line"><span class="keyword">const</span> sourceB$ = of(<span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line"><span class="keyword">const</span> sourceC$ = of(<span class="number">5</span>, <span class="number">6</span>);</span><br></pre></td></tr></table></figure>
+<p>如果希望 <code>sourceA$</code> 跑完再跑 <code>sourceB$</code> 接著最後跑 <code>sourceC$</code>，在不知道如何使用 operators 的情況就會寫成：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sourceA$.subscribe(&#123;</span><br><span class="line">  next: <span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(data),</span><br><span class="line">  complete: <span class="function"><span class="params">()</span> =&gt;</span> sourceB$.subscribe(&#123;</span><br><span class="line">    next: <span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(data),</span><br><span class="line">    complete: <span class="function"><span class="params">()</span> =&gt;</span> sourceC$.subscribe(&#123;</span><br><span class="line">      next: <span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(data)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line"><span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
+<p>不用多說，只要有點經驗的工程師都知道問題在哪裡吧？就讓我們直接用一張經典圖片表示：</p>
+<img src="/blog/2020/10/01/mastering-rxjs-16-concat-merge-partition-zip/01.jpg">
+<p>這種深層巢狀的波動拳寫法絕對是大忌！為了避免被同事 (以及未來的自己) 白眼，可以使用 <code>concat</code> 來解救我們：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">concat(sourceA$, sourceB$, sourceC$).subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>結果完全一樣，所有的 Observable 會依序執行，目前的 Observable 結束後再去執行下一個 Observable。</p>
+<p>要注意的是，由於一定會等到目前 Observable 結束才繼續，因此在設計來源 Observable 時，一定要將「結束」這件事情考量在內，當然不是一定要結束，畢竟這關係到 Observable 本身的流程設計，但常見的一個小錯誤是用了不會結束的 Observable 如 <code>interval</code> 或使用 <code>Subject</code> 卻忘了呼叫 <code>complete()</code>，結果永遠等不到下一個 Observable 執行的情況。</p>
+<p>順便附上示意用彈珠圖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sourceA$: 1------2------|</span><br><span class="line">sourceB$: 3------4------|</span><br><span class="line">sourceC$: 5------6------|</span><br><span class="line"></span><br><span class="line">concat(sourceA$, sourceB$, source$)</span><br><span class="line">(sourceA$)    (sourceB$)    (sourceC$)</span><br><span class="line">1------2------3------4------5------6------|</span><br><span class="line">             ^ 到這裡 sourceA$ 結束，接續下一個 sourceB$</span><br><span class="line">                           ^ 到這裡 sourceB$ 結束，接續下一個 sourceC$</span><br></pre></td></tr></table></figure>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-concat" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-concat</a></p>
+<h1 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h1><p><code>merge</code> 跟 <code>concat</code> 類似，但會同時啟動參數內所有的 Observable，因此會有「平行處理」的感覺，直接看程式碼：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sourceA$ = interval(<span class="number">1000</span>).pipe(</span><br><span class="line">  map(<span class="function"><span class="params">data</span> =&gt;</span> <span class="string">`A<span class="subst">$&#123;data&#125;</span>`</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> sourceB$ = interval(<span class="number">3000</span>).pipe(</span><br><span class="line">  map(<span class="function"><span class="params">data</span> =&gt;</span> <span class="string">`B<span class="subst">$&#123;data&#125;</span>`</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> sourceC$ = interval(<span class="number">5000</span>).pipe(</span><br><span class="line">  map(<span class="function"><span class="params">data</span> =&gt;</span> <span class="string">`C<span class="subst">$&#123;data&#125;</span>`</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> subscription = merge(sourceA$, sourceB$, sourceC$).subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`merge 範例： <span class="subst">$&#123;data&#125;</span>`</span>)</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// merge 範例： A1</span></span><br><span class="line"><span class="comment">// merge 範例： A2</span></span><br><span class="line"><span class="comment">// merge 範例： A3 (A3, B1 會同時發生)</span></span><br><span class="line"><span class="comment">// merge 範例： B1</span></span><br><span class="line"><span class="comment">// merge 範例： A4</span></span><br><span class="line"><span class="comment">// merge 範例： A5 (A5, C1 會同時發生)</span></span><br><span class="line"><span class="comment">// merge 範例： C1</span></span><br><span class="line"><span class="comment">// merge 範例： A6 (A6, B2 會同時發生)</span></span><br><span class="line"><span class="comment">// merge 範例： B2</span></span><br></pre></td></tr></table></figure>
+<p>實際跑起來內容不少，直接用彈珠圖來看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sourceA$: --A1--A2--A3--A4--A5--A6--....</span><br><span class="line">sourceB$: ----------B1----------B2--...</span><br><span class="line">sourceC$: ------------------C1------....</span><br><span class="line"></span><br><span class="line">merge(sourceA$, sourceB$, sourceC$)</span><br><span class="line"></span><br><span class="line">--A1--A2--(A3,B1)--A4--(A5,C1)--(A6,B2)------.......</span><br></pre></td></tr></table></figure>
+<p>為了方便解釋，每個從上面的彈珠圖可以看到</p>
+<ul>
+<li>第 1、2 秒時，各自會產生 <code>sourceA$</code> 的 A1 和 A2 事件</li>
+<li>第三秒時 <code>sourceA$</code> 和 <code>sourceB$</code> 同時分別發生了 A3 和 B1 事件</li>
+<li>第五秒時 <code>sourceA$</code> 和 <code>sourceC$</code> 同時分別發生了 A5 和 C1 事件</li>
+<li>第六秒時 <code>sourceA$</code> 和 <code>sourceB$</code> 同時分別發生了 A6 和 B2 事件</li>
+</ul>
+<p>之所以會這樣是因為 <code>sourceA$</code>、<code>sourceB$</code> 和 <code>sourceC$</code> 是同時開始的，只是透過 <code>merge</code> 組合成一條 Observable。</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-merge" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-merge</a></p>
+<h1 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h1><p><code>zip</code> 是拉鍊的意思，拉鍊是把兩個鏈條合併在一起，且資料是「一組一組合併在一起的」，實際上在使用時，<code>zip</code> 會將傳入的 Observables 依次組合在一起成為一個陣列，已經被組合過的就不會再次被組合，範例如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sourceA$ = interval(<span class="number">1000</span>).pipe(</span><br><span class="line">  map(<span class="function"><span class="params">data</span> =&gt;</span> <span class="string">`A<span class="subst">$&#123;data + <span class="number">1</span>&#125;</span>`</span>)</span><br><span class="line">);</span><br><span class="line"><span class="keyword">const</span> sourceB$ = interval(<span class="number">2000</span>).pipe(</span><br><span class="line">  map(<span class="function"><span class="params">data</span> =&gt;</span> <span class="string">`B<span class="subst">$&#123;data + <span class="number">1</span>&#125;</span>`</span>)</span><br><span class="line">);</span><br><span class="line"><span class="keyword">const</span> sourceC$ = interval(<span class="number">3000</span>).pipe(</span><br><span class="line">  map(<span class="function"><span class="params">data</span> =&gt;</span> <span class="string">`C<span class="subst">$&#123;data + <span class="number">1</span>&#125;</span>`</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">zip(sourceA$, sourceB$, sourceC$).subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`zip 範例: <span class="subst">$&#123;data&#125;</span>`</span>)</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// zip 範例: [A1, B1, C1]</span></span><br><span class="line"><span class="comment">// zip 範例: [A2, B2, C2]</span></span><br><span class="line"><span class="comment">// zip 範例: [A3, B3, C3]</span></span><br></pre></td></tr></table></figure>
+<p>上述例子中，前三個發生過的事件會各自被組合起來，而 <code>sourceA$</code> 和 <code>sourceB$</code> 雖然都有第四次事件，但因為 <code>sourceC$</code> 沒有第四次事件，所以沒有成功組合成新的資料。</p>
+<p>一樣畫的彈珠圖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sourceA$: --A1--A2--A3--A4--............</span><br><span class="line">sourceB$:   ----B1  ----B2  ----B3--....</span><br><span class="line">sourceC$:     ------C1    ------C2    ------C3......</span><br><span class="line"></span><br><span class="line">zip(sourceA$, sourceB$, sourceC$)</span><br><span class="line">              ------**    ------**    ------**.......</span><br><span class="line">                [A1,B1,C1]  [A2,B2,C2]  [A3,B3,C3]</span><br></pre></td></tr></table></figure>
+<p>這邊彈珠圖刻意把時間拉開一點，讓各位可以注意到合併的感覺是依照事件發生的次序進行合併的，也就是「所有第一次發生的事件」會合併成一組，「所有第二次發生的事件」會合併成另外一組，以此類推。</p>
+<img src="/blog/2020/10/01/mastering-rxjs-16-concat-merge-partition-zip/02.jpg">
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-zip" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-zip</a></p>
+<h1 id="partition"><a href="#partition" class="headerlink" title="partition"></a>partition</h1><p>前面介紹的都是將多個 Observable 組合成一條新的 Observable，只是順序和處理資料的方式不同，而 <code>partition</code> 則是將 Observable 依照規則拆成兩條 Observable。<code>partition</code> 需要兩個參數：</p>
+<ul>
+<li><strong>source</strong>: 來源 Observable</li>
+<li><strong>predicate</strong>: 用來拆分的條件，是一個 function，每次事件發生都會將資料傳入此 function，並會傳是否符合條件 (true/false)，符合條件的(true)會被歸到一條 Observable，不符合條件的則被歸到另外一條 Observable。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> source$ = of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> [sourceEven$, sourceOdd$] = partition(source$, <span class="function">(<span class="params">data</span>) =&gt;</span> data % <span class="number">2</span> === <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">sourceEven$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`partition 範例 (偶數): <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line">sourceOdd$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`partition 範例 (奇數): <span class="subst">$&#123;data&#125;</span>`</span>));</span><br></pre></td></tr></table></figure>
+<p>彈珠圖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">source$:     -----1-----2-----3-----4-----5-----6-----|</span><br><span class="line"></span><br><span class="line">[sourceEven$, sourceOdd$] = partition(source$, (data) =&gt; data % 2 === 0);</span><br><span class="line"></span><br><span class="line">sourceEven$: -----------2----------4------------6-----|</span><br><span class="line">sourceOdd$:  -----1------------3----------5-----------|</span><br></pre></td></tr></table></figure>
+<p>這功能很像我們之前就用過，之後也會介紹的 <code>filter</code>，但使用 <code>filter</code> 達成這個需求會比較麻煩：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> source$ = of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> sourceEven$ = source$.pipe(filter(<span class="function"><span class="params">data</span> =&gt;</span> data % <span class="number">2</span> === <span class="number">0</span>));</span><br><span class="line"><span class="keyword">const</span> sourceOdd$ =  source$.pipe(filter(<span class="function"><span class="params">data</span> =&gt;</span> data % <span class="number">2</span> !== <span class="number">0</span>));</span><br></pre></td></tr></table></figure>
+<p>在可以肯定二分法的時候，使用 <code>partition</code> 會簡單非常多！</p>
+<p>在 SPA 架構盛行的現在，我們常常會在網頁上管理各種狀態，像是「登入」和「登出」等狀態，如果我們希望兩種狀態有各自不同的情境處理時，就可以用 <code>partition</code> 切成兩條 Observable，然後各自只要專注在處理各自的邏輯就好囉。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定時變更「登入」、「登出」狀態</span></span><br><span class="line"><span class="comment">// 實際上應該搭配 Subject 來控制</span></span><br><span class="line"><span class="keyword">const</span> isLogin$ = interval(<span class="number">1000</span>).pipe(</span><br><span class="line">  map(<span class="function">(<span class="params">_, index</span>) =&gt;</span> index % <span class="number">2</span> === <span class="number">0</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> [login$, logout$] = partition(isLogin$, <span class="function">(<span class="params">data</span>) =&gt;</span> data);</span><br><span class="line"></span><br><span class="line">login$.subscribe(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'我又登入囉！'</span>));</span><br><span class="line">logout$.subscribe(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'我又登出啦！'</span>));</span><br></pre></td></tr></table></figure>
+<p>這種例子在實際上還蠻常遇到的喔！</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-partition" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-partition</a></p>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><ul>
+<li><code>concat</code>：用來「串接」數個 Observables，會依序執行每個 Observable，上一個 Observable 「完成」後才會執行下一個 Observable。</li>
+<li><code>merge</code>：用來「同時執行」數個 Observables，所有 Observables 會同時執行，並只在一條新的 Observable 上發生事件。</li>
+<li><code>zip</code>：一樣「同時執行」數個 Observables，差別是會將每個 Observable 的資料「組合」成一個新的事件值，在新的 Observable 上發生新事件。</li>
+<li><code>partition</code>：依照指定邏輯，將一條 Observable 拆成兩條 Observables。</li>
+</ul>
+<h1 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h1><ul>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/function/concat" target="_blank" rel="noopener">Operators - concat</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/function/merge" target="_blank" rel="noopener">Operators - merge</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/function/zip" target="_blank" rel="noopener">Operators - zip</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/function/partition" target="_blank" rel="noopener">Operators - partition</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/RxJS/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> RxJS</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/concat/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> concat</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/merge/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> merge</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/zip/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> zip</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/partition/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> partition</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2020/09/30/mastering-rxjs-15-from-fromevent-fromeventpattern-interval-timer-defer/" rel="next" title="[RxJS] 建立類型 Operators (2) - from / fromEvent / fromEventPattern / interval / timer / defer">
+                <i class="fa fa-chevron-left"></i> [RxJS] 建立類型 Operators (2) - from / fromEvent / fromEventPattern / interval / timer / defer
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2020/10/02/mastering-rxjs-17-combinelatest-forkjoin-race/" rel="prev" title="[RxJS] 組合/建立類型 Operators (2) - combineLatest / forkJoin / race">
+                [RxJS] 組合/建立類型 Operators (2) - combineLatest / forkJoin / race <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#concat"><span class="nav-number">1.</span> <span class="nav-text">concat</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#merge"><span class="nav-number">2.</span> <span class="nav-text">merge</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zip"><span class="nav-number">3.</span> <span class="nav-text">zip</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#partition"><span class="nav-number">4.</span> <span class="nav-text">partition</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">5.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相關資源"><span class="nav-number">6.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2020/10/01/mastering-rxjs-16-concat-merge-partition-zip/';
+          this.page.identifier = '2020/10/01/mastering-rxjs-16-concat-merge-partition-zip/';
+          this.page.title = '[RxJS] 組合/建立類型 Operators (1) - concat / merge / zip / partition';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

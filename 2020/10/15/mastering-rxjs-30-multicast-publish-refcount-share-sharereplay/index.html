@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="RxJS,shareReplay,multicast,refCount,publish,share,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="還記得之前我們介紹過 Cold Observable v.s. Hot Observable 嗎？ Cold Observable 和觀察者 (Observer) 是一對一的關係，也就是每次產生訂閱時，都會是一個全新的資料流。而 Hot Observable 和觀察者則是一對多的關係，也就是每次產生訂閱時，都會使用「同一份資料流」，而今天要介紹的 operators 目的就是將 Cold Obse">
+<meta name="keywords" content="RxJS,shareReplay,multicast,refCount,publish,share">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[RxJS] Multicast 類 Operator (1) - multicast &#x2F; publish &#x2F; refCount &#x2F; share &#x2F; shareReplay">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2020/10/15/mastering-rxjs-30-multicast-publish-refcount-share-sharereplay/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="還記得之前我們介紹過 Cold Observable v.s. Hot Observable 嗎？ Cold Observable 和觀察者 (Observer) 是一對一的關係，也就是每次產生訂閱時，都會是一個全新的資料流。而 Hot Observable 和觀察者則是一對多的關係，也就是每次產生訂閱時，都會使用「同一份資料流」，而今天要介紹的 operators 目的就是將 Cold Obse">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.376Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[RxJS] Multicast 類 Operator (1) - multicast &#x2F; publish &#x2F; refCount &#x2F; share &#x2F; shareReplay">
+<meta name="twitter:description" content="還記得之前我們介紹過 Cold Observable v.s. Hot Observable 嗎？ Cold Observable 和觀察者 (Observer) 是一對一的關係，也就是每次產生訂閱時，都會是一個全新的資料流。而 Hot Observable 和觀察者則是一對多的關係，也就是每次產生訂閱時，都會使用「同一份資料流」，而今天要介紹的 operators 目的就是將 Cold Obse">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2020/10/15/mastering-rxjs-30-multicast-publish-refcount-share-sharereplay/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[RxJS] Multicast 類 Operator (1) - multicast / publish / refCount / share / shareReplay | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2020/10/15/mastering-rxjs-30-multicast-publish-refcount-share-sharereplay/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[RxJS] Multicast 類 Operator (1) - multicast / publish / refCount / share / shareReplay</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-10-15T18:00:00+00:00">
+                2020-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/" itemprop="url" rel="index">
+                    <span itemprop="name">打通 RxJS 任督二脈</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/第-12-屆鐵人賽/" itemprop="url" rel="index">
+                    <span itemprop="name">第 12 屆鐵人賽</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2020/10/15/mastering-rxjs-30-multicast-publish-refcount-share-sharereplay/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/15/mastering-rxjs-30-multicast-publish-refcount-share-sharereplay/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>還記得之前我們介紹過 Cold Observable v.s. Hot Observable 嗎？</p>
+<p>Cold Observable 和觀察者 (Observer) 是一對一的關係，也就是每次產生訂閱時，都會是一個全新的資料流。而 Hot Observable 和觀察者則是一對多的關係，也就是每次產生訂閱時，都會使用「同一份資料流」，而今天要介紹的 operators 目的就是將 Cold Observable 轉成 Hot Observable，讓原來的資料流可以共用。</p>
+<p>今天的觀念會比較複雜一點，打起精神繼續看下去吧！</p>
+<a id="more"></a>
+<h1 id="multicast"><a href="#multicast" class="headerlink" title="multicast"></a>multicast</h1><p>Cold Observable 每次訂閱只會對應一個觀察者，因此也可以說成將資料播放 (cast) 給唯一的觀察者，應此也稱為<strong>單播 (unicast)</strong>，而 <code>multicast</code> 就是來源 Observable 變成<strong>多播 (multicast)</strong> 的情況。</p>
+<p>在 <code>multicast</code> 內必須指定一個產生 Hot Observable 的工廠方法，也就是建立 <code>Subject</code>、<code>BehaviorSubject</code> 等邏輯。</p>
+<p>以下程式將一個單播的 Observable 轉換成一個多播的 Observable，並建立一個 <code>Subject</code> 作為多播的資料來源。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> source$ = interval(<span class="number">1000</span>).pipe(</span><br><span class="line">  take(<span class="number">5</span>),</span><br><span class="line">  multicast(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">new</span> Subject())</span><br><span class="line">);</span><br><span class="line"><span class="comment">// srouce$ 變成一個 multicast 的 Observable</span></span><br><span class="line"><span class="comment">// 使用 Subject 作為多播的來源</span></span><br></pre></td></tr></table></figure>
+<p>當使用 <code>multicast</code> 時，新的 Observable 型別會是一個 <a href="https://rxjs-dev.firebaseapp.com/api/index/class/ConnectableObservable" target="_blank" rel="noopener">ConnectableObservable</a>，和一般的 Observable 的差別就在於 ConnectableObservable 是多播的，而且必須呼叫它的 <code>connect</code> 方法，才會開始進行多播的動作：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`multicast 示範 (1) 第一次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`multicast 示範 (1) 第二次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;, <span class="number">5000</span>);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// pipe 的回傳一律是 Observable 型別</span></span><br><span class="line">  <span class="comment">// 因此使用 TypeScript 轉型成 ConnectableObservable</span></span><br><span class="line">  <span class="comment">// 使用 JavaScript 則直接呼叫 connect() 就好</span></span><br><span class="line">  (source$ <span class="keyword">as</span> ConnectableObservable&lt;<span class="built_in">any</span>&gt;).connect();</span><br><span class="line">&#125;, <span class="number">3000</span>);</span><br><span class="line"><span class="comment">// multicast 示範 (1) 第一次訂閱: 0</span></span><br><span class="line"><span class="comment">// multicast 示範 (1) 第一次訂閱: 1</span></span><br><span class="line"><span class="comment">// multicast 示範 (1) 第二次訂閱: 1</span></span><br><span class="line"><span class="comment">// multicast 示範 (1) 第一次訂閱: 2</span></span><br><span class="line"><span class="comment">// multicast 示範 (1) 第二次訂閱: 2</span></span><br><span class="line"><span class="comment">// multicast 示範 (1) 第一次訂閱: 3</span></span><br><span class="line"><span class="comment">// multicast 示範 (1) 第二次訂閱: 3</span></span><br><span class="line"><span class="comment">// multicast 示範 (1) 第一次訂閱: 4</span></span><br><span class="line"><span class="comment">// multicast 示範 (1) 第二次訂閱: 4</span></span><br></pre></td></tr></table></figure>
+<p>運作過程如下：</p>
+<ol>
+<li>第一次發生訂閱，但 <code>source$</code> 是 ConnectableObservable 且還沒呼叫 <code>connect()</code>，因此持續等待</li>
+<li>三秒後 <code>source$</code> 呼叫了 <code>connect()</code>，因此資料流開始</li>
+<li>第四秒發出 <code>source$</code> 的第一個事件值 <code>0</code>，第一次訂閱收到事件 <code>0</code></li>
+<li>第五秒發出 <code>source$</code> 的第二個事件值 <code>1</code>，第一次訂閱收到事件 <code>1</code>；同時第二次訂閱發生，由於 <code>source$</code> 是多播的 Observable，因此第二次訂閱也收到事件 <code>1</code>。</li>
+<li>第六秒後，第一次訂閱和第二次訂閱都持續收到 <code>source$</code> 多播的事件值</li>
+</ol>
+<p>彈珠圖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">--0--1--2--3--4--5--6...</span><br><span class="line">take(5)</span><br><span class="line">--0--1--2--3--4| -&gt; 此時是 Cold Observable</span><br><span class="line">source$ = multicast(() =&gt; new Subject())</span><br><span class="line">--0--1--2--3--4| -&gt; 此時是 Hot Observable</span><br><span class="line"></span><br><span class="line">第一次訂閱：          ----------0--1--2--3--4|</span><br><span class="line">                    ^ 第一次訂閱時間點</span><br><span class="line">第二次訂閱：                       1--2--3--4|</span><br><span class="line">                                 ^ 第二次訂閱時間點</span><br><span class="line">source$.connect():          --0--1--2--3--4|</span><br><span class="line">                            ^ connect 時間點</span><br></pre></td></tr></table></figure>
+<p>有興趣的話也可以把產生 Subject 的方法換成其他的如 <code>AsyncSubject</code> 看看結果，以 <code>AsyncSubject</code> 來說，就會等到 <code>source$</code> 結束後，同時收到最後一個事件資料。</p>
+<p>除了傳入建立 Subject 類別的方法外，也可以在第二個參數傳入一個 <code>selector</code> callback function，這個 <code>selector</code> function 會收到被建立的 Subject 類別，同時回傳另一個 Observable，當使用這個參數時，將不再會對來源 Observable 進行多次訂閱，變成每次訂閱都會重新建立新的 Subject 並加上 <code>selector</code> function 回傳的 Observable 進行訂閱；也因此新的 Observable 不再是 ConnectableObservable，也就不用再次呼叫 <code>connect()</code>(因為也沒這方法可呼叫)：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> source2$ = interval(<span class="number">1000</span>).pipe(</span><br><span class="line">  take(<span class="number">5</span>),</span><br><span class="line">  multicast(</span><br><span class="line">    () =&gt; <span class="keyword">new</span> Subject(), </span><br><span class="line">    (subject) =&gt; subject.pipe(map(<span class="function">(<span class="params">data: <span class="built_in">number</span></span>) =&gt;</span> data + <span class="number">1</span>)))</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">source2$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`multicast 示範 (2) 第一次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  source2$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`multicast 示範 (2) 第二次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;, <span class="number">3000</span>);</span><br><span class="line"><span class="comment">// multicast 示範 (2) 第一次訂閱: 1</span></span><br><span class="line"><span class="comment">// multicast 示範 (2) 第一次訂閱: 2</span></span><br><span class="line"><span class="comment">// multicast 示範 (2) 第一次訂閱: 3</span></span><br><span class="line"><span class="comment">// multicast 示範 (2) 第一次訂閱: 4</span></span><br><span class="line"><span class="comment">// multicast 示範 (2) 第二次訂閱: 1 (第二次訂閱，但從頭收到所有事件資料)</span></span><br><span class="line"><span class="comment">// multicast 示範 (2) 第一次訂閱: 5</span></span><br><span class="line"><span class="comment">// multicast 示範 (2) 第二次訂閱: 2</span></span><br><span class="line"><span class="comment">// multicast 示範 (2) 第二次訂閱: 3</span></span><br><span class="line"><span class="comment">// multicast 示範 (2) 第二次訂閱: 4</span></span><br><span class="line"><span class="comment">// multicast 示範 (2) 第二次訂閱: 5</span></span><br></pre></td></tr></table></figure>
+<p>上面程式中，每次訂閱發生時，會使用 <code>new Subject()</code> 產出的新 Subject 類別做為多播的來源，以及搭配 <code>selector</code> function 回傳的 Observable 訂閱，並多播給每次訂閱的觀察者，由於是使用 Subject 類別，因此訂閱來源依然是多播的 Observable，只是這個 Observable 只會有目前訂閱的觀察者收到而已。</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-multicast" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-multicast</a></p>
+<h1 id="Publish"><a href="#Publish" class="headerlink" title="Publish"></a>Publish</h1><p><code>publish</code> 將 <code>multicast</code> 內封裝了 <code>multicast</code> 內建立 Subject 的方法，直接使用 <code>new Subject()</code>，因此以下兩段程式碼完全一樣：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">interval(<span class="number">1000</span>).pipe(</span><br><span class="line">  multicast(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">new</span> Subject())</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">interval(<span class="number">1000</span>).pipe(</span><br><span class="line">  publish()</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>如果去挖 <a href="https://github.com/ReactiveX/rxjs/blob/6.x/src/internal/operators/publish.ts#L63-L67" target="_blank" rel="noopener">publish 的程式碼</a>，更可以發現它就是呼叫 <code>multicast</code> 而已，只是預設建立 Subject 的工廠方法帶入程式碼 <code>new Subject()</code>。</p>
+<p>因為前面就示範過使用 <code>new Subject()</code> 時的運作過程，因此就不多作介紹啦，直接看 <code>multicast</code> 的範例即可。</p>
+<p>當我們想要自行決定使用哪一種 Subject 類別建立 Hot Observable 時，請使用 <code>multicast</code>，當直接使用 <code>Subject</code> 時，則可以使用 <code>publish</code>，封裝一些細節。</p>
+<p>除此之外，<code>publish</code> 對應不同的 <code>Subject</code> 類別還有其他的 operators：</p>
+<ul>
+<li><code>publishLast</code>：等於 <code>multicast(() =&gt; new AsyncSubject())</code></li>
+<li><code>publishBehavior</code>：等於 <code>multicast(() =&gt; new BehaviorSubject())</code><ul>
+<li>使用的參數與 <code>BehaviorSubject</code> 相同</li>
+</ul>
+</li>
+<li><code>publishReplay</code>：等於 <code>multicast(() =&gt; new ReplaySubject())</code><ul>
+<li>使用的參數與 <code>ReplaySubject</code> 相同</li>
+</ul>
+</li>
+</ul>
+<h1 id="refCount"><a href="#refCount" class="headerlink" title="refCount"></a>refCount</h1><p>當 Observable 是 Connectable Observable 時，我們必須主動呼叫 <code>connect</code>，才可以讓資料開始流動 (當然也要有訂閱發生)，如果不需要自行控制 <code>connect</code> 時機，可以使用 <code>refCount</code> 來幫我們呼叫 <code>connect</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> source1$ = interval(<span class="number">1000</span>).pipe(</span><br><span class="line">  take(<span class="number">5</span>),</span><br><span class="line">  publish()</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> source2$ = interval(<span class="number">1000</span>).pipe(</span><br><span class="line">  take(<span class="number">5</span>),</span><br><span class="line">  publish(),</span><br><span class="line">  refCount(),</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">source1$.subscribe(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`refCount 示範 (source1$ 訂閱值): <span class="subst">$&#123;data&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">source2$.subscribe(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`refCount 示範 (source2$ 訂閱值): <span class="subst">$&#123;data&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// refCount 示範 (source2$ 訂閱值): 0</span></span><br><span class="line"><span class="comment">// refCount 示範 (source2$ 訂閱值): 1</span></span><br><span class="line"><span class="comment">// refCount 示範 (source2$ 訂閱值): 2</span></span><br><span class="line"><span class="comment">// refCount 示範 (source2$ 訂閱值): 3</span></span><br><span class="line"><span class="comment">// refCount 示範 (source2$ 訂閱值): 4</span></span><br></pre></td></tr></table></figure>
+<p>從執行結果可以看到， <code>source1$</code> 因為沒有主動去呼叫 <code>connect()</code> 的關係，雖然有訂閱，但還沒辦法開始；而 <code>source2$</code> 則使用 <code>refCount()</code> 幫我們呼叫 <code>connect()</code>，因此當訂閱發生時，整個資料流就會直接開始。</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-refcount" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-refcount</a></p>
+<h1 id="share"><a href="#share" class="headerlink" title="share"></a>share</h1><p><code>share</code> 基本上就是 <code>multicast(new Subject())</code> 與 <code>refCount()</code> 的組合，當然也可以當作是 <code>publish()</code> 與 <code>refCount()</code> 的組合，在之前介紹 Cold Observable 與 Hot Observable 時，就介紹過了使用 <code>share()</code> 來進行轉換，如果對前面的範例都能理解，<code>share()</code> 應該就沒什麼問題囉！在實務上，都會直接使用 <code>share()</code> 來取代 <code>multicast(new Subject())</code> + <code>refCount()</code>，畢竟程式碼比較短，也更好理解。</p>
+<h1 id="shareReplay"><a href="#shareReplay" class="headerlink" title="shareReplay"></a>shareReplay</h1><p><code>shareReplay</code> 可以直接當作 <code>multicast(new ReplaySubject())</code> 與 <code>refCount()</code> 的組合，與 <code>share()</code> 不同的地方在於，<code>shareReplay()</code> 還有重播的概念，也就是每次訂閱時，會重播過去 N 次發生的資料：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> source$ = interval(<span class="number">1000</span>).pipe(</span><br><span class="line">  shareReplay(<span class="number">2</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`shareReplay 示範 第一次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`shareReplay 示範 第二次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;, <span class="number">5000</span>);</span><br><span class="line"><span class="comment">// shareReplay 示範 第一次訂閱: 0</span></span><br><span class="line"><span class="comment">// shareReplay 示範 第一次訂閱: 1</span></span><br><span class="line"><span class="comment">// shareReplay 示範 第一次訂閱: 2</span></span><br><span class="line"><span class="comment">// shareReplay 示範 第一次訂閱: 3</span></span><br><span class="line"><span class="comment">// shareReplay 示範 第一次訂閱: 4</span></span><br><span class="line"><span class="comment">// (第二次訂閱發生時，先重播過去兩次的資料)</span></span><br><span class="line"><span class="comment">// shareReplay 示範 第二次訂閱: 3</span></span><br><span class="line"><span class="comment">// shareReplay 示範 第二次訂閱: 4</span></span><br><span class="line"><span class="comment">// shareReplay 示範 第一次訂閱: 5</span></span><br><span class="line"><span class="comment">// shareReplay 示範 第二次訂閱: 5</span></span><br><span class="line"><span class="comment">// shareReplay 示範 第一次訂閱: 6</span></span><br><span class="line"><span class="comment">// shareReplay 示範 第二次訂閱: 6</span></span><br></pre></td></tr></table></figure>
+<p>如果對於 <code>ReplaySubject</code> 還有印象，這部分應該不困難才對囉。</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-sharereplay" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-sharereplay</a></p>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><ul>
+<li><code>multicast</code>：將單播 (unicast) 的 Observable 轉換成多播 (multicast)，需要決定使用哪種多播的來源(<code>Subject</code>、<code>BehaviorSubject</code> 等等)，之後會得到一個 ConnectableObservable，需要呼叫它的 <code>connect()</code> 方法後才能開始資料流。可自行決定 <code>connect()</code> 時機。</li>
+<li><code>publish</code>：<code>multicast</code> 的特定版本，直接使用 <code>Subject</code> 類別做為多播的來源。<ul>
+<li>等同於 <code>multicast(() =&gt; new Subject())</code></li>
+<li>另外還有：<ul>
+<li><code>publishLast</code>： <code>multicast(() =&gt; new AsyncSubject())</code></li>
+<li><code>publishBehavior</code>： <code>multicast(() =&gt; new BehaviorSubject())</code></li>
+<li><code>publishReplay</code>： <code>multicast(() =&gt; new ReplaySubject())</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>refCount</code>：幫我們直接呼叫來源 ConnectableObservable 的 <code>connect()</code> 方法。</li>
+<li><code>share</code>：意義為來源 Observable 的資料共享給所有觀察者。<ul>
+<li><code>multicast(() =&gt; new Subject())</code> + <code>refCount()</code></li>
+</ul>
+</li>
+<li><code>shareReplay</code>：每次訂閱時會重播來源 Observable 最近 N 次的資料，也就是最近 N 次事件資料共享給所有觀察者。<ul>
+<li><code>multicast(() =&gt; new ReplaySubject())</code> + <code>refCount()</code></li>
+</ul>
+</li>
+</ul>
+<p>如果能理解單播和多播的不同，對於今天的 operators 應該會相對好理解，如果覺得太抽象，可以多看幾次文章，如果還是不容易理解，至少要知道 <code>share</code> 和 <code>shareReplay</code>，因為實務上幾乎都是直接使用這兩個 operators。</p>
+<h1 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h1><ul>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/class/ConnectableObservable" target="_blank" rel="noopener">ConnectableObservable</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/multicast" target="_blank" rel="noopener">Operator - multicast</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/publish" target="_blank" rel="noopener">Operator - publish</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/publishLast" target="_blank" rel="noopener">Operator - publishLast</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/publishBehavior" target="_blank" rel="noopener">Operator - publishBehavior</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/publishReplay" target="_blank" rel="noopener">Operator - publishReplay</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/refCount" target="_blank" rel="noopener">Operator - refCount</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/share" target="_blank" rel="noopener">Operator - share</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/share" target="_blank" rel="noopener">Operator - shareReplay</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/RxJS/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> RxJS</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/shareReplay/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> shareReplay</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/multicast/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> multicast</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/refCount/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> refCount</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/publish/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> publish</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/share/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> share</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2020/10/14/mastering-rxjs-29-catcherror-finalize-retry-retrywhen/" rel="next" title="[RxJS] 錯誤處理 Operators (1) - catchError / finalize / retry / retryWhen">
+                <i class="fa fa-chevron-left"></i> [RxJS] 錯誤處理 Operators (1) - catchError / finalize / retry / retryWhen
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2020/10/16/mastering-rxjs-31-practicing-autocomplete-search-sort-pagination/" rel="prev" title="[RxJS] 實戰練習 - 自動完成 / 搜尋 / 排序 / 分頁">
+                [RxJS] 實戰練習 - 自動完成 / 搜尋 / 排序 / 分頁 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#multicast"><span class="nav-number">1.</span> <span class="nav-text">multicast</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Publish"><span class="nav-number">2.</span> <span class="nav-text">Publish</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#refCount"><span class="nav-number">3.</span> <span class="nav-text">refCount</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#share"><span class="nav-number">4.</span> <span class="nav-text">share</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#shareReplay"><span class="nav-number">5.</span> <span class="nav-text">shareReplay</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">6.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相關資源"><span class="nav-number">7.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2020/10/15/mastering-rxjs-30-multicast-publish-refcount-share-sharereplay/';
+          this.page.identifier = '2020/10/15/mastering-rxjs-30-multicast-publish-refcount-share-sharereplay/';
+          this.page.title = '[RxJS] Multicast 類 Operator (1) - multicast / publish / refCount / share / shareReplay';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

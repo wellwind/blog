@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="RxJS,Scheduler,ObserveOn,SubscribeOn,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="今天我們來認識一下 RxJS 的 Scheduler，雖然在一般使用 RxJS 開發應用程式時幾乎不會用到 Scheduler，但 Scheduler 可以說是控制 RxJS 至關重要的角色，偶爾也有可能會需要使用 Scheduler 來調整事件發生時機！ 到底什麼是 Scheduler？就讓我們繼續看下去吧！">
+<meta name="keywords" content="RxJS,Scheduler,ObserveOn,SubscribeOn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[RxJS] 認識 Scheduler">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="今天我們來認識一下 RxJS 的 Scheduler，雖然在一般使用 RxJS 開發應用程式時幾乎不會用到 Scheduler，但 Scheduler 可以說是控制 RxJS 至關重要的角色，偶爾也有可能會需要使用 Scheduler 來調整事件發生時機！ 到底什麼是 Scheduler？就讓我們繼續看下去吧！">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/01.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/02.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/03.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/04.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/05.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/06.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/07.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/08.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/09.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/10.jpg">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.380Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[RxJS] 認識 Scheduler">
+<meta name="twitter:description" content="今天我們來認識一下 RxJS 的 Scheduler，雖然在一般使用 RxJS 開發應用程式時幾乎不會用到 Scheduler，但 Scheduler 可以說是控制 RxJS 至關重要的角色，偶爾也有可能會需要使用 Scheduler 來調整事件發生時機！ 到底什麼是 Scheduler？就讓我們繼續看下去吧！">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[RxJS] 認識 Scheduler | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[RxJS] 認識 Scheduler</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-10-19T18:00:00+00:00">
+                2020-10-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/" itemprop="url" rel="index">
+                    <span itemprop="name">打通 RxJS 任督二脈</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/第-12-屆鐵人賽/" itemprop="url" rel="index">
+                    <span itemprop="name">第 12 屆鐵人賽</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天我們來認識一下 RxJS 的 Scheduler，雖然在一般使用 RxJS 開發應用程式時幾乎不會用到 Scheduler，但 Scheduler 可以說是控制 RxJS 至關重要的角色，偶爾也有可能會需要使用 Scheduler 來調整事件發生時機！</p>
+<p>到底什麼是 Scheduler？就讓我們繼續看下去吧！</p>
+<a id="more"></a>
+<h1 id="快速認識-Scheduler"><a href="#快速認識-Scheduler" class="headerlink" title="快速認識 Scheduler"></a>快速認識 Scheduler</h1><p>Schedule 這個單字本身有「安排」的意思，因此 Scheduler 可以想像成是「負責安排」的人，具體來說安排什麼呢？就是安排 Observable 內「事件」該如何發生的時機點。</p>
+<p>舉個例子來說，請思考一下以下程式會以什麼樣的順序印出資料？</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'start'</span>);</span><br><span class="line">of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">  .subscribe(&#123;</span><br><span class="line">    next: <span class="function"><span class="params">result</span> =&gt;</span> <span class="built_in">console</span>.log(result),</span><br><span class="line">    complete: <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'complete'</span>)</span><br><span class="line">  &#125;);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'end'</span>);</span><br></pre></td></tr></table></figure>
+<p>應該不難判斷，由於 <code>of(1, 2, 3)</code> 事件是「同步執行」的，因此結果為：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">start</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">complete</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>那麼有沒有辦法讓 <code>of(1, 2, 3)</code> 變成「非同步執行」呢？當然是有的，我們可以在 <code>of</code> 參數的最後放上一個 Scheduler 來安排資料處理的順序，以下範例透過 <code>asyncScheduler</code> 來幫助我們將 <code>of(1, 2, 3)</code> 的資料變成非同步執行的程式：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; asyncScheduler, of &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'start'</span>);</span><br><span class="line">of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, asyncScheduler)</span><br><span class="line">  .subscribe(&#123;</span><br><span class="line">    next: <span class="function"><span class="params">result</span> =&gt;</span> <span class="built_in">console</span>.log(result),</span><br><span class="line">    complete: <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'complete'</span>)</span><br><span class="line">  &#125;);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'end'</span>);</span><br></pre></td></tr></table></figure>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-make-observable-async" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-make-observable-async</a></p>
+<p>此時因為 <code>of(1, 2, 3)</code> 是非同步執行的，結果就變成：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">start</span><br><span class="line">end</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line">complete</span><br></pre></td></tr></table></figure>
+<p>很簡單吧！透過 Scheduler 可以幫助我們快速的將同步程式切換成非同步程式，當然實際上不只這樣而已，還有許多 Scheduler 的使用技巧，但在介紹更多內容之前，先讓我們簡單(?)理解一下非同步處理的核心邏輯。</p>
+<h1 id="認識-JavaScript-處理非同步的原理"><a href="#認識-JavaScript-處理非同步的原理" class="headerlink" title="認識 JavaScript 處理非同步的原理"></a>認識 JavaScript 處理非同步的原理</h1><p>我們都知道可以使用 <code>Promise</code> 或 <code>setTimeout</code> 讓一段程式變成非同步執行，那麼以下程式印出的結果為何？</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'A'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">Promise</span>.resolve(<span class="string">'B'</span>)</span><br><span class="line">  .then(<span class="function"><span class="params">result</span> =&gt;</span> <span class="built_in">console</span>.log(result));</span><br></pre></td></tr></table></figure>
+<p>既然都變成非同步了，理論上應該先變成非同步先處理吧，所以應該是先印出 <code>A</code> 再印出 <code>B</code> 嗎？很可惜的不是，答案是先印出 <code>B</code> 再印出 <code>A</code>，為什麼會這樣呢？這跟 JavaScript 的非同步處理方式有關。</p>
+<h2 id="認識-Microtask-與-Macrotask"><a href="#認識-Microtask-與-Macrotask" class="headerlink" title="認識 Microtask 與 Macrotask"></a>認識 Microtask 與 Macrotask</h2><p>首先，我們必須先知道的是當 JavaScript 開始執行一段程式時，會產生一個「工作階段 (task)」，並「同步」的執行相關的程式碼，而當遇到 <code>Promise</code> 或 <code>setTimeout</code> 這類非同步呼叫時，會先將裡面的程式碼丟到一個「等待區 (task queue)」，然後繼續處理其他同步的程式碼，直到目前同步的程式碼處理完後，再從「等待區」將程式碼拿出來以「同步」的方式執行裡面的程式碼</p>
+<p>由於等待區是一個佇列 (queue) 的資料結構，佇列的特色就是先進先出，因此先進入等待區的程式會先被執行，以下兩段非同步程式呼叫執行後會先印出 <code>A</code> 再印出 <code>B</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.resolve(<span class="string">'A'</span>)</span><br><span class="line">  .then(<span class="function"><span class="params">result</span> =&gt;</span> <span class="built_in">console</span>.log(result));</span><br><span class="line"></span><br><span class="line"><span class="built_in">Promise</span>.resolve(<span class="string">'B'</span>)</span><br><span class="line">  .then(<span class="function"><span class="params">result</span> =&gt;</span> <span class="built_in">console</span>.log(result));</span><br></pre></td></tr></table></figure>
+<p>那麼為什麼稍早的程式中 <code>setTimeout</code> 執行順序跟我們想的不一樣呢？這是因為所謂的「等待區」在 JavaScript 處理中其實會有兩種：</p>
+<ul>
+<li>Microtask queue：如 <code>Promise</code> 或 node.js 中的 <code>process.nextTick</code>，都會丟到 microtask queue 中。</li>
+<li>Macrotask queue：如 <code>setTimeout</code> 或 <code>requestAnimationFrame</code>，都會丟到 marcotask queue 中。</li>
+</ul>
+<p>JavaScript 在同步執行完畢時，會先將所有的 microtask queue 中的程式執行完畢，確認清空 microtask queue 的工作後，再處理下一個 macrotask queue 中的工作，也因此同時有 <code>Promise</code> 和 <code>setTimeout()</code> 呼叫時，<code>promise</code> 會進入 microtask queue 而 <code>setTimeout</code> 則進入 macrotask queue，所以 <code>Promise</code> 的程式會先進行處理，之後才處理 <code>setTimeout</code> 的程式。</p>
+<h2 id="影片支援"><a href="#影片支援" class="headerlink" title="影片支援"></a>影片支援</h2><p>為什麼要切成這樣呢？中間有不少原因，還會牽扯到另一個大主題「event loop」，但這些不是今天的主題，因此就不花篇幅介紹了，有興趣可以看看以下影片 (有中文字幕)：</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/8aGhZQkoFbQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<p>大方向是，microtask 會在每次 macrotask 結束前，想辦法清空，當清空後才會進行畫面渲染，接著處理下一次的 macrotask，因此 macrotask 作用在每次畫面渲染的前後，而 microtask 則不是。</p>
+<p>現在我們只要知道非同步運作有一個粒度小的 microtask 以及一個粒度大的 macrotask ，以及畫面渲染時機的不同，就足以幫助我們更加理解 RxJS 的 Scheduler 囉。</p>
+<h1 id="再次認識-Scheduler"><a href="#再次認識-Scheduler" class="headerlink" title="再次認識 Scheduler"></a>再次認識 Scheduler</h1><p>接著我們再來仔細認識一下 RxJS 的 Scheduler 到底是什麼，Scheduler 實際上就是用來幫助我們決定程式要「同步」或是「非同步」執行的一個角色；在同步執行時，我們可以用來確保不同的 「同步 Observable」事件會在一致的時間點 (frame) 觸發；而在非同步執行時，則可以用來控制使用 microtask 還是 macrotask 處理事件。</p>
+<p>從文字來看稍微有點抽象，之後我們會有更多程式碼解釋。</p>
+<h2 id="Scheduler-的種類"><a href="#Scheduler-的種類" class="headerlink" title="Scheduler 的種類"></a>Scheduler 的種類</h2><p>Scheduler 依照運作邏輯分成以下幾類：</p>
+<ul>
+<li><code>null</code>：也就是不指定 Scheduler，那們就是同步執行的。</li>
+<li><code>queueScheduler</code>：也是同步處理的，但在執行時 RxJS 會將所有同步的 Observable 資料放到 queue 內，再依序執行，稍後我們會說明這和 <code>null</code> 有什麼區別。</li>
+<li><code>asapScheduler</code>：非同步處理，與使用 <code>Promise</code> 一樣的非同步處理層級，也就是使用 microtask</li>
+<li><code>asyncScheduler</code>：非同步處理，處理方式同 <code>setIntervael</code> ，屬於 macrotask 層級</li>
+<li><code>animationFrameScheduler</code>：非同步處理，處理方式同 <code>requestAnimationFrame</code>，也是屬於 macrotask 層級，但更適用於動畫處理 (效能較優)</li>
+</ul>
+<h1 id="建立類型-Operators-使用-Scheduler"><a href="#建立類型-Operators-使用-Scheduler" class="headerlink" title="建立類型 Operators 使用 Scheduler"></a>建立類型 Operators 使用 Scheduler</h1><p>在建立類型的 operators 如 <code>of</code>、<code>from</code> 和 <code>timer</code> 等，都可以在最後一個參數指定要使用哪個 Scheduler 如：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, asyncScheduler);</span><br></pre></td></tr></table></figure>
+<p>此時 operator 會幫我們將每個事件值用指定的處理方式來安排事件發生，以下舉個例子來說明不同 Scheduler 執行的結果。</p>
+<img src="/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/01.jpg">
+<p>畫面中有一個紅色方塊，我們將示範使用不同的 Scheduler 來移動這個方塊，並看看執行過果，成式碼如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> initPosition = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> blockElement = <span class="built_in">document</span>.querySelector(<span class="string">"#block"</span>) <span class="keyword">as</span> HTMLElement;</span><br><span class="line">  blockElement.style.left = <span class="string">"100px"</span>;</span><br><span class="line">  blockElement.style.top = <span class="string">"100px"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> updatePositionByScheduler = <span class="function">(<span class="params">scheduler: SchedulerLike</span>) =&gt;</span> &#123;</span><br><span class="line">  initPosition();</span><br><span class="line"></span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"start"</span>);</span><br><span class="line"></span><br><span class="line">    range(<span class="number">0</span>, <span class="number">100</span>, scheduler).subscribe(&#123;</span><br><span class="line">      next: <span class="function"><span class="params">val</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> blockElement = <span class="built_in">document</span>.querySelector(<span class="string">"#block"</span>) <span class="keyword">as</span> HTMLElement;</span><br><span class="line">        blockElement.style.left = <span class="number">100</span> + val + <span class="string">"px"</span>;</span><br><span class="line">        blockElement.style.top = <span class="number">100</span> + val + <span class="string">"px"</span>;</span><br><span class="line">      &#125;,</span><br><span class="line">      complete: <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">"complete"</span>)</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"end"</span>);</span><br><span class="line">  &#125;, <span class="number">300</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">"#goNull"</span>), <span class="string">"click"</span>).subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  updatePositionByScheduler(<span class="literal">null</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">"#goQueue"</span>), <span class="string">"click"</span>).subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  updatePositionByScheduler(queueScheduler);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">"#goAsap"</span>), <span class="string">"click"</span>).subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  updatePositionByScheduler(asapScheduler);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">"#goAsync"</span>), <span class="string">"click"</span>).subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  updatePositionByScheduler(asyncScheduler);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">"#goAnimationFrame"</span>), <span class="string">"click"</span>).subscribe(</span><br><span class="line">  () =&gt; &#123;</span><br><span class="line">    updatePositionByScheduler(animationFrameScheduler);</span><br><span class="line">  &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p><code>updatePositionByScheduler</code> 負責根據指定的 Scheduler 來移動紅色方塊，在程式開始時，先呼叫 <code>initPosition</code> 重置紅色方塊的起始位置，接著依照不同的 Scheduler 依序產生一個 0~99 數值，並訂閱此 Observable 來更新畫面。</p>
+<p>程式碼已經放在 StackBlitz 上：</p>
+<p><a href="https://stackblitz.com/edit/mastering-rxjs-schedulers" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-schedulers</a></p>
+<p>可以嘗試按按看每個按鈕，並比較一下畫面更新的方式以及 <code>console.log</code> 輸出的順序，以下簡單說明一下執行結果：</p>
+<h2 id="使用-null"><a href="#使用-null" class="headerlink" title="使用 null"></a>使用 null</h2><p>由於 <code>range()</code> 本身是同步執行的，因此會在一個工作階段 (task) 中全部跑完，可以直接用同步執行的思維去想就好，輸出結果為：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">start</span><br><span class="line">complete</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>由於執行完才會渲染畫面，因此紅色框框會從左上角立刻出現在右下角。</p>
+<img src="/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/02.jpg">
+<h2 id="使用-queueScheduler"><a href="#使用-queueScheduler" class="headerlink" title="使用 queueScheduler"></a>使用 queueScheduler</h2><p>使用 <code>queueScheduler</code> 時，資料依然是「同步執行」的，因此結果與使用 <code>null</code> 完全一樣，但在一個同步工作階段中，會再使用 queue 將資料包裝起來處理； <code>queueScheduler</code> 做這件事情的目的是什麼？我們在後續說明。</p>
+<img src="/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/03.jpg">
+<h2 id="使用-asapScheduler"><a href="#使用-asapScheduler" class="headerlink" title="使用 asapScheduler"></a>使用 asapScheduler</h2><p><code>asapScheduler</code> 會將每次 Observable 事件值都用「非同步」的方式處理，因此執行順序為：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">start</span><br><span class="line">end</span><br><span class="line">complete -&gt; 因為是非同步執行</span><br></pre></td></tr></table></figure>
+<p><code>asapScheduler</code> 的非同步行為會進入 microtask，而再 microtask 階段是不會處理畫面渲染的，因此畫面中的紅色方塊雖然會「非同步的」被更新座標，但會在最後「直接出現在右下角」。</p>
+<img src="/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/04.jpg">
+<h2 id="使用-asyncScheduler"><a href="#使用-asyncScheduler" class="headerlink" title="使用 asyncScheduler"></a>使用 asyncScheduler</h2><p><code>asyncScheduler</code> 也會將每次 Observable 事件值使用「非同步」的方式處理，所以執行順序一樣是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">start</span><br><span class="line">end</span><br><span class="line">complete</span><br></pre></td></tr></table></figure>
+<p>不過 <code>asyncScheduler</code> 是使用 macrotask 處理非同步呼叫，而畫面渲染行為會發生在每次 macrotask 結束之間，因此每次 Observable 的事件跟事件發生之間會產生畫面渲染，結果就是可以看到紅色方塊往右下角移動的動畫。</p>
+<img src="/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/05.jpg">
+<h2 id="使用-animationFrameScheduler"><a href="#使用-animationFrameScheduler" class="headerlink" title="使用 animationFrameScheduler"></a>使用 animationFrameScheduler</h2><p><code>animationFrameScheduler</code> 觸發的時機點和畫面重繪 (repaint) 定義的時機點一樣，就跟我們使用 JavaScript 的 <code>requestAnimationFrame</code> 一樣，基本上是 1/60 秒發生一次，使用 <code>requestAnimationFrame</code> 的時機通常是使用 JavaScript 處理動畫，可以避免使用 <code>setTimeout((), 1)</code> 運算太頻繁，但畫面跟新頻率不需要這麼高的問題。</p>
+<p>由於是非同步執行，因此執行結果與前面相同，但可以看到畫面上的紅色方塊以比較慢的速度移動，原則上會是每 1/60 移動一次。</p>
+<img src="/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/06.jpg">
+<h2 id="不同建立類型-Operators-預設的-Scheduler"><a href="#不同建立類型-Operators-預設的-Scheduler" class="headerlink" title="不同建立類型 Operators 預設的 Scheduler"></a>不同建立類型 Operators 預設的 Scheduler</h2><p>以下是可以在最後一個參數設定 Scheduler 的建立類型 operators：</p>
+<ul>
+<li><code>bindCallback</code></li>
+<li><code>bindNodeCallback</code></li>
+<li><code>combineLatest</code></li>
+<li><code>concat</code></li>
+<li><code>empty</code></li>
+<li><code>from</code></li>
+<li><code>fromPromise</code></li>
+<li><code>interval</code></li>
+<li><code>merge</code></li>
+<li><code>of</code></li>
+<li><code>range</code></li>
+<li><code>throw</code></li>
+<li><code>timer</code></li>
+</ul>
+<p>建立類型的 operators 有部分會有預設 operator，尤其是跟時間控制有關的，例如 <code>interval</code> 的方法簽章如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">interval(period: number = 0, scheduler: SchedulerLike = async): Observable&lt;number&gt;</span><br></pre></td></tr></table></figure>
+<p>可以看到是使用 <code>asyncScheduler</code>，而有些則沒有預設 scheduler，那麼就依照該 operator 預設的邏輯來決定同步或非同步，例如 <code>of</code> 預設的 Scheduler 是 <code>null</code>，因此是同步處理，而 <code>timer</code> 預設也是使用 <code>asyncScheduler</code>。</p>
+<h2 id="使用-scheduled-operator-避免-of-和-from-模糊不清"><a href="#使用-scheduled-operator-避免-of-和-from-模糊不清" class="headerlink" title="使用 scheduled operator 避免 of 和 from 模糊不清"></a>使用 scheduled operator 避免 of 和 from 模糊不清</h2><p>另外還有一個重點 <code>of</code> 和 <code>from</code> 裡面的參數是不固定的，因此直接將 Scheduler 放在最後會相對不容易理解，也會有「無法將 Scheduler 物件本身當作事件值發送」的問題，因此 RxJS 還有一個建立類型 Operator - <code>scheduled</code> 來處理這個問題。</p>
+<p><code>scheduled</code> 只能放兩個參數，第一個參數是資料，如果有多筆則使用陣列處理；第二個參數則是要使用哪個 Scheduler。因此以下程式不建議使用：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">of(<span class="number">1</span>, <span class="number">2</span>, asyncScheduler);</span><br></pre></td></tr></table></figure>
+<p>建議改使用</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scheduled([<span class="number">1</span>, <span class="number">2</span>], asyncScheduler);</span><br></pre></td></tr></table></figure>
+<h1 id="使用-Scheduler-控制來源-Observable"><a href="#使用-Scheduler-控制來源-Observable" class="headerlink" title="使用 Scheduler 控制來源 Observable"></a>使用 Scheduler 控制來源 Observable</h1><p>除了在建立類型 operators 最後參數加上 Scheduler 外，如果想控制一個來源 Observable 發生的時機點，可以使用 <code>observerOn</code> 這個 operator，依照 Scheduler 來控制收到事件的時機點，如：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'start'</span>);</span><br><span class="line">of(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">  .pipe(observeOn(asyncScheduler))</span><br><span class="line">  .subscribe(&#123;</span><br><span class="line">    next: <span class="function"><span class="params">result</span> =&gt;</span> <span class="built_in">console</span>.log(result),</span><br><span class="line">    complete: <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'complete'</span>)</span><br><span class="line">  &#125;);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'end'</span>);</span><br></pre></td></tr></table></figure>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-observeon" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-observeon</a></p>
+<p>由於我們將來源事件用非同步的方式接收處理，因此 <code>start</code> 和 <code>end</code> 會先印出，然後才依序印出 <code>1</code> 、<code>2</code> 和 <code>complete</code>。</p>
+<p>需要特別注意的是 <code>of(1, 2)</code> 依然是「同步處理」行為，只是在訂閱時透過 <code>observeOn(asyncScheduler)</code> 將收到的資料放到 macrotask 內，因此以下兩段程式碼處理行為完全不同：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// (1)</span></span><br><span class="line">of(<span class="number">1</span>, <span class="number">2</span>, asyncScheduler);</span><br><span class="line"><span class="comment">// 注意：此用法已被標示棄用，這裡純粹拿來比較用</span></span><br><span class="line"><span class="comment">// 實際上建議寫成 scheduled([1, 2], asyncScheduler)</span></span><br><span class="line"><span class="comment">// (2)</span></span><br><span class="line">of(<span class="number">1</span>, <span class="number">2</span>).pipe(observeOn(asyncScheduler));</span><br></pre></td></tr></table></figure>
+<p>第一段程式碼是把「每一個值分別放入 macrotaask 中」。</p>
+<img src="/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/07.jpg">
+<p>第二段程式碼則是「產生 1 和 2 後，再將這兩個資料放入 macrotask 中」。</p>
+<img src="/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/08.jpg">
+<p>這個觀念非常重要！如果搞錯，很可能整個執行順序都跟想的不同了。</p>
+<h1 id="使用-Scheduler-控制訂閱時機"><a href="#使用-Scheduler-控制訂閱時機" class="headerlink" title="使用 Scheduler 控制訂閱時機"></a>使用 Scheduler 控制訂閱時機</h1><p> <code>observeOn</code> 可以用來控制「處理來源 Observable 事件的時機」，而我們也可以用 <code>subscribeOn</code> 來控制「訂閱來源 Observable 的時機」，以下程式一樣是非同步執行的。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'start'</span>);</span><br><span class="line">of(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">  .pipe(subscribeOn(asyncScheduler))</span><br><span class="line">  .subscribe(&#123;</span><br><span class="line">    next: <span class="function"><span class="params">result</span> =&gt;</span> <span class="built_in">console</span>.log(result),</span><br><span class="line">    complete: <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'complete'</span>)</span><br><span class="line">  &#125;);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'end'</span>);</span><br></pre></td></tr></table></figure>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-subscribeon" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-subscribeon</a></p>
+<p>執行結果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">start</span><br><span class="line">end</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">complete</span><br></pre></td></tr></table></figure>
+<p>一樣的，別忘記 <code>of(1, 2)</code> 本身依然是「同步執行」程式喔！</p>
+<h1 id="null-與-queueScheduler-的差別"><a href="#null-與-queueScheduler-的差別" class="headerlink" title="null 與 queueScheduler 的差別"></a>null 與 queueScheduler 的差別</h1><p>最後，我們回到「同步」程式，看看使用 <code>null</code> 與使用 <code>queueScheduler</code> 到底有什麼不同，先想想看以下程式會如何執行：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sourceA$ = of(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line"><span class="keyword">const</span> sourceB$ = of(<span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">combineLatest([sourceA$, sourceB$])</span><br><span class="line">  .pipe(map(<span class="function">(<span class="params">[a, b]</span>) =&gt;</span> a + b))</span><br><span class="line">  .subscribe(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(result);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>我們已經知道 <code>combineLatest</code> 會訂閱參數內的 Observables，當每個 Observables 發生事件時，將這個時與其他的 Observables 「最後一次事件組合在一起」，所以理論上過程如下：</p>
+<ul>
+<li><code>sourceA$</code> 發生事件 <code>1</code>，此時 <code>sourceB$</code> 還沒有任何事件發生</li>
+<li><code>sourceB$</code> 發生事件 <code>3</code>，此時跟 <code>sourceA$</code> 最後一次事件值 <code>1</code> 組合在一起，得到 <code>3 + 1 = 4</code></li>
+<li><code>sourceA$</code> 發生事件 <code>2</code>，此時跟 <code>sourceB$</code> 最後一次事件值 <code>3</code> 組合在一起，得到 <code>2 + 3 = 5</code></li>
+<li><code>sourceB$</code> 發生事件 <code>4</code>，此時跟 <code>sourceA$</code> 最後一次事件值 <code>2</code> 組合在一起，得到 <code>4 + 2 = 6</code></li>
+<li><code>sourceA$</code> 結束</li>
+<li><code>sourceB$</code> 結束</li>
+</ul>
+<p>因此印出的值應該是 <code>4</code> 、<code>5</code> 和 <code>6</code>，實際上是這樣嗎？很可惜，實際結果是：只印出 <code>5</code> 和 <code>6</code>！怎麼會這樣呢？</p>
+<h2 id="不使用-scheduler-的同步執行順序"><a href="#不使用-scheduler-的同步執行順序" class="headerlink" title="不使用 scheduler 的同步執行順序"></a>不使用 scheduler 的同步執行順序</h2><p>別忘記了 <code>of</code> 是「同步執行」的，因此在使用 <code>combineLatest</code> 分別訂閱兩個 Observable 時，實際上會變成類似以下程式碼的執行順序：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sourceA$ = of(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line"><span class="keyword">const</span> sourceB$ = of(<span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">sourceA$.subscribe(...);</span><br><span class="line">sourceB$.subscribe(...);</span><br></pre></td></tr></table></figure>
+<p>看出問題了嗎？因為「同步執行」的關係，在訂閱 <code>sourceA$</code> 時會先同步產生 <code>1</code> 和 <code>2</code> 事件後結束；接著才是訂閱 <code>sourceB$</code> 同步產生 <code>3</code> 和 <code>4</code> 事件然後結束，因此正確運作過程為：</p>
+<ul>
+<li><code>sourceA$</code> 發生事件 <code>1</code>，此時 <code>sourceB$</code> 還沒有任何事件發生</li>
+<li><code>sourceA$</code> 發生事件 <code>2</code>，此時 <code>sourceB$</code> 還沒有任何事件發生</li>
+<li><code>sourceA$</code> 結束</li>
+<li><code>sourceB$</code> 發生事件 <code>3</code>，此時跟 <code>sourceA$</code> 最後一次事件值 <code>2</code> 組合在一起，得到 <code>3 + 2 = 5</code></li>
+<li><code>sourceB$</code> 發生事件 <code>4</code>，此時跟 <code>sourceA$</code> 會後一次事件值 <code>2</code> 組合在一起，得到 <code>4 + 2 = 6</code></li>
+<li><code>sourceB$</code> 結束</li>
+</ul>
+<img src="/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/09.jpg">
+<p>以上過程都是「同步執行」的，也就是在一個執行階段 (task) 內依序完成。</p>
+<p>因此結果只印出 <code>5</code> 和 <code>6</code> 啦！那麼要怎麼達到我們預期的 <code>4</code>、<code>5</code> 和 <code>6</code> 的結果呢？這時候就是使用 <code>queueScheduler</code> 的時機了。</p>
+<h2 id="使用-queueScheduler-的執行順序"><a href="#使用-queueScheduler-的執行順序" class="headerlink" title="使用 queueScheduler 的執行順序"></a>使用 queueScheduler 的執行順序</h2><p><code>queueScheduler</code> 一樣是同步處理的，但在產生資料時，會將資料存入一個佇列 (queue) 內，每個 Observable 都會有自己的 queue，而 queue 除了佇列本身概念外，也可以想像成是一個「虛擬的時間窗格 (frame)」，因此當訂閱發生時，整個資料流就會依照這個 queue 內的虛擬時間窗格「一格一格的產生事件」。</p>
+<p>因此上述的 <code>sourceA$</code> 和 <code>sourceB$</code> 若是使用了 <code>queueScheduler</code>，則 <code>sourceA$</code> 的事件 <code>1</code> 和 <code>sourceB$</code> 的事件 <code>2</code> 就會同時產生，而要達到這個目的，<code>combineLatest</code> 也必須將資料用「時間窗格」的方式訂閱。</p>
+<img src="/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/10.jpg">
+<p>最終的程式碼為：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sourceA$ = scheduled([<span class="number">1</span>, <span class="number">2</span>], queueScheduler);</span><br><span class="line"><span class="keyword">const</span> sourceB$ = scheduled([<span class="number">3</span>, <span class="number">4</span>], queueScheduler);</span><br><span class="line"></span><br><span class="line">combineLatest([sourceA$, sourceB$])</span><br><span class="line">  .pipe(</span><br><span class="line">    subscribeOn(queueScheduler),</span><br><span class="line">    map(<span class="function">(<span class="params">[a, b]</span>) =&gt;</span> a + b)</span><br><span class="line">  )</span><br><span class="line">  .subscribe(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(result);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>程式碼：</p>
+<p><a href="https://stackblitz.com/edit/mastering-rxjs-queuescheduler?file=index.ts" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-queuescheduler?file=index.ts</a></p>
+<p>有了這些 Scheduler，控制時間就更容易啦！</p>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>今天我們學習了 JavaScript 處理非同步程式的基礎原理，以及 RxJS 如何使用這些原理來設計出各種的 Scheduler，幫助我們「安排」事件發生的時機點！</p>
+<ul>
+<li><code>queueScheduler</code>：同步處理事件，但有個虛擬的時間窗格概念</li>
+<li><code>asapScheduler</code>：非同步處理事件，使用 microtask，如 <code>Promise</code></li>
+<li><code>asyncScheduler</code>：非同步處理事件，使用 macrotask，如 <code>setTimeout</code></li>
+<li><code>animationFrameScheduler</code>：非同步處理事件，使用 macrotask，背後處理雷同 <code>requestAnimationFrame</code>，通常主要用於動畫處理</li>
+</ul>
+<p>另外我們也可以使用 <code>observeOn</code> 控制事件來源處理時機點，以及使用 <code>subscribeOn</code> 處理訂閱事件時機點。</p>
+<p>雖然一般開發應用程式時，不太會使用到 Scheduler 控制，但當遇到時，就不怕不知道如何是好囉！</p>
+<h1 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h1><ul>
+<li><a href="https://rxjs-dev.firebaseapp.com/guide/scheduler" target="_blank" rel="noopener">RxJS Scheduler 文件</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/function/scheduled" target="_blank" rel="noopener">Operators - scheduled</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/observeOn" target="_blank" rel="noopener">Operators - ObserveOn</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/operators/subscribeOn" target="_blank" rel="noopener">Operators - SubscribeOn</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/RxJS/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> RxJS</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Scheduler/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Scheduler</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/ObserveOn/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> ObserveOn</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/SubscribeOn/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> SubscribeOn</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2020/10/18/mastering-rxjs-33-how-to-customize-operators/" rel="next" title="[RxJS] 如何設計自己的 RxJS Operators">
+                <i class="fa fa-chevron-left"></i> [RxJS] 如何設計自己的 RxJS Operators
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2020/10/20/mastering-rxjs-35-how-to-test-rxjs-with-marble-diagrams/" rel="prev" title="[RxJS] 如何替 RxJS 撰寫測試 - 一般測試與彈珠圖測試方法">
+                [RxJS] 如何替 RxJS 撰寫測試 - 一般測試與彈珠圖測試方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#快速認識-Scheduler"><span class="nav-number">1.</span> <span class="nav-text">快速認識 Scheduler</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#認識-JavaScript-處理非同步的原理"><span class="nav-number">2.</span> <span class="nav-text">認識 JavaScript 處理非同步的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#認識-Microtask-與-Macrotask"><span class="nav-number">2.1.</span> <span class="nav-text">認識 Microtask 與 Macrotask</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#影片支援"><span class="nav-number">2.2.</span> <span class="nav-text">影片支援</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#再次認識-Scheduler"><span class="nav-number">3.</span> <span class="nav-text">再次認識 Scheduler</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Scheduler-的種類"><span class="nav-number">3.1.</span> <span class="nav-text">Scheduler 的種類</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#建立類型-Operators-使用-Scheduler"><span class="nav-number">4.</span> <span class="nav-text">建立類型 Operators 使用 Scheduler</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-null"><span class="nav-number">4.1.</span> <span class="nav-text">使用 null</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-queueScheduler"><span class="nav-number">4.2.</span> <span class="nav-text">使用 queueScheduler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-asapScheduler"><span class="nav-number">4.3.</span> <span class="nav-text">使用 asapScheduler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-asyncScheduler"><span class="nav-number">4.4.</span> <span class="nav-text">使用 asyncScheduler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-animationFrameScheduler"><span class="nav-number">4.5.</span> <span class="nav-text">使用 animationFrameScheduler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不同建立類型-Operators-預設的-Scheduler"><span class="nav-number">4.6.</span> <span class="nav-text">不同建立類型 Operators 預設的 Scheduler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-scheduled-operator-避免-of-和-from-模糊不清"><span class="nav-number">4.7.</span> <span class="nav-text">使用 scheduled operator 避免 of 和 from 模糊不清</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-Scheduler-控制來源-Observable"><span class="nav-number">5.</span> <span class="nav-text">使用 Scheduler 控制來源 Observable</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-Scheduler-控制訂閱時機"><span class="nav-number">6.</span> <span class="nav-text">使用 Scheduler 控制訂閱時機</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null-與-queueScheduler-的差別"><span class="nav-number">7.</span> <span class="nav-text">null 與 queueScheduler 的差別</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#不使用-scheduler-的同步執行順序"><span class="nav-number">7.1.</span> <span class="nav-text">不使用 scheduler 的同步執行順序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-queueScheduler-的執行順序"><span class="nav-number">7.2.</span> <span class="nav-text">使用 queueScheduler 的執行順序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">8.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相關資源"><span class="nav-number">9.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/';
+          this.page.identifier = '2020/10/19/mastering-rxjs-34-introduce-scheduler-of-rxjs/';
+          this.page.title = '[RxJS] 認識 Scheduler';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

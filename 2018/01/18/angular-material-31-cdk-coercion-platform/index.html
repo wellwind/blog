@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular Material,Material Design,Angular CDK,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="今天我們來講兩個Angular CDK文件上沒有介紹，但很有機會使用到的隱藏版功能，分別是型別轉換(coercion)、平台偵測(platform)。">
+<meta name="keywords" content="Angular Material,Material Design,Angular CDK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular Material完全攻略]Angular CDK(7) - Coercion、Platform">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2018/01/18/angular-material-31-cdk-coercion-platform/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="今天我們來講兩個Angular CDK文件上沒有介紹，但很有機會使用到的隱藏版功能，分別是型別轉換(coercion)、平台偵測(platform)。">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/18/angular-material-31-cdk-coercion-platform/01-platform.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/18/angular-material-31-cdk-coercion-platform/02-getSupportedInputTypes.png">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.004Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular Material完全攻略]Angular CDK(7) - Coercion、Platform">
+<meta name="twitter:description" content="今天我們來講兩個Angular CDK文件上沒有介紹，但很有機會使用到的隱藏版功能，分別是型別轉換(coercion)、平台偵測(platform)。">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2018/01/18/angular-material-31-cdk-coercion-platform/01-platform.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2018/01/18/angular-material-31-cdk-coercion-platform/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular Material完全攻略]Angular CDK(7) - Coercion、Platform | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2018/01/18/angular-material-31-cdk-coercion-platform/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular Material完全攻略]Angular CDK(7) - Coercion、Platform</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-18T19:56:25+00:00">
+                2018-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular-Material完全攻略/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular Material完全攻略</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/01/18/angular-material-31-cdk-coercion-platform/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/18/angular-material-31-cdk-coercion-platform/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天我們來講兩個Angular CDK文件上沒有介紹，但很有機會使用到的<del>隱藏版</del>功能，分別是<strong>型別轉換(coercion)、平台偵測(platform</strong>)。</p>
+<a id="more"></a>
+<h2 id="關於Angular-CDK的Coercion"><a href="#關於Angular-CDK的Coercion" class="headerlink" title="關於Angular CDK的Coercion"></a>關於Angular CDK的Coercion</h2><p>在之前那麼多天介紹Angular Material的元件時，不知道你有沒有發現一件有趣的事情，以曾經介紹過的<code>&lt;mat-chip&gt;</code>為例，當我要設定<code>selected</code>屬性時，當時是這麼寫的：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-chip</span> <span class="attr">selected</span>=<span class="string">"true"</span>&gt;</span>JavaScript<span class="tag">&lt;/<span class="name">mat-chip</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我們都知道要處理屬性綁定(property binding)時，如果資料是<code>number</code>、<code>boolean</code>或變數名稱之類的話，應該要用中括號<code>[]</code>把屬性包起來，如：<code>[selected]=&quot;true&quot;</code>，否則傳進去的直指會被當作是<code>string</code>，如果是單純的字串，則<code>[property]=&quot;&#39;string&#39;&quot;</code>或<code>property=&quot;string&quot;</code>都是可以的。</p>
+<p>因此假設我們以<code>selected=&quot;false&quot;</code>撰寫的時候，程式中若這樣判斷</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(selected) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這樣的條件還是會進入的，因為字串<code>&#39;false&#39;</code>，在if檢查時是會過的，要真正的boolean值<code>false</code>，才不會進入。</p>
+<p>偏偏上面提到的<code>selected</code>很有趣，寫成<code>selected=&quot;true&quot;</code>會被選取沒有問題，而寫成<code>selected=&quot;false&quot;</code>也完全沒問題不會被選取，因為Angular Material都幫我們處理好這種小細節了！</p>
+<p>這時候我們可以想看看這個用來處理<code>true</code>或<code>false</code>的屬性<code>selected</code>，它明明是一個<code>&lt;mat-chip&gt;</code>的<code>@Input</code>，但偏偏它又可以不用中括號設定非字串資料，那他宣告的型別到底要是<code>string</code>還是<code>boolean</code>呢？如果是<code>string</code>，後續又該如何處理？</p>
+<p>其實我們不用想太多，因為這種貼心小細節在Angular Material中被使用的機會太高了！因此也被拉到Angular CDK中，也就是型別轉換功能－<strong>coercion</strong>。</p>
+<p>至於該怎麼使用呢？我們繼續往下看。</p>
+<h2 id="開始使用Angular-CDK的Coercion"><a href="#開始使用Angular-CDK的Coercion" class="headerlink" title="開始使用Angular CDK的Coercion"></a>開始使用Angular CDK的Coercion</h2><p>Coercion只有三個現成的方法，方便我們做型別轉換，不需要加入任何module，直接使用就可以了！</p>
+<h3 id="使用coerceBooleanProperty"><a href="#使用coerceBooleanProperty" class="headerlink" title="使用coerceBooleanProperty"></a>使用coerceBooleanProperty</h3><p><code>coerceBooleanProperty</code>是用來把輸入內容轉成boolean的一個方法，它的邏輯很簡單，輸入的參數若是<code>null</code>或字串的<code>&#39;false&#39;</code>，就會被當作boolean的<code>false</code>。</p>
+<p>因此我們可以為我們的元件加入一個可以接受字串<code>&#39;false&#39;</code>當作boolean的屬性，例如：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 記得import這個方法</span></span><br><span class="line"><span class="keyword">import</span> &#123; coerceBooleanProperty &#125; <span class="keyword">from</span> <span class="string">'@angular/cdk/coercion'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123; ... &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> CoercionDemoBoxComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="keyword">private</span> _display: <span class="built_in">boolean</span>;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Input</span>()</span><br><span class="line">  <span class="keyword">get</span> display(): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._display;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// value: boolean，代表預期的參數型別是boolean</span></span><br><span class="line">  <span class="comment">// 但我們都知道，javascript其實是弱型別語言</span></span><br><span class="line">  <span class="keyword">set</span> display(value: <span class="built_in">boolean</span>) &#123;</span><br><span class="line">    <span class="comment">// 就算傳進來是string，也會被轉成boolean</span></span><br><span class="line">    <span class="keyword">this</span>._display = coerceBooleanProperty(value);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  someMethod() &#123;</span><br><span class="line">      <span class="keyword">if</span>(display) &#123;</span><br><span class="line">          <span class="comment">// do something</span></span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這時候我們就可以使用</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- display會被當作boolean的true --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">app-coercion-demo-box</span> <span class="attr">display</span>=<span class="string">"true"</span>&gt;</span><span class="tag">&lt;/<span class="name">app-coercion-demo-box</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>或是</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- display會被當作boolean的false --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">app-coercion-demo-box</span> <span class="attr">display</span>=<span class="string">"false"</span>&gt;</span><span class="tag">&lt;/<span class="name">app-coercion-demo-box</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>就不用再多花力氣加上中括弧<code>[display]=&quot;false&quot;</code>，看起來也更加清爽！</p>
+<h4 id="使用coerceNumberProperty"><a href="#使用coerceNumberProperty" class="headerlink" title="使用coerceNumberProperty"></a>使用coerceNumberProperty</h4><p>跟剛剛介紹的<code>coerceBooleanProperty</code>一樣的意思，<code>coerceNumberProperty</code>是用來幫助我們把傳入的資料強制轉為number的工具方法，例如<code>&#39;100.5&#39; + 10</code>的結果是<code>&#39;100.510&#39;</code>，這只要有一定JavaScript經驗的開發人員都知道，而透過<code>coerceNumberProperty(&#39;100.5&#39;) + 10</code>就能夠得到<code>110.5</code>的結果啦！</p>
+<p>另外我們<code>coerceNumberProperty</code>的第二個參數，也能幫助我們設定當轉成number失敗時，預設的值是多少(沒填的話預設為0)，例如<code>coerceNumberProperty(&#39;xxx&#39;)</code>就會得到結果為<code>0</code>。</p>
+<p>以下面程式碼為例：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; coerceNumberProperty &#125; <span class="keyword">from</span> <span class="string">'@angular/cdk/coercion'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123; &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> CoercionDemoBoxComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="keyword">private</span> _height: <span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Input</span>()</span><br><span class="line">  <span class="keyword">get</span> height(): <span class="built_in">number</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._height;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">set</span> height(value: <span class="built_in">number</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>._height = coerceNumberProperty(value);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>component的內容為：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">  我的高度是 &#123;&#123; height &#125;&#125;，再加上10會變成 &#123;&#123; height + 10 &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>這時候使用上就可以在設定<code>height</code>屬性時不用加上中誇號啦！</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">app-coercion-demo-box</span> <span class="attr">display</span>=<span class="string">"true"</span> <span class="attr">height</span>=<span class="string">"10"</span>&gt;</span><span class="tag">&lt;/<span class="name">app-coercion-demo-box</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="使用coerceArray"><a href="#使用coerceArray" class="headerlink" title="使用coerceArray"></a>使用coerceArray</h4><p>有前面兩個方法的經驗，應該不難猜出來<code>coerceArray</code>的用途就是把資料轉為陣列，當使用<code>coerceArray&lt;number&gt;(1)</code>的時候，就會得到結果<code>[1]</code>，如此一來我們就能讓我們的屬性接受單一值或陣列值，反正到component時我們都用程式轉為陣列啦！</p>
+<div class="note info"><p>跟前面的<code>coerceXxxxxProperty</code>不一樣，這個方法名字為<code>coerceArray</code>，沒有<code>Property</code>後綴，要特別注意。</p></div>
+<h2 id="開始使用Angular-CDK的Platform"><a href="#開始使用Angular-CDK的Platform" class="headerlink" title="開始使用Angular CDK的Platform"></a>開始使用Angular CDK的Platform</h2><p>在Angular CDK中，把瀏覽器支援度相關的功能放在Platform分類中，我們需要先加入<code>PlatformModule</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; PlatformModule &#125; <span class="keyword">from</span> <span class="string">'@angular/cdk/platform'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  exports: [</span><br><span class="line">    OverlayModule</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> PlatformModule &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>如此便可使用<code>Platform</code> service來得知目前使用的瀏覽器。例外Pltform中還提供一個<code>getSupportedInputTypes</code>工具方法，來取得目前瀏覽器針對<code>&lt;input&gt;</code>所支援的types，單獨使用這個方法的話，不需要加入<code>PlatformModule</code>。</p>
+<h3 id="使用Platform-service"><a href="#使用Platform-service" class="headerlink" title="使用Platform service"></a>使用Platform service</h3><p>透過<code>Platform</code>，我們可以用來偵測目前使用者使用的瀏覽器，雖然前端技術與瀏覽器都越來越純熟，針對標準的支援度也越來越好，但畢竟還是有些差異，更不用說若使用版本過舊，差異就更大了！真的遇到這種狀況時，就能夠使用<code>Platform</code>這個service，先針對使用者的瀏覽器檢查一下了！</p>
+<p><code>Platform</code> service包含幾個判斷屬性：</p>
+<table>
+<thead>
+<tr>
+<th>屬性</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>isBrowser</td>
+<td>是否為使用瀏覽器(要知道Angular可以使用的範圍可是跨出瀏覽器的)</td>
+</tr>
+<tr>
+<td>EDGE</td>
+<td>瀏覽器是否為 EDGE</td>
+</tr>
+<tr>
+<td>TRIDENT</td>
+<td>瀏覽器的render engine是否為 Microsoft Trident</td>
+</tr>
+<tr>
+<td>BLINK</td>
+<td>瀏覽器的render engine是否為 Blink</td>
+</tr>
+<tr>
+<td>WEBKIT</td>
+<td>瀏覽器的render engine是否為 WebKit</td>
+</tr>
+<tr>
+<td>IOS</td>
+<td>作業系統是否為iOS</td>
+</tr>
+<tr>
+<td>ANDROID</td>
+<td>作業系統是否為Android</td>
+</tr>
+<tr>
+<td>FIREFOX</td>
+<td>瀏覽器是否為firefox</td>
+</tr>
+<tr>
+<td>SAFARI</td>
+<td>瀏覽器是否為safari</td>
+</tr>
+</tbody>
+</table>
+<p>我們可以先在程式中注入<code>Platform</code> service，再來檢查這些屬性：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Platform &#125; <span class="keyword">from</span> <span class="string">'@angular/cdk/platform'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123; &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MainComponent &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> platform: Platform</span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>HTML如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>Is Browser: &#123;&#123; platform.isBrowser &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>Is Android: &#123;&#123; platform.ANDROID &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>Is iOS: &#123;&#123; platform.IOS &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>Is Firefox: &#123;&#123; platform.FIREFOX &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>Is Blink: &#123;&#123; platform.BLINK &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>Is Webkit: &#123;&#123; platform.WEBKIT &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>Is Trident: &#123;&#123; platform.TRIDENT &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>Is Edge: &#123;&#123; platform.EDGE &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>以筆者使用Macbook+Chrome的結果如下：</p>
+<img src="/blog/2018/01/18/angular-material-31-cdk-coercion-platform/01-platform.png">
+<h3 id="使用getSupportedInputTypes"><a href="#使用getSupportedInputTypes" class="headerlink" title="使用getSupportedInputTypes"></a>使用getSupportedInputTypes</h3><p><code>getSupportedInputTypes()</code>是一個工具方法，用來取得目前瀏覽器所支援<code>&lt;input&gt;</code>的type清單，回傳結果為<code>Set&lt;string&gt;</code>，直接看程式比較簡單：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; getSupportedInputTypes &#125; <span class="keyword">from</span> <span class="string">'@angular/cdk/platform'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123; &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MainComponent &#123;</span><br><span class="line">  supportInputTypes = getSupportedInputTypes();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>HTML如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>目前瀏覽器支援的input types<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> *<span class="attr">ngFor</span>=<span class="string">"let type of supportInputTypes"</span>&gt;</span>&#123;&#123; type &#125;&#125;<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>以筆者使用Macbook+Chrome的結果如下：</p>
+<img src="/blog/2018/01/18/angular-material-31-cdk-coercion-platform/02-getSupportedInputTypes.png">
+<h2 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h2><p>今天我們補充了兩個Angular CDK目前文件沒介紹的功能：</p>
+<ul>
+<li>Coercion：用來幫助我們在設計元件時，打造更好的開發人員使用經驗，節省許多時候property binding的無謂程式，也讓HTML畫面更加一致好懂，這樣的元件設計思維非常直得讓人學習，不愧是以高品質為目標的Angular Material，<strong>不僅使用者體驗一流，連開發人員也能得到一流的體驗</strong>！</li>
+<li>Platform：與瀏覽器平台相關的功能，目前可以判斷使用者的瀏覽器，也能得知input支援的types，雖然使用的機會可能不多，但真的遇到需要針對不同平台做細微調整時，我們也知道了有個現成的工具可以用哩。</li>
+</ul>
+<p>本日的程式碼GitHub：<a href="https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-31-cdk-coerce-platform" target="_blank" rel="noopener">https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-31-cdk-coerce-platform</a></p>
+<p>分支：day-30-cdk-overlay</p>
+<p>到這邊我們終於把所有Angular CDK中用來打造一流元件的功能都介紹了一遍，當然還有幾個屬於元件的分類是我們之前使用Angular Material元件時就有感覺的，因此沒有多加介紹，但有過使用Angular Material元件的經驗，要閱讀文件也會很容易上手！</p>
+<p>透過Angular CDK，真的能幫助我們節省很多程式碼，筆者目前工作上也已經開始在專案中加入Angular CDK相關的功能，來打造一些Angular Material目前無法提供的功能，體驗到了其強大的威力，真的非常適合推薦給所有使用Angular的開發人員，<strong>既然要使用輪子，當然要使用最高級的輪子啦</strong>！！XD</p>
+<p>接下來我們會再花幾天時間介紹一些關於使用Angular Material和Angular CDK的相關小技巧，明天見！</p>
+<h2 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h2><ul>
+<li><a href="https://github.com/angular/material2/tree/5.0.x/src/cdk/coercion" target="_blank" rel="noopener">GitHub的Coercion相關原始碼</a></li>
+<li><a href="https://github.com/angular/material2/tree/master/src/cdk/platform" target="_blank" rel="noopener">GitHub的Platform相關原始碼</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular-Material/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular Material</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Material-Design/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Material Design</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Angular-CDK/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular CDK</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/01/17/angular-material-30-cdk-overlay/" rel="next" title="[Angular Material完全攻略]Angular CDK(6) - Overlay">
+                <i class="fa fa-chevron-left"></i> [Angular Material完全攻略]Angular CDK(6) - Overlay
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/01/19/angular-material-32-custom-theme/" rel="prev" title="[Angular Material完全攻略]雜項技巧(1) - 自己的theme自己設計">
+                [Angular Material完全攻略]雜項技巧(1) - 自己的theme自己設計 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#關於Angular-CDK的Coercion"><span class="nav-number">1.</span> <span class="nav-text">關於Angular CDK的Coercion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#開始使用Angular-CDK的Coercion"><span class="nav-number">2.</span> <span class="nav-text">開始使用Angular CDK的Coercion</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用coerceBooleanProperty"><span class="nav-number">2.1.</span> <span class="nav-text">使用coerceBooleanProperty</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用coerceNumberProperty"><span class="nav-number">2.1.1.</span> <span class="nav-text">使用coerceNumberProperty</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用coerceArray"><span class="nav-number">2.1.2.</span> <span class="nav-text">使用coerceArray</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#開始使用Angular-CDK的Platform"><span class="nav-number">3.</span> <span class="nav-text">開始使用Angular CDK的Platform</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Platform-service"><span class="nav-number">3.1.</span> <span class="nav-text">使用Platform service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用getSupportedInputTypes"><span class="nav-number">3.2.</span> <span class="nav-text">使用getSupportedInputTypes</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本日小結"><span class="nav-number">4.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相關資源"><span class="nav-number">5.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2018/01/18/angular-material-31-cdk-coercion-platform/';
+          this.page.identifier = '2018/01/18/angular-material-31-cdk-coercion-platform/';
+          this.page.title = '[Angular Material完全攻略]Angular CDK(7) - Coercion、Platform';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

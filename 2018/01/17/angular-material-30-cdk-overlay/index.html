@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular Material,Material Design,Angular CDK,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="今天我們要來介紹Angular CDK中的Overlay！Overlay在Angular Material中可以說是隨處可見，只要是任何會從螢幕上彈出資訊的功能，如Select、Dialog等等都免不了要使用Overlay；因此也能說Overlay是Angular Material中讓畫面更具有立體感的大功臣，到底這個功能能幫助我們達到多少目標呢？就讓我們繼續看下去吧！">
+<meta name="keywords" content="Angular Material,Material Design,Angular CDK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular Material完全攻略]Angular CDK(6) - Overlay">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2018/01/17/angular-material-30-cdk-overlay/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="今天我們要來介紹Angular CDK中的Overlay！Overlay在Angular Material中可以說是隨處可見，只要是任何會從螢幕上彈出資訊的功能，如Select、Dialog等等都免不了要使用Overlay；因此也能說Overlay是Angular Material中讓畫面更具有立體感的大功臣，到底這個功能能幫助我們達到多少目標呢？就讓我們繼續看下去吧！">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/17/angular-material-30-cdk-overlay/01-cdk-overlay-connect-explain.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/17/angular-material-30-cdk-overlay/02-floating-action-menu-demo.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/17/angular-material-30-cdk-overlay/03-global-menu.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/17/angular-material-30-cdk-overlay/04-backdrop.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/17/angular-material-30-cdk-overlay/05-backdrop-class-transparent.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/17/angular-material-30-cdk-overlay/07-reposition-scroll.gif">
+<meta property="og:updated_time" content="2021-01-25T02:06:10.892Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular Material完全攻略]Angular CDK(6) - Overlay">
+<meta name="twitter:description" content="今天我們要來介紹Angular CDK中的Overlay！Overlay在Angular Material中可以說是隨處可見，只要是任何會從螢幕上彈出資訊的功能，如Select、Dialog等等都免不了要使用Overlay；因此也能說Overlay是Angular Material中讓畫面更具有立體感的大功臣，到底這個功能能幫助我們達到多少目標呢？就讓我們繼續看下去吧！">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2018/01/17/angular-material-30-cdk-overlay/01-cdk-overlay-connect-explain.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2018/01/17/angular-material-30-cdk-overlay/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular Material完全攻略]Angular CDK(6) - Overlay | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2018/01/17/angular-material-30-cdk-overlay/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular Material完全攻略]Angular CDK(6) - Overlay</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-17T18:30:35+00:00">
+                2018-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular-Material完全攻略/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular Material完全攻略</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/01/17/angular-material-30-cdk-overlay/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/17/angular-material-30-cdk-overlay/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天我們要來介紹Angular CDK中的Overlay！Overlay在Angular Material中可以說是隨處可見，只要是任何會從螢幕上<strong>彈出</strong>資訊的功能，如Select、Dialog等等都免不了要使用Overlay；因此也能說Overlay是Angular Material中讓畫面<strong>更具有立體感</strong>的大功臣，到底這個功能能幫助我們達到多少目標呢？就讓我們繼續看下去吧！</p>
+<a id="more"></a>
+<p>首先當然不能忘記，要加入<code>OverlayModule</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; OverlayModule &#125; <span class="keyword">from</span> <span class="string">'@angular/cdk/overlay'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  exports: [</span><br><span class="line">    OverlayModule</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> SharedMaterialModule &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="一切的關鍵－Overlay-service"><a href="#一切的關鍵－Overlay-service" class="headerlink" title="一切的關鍵－Overlay service"></a>一切的關鍵－Overlay service</h2><p>Overlay裡面有許多不同大大小小的classes，其中主宰一切的關鍵，來自於一個service－Overlay，透過這個service，我們可以用來決定一個component或template動態的產生，以及要產生在什麼位置，甚至可以”黏在”另外一個元件的旁邊！</p>
+<h3 id="使用Overlay讓物件與物件連結"><a href="#使用Overlay讓物件與物件連結" class="headerlink" title="使用Overlay讓物件與物件連結"></a>使用Overlay讓物件與物件連結</h3><p>我們先來小試身手一下，做一個經典的功能，再畫面右下角加入一個floating action button，並在點選後呈現另一個選單！</p>
+<p>畫面設計如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-fab</span> <span class="attr">color</span>=<span class="string">"accent"</span> <span class="attr">class</span>=<span class="string">"float-menu"</span> (<span class="attr">click</span>)=<span class="string">"displayMenu()"</span> #<span class="attr">originFab</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-icon</span>&gt;</span>add<span class="tag">&lt;/<span class="name">mat-icon</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">ng-template</span> #<span class="attr">overlayMenuList</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"fab-menu-panel"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-nav-list</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">mat-list-item</span>&gt;</span>新增信件<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">mat-list-item</span>&gt;</span>管理聯絡人<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mat-nav-list</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ng-template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我們在畫面上加了一個按鈕，以及一個選單的樣板，這個樣板稍後會出現在按鈕的附近，接著我們透過CSS讓按鈕固定在畫面右下方，CSS如下：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.float-menu</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: fixed <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">right</span>: <span class="number">15px</span>;</span><br><span class="line">  <span class="attribute">bottom</span>: <span class="number">15px</span>;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.fab-menu-panel</span> &#123;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: white;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.fab-menu-panel</span> <span class="selector-class">.mat-nav-list</span> &#123;</span><br><span class="line">  <span class="attribute">padding-top</span>: <span class="number">0px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最後就是程式部分啦！</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> InboxComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="meta">@ViewChild</span>(<span class="string">'overlayMenuList'</span>) overlayMenuList: TemplateRef&lt;<span class="built_in">any</span>&gt;;</span><br><span class="line">  <span class="meta">@ViewChild</span>(<span class="string">'originFab'</span>) originFab: MatButton;</span><br><span class="line">  overlayRef: OverlayRef;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> overlay: Overlay, <span class="keyword">private</span> viewContainerRef: ViewContainerRef</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="keyword">const</span> strategy = <span class="keyword">this</span>.overlay</span><br><span class="line">      .position()</span><br><span class="line">      .connectedTo(<span class="keyword">this</span>.originFab._elementRef, &#123; originX: <span class="string">'end'</span>, originY: <span class="string">'top'</span> &#125;, &#123; overlayX: <span class="string">'end'</span>, overlayY: <span class="string">'bottom'</span> &#125;);</span><br><span class="line">    <span class="keyword">this</span>.overlayRef = <span class="keyword">this</span>.overlay.create(&#123;</span><br><span class="line">      positionStrategy: strategy</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  displayMenu() &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.overlayRef &amp;&amp; <span class="keyword">this</span>.overlayRef.hasAttached()) &#123;</span><br><span class="line">      <span class="keyword">this</span>.overlayRef.detach();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.overlayRef.attach(<span class="keyword">new</span> TemplatePortal(<span class="keyword">this</span>.overlayMenuList, <span class="keyword">this</span>.viewContainerRef));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上程式中的步驟大致描述如下：</p>
+<ol>
+<li>注入<code>Overlay</code></li>
+<li>在<code>ngOninit()</code>中，使用<code>const strategy = this.overlay.position().connectedTo()</code>，建立一個<code>ConnectedPositionStrategy</code>，代表overlay要與某個物件連結的策略，其中的參數分別為：<ol>
+<li>要被連結的物件(也就是我們的originFab這個按鈕)要被連結的物件(也就是我們的originFab這個按鈕)</li>
+<li>連結物件的連結點位置，以這裡的程式來說，就是右上角為連結點。</li>
+<li>overlay連結物件時的連結點位置，以這裡的程式來說，就是右下角為連結點。</li>
+<li>用圖解釋的話大概是這種感覺：<img src="/blog/2018/01/17/angular-material-30-cdk-overlay/01-cdk-overlay-connect-explain.png"></li>
+</ol>
+</li>
+<li>使用<code>overlay.create()</code>建立一個新的<code>OverlayRef</code>，<code>create()</code>方法可以傳入許多設定資料，在這裡我們設定上一步驟所建立的連結策略。</li>
+<li>在<code>displayMenu()</code>方法中，檢查是否有attach東西上去，如果有，就執行<code>detach()</code>，如果沒有，就把<code>overlayMenuList</code>這個template轉成<code>TemplatePortal</code>並attach上去。</li>
+</ol>
+<div class="note info"><p>對於<code>attach()</code>有感到眼熟嗎？沒錯！就是昨天介紹的Portal功能，而Overlay正是使用Portal的功能，來決定要把什麼東西放到Overlay上面！</p></div>
+<p>接著我們就可以來看看結果啦！</p>
+<img src="/blog/2018/01/17/angular-material-30-cdk-overlay/02-floating-action-menu-demo.gif">
+<p>當我們點下固定在右下角的按鈕，就會看到一個簡單的選單自動「黏」在我們的按鈕上！很酷吧！</p>
+<h4 id="設定withFallbackPosition"><a href="#設定withFallbackPosition" class="headerlink" title="設定withFallbackPosition"></a>設定withFallbackPosition</h4><p>在設定完<code>connectedTo()</code>後，我們能接著設定<code>withFallbackPosition()</code>，如果<code>connectedTo</code>顯示overlay時會超過螢幕畫面，會改使用<code>withFallbackPosition()</code>的設定值，因此我們可以透過<code>withFallbackPosition()</code>來設定無法完整顯示時，重新調整連結點的Plan B、Plan C…Plan Z。</p>
+<p>例如之前我們在介紹menu時提過，當畫面捲動時，menu會先試著 <del>搶鏡頭</del> 讓自己能被完整呈現，實作的程式碼大致看起來如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>._overlay.position()</span><br><span class="line">  .connectedTo(<span class="keyword">this</span>._element, &#123;originX, originY&#125;, &#123;overlayX, overlayY&#125;)</span><br><span class="line">  .withFallbackPosition(</span><br><span class="line">    &#123;originX: originFallbackX, originY&#125;,</span><br><span class="line">    &#123;overlayX: overlayFallbackX, overlayY&#125;)</span><br><span class="line">  .withFallbackPosition(</span><br><span class="line">    &#123;originX, originY: originFallbackY&#125;,</span><br><span class="line">    &#123;overlayX, overlayY: overlayFallbackY&#125;,</span><br><span class="line">    <span class="literal">undefined</span>, -offsetY)</span><br><span class="line">  .withFallbackPosition(</span><br><span class="line">    &#123;originX: originFallbackX, originY: originFallbackY&#125;,</span><br><span class="line">    &#123;overlayX: overlayFallbackX, overlayY: overlayFallbackY&#125;,</span><br><span class="line">    <span class="literal">undefined</span>, -offsetY);</span><br></pre></td></tr></table></figure>
+<p>參考：<a href="https://github.com/angular/material2/blob/5.0.x/src/lib/menu/menu-trigger.ts" target="_blank" rel="noopener">https://github.com/angular/material2/blob/5.0.x/src/lib/menu/menu-trigger.ts</a></p>
+<h3 id="使用Overlay讓物件顯示在畫面上，不連結任何物件"><a href="#使用Overlay讓物件顯示在畫面上，不連結任何物件" class="headerlink" title="使用Overlay讓物件顯示在畫面上，不連結任何物件"></a>使用Overlay讓物件顯示在畫面上，不連結任何物件</h3><p>剛剛我們已經成功讓選單物件連結到按鈕物件上了，接下來我們要試試看讓選單不要連結到任何畫面上，只需要把原來的strategy修改一下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> strategy = <span class="keyword">this</span>.overlay</span><br><span class="line">  .position()</span><br><span class="line">  .global()</span><br><span class="line">  .width(<span class="string">'500px'</span>)</span><br><span class="line">  .height(<span class="string">'100px'</span>)</span><br><span class="line">  .centerHorizontally()</span><br><span class="line">  .centerVertically();</span><br></pre></td></tr></table></figure>
+<p>在這裡我們改用<code>overlay.position().global()</code>來產生一個<code>GlobalPositionStrategy</code>，代表部連結任何物件，是<strong>全域的顯示策略</strong>。接著用<code>width()</code>和<code>height()</code>給予基本的尺寸，再加上<code>centerHorizontally()</code>和<code>centerVertically()</code>來調整放到畫面的正中間，成果如下：</p>
+<img src="/blog/2018/01/17/angular-material-30-cdk-overlay/03-global-menu.gif">
+<p>一個顯示在畫面正中央的選單就出現啦！</p>
+<p>如果不希望顯示在正中間，也可以使用<code>top()</code>、<code>bottom()</code>、<code>left()</code>、<code>right()</code>來設定overlay顯示的座標。</p>
+<p>接下來我們來看看在<code>overlay.create()</code>時，可以使用哪些參數，讓顯示更加靈活！</p>
+<h3 id="設定OverlayConfig"><a href="#設定OverlayConfig" class="headerlink" title="設定OverlayConfig"></a>設定OverlayConfig</h3><p>看過上面兩種Overlay顯示方式後，我們再來看看使用<code>overlay.create()</code>時，可以加入哪些參數，這些參數的型別為<code>OverlayConfig</code>，以下簡單說明：</p>
+<ul>
+<li><code>hasBackdrop</code>：是否要顯示一個預設灰底的backdrop。</li>
+<li><code>backdropClass</code>：讓我們能自訂backdrop的樣式。</li>
+<li><code>direction</code>：LTR or RTL。</li>
+<li><code>height</code>、<code>minHeight</code>和<code>maxHeight</code>：設定高度相關資訊。</li>
+<li><code>width</code>、<code>minWidth</code>和<code>maxWidth</code>：設定寬度相關資訊。</li>
+<li><code>panelClass</code>：給予顯示的Overlay(也就是panel)一個基本的樣式，需要特別注意這個屬性，在<code>ConnectedPositionStrategy</code>上面時<code>overlayRef.deatch()</code>會正常把<code>panelClass</code>拿掉；但<code>GlobalPositionStrategy</code>時，使用<code>overlayRef.deatch()</code>時會無法拿掉這個樣式，需要改用<code>overlayRef.dispose()</code>，而<code>dispose()</code>的話，下次還需要使用<code>overlay.create()</code>重新建立。</li>
+<li><code>positionStrategy</code>：顯示位置的策略，文章前半段提到的就是在切換這個策略。</li>
+<li><code>scrollStrategy</code>：當畫面捲動時，該如何處置Overlay的策略，稍後會詳細說明。</li>
+</ul>
+<p>接著我們來看看特定幾個屬性的設定。</p>
+<h4 id="設定hasBackdrop"><a href="#設定hasBackdrop" class="headerlink" title="設定hasBackdrop"></a>設定hasBackdrop</h4><p>設定這個屬性為true後，會顯示一個基本的灰底backdrop。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> config = <span class="keyword">new</span> OverlayConfig(&#123;</span><br><span class="line">  hasBackdrop: <span class="literal">true</span>,</span><br><span class="line">  positionStrategy: strategy</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">this</span>.overlayRef = <span class="keyword">this</span>.overlay.create(config);</span><br></pre></td></tr></table></figure>
+<p>我們也可以設定當backdrop被點擊後，就自動關閉目前的overlay：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.overlayRef.backdropClick().subscribe(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">this</span>.overlayRef.detach();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/17/angular-material-30-cdk-overlay/04-backdrop.gif">
+<h3 id="設定backdropClass"><a href="#設定backdropClass" class="headerlink" title="設定backdropClass"></a>設定backdropClass</h3><p>預設Angular CDK的Overlay會幫我們加上一個<code>cdk-overlay-dark-backdrop</code>的css class，我們可以透過<code>backdropClass</code>更換它，例如Angular CDK內建了一個<code>cdk-overlay-transparent-backdrop</code>可以幫我們移除掉灰色的背景，但依然有一個透明的backdop在中間，讓我們不能直接跟底層的元件互動：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> config = <span class="keyword">new</span> OverlayConfig(&#123;</span><br><span class="line">  hasBackdrop: <span class="literal">true</span>,</span><br><span class="line">  backdropClass: <span class="string">'cdk-overlay-transparent-backdrop'</span>,</span><br><span class="line">  positionStrategy: strategy</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">this</span>.overlayRef = <span class="keyword">this</span>.overlay.create(config);</span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/17/angular-material-30-cdk-overlay/05-backdrop-class-transparent.gif">
+<p>有了<code>cdk-overlay-transparent-backdrop</code>，滑鼠移到按鈕上時，就沒有hover的效果，直到按下去關掉overlay時，才一切又正常了。</p>
+<h3 id="設定scrollStrategy"><a href="#設定scrollStrategy" class="headerlink" title="設定scrollStrategy"></a>設定scrollStrategy</h3><p>最後我們來聊一下<code>scrollStrategy</code>，在<code>ConnectedPositionStrategy</code>模式下，我們能透過設定<code>scrollStrategy</code>來決定當滑鼠滾輪捲動時，overlay該如何處置，例如預設如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> config = <span class="keyword">new</span> OverlayConfig(&#123;</span><br><span class="line">  scrollStrategy: <span class="keyword">this</span>.overlay.scrollStrategies.noop()</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>此時滑鼠捲動不會影響overlay，overlay的位置依然呈現在原來的位置。</p>
+<p>如果希望跟著連結的元件一起移動，可以設定為<code>reposition()</code></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> config = <span class="keyword">new</span> OverlayConfig(&#123;</span><br><span class="line">  scrollStrategy: <span class="keyword">this</span>.overlay.scrollStrategies.reposition()</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2018/01/17/angular-material-30-cdk-overlay/07-reposition-scroll.gif">
+<div class="note info"><p>這裡可以看到選單會蓋過上面的toolbar，這是因為overlay預設的<code>z-index</code>為1000，所以我們只需要把toolbar的<code>z-index</code>設定為超過1000，就可以解決這個問題囉。</p></div>
+<p>例外還有兩個可以設定的策略：</p>
+<ul>
+<li><code>close()</code>：捲動時自動關閉overlay。</li>
+<li><code>block()</code>：不允許捲動。</li>
+</ul>
+<p>應該不難想像結果，就不多寫程式拖時間囉，有興趣的讀者可以自己修改看看。</p>
+<div class="note info"><p>當然，設定hasBackdrop後，因為連scroll bar都被backdrop蓋掉無法互動，所以這些捲動就會自動失效，變成類似<code>block()</code>的狀態了。</p></div>
+<h2 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h2><p>今天我們把Angular CDK目前(5.0.0)主功能分類的最後一塊拼圖－Overlay給介紹完了。這個功能可以讓我們的操作介面更具立體感，應用層面也非常廣，非常多的Angular Material元件都依賴著Overlay功能，因此要寫的程式也不少，不過相信大致操作過一遍後，就能發現這個功能的強大及易用！而且<strong>光是想像自己要達到這些功能需要寫多少程式碼，考量到多少狀態，就覺得Angular CDK實在是太貼心啦</strong>！！</p>
+<p>本日的程式碼GitHub：<a href="https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-30-cdk-overlay" target="_blank" rel="noopener">https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-30-cdk-overlay</a></p>
+<p>分支：day-30-cdk-overlay</p>
+<h2 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h2><ul>
+<li><a href="https://material.angular.io/cdk/overlay/overview" target="_blank" rel="noopener">Angular Material - CDK - Overlay</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular-Material/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular Material</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Material-Design/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Material Design</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Angular-CDK/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular CDK</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/01/16/angular-material-29-cdk-portal/" rel="next" title="[Angular Material完全攻略]Angular CDK(5) - Portal">
+                <i class="fa fa-chevron-left"></i> [Angular Material完全攻略]Angular CDK(5) - Portal
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/01/18/angular-material-31-cdk-coercion-platform/" rel="prev" title="[Angular Material完全攻略]Angular CDK(7) - Coercion、Platform">
+                [Angular Material完全攻略]Angular CDK(7) - Coercion、Platform <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一切的關鍵－Overlay-service"><span class="nav-number">1.</span> <span class="nav-text">一切的關鍵－Overlay service</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Overlay讓物件與物件連結"><span class="nav-number">1.1.</span> <span class="nav-text">使用Overlay讓物件與物件連結</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#設定withFallbackPosition"><span class="nav-number">1.1.1.</span> <span class="nav-text">設定withFallbackPosition</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Overlay讓物件顯示在畫面上，不連結任何物件"><span class="nav-number">1.2.</span> <span class="nav-text">使用Overlay讓物件顯示在畫面上，不連結任何物件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定OverlayConfig"><span class="nav-number">1.3.</span> <span class="nav-text">設定OverlayConfig</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#設定hasBackdrop"><span class="nav-number">1.3.1.</span> <span class="nav-text">設定hasBackdrop</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定backdropClass"><span class="nav-number">1.4.</span> <span class="nav-text">設定backdropClass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定scrollStrategy"><span class="nav-number">1.5.</span> <span class="nav-text">設定scrollStrategy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本日小結"><span class="nav-number">2.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相關資源"><span class="nav-number">3.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2018/01/17/angular-material-30-cdk-overlay/';
+          this.page.identifier = '2018/01/17/angular-material-30-cdk-overlay/';
+          this.page.title = '[Angular Material完全攻略]Angular CDK(6) - Overlay';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

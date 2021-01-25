@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular,Component,NG_VALUE_ACCESSOR,ControlValueAccessor,ngModel,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="在設計Angular程式的時候，我們可以在各種基本的表單上加入[(ngModel)]來達到two way binding的效果，不過如果想要在Component中也能使用[(mgModel)]該怎麼辦呢？今天就來談談如何讓自訂的Component也可以直接使用ngModel達到two way binding！">
+<meta name="keywords" content="Angular,Component,NG_VALUE_ACCESSOR,ControlValueAccessor,ngModel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular進階議題]讓自訂的Component可以使用ngModel的方法">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2017/03/20/angular-advanced-customize-component-with-ngmodel/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="在設計Angular程式的時候，我們可以在各種基本的表單上加入[(ngModel)]來達到two way binding的效果，不過如果想要在Component中也能使用[(mgModel)]該怎麼辦呢？今天就來談談如何讓自訂的Component也可以直接使用ngModel達到two way binding！">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/03/20/angular-advanced-customize-component-with-ngmodel/0.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/03/20/angular-advanced-customize-component-with-ngmodel/1.gif">
+<meta property="og:updated_time" content="2021-01-25T02:06:09.312Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular進階議題]讓自訂的Component可以使用ngModel的方法">
+<meta name="twitter:description" content="在設計Angular程式的時候，我們可以在各種基本的表單上加入[(ngModel)]來達到two way binding的效果，不過如果想要在Component中也能使用[(mgModel)]該怎麼辦呢？今天就來談談如何讓自訂的Component也可以直接使用ngModel達到two way binding！">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2017/03/20/angular-advanced-customize-component-with-ngmodel/0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2017/03/20/angular-advanced-customize-component-with-ngmodel/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular進階議題]讓自訂的Component可以使用ngModel的方法 | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2017/03/20/angular-advanced-customize-component-with-ngmodel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular進階議題]讓自訂的Component可以使用ngModel的方法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-03-20T11:11:11+00:00">
+                2017-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular進階議題/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular進階議題</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2017/03/20/angular-advanced-customize-component-with-ngmodel/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/20/angular-advanced-customize-component-with-ngmodel/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在設計Angular程式的時候，我們可以在各種基本的表單上加入<strong>[(ngModel)]</strong>來達到two way binding的效果，不過如果想要在Component中也能使用[(mgModel)]該怎麼辦呢？今天就來談談如何讓自訂的Component也可以直接使用ngModel達到two way binding！</p>
+<a id="more"></a>
+<h1 id="功能說明"><a href="#功能說明" class="headerlink" title="功能說明"></a>功能說明</h1><p>先看下圖，假設我們有一個UserProfile的Component，可以傳入一個使用者的個人資料，並且能夠在Component中編輯</p>
+<img src="/blog/2017/03/20/angular-advanced-customize-component-with-ngmodel/0.png">
+<p>app.component.html目前的程式如下</p>
+<pre><code class="html"><span class="tag">&lt;<span class="name">app-user-profile</span>&gt;</span><span class="tag">&lt;/<span class="name">app-user-profile</span>&gt;</span>
+
+<span class="comment">{{ user | json }}</span>
+
+</code></pre>
+<p>接下來問題來了，我們要如何能把user透過ngModel傳到UserProfile這個Component中呢?基本上只有幾個主要步驟：</p>
+<h1 id="宣告一個包含NG-VALUE-ACCESSOR的provider"><a href="#宣告一個包含NG-VALUE-ACCESSOR的provider" class="headerlink" title="宣告一個包含NG_VALUE_ACCESSOR的provider"></a>宣告一個包含NG_VALUE_ACCESSOR的provider</h1><p>首先我們在UserProfileComponent中加入以下程式</p>
+<pre><code class="typescript"><span class="keyword">import</span> { NG_VALUE_ACCESSOR, ControlValueAccessor } <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;
+<span class="keyword">import</span> { Component, OnInit, forwardRef } <span class="keyword">from</span> <span class="string">'@angular/core'</span>;
+
+<span class="keyword">export</span> <span class="keyword">const</span> USER_PROFILE_VALUE_ACCESSOR: <span class="built_in">any</span> = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(<span class="function"><span class="params">()</span> =&gt;</span> UserProfileComponent),
+  multi: <span class="literal">true</span>
+};
+</code></pre>
+<p>然後在@Component宣告中加入這個provider</p>
+<pre><code class="typescript"><span class="meta">@Component</span>({
+  selector: <span class="string">'app-user-profile'</span>,
+  templateUrl: <span class="string">'./user-profile.component.html'</span>,
+  styleUrls: [<span class="string">'./user-profile.component.css'</span>],
+  providers: [USER_PROFILE_VALUE_ACCESSOR]
+})
+</code></pre>
+<p>以上步驟會告訴Angular核心我們所使用的Component可以被視為一個擴充的表單控制項，因此就可以搭配使用<code>[(ngModel)]</code>以及<code>[formControl]</code>，記得<u>forwardRef(() =&gt; UserProfileComponent)</u>要改成我們要使用的Component，Angular的DI機制會找到所有擴充NG_VALUE_ACCESSOR的來源，並把它視為表單控制項來使用。</p>
+<p>因此以上的動作可以簡單想像為：將我們Component聲明成為與input,select等相同的表單控制項，以供<code>[(ngModel)]</code>以及<code>[formControl]</code>使用。</p>
+<h1 id="實做ControlValueAccessor"><a href="#實做ControlValueAccessor" class="headerlink" title="實做ControlValueAccessor"></a>實做ControlValueAccessor</h1><p>將Component聲明為表單控制項之後，我們還必須讓提供幾個方法讓Angular在資料變更時能進行two way binding的工作，我們必須在component中提供4個方法，這4個方法來自ControlValueAccessor</p>
+<ul>
+<li><strong>writeValue(obj: any): void</strong>：當來源資料變更時呼叫</li>
+<li><strong>registerOnChange(fn: any): void</strong>：提供Component內資料變更需要binding時呼叫的方法，會Component初始化時傳一個function當作參數，我們需要在Component內保留此變數，在資料變需要綁定時進行呼叫。</li>
+<li><strong>registerOnTouched(fn: any): void</strong>：同registerOnChange，只不過是在狀態變更為touched時呼叫</li>
+<li><strong>setDisabledState(isDisabled: boolean): void</strong>：當控制項的disabled屬性變更時會呼叫的方法</li>
+</ul>
+<p>因此我們的Component內容整體如下</p>
+<pre><code class="typescript"><span class="keyword">import</span> { NG_VALUE_ACCESSOR, ControlValueAccessor } <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;
+<span class="keyword">import</span> { Component, OnInit, forwardRef, Input } <span class="keyword">from</span> <span class="string">'@angular/core'</span>;
+
+<span class="keyword">export</span> <span class="keyword">const</span> USER_PROFILE_VALUE_ACCESSOR: <span class="built_in">any</span> = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(<span class="function"><span class="params">()</span> =&gt;</span> UserProfileComponent),
+  multi: <span class="literal">true</span>
+};
+
+<span class="meta">@Component</span>({
+  selector: <span class="string">'app-user-profile'</span>,
+  templateUrl: <span class="string">'./user-profile.component.html'</span>,
+  styleUrls: [<span class="string">'./user-profile.component.css'</span>],
+  providers: [USER_PROFILE_VALUE_ACCESSOR]
+})
+<span class="keyword">export</span> <span class="keyword">class</span> UserProfileComponent <span class="keyword">implements</span> ControlValueAccessor {
+
+  user: <span class="built_in">any</span>;
+
+  <span class="keyword">get</span> name() {
+    <span class="keyword">return</span> <span class="keyword">this</span>.user.name;
+  }
+
+  <span class="keyword">set</span> name(value) {
+    <span class="keyword">this</span>.user.name = value;
+    <span class="keyword">this</span>.notifyValueChange();
+  }
+
+  <span class="keyword">get</span> age() {
+    <span class="keyword">return</span> <span class="keyword">this</span>.user.age;
+  }
+
+  <span class="keyword">set</span> age(value) {
+    <span class="keyword">this</span>.user.age = value;
+    <span class="keyword">this</span>.notifyValueChange();
+  }
+
+  <span class="meta">@Input</span>() disabled: <span class="built_in">boolean</span>;
+
+  onChange: <span class="function">(<span class="params">value</span>) =&gt;</span> {};
+  onTouched: <span class="function"><span class="params">()</span> =&gt;</span> {};
+
+  <span class="keyword">constructor</span>(<span class="params"></span>) {
+    <span class="keyword">this</span>.user = {};
+  }
+
+  notifyValueChange() {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.onChange) {
+      <span class="keyword">this</span>.onChange({
+        name: <span class="keyword">this</span>.name,
+        age: <span class="keyword">this</span>.age
+      });
+    }
+  }
+
+  writeValue(obj: <span class="built_in">any</span>): <span class="built_in">void</span> {
+    <span class="keyword">this</span>.user = obj;
+    <span class="keyword">if</span> (!<span class="keyword">this</span>.user) {
+      <span class="keyword">this</span>.user = {};
+    }
+  }
+
+  registerOnChange(fn: <span class="built_in">any</span>): <span class="built_in">void</span> {
+    <span class="keyword">this</span>.onChange = fn;
+  }
+  registerOnTouched(fn: <span class="built_in">any</span>): <span class="built_in">void</span> {
+    <span class="keyword">this</span>.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: <span class="built_in">boolean</span>): <span class="built_in">void</span> {
+    <span class="keyword">this</span>.disabled = isDisabled;
+  }
+}
+</code></pre>
+<p>除了4個ControlValueAccessor的實做之外，我們加入一個<code>notifyValueChange()</code>方法，負責在資料變更時將要綁定的資料透過registerOnChange時傳過來的方法傳遞回去。而在Component中當資料被設定時（setter）在乎叫這個方法，來完成通知變更的動作。</p>
+<p>接著把app.component.html的內容修改成：</p>
+<pre><code class="html"><span class="tag">&lt;<span class="name">app-user-profile</span> [<span class="attr">disabled</span>]=<span class="string">"profileDisabled"</span> [(<span class="attr">ngmodel</span>)]=<span class="string">"user"</span>&gt;</span><span class="tag">&lt;/<span class="name">app-user-profile</span>&gt;</span>
+
+<span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">button</span> (<span class="attr">click</span>)=<span class="string">"profileDisabled = !profileDisabled"</span>&gt;</span>Disable<span class="tag">&lt;/<span class="name">button</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span>
+
+<span class="comment">{{ user | json }}</span>
+
+</code></pre>
+<p>最終產生執行成果如下圖：</p>
+<img src="/blog/2017/03/20/angular-advanced-customize-component-with-ngmodel/1.gif">
+<p>我們終於能夠讓Component也能夠支援[(ngModel)]啦！</p>
+<p>完整的程式碼在此：<a href="https://github.com/wellwind/angular-advanced-topic-demo/tree/master/customize-component-with-ngmodel" target="_blank" rel="noopener">https://github.com/wellwind/angular-advanced-topic-demo/tree/master/customize-component-with-ngmodel</a></p>
+<h1 id="單元回顧"><a href="#單元回顧" class="headerlink" title="單元回顧"></a>單元回顧</h1><p>今天我們介紹了如何在Component中直接加入[(ngModel)]達到two way binding的方法，有了two way binding可以讓其他使用Component的程式少寫一些程式碼，這在撰寫常用的共用元件，或是專門在寫Component給他人使用的情境下非常實用！提供給需要的朋友參考囉！</p>
+<p>參考資料：</p>
+<p><a href="https://blog.thoughtram.io/angular/2016/07/27/custom-form-controls-in-angular-2.html" target="_blank" rel="noopener">https://blog.thoughtram.io/angular/2016/07/27/custom-form-controls-in-angular-2.html</a></p>
+<p><a href="http://almerosteyn.com/2016/04/linkup-custom-control-to-ngcontrol-ngmodel" target="_blank" rel="noopener">http://almerosteyn.com/2016/04/linkup-custom-control-to-ngcontrol-ngmodel</a></p>
+<p><a href="https://angular.io/docs/ts/latest/api/forms/index/ControlValueAccessor-interface.html" target="_blank" rel="noopener">https://angular.io/docs/ts/latest/api/forms/index/ControlValueAccessor-interface.html</a></p>
+<div class="note info"><p>2017/08/15補充：實作ControlValueAccessor的方式可以讓我們的Component被當作表單控制項，因此會有disabled的功能，再內容異動時，Angular也會幫我們加上touched、dirty等屬性，非常方便。不過若不需要這些功能的話，有更簡單達到two way binding的方法，可以參考以下文章：</p>
+<p><a href="https://blog.kevinyang.net/2017/08/15/angular-custom-two-way-binding/" target="_blank" rel="noopener">[Angular] 自訂雙向繫結 - 簡易版</a></p>
+<p><a href="https://blog.kevinyang.net/2017/08/14/angular-two-way-binding/" target="_blank" rel="noopener">[Angular] Two-way Binding 的運作方式</a> (上一篇文章的原理解釋)</p></div>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Component/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Component</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/NG-VALUE-ACCESSOR/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> NG_VALUE_ACCESSOR</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/ControlValueAccessor/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> ControlValueAccessor</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/ngModel/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> ngModel</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/03/02/native-script-with-angular-cli/" rel="next" title="[NativeScript]使用Angular CLI來操作NativeScript專案">
+                <i class="fa fa-chevron-left"></i> [NativeScript]使用Angular CLI來操作NativeScript專案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/06/21/angular-advanced-dynamic-component-with-component-factory-resolver/" rel="prev" title="[Angular進階議題]使用ComponentFactoryResolver動態產生Component">
+                [Angular進階議題]使用ComponentFactoryResolver動態產生Component <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#功能說明"><span class="nav-number">1.</span> <span class="nav-text">功能說明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#宣告一個包含NG-VALUE-ACCESSOR的provider"><span class="nav-number">2.</span> <span class="nav-text">宣告一個包含NG_VALUE_ACCESSOR的provider</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#實做ControlValueAccessor"><span class="nav-number">3.</span> <span class="nav-text">實做ControlValueAccessor</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#單元回顧"><span class="nav-number">4.</span> <span class="nav-text">單元回顧</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2017/03/20/angular-advanced-customize-component-with-ngmodel/';
+          this.page.identifier = '2017/03/20/angular-advanced-customize-component-with-ngmodel/';
+          this.page.title = '[Angular進階議題]讓自訂的Component可以使用ngModel的方法';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

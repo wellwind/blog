@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular Material,Material Design,Angular CDK,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="接下來我們要介紹Angular CDK中的Portal分類，透過這裡面的功能，我們可以很容易的動態切換各種不同的元件和templates，讓動態產生內容不再是件麻煩的事情！ 其實在Angular中，我們已經能夠使用&amp;lt;ng-container&amp;gt;搭配ngTemplateOutlet或ngComponentOutlet來切換不同的template或component了，而Angular CD">
+<meta name="keywords" content="Angular Material,Material Design,Angular CDK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular Material完全攻略]Angular CDK(5) - Portal">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2018/01/16/angular-material-29-cdk-portal/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="接下來我們要介紹Angular CDK中的Portal分類，透過這裡面的功能，我們可以很容易的動態切換各種不同的元件和templates，讓動態產生內容不再是件麻煩的事情！ 其實在Angular中，我們已經能夠使用&amp;lt;ng-container&amp;gt;搭配ngTemplateOutlet或ngComponentOutlet來切換不同的template或component了，而Angular CD">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/16/angular-material-29-cdk-portal/01-template-portal-basic.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/16/angular-material-29-cdk-portal/02-component-portal-basic.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/16/angular-material-29-cdk-portal/03-inject-data-to-template-portal.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/16/angular-material-29-cdk-portal/04-inject-data-to-component-portal.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/16/angular-material-29-cdk-portal/05-dom-portal-outlet.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/16/angular-material-29-cdk-portal/06-dialog-dom-portal-outlet-sample.png">
+<meta property="og:updated_time" content="2021-01-25T02:06:10.856Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular Material完全攻略]Angular CDK(5) - Portal">
+<meta name="twitter:description" content="接下來我們要介紹Angular CDK中的Portal分類，透過這裡面的功能，我們可以很容易的動態切換各種不同的元件和templates，讓動態產生內容不再是件麻煩的事情！ 其實在Angular中，我們已經能夠使用&amp;lt;ng-container&amp;gt;搭配ngTemplateOutlet或ngComponentOutlet來切換不同的template或component了，而Angular CD">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2018/01/16/angular-material-29-cdk-portal/01-template-portal-basic.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2018/01/16/angular-material-29-cdk-portal/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular Material完全攻略]Angular CDK(5) - Portal | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2018/01/16/angular-material-29-cdk-portal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular Material完全攻略]Angular CDK(5) - Portal</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-16T15:39:19+00:00">
+                2018-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular-Material完全攻略/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular Material完全攻略</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/01/16/angular-material-29-cdk-portal/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/16/angular-material-29-cdk-portal/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>接下來我們要介紹Angular CDK中的Portal分類，透過這裡面的功能，我們可以很容易的動態切換各種不同的元件和templates，讓動態產生內容不再是件麻煩的事情！</p>
+<p>其實在Angular中，我們已經能夠使用<code>&lt;ng-container&gt;</code>搭配<code>ngTemplateOutlet</code>或<code>ngComponentOutlet</code>來切換不同的template或component了，而Angular CDK的Portal可以想像成是它的簡單好用加強版！甚至我們可以透過Portals裡面的功能，把元件放在整個Angular程式的控制範圍之外，但元件依然還在Angular的控制內，非常的強大！</p>
+<p>就讓我們繼續往下看吧！！</p>
+<a id="more"></a>
+<h2 id="開始使用Angualr-CDK的Portal"><a href="#開始使用Angualr-CDK的Portal" class="headerlink" title="開始使用Angualr CDK的Portal"></a>開始使用Angualr CDK的Portal</h2><p>Angular CDK中的Portal類別中提供了一些方便的directives和services，用來產生動態的內容，使用前要先加入<code>PortalModule</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; PortalModule &#125; <span class="keyword">from</span> <span class="string">'@angular/cdk/portal'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  exports: [</span><br><span class="line">    PortalModule</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> SharedMaterialModule &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="基本知識"><a href="#基本知識" class="headerlink" title="基本知識"></a>基本知識</h3><p>在使用Portal相關功能之前，有兩個簡單名詞要先介紹：</p>
+<ul>
+<li><strong>Portal</strong>：真正要被切換的內容，這些內容會用Portal包起來，如果要切換的內容是一個template reference，則會使用<code>TemplatePortal</code>；如果是元件(component)，則使用<code>ComponentPortal</code>。</li>
+<li><strong>PortalOutlet</strong>：實際放置內容的地方，<strong>如果Portal是插頭，那麼PortalOutlet就可以想像成是插座</strong>。</li>
+</ul>
+<p>接著我們來實作一個簡單的Tab功能，說明Portal如何動態切換內容！</p>
+<h3 id="使用cdkPortalOutlet"><a href="#使用cdkPortalOutlet" class="headerlink" title="使用cdkPortalOutlet"></a>使用cdkPortalOutlet</h3><p>我們先設計好要放置插座的地方，也就是PortalOutlet，這裡我們設計了一個如下的畫面</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"portal-demo"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"tabs"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-button</span> (<span class="attr">click</span>)=<span class="string">"changePortal1()"</span>&gt;</span>功能1<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-button</span> (<span class="attr">click</span>)=<span class="string">"changePortal2()"</span>&gt;</span>功能2<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-button</span> (<span class="attr">click</span>)=<span class="string">"changePortal3()"</span>&gt;</span>功能3<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-button</span> (<span class="attr">click</span>)=<span class="string">"changePortal4()"</span>&gt;</span>功能4<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"tab-content"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> [<span class="attr">cdkPortalOutlet</span>]=<span class="string">"currentPortal"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>其中的<code>[cdkPortalOutlet]=&quot;currentPortal&quot;</code>就是我們插座放置的位置，接著我們要在程式中宣告一下這個插頭<code>currentPortal</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123; ... &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MainComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  currentPortal: Portal&lt;<span class="built_in">any</span>&gt;;</span><br></pre></td></tr></table></figure>
+<p>之後只要替換掉插頭，就可以切換不同內容顯示囉。</p>
+<h3 id="使用cdkPortal-directive"><a href="#使用cdkPortal-directive" class="headerlink" title="使用cdkPortal directive"></a>使用cdkPortal directive</h3><p>cdkPortal是一個簡單的directive，其實就是<code>TemplatePortal</code>衍生的directive版本，透過這個directive，我們可以很容易的透過<code>@ViewChild</code>或<code>@ViewChildren</code>取得畫面上的portal。</p>
+<p><code>cdkPortal</code>需要放在<code>&lt;ng-template&gt;</code>裡面：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ng-template</span> <span class="attr">cdkPortal</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">    功能1：我放在ng-template + cdkPortal = TemplatePortal裡面</span><br><span class="line">  <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ng-template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>當然，這種語法也能換成語法糖asterisk(*)的方式：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> *<span class="attr">cdkPortal</span>&gt;</span></span><br><span class="line">  功能2：我放在一般的HTML Element內，加上cdkPortal後變成了一個TemplatePortal</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>一般的<code>&lt;ng-template&gt;</code>不要加上<code>cdkPortal</code>可以嗎？當然可以，只是需要再加工一下，我們先擺上來：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ng-template</span> #<span class="attr">template</span>&gt;</span></span><br><span class="line">  功能3：我放在ng-template內，但不是TemplatePortal，要用我要記得先包裝一下</span><br><span class="line"><span class="tag">&lt;/<span class="name">ng-template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>cdkPortal的用法就這樣，很簡單吧！</p>
+<h3 id="切換不同的cdkPortalOutlet內容"><a href="#切換不同的cdkPortalOutlet內容" class="headerlink" title="切換不同的cdkPortalOutlet內容"></a>切換不同的cdkPortalOutlet內容</h3><p>接下來我們要在程式中動態切換<code>cdkPortalOutlet</code>的內容，使用<code>cdkPortal</code>的話，一切都簡單很多：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123; ... &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MainComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="meta">@ViewChildren</span>(CdkPortal) templatPortals: QueryList&lt;CdkPortal&gt;;</span><br><span class="line">            </span><br><span class="line">  changePortal1() &#123;</span><br><span class="line">    <span class="keyword">this</span>.currentPortal = <span class="keyword">this</span>.templatPortals.first;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  changePortal2() &#123;</span><br><span class="line">    <span class="keyword">this</span>.currentPortal = <span class="keyword">this</span>.templatPortals.last;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>只要把加上<code>cdkPortal</code>的直接設定就好啦！</p>
+<p>至於一般的<code>TemplateRef</code>該怎麼辦呢？只要把它用TemplatePortal包裝起來就好啦！</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123; ... &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MainComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="meta">@ViewChild</span>(<span class="string">'template'</span>) template3: TemplateRef&lt;<span class="built_in">any</span>&gt;;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> viewContainerRef: ViewContainerRef</span>) &#123;&#125;</span><br><span class="line">  ...</span><br><span class="line">  changePortal3() &#123;</span><br><span class="line">    <span class="comment">// 使用TemplatePortal把一般的TemplateRef包裝起來</span></span><br><span class="line">    <span class="keyword">this</span>.currentPortal = <span class="keyword">new</span> TemplatePortal(<span class="keyword">this</span>.template3, <span class="keyword">this</span>.viewContainerRef);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這時候就可以來看看結果啦！</p>
+<img src="/blog/2018/01/16/angular-material-29-cdk-portal/01-template-portal-basic.gif">
+<p>一個簡單的tab功能就這樣完成啦！</p>
+<h3 id="在cdkPortalOutlet中放置元件-component"><a href="#在cdkPortalOutlet中放置元件-component" class="headerlink" title="在cdkPortalOutlet中放置元件(component)"></a>在cdkPortalOutlet中放置元件(component)</h3><p>剛剛我們示範了一般的template放到PortalOutlet的方法，但template只會放在一般的HTML內，不像元件(component)那麼容易被重複使用，有沒有辦法放置元件呢？答案當然是可以，只要把元件包裝成<code>ComponentPortal</code>就可以囉！</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">changePortal4() &#123;</span><br><span class="line">  <span class="keyword">this</span>.currentPortal = <span class="keyword">new</span> ComponentPortal(Portal4Component);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info"><p><strong>溫馨提醒</strong>：老樣子，動態產生的元件記得加入entryComponents。</p></div>
+<p>成果如下：</p>
+<img src="/blog/2018/01/16/angular-material-29-cdk-portal/02-component-portal-basic.gif">
+<p>簡單的不得了吧！</p>
+<h3 id="為Portal加入其他外部內容"><a href="#為Portal加入其他外部內容" class="headerlink" title="為Portal加入其他外部內容"></a>為Portal加入其他外部內容</h3><p>到目前為止，我們已經學會如何輕易且動態的切換內容，但是實務上常常未必那麼簡單，我們必須讓切換的template或component能夠理解外部的狀態，因此必須<strong>傳入一些外部資訊給裡面的template或component</strong>，越複雜的程式越有可能需要這麼做，那麼要如何才能夠加入其他內容呢？</p>
+<h4 id="為template加入其他外部內容"><a href="#為template加入其他外部內容" class="headerlink" title="為template加入其他外部內容"></a>為template加入其他外部內容</h4><p>在我們建立<code>TemplatePortal</code>時，會需要3個參數，分別是：</p>
+<ul>
+<li><code>template: TemplateRef&lt;any&gt;</code>：要傳入的template的參考</li>
+<li><code>viewContainerRef: ViewContainerRef</code>：畫面上的<code>ViewContainerRef</code>，來源可由注入取得</li>
+<li><code>context?: any</code>：要傳入的外部內容。</li>
+</ul>
+<p>因此我們可以在自行建立TemplatePortal時，使用<code>context</code>參數，決定要傳入的資訊：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">changePortal3() &#123;</span><br><span class="line">  <span class="comment">// 使用TemplatePortal把一般的TemplateRef包裝起來</span></span><br><span class="line">  <span class="keyword">this</span>.currentPortal = <span class="keyword">new</span> TemplatePortal(<span class="keyword">this</span>.template3, <span class="keyword">this</span>.viewContainerRef, &#123; nameInObject: <span class="keyword">this</span>.name&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這裡我們在第3個參數<code>context</code>傳入了要加入的內容，接著在<code>&lt;ng-template&gt;</code>上，我們就可以使用<code>let-xxx=&quot;yyy&quot;</code>的方式，來取得我們的資訊：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ng-template</span> #<span class="attr">template</span> <span class="attr">let-nameInTemplate</span>=<span class="string">"nameInObject"</span>&gt;</span></span><br><span class="line">    Hi，&#123;&#123; nameInTemplate &#125;&#125;，功能3：我放在ng-template內，但不是TemplatePortal，要用我要記得先包裝一下</span><br><span class="line"><span class="tag">&lt;/<span class="name">ng-template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<div class="note info"><p>你可能會問為什麼不直接用<code></code>就好了，實際上這樣是最快的方法沒錯，但有時候要傳入的可能是整理後比較複雜的資料，不一定有一個現成的變數放在那邊可以接，就會有需要囉。</p></div>
+<p><code>let-nameInTemplate=&quot;nameInObject&quot;</code>可以想像成是宣告成javascript的<code>let nameInTemplate = context.nameInObject</code>，只是在畫面上無法這樣直接寫而已。</p>
+<p>結果如下：</p>
+<img src="/blog/2018/01/16/angular-material-29-cdk-portal/03-inject-data-to-template-portal.gif">
+<p>如果是加入<code>cdkPortal</code>的元素呢？只需要設定它的<code>context</code>屬性即可：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.templatPortals.first.context = &#123; nameInObject: <span class="keyword">this</span>.name &#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="為component注入其他內容"><a href="#為component注入其他內容" class="headerlink" title="為component注入其他內容"></a>為component注入其他內容</h4><p>跟使用template不太一樣的是，我們的第三個參數必須是一個<code>Injector</code>，而在component時必須透過注入取得資訊，因此會比較複雜一點，我們接著來看看如何實作吧！</p>
+<h5 id="建立要注入的Token"><a href="#建立要注入的Token" class="headerlink" title="建立要注入的Token"></a>建立要注入的Token</h5><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> PORTAL4_INJECT_DATA = <span class="keyword">new</span> InjectionToken&lt;<span class="built_in">any</span>&gt;(<span class="string">'portal4-inject-data'</span>);</span><br></pre></td></tr></table></figure>
+<p>這個<code>PORTAL4_INJECT_DATA</code>就會是我們之後要注入資料的依據。</p>
+<h5 id="建立包含自訂Token的PortalInjector"><a href="#建立包含自訂Token的PortalInjector" class="headerlink" title="建立包含自訂Token的PortalInjector"></a>建立包含自訂Token的PortalInjector</h5><p>如以下程式，我們寫了一個<code>_createInjector</code>，來把我們想要注入的token，和當前的<code>Injector</code>，合併成一個新的<code>PortalInjector</code></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123; ... &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MainComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  name : <span class="built_in">string</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> viewContainerRef: ViewContainerRef, <span class="keyword">private</span> injector: Injector</span>) &#123;&#125;</span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">private</span> _createInjector(): PortalInjector &#123;</span><br><span class="line">    <span class="keyword">const</span> injectionTokens = <span class="keyword">new</span> WeakMap();</span><br><span class="line">    injectionTokens.set(PORTAL4_INJECT_DATA, <span class="keyword">this</span>.name);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> PortalInjector(<span class="keyword">this</span>.injector, injectionTokens);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="將PortalInjector加入ComponentPortal"><a href="#將PortalInjector加入ComponentPortal" class="headerlink" title="將PortalInjector加入ComponentPortal"></a>將PortalInjector加入ComponentPortal</h5><p>之後，在建立ComponentPortal時，只需要把這個<code>PortalInjector</code>也傳入即可</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">changePortal4() &#123;</span><br><span class="line">    <span class="keyword">const</span> portalInjector = <span class="keyword">this</span>._createInjector();</span><br><span class="line">    <span class="keyword">this</span>.currentPortal = <span class="keyword">new</span> ComponentPortal(Portal4Component, <span class="literal">undefined</span>, portalInjector);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>建立ComponentPortal的第二個參數一樣是<code>ViewContainerRef</code>，但這只有在Angular的管理範圍外建立動態元件的時候，需要一個來源<code>ViewContainer</code>，如何在Angular範圍外動態建立元件呢？稍後我們會在<code>DomPortalOutlet</code>介紹。</p>
+<p>所以這裡我們不用傳入，只要傳入<code>undefined</code>即可。</p>
+<p>而在Component內，則可以直接透過注入<code>PORTAL4_INJECT_DATA</code>，來取得對應的資料：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123; ... &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> Portal4Component <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="keyword">get</span> name() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.data.nameInObject;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="meta">@Inject</span>(PORTAL4_INJECT_DATA) <span class="keyword">private</span> data: <span class="built_in">any</span></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這時候畫面上就可以直接使用啦！</p>
+<img src="/blog/2018/01/16/angular-material-29-cdk-portal/04-inject-data-to-component-portal.gif">
+<h3 id="在程式中控制cdkPortalOutlet"><a href="#在程式中控制cdkPortalOutlet" class="headerlink" title="在程式中控制cdkPortalOutlet"></a>在程式中控制cdkPortalOutlet</h3><p>我們也能在程式中直接控制cdkPortalOutlet要顯示什麼樣的資料，原來的畫面只要找得到<code>cdkPortalOutlet</code>的reference就好：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">cdkPortalOutlet</span> #<span class="attr">portalOutlet</span>=<span class="string">"cdkPortalOutlet"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>接著就可以在程式中直接使用啦！</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123; ... &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MainComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="meta">@ViewChild</span>(<span class="string">'portalOutlet'</span>) portalOutlet: CdkPortalOutlet;</span><br><span class="line">            </span><br><span class="line">  changePortal2() &#123;</span><br><span class="line">    <span class="keyword">this</span>.portalOutlet.attach(portalOutlet);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>CdkPortalOutlet</code>有以下幾個主要方法：</p>
+<ul>
+<li><code>attach()</code>：附加一個Portal上去，可以是ComponentPortal，也可以是TemplatePortal</li>
+<li><code>attachComponentPortal()</code>：附加一個ComponentPortal</li>
+<li><code>attachTemplatePortal()</code>：附加一個TemplatePortal</li>
+<li><code>deatch()</code>：把目前附加的Portal拿掉</li>
+<li><code>hasAttached()</code>：用來檢查目前是否有任何Portal被附加上去了</li>
+</ul>
+<h3 id="使用DomPortalOutlet"><a href="#使用DomPortalOutlet" class="headerlink" title="使用DomPortalOutlet"></a>使用DomPortalOutlet</h3><p><code>DomPortalOutlet</code>是一個很有趣的插座，他可以幫助我們把插座產生在Angular的管理範圍內，以一般的Angular程式來說，就是<code>&lt;app-root&gt;</code>之外，聽起來很不可思議吧！立刻來看看該怎麼做吧！</p>
+<h4 id="注入必要條件"><a href="#注入必要條件" class="headerlink" title="注入必要條件"></a>注入必要條件</h4><p>說穿了，DomPortalOutlet就是操作DOM來做些事情，以及把產生的內容丟到一個<code>&lt;app-root&gt;</code>外的插座上，但其實它還是在管理範圍內，只是不住在<code>&lt;app-root&gt;</code>裡面而已，因此在建立時，還是需要把可以管理他的範圍界定起來，這些也是DomPortalOutlet要建立時所相依的類別：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123; ... &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MainComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  domPortalOutlet: DomPortalOutlet;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">	<span class="meta">@Inject</span>(DOCUMENT) <span class="keyword">private</span> <span class="built_in">document</span>: <span class="built_in">any</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">private</span> viewContainerRef: ViewContainerRef,</span></span><br><span class="line"><span class="params">    <span class="keyword">private</span> injector: Injector,</span></span><br><span class="line"><span class="params">    <span class="keyword">private</span> componentFactoryResolver: ComponentFactoryResolver,</span></span><br><span class="line"><span class="params">    <span class="keyword">private</span> appRef: ApplicationRef</span></span><br><span class="line"><span class="params">  </span>) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>以上在建構式注入的，除了document以外，都是建立<code>DomPortalOutlet</code>的必要條件，那麼注入<code>document</code>到底是用來幹嘛的呢？我們要使用這個物件來建立插座。</p>
+<h4 id="在app-root外建立插座"><a href="#在app-root外建立插座" class="headerlink" title="在app-root外建立插座"></a>在app-root外建立插座</h4><p>因為超過<code>&lt;app-root&gt;</code>的範圍，因此伸手直接去摸DOM基本上是不可避免的，我們可以直接用<code>document</code>來操作DOM，但在這裡我們卻另外注入了一個document的DOCUMENT token(有點饒舌)，這是為什麼呢？</p>
+<p>一般情況下，我們注入的<code>document</code>，在網頁上其實就是<code>window.document</code>，但Angular是一個可以跨不同平台的設計，因此到了其他平台，就不一定了，另外在撰寫單元測試時，為了避免單元測試下只有JavaScript而沒有DOM，中間墊了一層也是比較好的！也因為如此，雖然我們可以直接使用<code>window.document</code>，但還是選擇了使用注入的方式，來隔離相依。</p>
+<p>有了這樣的概念後，我們就來建立一個插座吧！</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">createOutletOutOfApp() &#123;</span><br><span class="line">  <span class="keyword">const</span> element = <span class="keyword">this</span>.document.createElement(<span class="string">'div'</span>);</span><br><span class="line">  element.innerHTML = <span class="string">'&lt;br&gt;我在&amp;ltapp-root&amp;gt;之外'</span>;</span><br><span class="line">  <span class="keyword">this</span>.document.body.appendChild(element);</span><br><span class="line">  <span class="keyword">this</span>.domPortalOutlet = <span class="keyword">new</span> DomPortalOutlet(element, <span class="keyword">this</span>.componentFactoryResolver, <span class="keyword">this</span>.appRef, <span class="keyword">this</span>.injector);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在這邊的程式我們直接建立一個<code>&lt;div&gt;</code> element，並把它附加到<code>document.body</code>，也就直接脫離了<code>&lt;app-root&gt;</code>，這是一般JavaScript的寫法，指示document有被我們墊了一層而已。</p>
+<p>之後我們再使用<code>new DomPortalOutlet()</code>把這個element變成可以被管理的插座。</p>
+<p>從這樣的程式不難發現，我們不僅可以建立<code>&lt;div&gt;</code>，也能透過<code>getElementById()</code>等等的方式，把<code>&lt;app-root&gt;</code>之外的某個現有HTML，直接變成插座，來插入我們想要的元件，光用想的就覺得潛力無窮啊！</p>
+<h4 id="替外部插座插入內容"><a href="#替外部插座插入內容" class="headerlink" title="替外部插座插入內容"></a>替外部插座插入內容</h4><p>建立插座後，要插入內容就簡單多啦！我們可以使用<code>attachTemplatePortal()</code>來插入TemplatePortal，或是使用<code>attachComponentPortal()</code>來插入ComponentPortal，使用方法跟我們之前使用<code>PortalOutlet</code>一模一樣！</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">addTemplatePortal() &#123;</span><br><span class="line">  <span class="keyword">this</span>.domPortalOutlet.attachTemplatePortal(<span class="keyword">this</span>.templatPortals.last);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>直接來看看結果吧！</p>
+<img src="/blog/2018/01/16/angular-material-29-cdk-portal/05-dom-portal-outlet.gif">
+<p>當我們按下產生插座時，在<code>&lt;app-root&gt;</code>外產生了一個插座；按下插入內容後，就把我們想要的Portal插進來啦！</p>
+<h4 id="使用情境"><a href="#使用情境" class="headerlink" title="使用情境"></a>使用情境</h4><p>在Angular Material中的Dialog，顯示dialog時會有一個backdrop，為了避免這個backdrop被其他元件畫面干擾，設計時就是使用DomPortalOutlet的技巧，在<code>&lt;app-root&gt;</code>範圍外的一個Overlay上(關於Overlay，是另外一個Angular CDK功能，明天會介紹)建立插座，再把dialog放在上面，如下圖：</p>
+<img src="/blog/2018/01/16/angular-material-29-cdk-portal/06-dialog-dom-portal-outlet-sample.png">
+<p>簡單的程式碼片段如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> Overlay &#123;</span><br><span class="line">  <span class="keyword">private</span> _createPaneElement(): HTMLElement &#123;</span><br><span class="line">    <span class="keyword">const</span> pane = <span class="keyword">this</span>._document.createElement(<span class="string">'div'</span>);</span><br><span class="line"></span><br><span class="line">    pane.id = <span class="string">`cdk-overlay-<span class="subst">$&#123;nextUniqueId++&#125;</span>`</span>;</span><br><span class="line">    pane.classList.add(<span class="string">'cdk-overlay-pane'</span>);</span><br><span class="line">    <span class="keyword">this</span>._overlayContainer.getContainerElement().appendChild(pane);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> pane;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> _createPortalOutlet(pane: HTMLElement): DomPortalOutlet &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DomPortalOutlet(pane, <span class="keyword">this</span>._componentFactoryResolver, <span class="keyword">this</span>._appRef, <span class="keyword">this</span>._injector);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到只要是超過<code>&lt;app-root&gt;</code>以外的元件顯示應用，都很適合使用<code>DomPortalOutlet</code>呢！</p>
+<h2 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h2><p>今天我們介紹了Angular CDK中動態顯示不同畫面的功能－Portal，透過<code>cdkPortal</code>與<code>cdkPortalOutlet</code>，要動態切換不同的template變成了一件簡單的事情；若要動態切換component，也只需要簡單的程式碼即可達成。同時我們也學到如何讓動態的template和component如何與外界溝通，在比較複雜的應用時會非常需要。</p>
+<p>如果我們需要在<code>&lt;app-root&gt;</code>之外動態切換不同的template或component，也能夠使用<code>DomPortalOutlet</code>達成！這是一個非常酷，<strong>讓SPA超過SPA</strong>！不再被一個範圍限定死，能夠動態的把功能延伸的管理範圍之外，又同時不會失去控制，讓我們在設計時更加的有彈性！</p>
+<p>本日的程式碼GitHub：<a href="https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-29-cdk-portal" target="_blank" rel="noopener">https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-29-cdk-portal</a></p>
+<p>分支：day-29-cdk-portal</p>
+<h2 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h2><ul>
+<li><a href="https://angular.io/api/common/NgTemplateOutlet" target="_blank" rel="noopener">NgTemplateOutlet</a></li>
+<li><a href="https://angular.io/api/common/NgComponentOutlet" target="_blank" rel="noopener">NgComponentOutlet</a></li>
+<li><a href="https://material.angular.io/cdk/portal/overview" target="_blank" rel="noopener">Angular Material - CDK - Portal</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular-Material/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular Material</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Material-Design/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Material Design</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Angular-CDK/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular CDK</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/01/15/angular-material-28-cdk-observables-scrolling/" rel="next" title="[Angular Material完全攻略]Angular CDK(4) - Observables、Scrolling">
+                <i class="fa fa-chevron-left"></i> [Angular Material完全攻略]Angular CDK(4) - Observables、Scrolling
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/01/17/angular-material-30-cdk-overlay/" rel="prev" title="[Angular Material完全攻略]Angular CDK(6) - Overlay">
+                [Angular Material完全攻略]Angular CDK(6) - Overlay <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#開始使用Angualr-CDK的Portal"><span class="nav-number">1.</span> <span class="nav-text">開始使用Angualr CDK的Portal</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本知識"><span class="nav-number">1.1.</span> <span class="nav-text">基本知識</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用cdkPortalOutlet"><span class="nav-number">1.2.</span> <span class="nav-text">使用cdkPortalOutlet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用cdkPortal-directive"><span class="nav-number">1.3.</span> <span class="nav-text">使用cdkPortal directive</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#切換不同的cdkPortalOutlet內容"><span class="nav-number">1.4.</span> <span class="nav-text">切換不同的cdkPortalOutlet內容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在cdkPortalOutlet中放置元件-component"><span class="nav-number">1.5.</span> <span class="nav-text">在cdkPortalOutlet中放置元件(component)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#為Portal加入其他外部內容"><span class="nav-number">1.6.</span> <span class="nav-text">為Portal加入其他外部內容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#為template加入其他外部內容"><span class="nav-number">1.6.1.</span> <span class="nav-text">為template加入其他外部內容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#為component注入其他內容"><span class="nav-number">1.6.2.</span> <span class="nav-text">為component注入其他內容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#建立要注入的Token"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">建立要注入的Token</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#建立包含自訂Token的PortalInjector"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">建立包含自訂Token的PortalInjector</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#將PortalInjector加入ComponentPortal"><span class="nav-number">1.6.2.3.</span> <span class="nav-text">將PortalInjector加入ComponentPortal</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在程式中控制cdkPortalOutlet"><span class="nav-number">1.7.</span> <span class="nav-text">在程式中控制cdkPortalOutlet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用DomPortalOutlet"><span class="nav-number">1.8.</span> <span class="nav-text">使用DomPortalOutlet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#注入必要條件"><span class="nav-number">1.8.1.</span> <span class="nav-text">注入必要條件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在app-root外建立插座"><span class="nav-number">1.8.2.</span> <span class="nav-text">在app-root外建立插座</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#替外部插座插入內容"><span class="nav-number">1.8.3.</span> <span class="nav-text">替外部插座插入內容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用情境"><span class="nav-number">1.8.4.</span> <span class="nav-text">使用情境</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本日小結"><span class="nav-number">2.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相關資源"><span class="nav-number">3.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2018/01/16/angular-material-29-cdk-portal/';
+          this.page.identifier = '2018/01/16/angular-material-29-cdk-portal/';
+          this.page.title = '[Angular Material完全攻略]Angular CDK(5) - Portal';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

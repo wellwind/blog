@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Git,GitKraken,GitGUI,GitFlow,Commit Template,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="昨天我們簡單的說明了GitKraken的基本功能，今天我們來介紹如何在GitKraken中一些其他的功能，包含GitFlow開發流程、Commit Template和衝突的處理方式">
+<meta name="keywords" content="Git,GitKraken,GitGUI,GitFlow,Commit Template">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Git]GitKraken 強大的剛剛好的Git GUI神器(2)進階篇-GitFlow、Commit Template和衝突管理">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="昨天我們簡單的說明了GitKraken的基本功能，今天我們來介紹如何在GitKraken中一些其他的功能，包含GitFlow開發流程、Commit Template和衝突的處理方式">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/git-flow.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/01.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/02.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/03.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/04.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/05.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/06.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/07.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/08.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/09.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/09.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/10.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/11.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/12.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/13.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/14.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/15.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/16.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/17.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/merge.png">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.180Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Git]GitKraken 強大的剛剛好的Git GUI神器(2)進階篇-GitFlow、Commit Template和衝突管理">
+<meta name="twitter:description" content="昨天我們簡單的說明了GitKraken的基本功能，今天我們來介紹如何在GitKraken中一些其他的功能，包含GitFlow開發流程、Commit Template和衝突的處理方式">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/git-flow.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Git]GitKraken 強大的剛剛好的Git GUI神器(2)進階篇-GitFlow、Commit Template和衝突管理 | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2018/04/04/git-using-gitkraken-2-advanced/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Git]GitKraken 強大的剛剛好的Git GUI神器(2)進階篇-GitFlow、Commit Template和衝突管理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-04-04T20:13:53+00:00">
+                2018-04-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/04/04/git-using-gitkraken-2-advanced/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/04/04/git-using-gitkraken-2-advanced/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>昨天我們簡單的說明了<a href="https://wellwind.idv.tw/blog/2018/04/03/git-using-gitkraken-1-basic/">GitKraken的基本功能</a>，今天我們來介紹如何在GitKraken中一些其他的功能，包含GitFlow開發流程、Commit Template和衝突的處理方式</p>
+<a id="more"></a>
+<h1 id="使用GitFlow"><a href="#使用GitFlow" class="headerlink" title="使用GitFlow"></a>使用GitFlow</h1><h2 id="什麼是GitFLow"><a href="#什麼是GitFLow" class="headerlink" title="什麼是GitFLow"></a>什麼是GitFLow</h2><p>Git本身具有強大的分支管理功能，要開分支可以說是成本極低的一件事情，也因此若是胡亂開分支，容易造成管理上的混亂，因此也有很多不同的管理方式，而GitFlow就是其中一種很受歡迎的管理方式，以下是GitFlow的簡單流程圖示</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/git-flow.png">
+<p>資料來源：<a href="http://nvie.com/posts/a-successful-git-branching-model/" target="_blank" rel="noopener">A successful Git branching model</a></p>
+<p>簡單來說，整個工作分成兩個主要分支，分別是master與develop，而其他分支則是輔助這兩個分支用的。</p>
+<ol>
+<li>master是用來放置交付版本的程式，而develop分支則是用來放置開發中的功能。</li>
+<li>develop分支上，依照不同的需求，再開不同的feature分支，來處理各自feature的開發，當feature開發完畢後，在合併回develop分支。</li>
+<li>當develop分支累積足夠的features後，就可以準備release，這時候會再從develop開出release分支，處理release前的工作，如版號變更、撰寫changelog等等。</li>
+<li>當release準備完後，就可以合併到master分支，作為最終交付的版本，此時可以給予一個版本號的tag。</li>
+<li>當已交付程式有bug發生時，可以在master分支上建立hotfix分支，進行緊急的修復，修復完成後，直接再合併回master。</li>
+<li>release和hotfix分支的異動結果，也會同步合併回develop分支。</li>
+<li>一般來說master和develop分支，都只會留有被合併的結果，而不會直接在這兩個分支上進行commit。</li>
+</ol>
+<p>這樣的方式很適合在比較有組織的開發團隊，藉由一致的規範來管理code base，又不至於分支開得太過雜亂，因此成為了目前最熱門的code base管理實務之一。</p>
+<p>GitFlow也有提供CLI工具，直接擴充Git指令，方便我們依照規範建立/合併分支，甚至有中文版的說明，有興趣的讀者可以參考看看：</p>
+<ul>
+<li><a href="https://danielkummer.github.io/git-flow-cheatsheet/index.zh_TW.html" target="_blank" rel="noopener">git-flow 備忘清單</a></li>
+</ul>
+<h2 id="使用GitKraken進行GitFlow開發"><a href="#使用GitKraken進行GitFlow開發" class="headerlink" title="使用GitKraken進行GitFlow開發"></a>使用GitKraken進行GitFlow開發</h2><p>身為最熱門的管理方式之一，自然有許多Git的GUI工具都支援使用GitFlow的開發流程，當然，身為以實用為基礎開發出來的GitKraken，也內建了這種管理方式，不需要額外安裝其他工具，全部都在GitKraken上就可以搞定啦！接下來就讓我們來看看如何使用GitKraken進行GitFlow開發吧！</p>
+<h2 id="初始化Git-Flow設定"><a href="#初始化Git-Flow設定" class="headerlink" title="初始化Git Flow設定"></a>初始化Git Flow設定</h2><p>首先，開啟任何一個git專案，再點選右上角的Perferences</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/01.png">
+<p>接著點選左邊頁籤下面的Git Flow，即可進行Git Flow的設定，主要是設定各個分支的名稱，一般來說照預設設定就可以了</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/02.png">
+<p>設定完成後，按下[Initialize Git Flow]，再回到主畫面就能看到左邊的分支管理區多了一塊[Git Flow]區塊，區塊標題右邊有個綠色小按鈕，按下去就會顯示可以開啟或結束的分支</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/03.png">
+<p>這時候我們就能夠決定要新增feature、release或是hotfix啦！</p>
+<h2 id="建立新的feature分支"><a href="#建立新的feature分支" class="headerlink" title="建立新的feature分支"></a>建立新的feature分支</h2><p>我們先來建立一個新的feature分支看看</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/04.gif">
+<p>只需要輸入feature名稱，例如<code>test</code>，就能夠在develop分之上建立一個<code>feature/test</code>分支，我們可以嘗試做一些修改，和多建立幾個feature分支，這時候可以看到GitKraken的另一個特色，針對使用<code>/</code>分類的分支，GitKraken會把它當作一個資料夾，以階層的方式顯示，如此一來管理就非常方便啦！</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/05.png">
+<h2 id="合併feature分支"><a href="#合併feature分支" class="headerlink" title="合併feature分支"></a>合併feature分支</h2><p>當feature開發完成後，就可以進行合併的動作，此時在GitFlow的Finish區塊可以看到有feature可以合併了</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/06.png">
+<p>點擊下去後，可以選擇要完成哪一個feature分支</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/07.png">
+<p>除了選擇分支以外，下方還有兩個選項可以使用</p>
+<ul>
+<li>Rebase on develop：先將目前的feature分之rebase到develop上，再進行合併，可以產生比較漂亮的分支線圖，但也比較容易發生衝突，是否要使用就自行斟酌。</li>
+<li>Delete branch：合併完成後，是否要刪除目前的feature分支。</li>
+</ul>
+<p>最後按下Finish Feature，就算合併完成啦！</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/08.png">
+<h2 id="建立新的release分支"><a href="#建立新的release分支" class="headerlink" title="建立新的release分支"></a>建立新的release分支</h2><p>當累積足夠的features後，我們就可以準備release，此時我們可以建立一個release分支，建立方法同上，再GitFlow的Start區塊中按下Release按鈕後，輸入release名稱即可</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/09.png">
+<p>我們可以在此時進行一些release的前置準備，如下：</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/09.png">
+<h2 id="合併release分支"><a href="#合併release分支" class="headerlink" title="合併release分支"></a>合併release分支</h2><p>當release分支處理完後，就可以直接使用Finish合併，同時在打開GitFlow功能選單時，最下面也會直接出現[Finish release/{branch name}]的按鈕，方便我們快速完成release動作</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/10.png">
+<p>跟合併feature分支不同的是，我們可以在此時輸入一個tag message，而tag name不用輸入，因為就是這個release分支的名稱</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/11.png">
+<p>確認合併後就大功告成啦！如下圖，我們可以看到release分支同時合併到develop和master分支，並且在這次合併到master的結果上加了一個<code>1.0</code>的tag，節省很多我們的時間！</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/12.png">
+<p>由於release與hotfix差不多，只是一個是從develop分支開，另一個是從master分支開，因此操作上都大同小異，就不多作介紹囉。</p>
+<div class="note info"><p>如果在設定Git Flow時，有設定version tag的話，則會自動在release名稱前面加上這個version tag，例如version tag設定為<code>v</code>，release name為<code>1.0</code>，則合併後tag名稱會自動變成<code>v1.0</code></p></div>
+<h1 id="Commit-Template"><a href="#Commit-Template" class="headerlink" title="Commit Template"></a>Commit Template</h1><p>Commit Template是GitKraken 3.5.0之後支援的新功能，這也是<a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration#_code_commit_template_code" target="_blank" rel="noopener">git本身就有的</a>一個特色，簡單來說，就是預先定義好commit的樣板，節省每次commit的打字時間，也算是個蠻實用的功能。</p>
+<p>要開啟Commit Template功能很簡單，一樣從git專案的Perference進去，左邊頁籤下方就有Commit Template的選項，點進去後就可以設定預設的commit訊息</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/13.png">
+<p>按下[Save commit template]按鈕即可儲存，儲存後，每次commit時，就會帶出預設的commit template，如下</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/14.png">
+<h1 id="衝突管理"><a href="#衝突管理" class="headerlink" title="衝突管理"></a>衝突管理</h1><p>到目前為止，我們的分支合併都沒有任何衝突發生，但實際上團隊開發時，都不會發生衝突基本上是不可能的事情，因此管理衝突時很重要的一件事情，至於GitKraken是怎麼處理衝突的呢？就讓我們繼續看下去吧！</p>
+<p>當我們合併分支發生衝突時，畫面上會出現合併錯誤，並有衝突發生的訊息：</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/15.png">
+<p>此時右邊的管理區塊會看到有衝突發生的檔案</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/16.png">
+<p>如果自行使用外部工具處理衝突的話，可以在解決衝突後，按下右上方的[Mark all resolved]，讓GitKraken知道衝突已經解決了。</p>
+<p>要使用GitKraken內建的衝突管理工具的話，可以在點擊發生衝突的檔案後，進入比較模式：</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/17.png">
+<p>GitKraken內建的合併工具，會在左右邊分別出現來源及目標的變更，滑鼠移到highlight的程式碼上時，可以選擇要使用某一行，也可以點選上方的checkbox，選擇使用者個檔案作為合併的版本；最後按下右上[save]按鈕就算解決衝突了，之後再進行commit就算完成合併囉。</p>
+<div class="note info"><p>老實說個人覺得GitKraken的合併工具並不好用，當然GitKraken也能夠選擇使用其他的合併工具，但只能使用GitKraken指定的，要選擇更多不同合併工具的話，需要購買pro版本。</p>
+<p>在遇到衝突時，通常我會自己打開其他工具來處理衝突，而非使用GitKraken</p></div>
+<p>最後輕鬆一下，附個merge產生衝突的示意圖：</p>
+<img src="/blog/2018/04/04/git-using-gitkraken-2-advanced/merge.png">
+<h1 id="本日小節"><a href="#本日小節" class="headerlink" title="本日小節"></a>本日小節</h1><p>今天介紹了一些GitKraken的進階功能，包含了非常實用的GitFlow和Commit Template，以及功能有待加強的衝突管理工具。</p>
+<p>在團隊開發時，GitFlow是非常被拿出來使用的一種管理流程，而透過GitKraken，可以幫助我們省去許多指令敲打的麻煩，讓開發更加簡單；至於Commit Template，在有要求commit內容規範的情境時，非常的實用；至於合併發生衝突該怎麼辦呢？雖然GitKraken有內建的處理工具，但還是建議用回自己順手的工具吧…</p>
+<p>到目前為止都還在單機開發的階段，明天我們再來介紹如何與遠端的repository一起工作吧！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Git/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Git</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/GitKraken/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> GitKraken</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/GitGUI/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> GitGUI</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/GitFlow/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> GitFlow</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Commit-Template/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Commit Template</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/04/03/git-using-gitkraken-1-basic/" rel="next" title="[Git]GitKraken 強大的剛剛好的Git GUI神器(1)基本篇">
+                <i class="fa fa-chevron-left"></i> [Git]GitKraken 強大的剛剛好的Git GUI神器(1)基本篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/04/05/git-using-gitkraken-3-remote/" rel="prev" title="[Git]GitKraken 強大的剛剛好的Git GUI神器(3)遠端篇">
+                [Git]GitKraken 強大的剛剛好的Git GUI神器(3)遠端篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用GitFlow"><span class="nav-number">1.</span> <span class="nav-text">使用GitFlow</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什麼是GitFLow"><span class="nav-number">1.1.</span> <span class="nav-text">什麼是GitFLow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用GitKraken進行GitFlow開發"><span class="nav-number">1.2.</span> <span class="nav-text">使用GitKraken進行GitFlow開發</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化Git-Flow設定"><span class="nav-number">1.3.</span> <span class="nav-text">初始化Git Flow設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立新的feature分支"><span class="nav-number">1.4.</span> <span class="nav-text">建立新的feature分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#合併feature分支"><span class="nav-number">1.5.</span> <span class="nav-text">合併feature分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立新的release分支"><span class="nav-number">1.6.</span> <span class="nav-text">建立新的release分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#合併release分支"><span class="nav-number">1.7.</span> <span class="nav-text">合併release分支</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Commit-Template"><span class="nav-number">2.</span> <span class="nav-text">Commit Template</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#衝突管理"><span class="nav-number">3.</span> <span class="nav-text">衝突管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小節"><span class="nav-number">4.</span> <span class="nav-text">本日小節</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2018/04/04/git-using-gitkraken-2-advanced/';
+          this.page.identifier = '2018/04/04/git-using-gitkraken-2-advanced/';
+          this.page.title = '[Git]GitKraken 強大的剛剛好的Git GUI神器(2)進階篇-GitFlow、Commit Template和衝突管理';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

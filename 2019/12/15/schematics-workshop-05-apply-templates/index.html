@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Schematics,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="在學會撰寫第一個 Schematics 後，我們已經了解該如何使用 tree 來產生檔案，但有時候難免會遇到一些狀況，需要一次產生較多有關連的檔案，例如 Angular 的 component，預設就會產生 4 個相關連的檔案，雖然我們也能將這些檔案逐一用 tree 產生，但若能有個預設的範本，產生時只要置換裡面的一些變數就好，維護起來將會更加容易！今天就來看看如何在 Schematics 內使用">
+<meta name="keywords" content="Schematics">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Schematics 實戰] 從範本快速產生檔案">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2019/12/15/schematics-workshop-05-apply-templates/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="在學會撰寫第一個 Schematics 後，我們已經了解該如何使用 tree 來產生檔案，但有時候難免會遇到一些狀況，需要一次產生較多有關連的檔案，例如 Angular 的 component，預設就會產生 4 個相關連的檔案，雖然我們也能將這些檔案逐一用 tree 產生，但若能有個預設的範本，產生時只要置換裡面的一些變數就好，維護起來將會更加容易！今天就來看看如何在 Schematics 內使用">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2019/12/15/schematics-workshop-05-apply-templates/01.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2019/12/15/schematics-workshop-05-apply-templates/02.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2019/12/15/schematics-workshop-05-apply-templates/03.jpg">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.432Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Schematics 實戰] 從範本快速產生檔案">
+<meta name="twitter:description" content="在學會撰寫第一個 Schematics 後，我們已經了解該如何使用 tree 來產生檔案，但有時候難免會遇到一些狀況，需要一次產生較多有關連的檔案，例如 Angular 的 component，預設就會產生 4 個相關連的檔案，雖然我們也能將這些檔案逐一用 tree 產生，但若能有個預設的範本，產生時只要置換裡面的一些變數就好，維護起來將會更加容易！今天就來看看如何在 Schematics 內使用">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2019/12/15/schematics-workshop-05-apply-templates/01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2019/12/15/schematics-workshop-05-apply-templates/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Schematics 實戰] 從範本快速產生檔案 | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2019/12/15/schematics-workshop-05-apply-templates/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Schematics 實戰] 從範本快速產生檔案</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-12-15T21:14:50+00:00">
+                2019-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2019/12/15/schematics-workshop-05-apply-templates/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/15/schematics-workshop-05-apply-templates/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在學會<a href="https://wellwind.idv.tw/blog/2019/12/01/schematics-workshop-02-getting-started-cli/">撰寫第一個 Schematics</a> 後，我們已經了解該如何使用 <code>tree</code> 來產生檔案，但有時候難免會遇到一些狀況，需要一次產生較多有關連的檔案，例如 Angular 的 component，預設就會產生 4 個相關連的檔案，雖然我們也能將這些檔案逐一用 <code>tree</code> 產生，但若能有個預設的範本，產生時只要置換裡面的一些變數就好，維護起來將會更加容易！今天就來看看如何在 Schematics 內使用某個來源範本產生檔案吧！</p>
+<a id="more"></a>
+<h1 id="建立範本"><a href="#建立範本" class="headerlink" title="建立範本"></a>建立範本</h1><p>第一步驟當然是先建立一個 Schematics，這部分可以使用 <a href="https://marketplace.visualstudio.com/items?itemName=MikeHuang.vscode-schematics-snippets" target="_blank" rel="noopener">Schematics Snippets</a> 的 Visual Studio Code 套件快速產生，之前的文章也已經提過，這裡就不多說明。</p>
+<h2 id="建立範本目錄"><a href="#建立範本目錄" class="headerlink" title="建立範本目錄"></a>建立範本目錄</h2><p>首先我們先建立一個 <code>files</code> 目錄，用來放置要產生的範本檔案來源，另外裡面再建立一個目錄，名稱為 <code>__name@dasherize__</code>，程式會將這樣的格式進行名稱的轉換，這裡的格式是：</p>
+<ol>
+<li>首尾用兩個底線 <code>__</code>，當範本轉換時，會自動辨識裡面的內容，並且做替換</li>
+<li>兩個底線內，放入要取代的變數名稱，如 <code>__name__</code>，當我們傳入一個 demo 作為 <code>name</code> 變數時，就會自動產生對應的檔案或目錄</li>
+<li>我們也可以讓這個變數傳入某個方法內，格式是 <code>名稱@方法</code>，如 <code>dasherize</code> 是一個方法，此時 <code>name@dasherize</code>可以想像成一般程式內執行了 <code>dasherize(name)</code>。</li>
+</ol>
+<p>至於這個 <code>name</code> 變數和 <code>dasherize</code> 方法內容從哪裡來，稍後會介紹。</p>
+<h2 id="建立範本檔案"><a href="#建立範本檔案" class="headerlink" title="建立範本檔案"></a>建立範本檔案</h2><p>接著我們先建立一個檔案，命名為 <code>__name@dasherize__.component.ts.template</code>，用來存放要產生的範本。</p>
+<p>接著我們就可以簡單建立一個範本內容，舉個例子，如果我想要產生一個簡單的 Angular Component 元件，大概看起來會像這樣：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, OnInit &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-demo'</span>,</span><br><span class="line">  template: <span class="string">'&lt;h1&gt;Hello &#123;&#123; title &#125;&#125;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> DemoComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  title = <span class="string">'demo'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span>) &#123; &#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在這裡面，元件的名稱是應該要能夠被替換的，我們可以使用 <code>&lt;%= 變數 %&gt;</code> 這樣的語法，來設定範本內的資訊，變成如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, OnInit &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-&lt;%= dasherize(name) %&gt;'</span>,</span><br><span class="line">  template: <span class="string">'&lt;h1&gt;Hello &#123;&#123; title &#125;&#125;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> &lt;%= classify(name) %&gt;Component <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  title = <span class="string">'&lt;%= name %&gt;'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span>) &#123; &#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這裡我們可以看到，使用了 <code>&lt;%= %&gt;</code> 的方式，印出了一些變數，同時也在不同地方分別呼叫了 <code>dasherize()</code> 和 <code>classify()</code>，這些函數是 Schematics 內建的一些工具，用來轉換文字的類型，例如：</p>
+<ul>
+<li><code>dasherize</code>：將名稱全部轉為小寫，並以 dash 隔開，例如 <code>ClassName</code> 變成 <code>class-name</code></li>
+<li><code>classify</code>：將名稱變成常用類別的名稱定義，例如 <code>class-name</code> 變成 <code>ClassName</code></li>
+</ul>
+<h2 id="檔案結構回顧"><a href="#檔案結構回顧" class="headerlink" title="檔案結構回顧"></a>檔案結構回顧</h2><p>完成以上步驟後，目前目錄結構看起來如下：</p>
+<img src="/blog/2019/12/15/schematics-workshop-05-apply-templates/01.jpg">
+<h2 id="範本語法參考"><a href="#範本語法參考" class="headerlink" title="範本語法參考"></a>範本語法參考</h2><ul>
+<li><code>&lt;%= expression %&gt;</code>：將變數印在範本內，因為是顯示用，因此不該在這裡面使用 <code>for</code> 或 <code>if</code> 等程式</li>
+<li><code>&lt;%- expression %&gt;</code>：行為非常類似，但插入的內容若為 HTML 會進行 escape 動作</li>
+<li><code>&lt;% inline code %&gt;</code>：通常是用來處理結構用的， <code>for</code> 和 <code>if</code> 等程式行為都會放在這裡面，e.g: </li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%</span> <span class="attr">if</span>(<span class="attr">name</span> === <span class="string">'Mike'</span>) &#123; %&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">%=</span> '<span class="attr">Mike</span>' %&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%</span> &#125; <span class="attr">else</span> &#123; %&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">%=</span> '<span class="attr">Others</span>' %&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%</span> &#125; %&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>&lt;%# text %&gt;</code>：僅作為註解用，不會產生任何內容</li>
+</ul>
+<h1 id="在-Schematics-內使用範本並套用相關變數"><a href="#在-Schematics-內使用範本並套用相關變數" class="headerlink" title="在 Schematics 內使用範本並套用相關變數"></a>在 Schematics 內使用範本並套用相關變數</h1><p>接著我們就要實際將來源範本的內容變更，並合併到我們的檔案系統內啦！</p>
+<h2 id="import-用到的工具程式"><a href="#import-用到的工具程式" class="headerlink" title="import 用到的工具程式"></a>import 用到的工具程式</h2><p>這裡我們要先匯入 Schematics 提供的一些工具</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; apply, url, applyTemplates, move, chain, mergeWith &#125; <span class="keyword">from</span> <span class="string">'@angular-devkit/schematics'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; strings, normalize &#125; <span class="keyword">from</span> <span class="string">'@angular-devkit/core'</span>;</span><br></pre></td></tr></table></figure>
+<div class="note info"><p>有安裝 Schematics Snippets 套件的話，可以使用 <code>sch-import-apply-merge-templates</code> 快速產生相關程式碼</p></div>
+<h2 id="套用來源範本"><a href="#套用來源範本" class="headerlink" title="套用來源範本"></a>套用來源範本</h2><p>接著在預設的 rule 內使用以下程式，處理檔案：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> templateSource = apply(url(<span class="string">'./files'</span>), [</span><br><span class="line">  applyTemplates(&#123;</span><br><span class="line">    classify: strings.classify,</span><br><span class="line">    dasherize: strings.dasherize,</span><br><span class="line">    name: _options.name</span><br><span class="line">  &#125;),</span><br><span class="line">  move(normalize(_options.path <span class="keyword">as</span> <span class="built_in">string</span>))</span><br><span class="line">]);</span><br><span class="line"><span class="keyword">return</span> chain[mergeWith(templateSource)];</span><br></pre></td></tr></table></figure>
+<div class="note info"><p>有安裝 Schematics Snippets 套件的話，可以使用 <code>sch-apply-merge-templates</code> 快速產生相關程式碼</p></div>
+<p>稍後我們會解釋裡面的內容，我們先試著建制程式看看，會出現以下訊息：</p>
+<img src="/blog/2019/12/15/schematics-workshop-05-apply-templates/02.jpg">
+<p>由於 Schematics 預設建立的 TypeScript 專案會檢查變數是否未被使用，目前我們的程式內都沒有用到 <code>tree</code> 物件，因此會報錯，修改方式很簡單，把變數前面加個底線變成 <code>_tree</code> 就可以了。</p>
+<div class="note info"><p>當然之後如果有用到 <code>tree</code>，就可以大方的改回來了</p></div>
+<p>接著我們就可以試著用指令從範本建立檔案啦！例如使用以下指令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schematics .:exercise-3 --name=Mike --path=folder --dry-run=false</span><br></pre></td></tr></table></figure>
+<p>成果如下圖</p>
+<img src="/blog/2019/12/15/schematics-workshop-05-apply-templates/03.jpg">
+<p>我們如願的產生了相關的檔案！雖然看起來步驟有點多，但其實一點都不難對吧！</p>
+<h2 id="程式碼說明"><a href="#程式碼說明" class="headerlink" title="程式碼說明"></a>程式碼說明</h2><p>接著我們來說明一下程式吧，這段產生檔案用的程式碼可以大致分成幾個部分：</p>
+<ol>
+<li>使用 <code>apply</code> 將指定的的來源 (source)，套用指定的 rules 陣列；source 的概念跟 tree 很像，只是它不代表目前的檔案系統，可以想像成另外獨立的檔案系統來源</li>
+<li>使用 <code>url(&#39;./files&#39;)</code> 將指定目錄作為來源</li>
+<li>使用 <code>applyTemplates</code> 這個 rule，將來源內容進行變更，這個 rule 會傳入一個物件參數，這個參數的每個 key 都會被當作範本內的變數名稱使用，以上述程式為例子：<ul>
+<li><code>classify</code>：使用 <code>@angular-devkit/core</code> 內的 <code>strings</code> 工具類別內的 <code>classify</code> 方法</li>
+<li><code>dasherize</code>：同上，只是換成 <code>dasherize</code> 方法</li>
+<li><code>name</code>：指令參數 (options) 的 <code>name</code> 屬性</li>
+</ul>
+</li>
+<li>完成 <code>applyTemplate</code> 的 rule 套用後，再使用 <code>move</code> 這個 rule</li>
+<li>最後使用 <code>mergeWith</code> 這個 rule，將完整的來源 (source) 合併到檔案系統內</li>
+</ol>
+<p>程式內還有個 <code>chain</code> ，其實可以不使用，主要是通常在撰寫 Schematics 時，隨著情境複雜，不會只有套用檔案範本而已，還會套用其他多個內建或自行開發的 rule，而使用 <code>chain</code> 則可以將這些 rule 都組合起來，例如：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deleteFile</span>(<span class="params"></span>): <span class="title">Rule</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">tree: Tree, _context: SchematicContext</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (tree.exists(<span class="string">'fakefile'</span>)) &#123;</span><br><span class="line">      tree.delete(<span class="string">'fakefile'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> tree;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">generateFiles</span>(<span class="params">_options: <span class="built_in">any</span></span>): <span class="title">Rule</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> templateSource = apply(url(<span class="string">'./files'</span>), [</span><br><span class="line">    applyTemplates(&#123;</span><br><span class="line">      classify: strings.classify,</span><br><span class="line">      dasherize: strings.dasherize,</span><br><span class="line">      name: _options.name</span><br><span class="line">    &#125;),</span><br><span class="line">    move(normalize(_options.path <span class="keyword">as</span> <span class="built_in">string</span>))</span><br><span class="line">  ]);</span><br><span class="line">  <span class="keyword">return</span> mergeWith(templateSource);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">exercise3</span>(<span class="params">_options: <span class="built_in">any</span></span>): <span class="title">Rule</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">_tree: Tree, _context: SchematicContext</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> chain([</span><br><span class="line">      deleteFile(), </span><br><span class="line">      generateFiles(_options)</span><br><span class="line">    ]);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程式中，我們建立個一個名為 <code>deleteFile</code> 的 rule，同時將從範本產生檔案的程式抽出成 <code>generateFiles</code> rule，最後再使用 <code>chain</code> 方法將兩個 rule 結合起來，依照帶入的順序執行，如此一來主程式將會變得更將容易閱讀！</p>
+<div class="note info"><p>有安裝 Schematics Snippets 套件的話，可以使用 <code>sch-rule</code> 快速產生 rule 相關程式碼</p></div>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>很多時候我們會需要產生一系列的相關檔案，透過 <code>@angular-devkit/core</code> 及 <code>@angular-devkit/schematics</code> 提供的相關工具及 rule，要產生相關檔案變得容易許多。雖然我們可以直接使用 code snippet 的方式快速產生程式碼骨架，但理解每個 rule 和工具方法後，要變化就會變得容易許多了！快去嘗試產生自己專案內部用的範本吧！！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Schematics/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Schematics</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2019/12/08/schematics-workshop-04-schema-json-setting/" rel="next" title="[Schematics 實戰] 在 schema.json 內設定指令參數">
+                <i class="fa fa-chevron-left"></i> [Schematics 實戰] 在 schema.json 內設定指令參數
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2019/12/22/schematics-workshop-06-install-packages/" rel="prev" title="[Schematics 實戰] 使用 Schematics 幫我們安裝指定套件">
+                [Schematics 實戰] 使用 Schematics 幫我們安裝指定套件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#建立範本"><span class="nav-number">1.</span> <span class="nav-text">建立範本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#建立範本目錄"><span class="nav-number">1.1.</span> <span class="nav-text">建立範本目錄</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立範本檔案"><span class="nav-number">1.2.</span> <span class="nav-text">建立範本檔案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#檔案結構回顧"><span class="nav-number">1.3.</span> <span class="nav-text">檔案結構回顧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#範本語法參考"><span class="nav-number">1.4.</span> <span class="nav-text">範本語法參考</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在-Schematics-內使用範本並套用相關變數"><span class="nav-number">2.</span> <span class="nav-text">在 Schematics 內使用範本並套用相關變數</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#import-用到的工具程式"><span class="nav-number">2.1.</span> <span class="nav-text">import 用到的工具程式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#套用來源範本"><span class="nav-number">2.2.</span> <span class="nav-text">套用來源範本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程式碼說明"><span class="nav-number">2.3.</span> <span class="nav-text">程式碼說明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">3.</span> <span class="nav-text">本日小結</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2019/12/15/schematics-workshop-05-apply-templates/';
+          this.page.identifier = '2019/12/15/schematics-workshop-05-apply-templates/';
+          this.page.title = '[Schematics 實戰] 從範本快速產生檔案';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

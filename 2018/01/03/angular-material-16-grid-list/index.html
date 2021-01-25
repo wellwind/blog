@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular Material,Material Design,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="在前幾天介紹完各式各樣的表單元件後，今天我們要先來看看在Material Design其中一種顯示清單資料的方法－Grid List，以及Angular Material中如何實現應用這樣的方法，把一個簡易的部落格版型給切出來！">
+<meta name="keywords" content="Angular Material,Material Design">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular Material完全攻略]設計一個部落格(1) - Grid List">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="在前幾天介紹完各式各樣的表單元件後，今天我們要先來看看在Material Design其中一種顯示清單資料的方法－Grid List，以及Angular Material中如何實現應用這樣的方法，把一個簡易的部落格版型給切出來！">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/01-grid-list-basic-concept.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/02-grid-list-cell-tile.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/03-grid-list-basic.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/04-grid-list-row-height.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/05-col-span.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/06-row-span.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/07-tile4-colspan.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/08-bad-set-tile.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/09-bad-set-tile-2.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/10-tile3-setting.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/11-gutter-size.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/12-mat-grid-tile-header-footer.png">
+<meta property="og:updated_time" content="2021-01-25T02:06:09.976Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular Material完全攻略]設計一個部落格(1) - Grid List">
+<meta name="twitter:description" content="在前幾天介紹完各式各樣的表單元件後，今天我們要先來看看在Material Design其中一種顯示清單資料的方法－Grid List，以及Angular Material中如何實現應用這樣的方法，把一個簡易的部落格版型給切出來！">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/01-grid-list-basic-concept.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular Material完全攻略]設計一個部落格(1) - Grid List | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2018/01/03/angular-material-16-grid-list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular Material完全攻略]設計一個部落格(1) - Grid List</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-03T17:06:38+00:00">
+                2018-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular-Material完全攻略/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular Material完全攻略</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/01/03/angular-material-16-grid-list/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/03/angular-material-16-grid-list/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在前幾天介紹完各式各樣的表單元件後，今天我們要先來看看在Material Design其中一種顯示清單資料的方法－Grid List，以及Angular Material中如何實現應用這樣的方法，把一個簡易的部落格版型給切出來！</p>
+<a id="more"></a>
+<h2 id="關於Material-Design中的Grid-List"><a href="#關於Material-Design中的Grid-List" class="headerlink" title="關於Material Design中的Grid List"></a>關於Material Design中的Grid List</h2><p>在<a href="https://material.io/guidelines/components/grid-lists.html#" target="_blank" rel="noopener">Material Design的Grid Lists設計指南</a>中，Grid List是一種用<strong>網格</strong>呈現重複性資料方式，可以想像成是用來放置多組類似的元件的容器，<strong>具有水平和垂直的排列組合</strong>，來呈現資料。由於有水平和垂直的排列組合，我們也可以想像Grid List是一種類似表格式的排版(當然不會真的用<code>&lt;table&gt;</code>去做排版)。</p>
+<img src="/blog/2018/01/03/angular-material-16-grid-list/01-grid-list-basic-concept.png">
+<p>Grid List使用的是網格的概念，每一個格子我們會稱之為Cell；Tile則代表用來放置內容的容器，且一個Tile是可以橫跨多個Cells的。</p>
+<img src="/blog/2018/01/03/angular-material-16-grid-list/02-grid-list-cell-tile.png">
+<p>以上圖片來源：<a href="https://material.io/guidelines/components/grid-lists.html" target="_blank" rel="noopener">https://material.io/guidelines/components/grid-lists.html</a></p>
+<p>接著我們就實際來寫寫看程式，畢竟對於工程師來說，還是透過寫程式最容易理解一個概念啦！</p>
+<h2 id="開始使用Angular-Material的Grid-List"><a href="#開始使用Angular-Material的Grid-List" class="headerlink" title="開始使用Angular Material的Grid List"></a>開始使用Angular Material的Grid List</h2><p>在Angular Material中Grid List主要由兩個元件組成，分別是：</p>
+<ul>
+<li><code>&lt;mat-grid-list&gt;</code>：用來設定Grid List的基本狀態</li>
+<li><code>&lt;mat-grid-tile&gt;</code>：放置在<code>&lt;mat-grid-list&gt;</code>中，代表一個又一個的tile，我們可以在<code>&lt;mat-grid-tile&gt;</code>中設定它會橫跨幾個垂直或水平的cell。</li>
+</ul>
+<p>只需要加入<code>MatGridListModule</code>，就可以開始使用Grid List的功能囉。</p>
+<p>雖然Grid List適合用來放置重複型的清單資料，但也很適合<strong>當作一個排版系統來使用</strong>，雖然針對排版Angular也有一套<code>angular/flex-layout</code>可以使用，但這套目前還是beta版，且進度緩慢，拿來用在production還是會覺得抖，而且若flex不是很熟，使用上也不太容易；反觀Angular Material的Grid Lsit，它的概念就相對簡單很多，而且使用上非常貼近我們都熟悉的Table；雖然功能沒那麼強大，但是對於基本的排版可以說是完全沒問題！因此接下來我們介紹時也會把它當作排版系統使用，但實際上你要用它來呈現清單資料等等是完全沒問題的！</p>
+<h3 id="使用mat-grid-list"><a href="#使用mat-grid-list" class="headerlink" title="使用mat-grid-list"></a>使用mat-grid-list</h3><p>所有的Grid List都是使用<code>&lt;mat-grid-list&gt;</code>作為起手式，而<code>&lt;mat-grid-list&gt;</code>至少需要設定一個參數：<code>cols</code>，代表這個Grid List會有幾個欄位資料。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-grid-list</span> <span class="attr">cols</span>=<span class="string">"3"</span>&gt;</span><span class="tag">&lt;/<span class="name">mat-grid-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在這裡我們設定<code>cols=&quot;3&quot;</code>，<code>&lt;mat-grid-list&gt;</code>會自動佔滿可以使用的寬度，然後平均分成3等分(cell)。</p>
+<p>接著我們可以在裡面放置<code>&lt;mat-grid-tile&gt;</code>，代表每一個資料呈現的區塊，<code>&lt;mat-grid-list&gt;</code>則會依照<code>cols</code>的設定，決定每列放置多少個<code>&lt;mat-grid-tile&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-grid-list</span> <span class="attr">cols</span>=<span class="string">"3"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-grid-tile</span> <span class="attr">style</span>=<span class="string">"background: red"</span>&gt;</span></span><br><span class="line">    Tile 1</span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-grid-tile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-grid-tile</span> <span class="attr">style</span>=<span class="string">"background: green"</span>&gt;</span></span><br><span class="line">    Tile 2</span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-grid-tile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-grid-tile</span> <span class="attr">style</span>=<span class="string">"background: blue"</span>&gt;</span></span><br><span class="line">    Tile 3</span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-grid-tile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-grid-tile</span> <span class="attr">style</span>=<span class="string">"background: yellow"</span>&gt;</span></span><br><span class="line">    Tile 4</span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-grid-tile</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-grid-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下圖：</p>
+<img src="/blog/2018/01/03/angular-material-16-grid-list/03-grid-list-basic.png">
+<p>可以看到每個<code>&lt;mat-grid-tile&gt;</code>所佔的寬度為三分之一，因此第四個tile就會被放置到第二列(row)上，一個基本的Grid List就完成囉。</p>
+<h3 id="在mat-grid-list中使用rowHeight設定每列高度"><a href="#在mat-grid-list中使用rowHeight設定每列高度" class="headerlink" title="在mat-grid-list中使用rowHeight設定每列高度"></a>在mat-grid-list中使用rowHeight設定每列高度</h3><p><code>&lt;mat-grid-list&gt;</code>會依照<code>col</code>的設定來<strong>切割cell，此時每個cell的寬度會平均</strong>，假設<code>&lt;mat-grid-list&gt;</code>佔滿寬度後是<code>300px</code>，此時每個cell的寬度就是<code>100px</code>，同時<code>&lt;mat-grid-list&gt;</code>也會將高度視為<code>100px</code>，<strong>成為一個正方形</strong>，這麼一來<strong>螢幕越寬，每個cell的高度就越高</strong>，這樣的高度未必是我們要的，因此我們可以藉由設定<code>rowHeight</code>來控制高度。</p>
+<p>例如我們希望每列高度是<code>100px</code>，則可以如下設定：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-grid-list</span> <span class="attr">cols</span>=<span class="string">"3"</span> <span class="attr">rowHeight</span>=<span class="string">"100px"</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-grid-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/03/angular-material-16-grid-list/04-grid-list-row-height.png">
+<p>每列的高度就會變成如我們所設定的，而非每個cell都是正方形了！</p>
+<p>除此之外，我們也可以給予一個比例的字串，來決定寬跟高的比例，這時候高度就會依照目前tile寬度自動去計算</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-grid-list</span> <span class="attr">cols</span>=<span class="string">"3"</span> <span class="attr">rowHeight</span>=<span class="string">"4:1"</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-grid-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="使用rowspan和colspan設定mat-grid-tile所佔的cell"><a href="#使用rowspan和colspan設定mat-grid-tile所佔的cell" class="headerlink" title="使用rowspan和colspan設定mat-grid-tile所佔的cell"></a>使用rowspan和colspan設定mat-grid-tile所佔的cell</h3><p>如同前面提到的，一個tile可以水平和垂直的跨越多個cell，在Angular Material中我們可以設定<code>&lt;mat-grid-tile&gt;</code>的<code>rowpspan</code>和<code>colspan</code> (預設都是1) 來控制每個tile跨越的列和欄。</p>
+<div class="note info"><p>覺得很眼熟嗎？沒錯！就跟table的<code>rowspan</code>和<code>colspan</code>是一樣的概念，只是使用table排版是眾所皆知的罪惡(?)，而在<code>&lt;mat-grid-list&gt;</code>中所使用的排版系統是flex，但是排版起來卻像容易理解哩。</p></div>
+<p>接著我們來試試看作以下調整：</p>
+<p>首先把原來的Tile 1當作是廣告橫幅，因此要橫向跨越2個cell(也就是<code>colspan</code>)</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-grid-tile</span> <span class="attr">style</span>=<span class="string">"background: red"</span> <span class="attr">colspan</span>=<span class="string">"2"</span>&gt;</span></span><br><span class="line">  Tile 1(橫幅廣告)</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-grid-tile</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果：</p>
+<img src="/blog/2018/01/03/angular-material-16-grid-list/05-col-span.png">
+<p>此時Tile 2就被擠到最右邊，正好可以當作是右邊的最新文章等等的清單，讓他垂直跨越5個cell(也就是<code>rowspan</code>)</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-grid-tile</span> <span class="attr">style</span>=<span class="string">"background: green"</span> <span class="attr">rowspan</span>=<span class="string">"5"</span>&gt;</span></span><br><span class="line">  Tile 2(右邊清單資訊)</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-grid-tile</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果：</p>
+<img src="/blog/2018/01/03/angular-material-16-grid-list/06-row-span.png">
+<p>接著我們先看Tile 4，一樣希望他是一個在最下面的橫幅廣告，因此讓他跨越2個cell，程式碼如Tile 1的設定，結果如下：</p>
+<img src="/blog/2018/01/03/angular-material-16-grid-list/07-tile4-colspan.png">
+<p>由於Tile 2垂直跨越5個cell的關係，導致第二列只剩下2個cell可以用，而原來的Tile 3已經佔用1個cell，所以佔用2個cell的Tile 2無法盎在Tile 3旁邊，就被推到下方去了。</p>
+<p>接著我們測試看看，在第二列只剩下2個cell可以用的情看下，設定<code>colspan=3</code>會有什麼結果：</p>
+<img src="/blog/2018/01/03/angular-material-16-grid-list/08-bad-set-tile.png">
+<p>結果就是因為放不下了，會一路找到可以放置的空間，再把它放下去。</p>
+<p>那麼如果設定<code>colspan=4</code>讓它超過原來<code>cols=3</code>的設定呢？</p>
+<img src="/blog/2018/01/03/angular-material-16-grid-list/09-bad-set-tile-2.png">
+<p>結果就是一片空白，然後跳出錯誤訊息啦！這種細節Angular Material才不會忘記呢！</p>
+<p>測試到此結束，讓我們認真的設定Tile 3，我們希望Tile 3用來放置接下來部落格列表的資訊，我們可以合併使用<code>colspan</code>和<code>rowspan</code>填滿剩下的空間！</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-grid-tile</span> <span class="attr">style</span>=<span class="string">"background: blue"</span> <span class="attr">colspan</span>=<span class="string">"2"</span> <span class="attr">rowspan</span>=<span class="string">"3"</span>&gt;</span></span><br><span class="line">  Tile 3(文章內容區)</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-grid-tile</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下，是不是越來越有一個部落格版型的樣子啦！</p>
+<img src="/blog/2018/01/03/angular-material-16-grid-list/10-tile3-setting.png">
+<h3 id="使用gutterSize調整cell的間距"><a href="#使用gutterSize調整cell的間距" class="headerlink" title="使用gutterSize調整cell的間距"></a>使用gutterSize調整cell的間距</h3><p>我們可以在<code>&lt;mat-grid-list&gt;</code>中使用<code>gutterSize</code>來調整每個cell之間的間距，可以使用<code>px</code>、<code>em</code>或<code>rem</code>為單位</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-grid-list</span> <span class="attr">cols</span>=<span class="string">"3"</span> <span class="attr">rowHeight</span>=<span class="string">"100px"</span> <span class="attr">gutterSize</span>=<span class="string">"20px"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/03/angular-material-16-grid-list/11-gutter-size.png">
+<h3 id="為mat-grid-tile加上header與footer"><a href="#為mat-grid-tile加上header與footer" class="headerlink" title="為mat-grid-tile加上header與footer"></a>為mat-grid-tile加上header與footer</h3><p>在每個tile內，我們可以使用<code>&lt;mat-grid-tile-header&gt;</code>和<code>&lt;mat-grid-tile-footer&gt;</code>，為我們的<code>&lt;mat-grid-tile&gt;</code>加上header跟footer：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-grid-tile</span> <span class="attr">style</span>=<span class="string">"background: green"</span> <span class="attr">rowspan</span>=<span class="string">"5"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-grid-tile-header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h3</span> <span class="attr">mat-line</span>&gt;</span>功能清單<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">mat-line</span>&gt;</span>選擇你要的<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-icon</span>&gt;</span>list<span class="tag">&lt;/<span class="name">mat-icon</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-grid-tile-header</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-grid-tile-footer</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">mat-line</span>&gt;</span>生是IT人<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">mat-line</span>&gt;</span>死是IT魂<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">mat-line</span>&gt;</span>但我不想死<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-icon</span>&gt;</span>thumb_up<span class="tag">&lt;/<span class="name">mat-icon</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-grid-tile-footer</span>&gt;</span></span><br><span class="line">  Tile 2(右邊清單資訊)</span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-grid-tile</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2018/01/03/angular-material-16-grid-list/12-mat-grid-tile-header-footer.png">
+<h2 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h2><p>今天我們介紹了一個很重要的元件－Grid List，透過Grid List我們可以用比較視覺化的方式來呈現重複性的資料，同時我們也能使用Grid List來當作的排版系統使用，不管是呈現資料還是依照需求切割畫面都非常好用。</p>
+<p>藉由Grid List我們今天完成了基本部落格版型的排版，明天我們要來介紹Material Design中最常用來呈現資料的Card囉！</p>
+<p>本日的程式碼GitHub：<a href="https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-16-grid" target="_blank" rel="noopener">https://github.com/wellwind/it-ironman-demo-angular-material/tree/day-16-grid</a></p>
+<p>分支：day-16-grid-list</p>
+<h2 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h2><ul>
+<li><a href="https://material.io/guidelines/components/grid-lists.html#" target="_blank" rel="noopener">Material Design - Grid Lists</a></li>
+<li><a href="https://material.angular.io/components/grid-list/overview" target="_blank" rel="noopener">Angular Material - Grid List</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular-Material/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular Material</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Material-Design/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Material Design</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/01/02/angular-material-15-slider/" rel="next" title="[Angular Material完全攻略]打造問卷頁面(7) - Slider">
+                <i class="fa fa-chevron-left"></i> [Angular Material完全攻略]打造問卷頁面(7) - Slider
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/01/04/angular-material-17-card/" rel="prev" title="[Angular Material完全攻略]設計一個部落格(2) - Card">
+                [Angular Material完全攻略]設計一個部落格(2) - Card <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#關於Material-Design中的Grid-List"><span class="nav-number">1.</span> <span class="nav-text">關於Material Design中的Grid List</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#開始使用Angular-Material的Grid-List"><span class="nav-number">2.</span> <span class="nav-text">開始使用Angular Material的Grid List</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-grid-list"><span class="nav-number">2.1.</span> <span class="nav-text">使用mat-grid-list</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在mat-grid-list中使用rowHeight設定每列高度"><span class="nav-number">2.2.</span> <span class="nav-text">在mat-grid-list中使用rowHeight設定每列高度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用rowspan和colspan設定mat-grid-tile所佔的cell"><span class="nav-number">2.3.</span> <span class="nav-text">使用rowspan和colspan設定mat-grid-tile所佔的cell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用gutterSize調整cell的間距"><span class="nav-number">2.4.</span> <span class="nav-text">使用gutterSize調整cell的間距</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#為mat-grid-tile加上header與footer"><span class="nav-number">2.5.</span> <span class="nav-text">為mat-grid-tile加上header與footer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本日小結"><span class="nav-number">3.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相關資源"><span class="nav-number">4.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2018/01/03/angular-material-16-grid-list/';
+          this.page.identifier = '2018/01/03/angular-material-16-grid-list/';
+          this.page.title = '[Angular Material完全攻略]設計一個部落格(1) - Grid List';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

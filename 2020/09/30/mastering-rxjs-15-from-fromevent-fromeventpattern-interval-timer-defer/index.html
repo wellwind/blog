@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="RxJS,fromEvent,from,fromEventPattern,interval,timer,defer,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="今天我們來介紹更多建立類型的 operators，分別是 fromXXXX 系列，和一些跟時間操作有關的 operators。">
+<meta name="keywords" content="RxJS,fromEvent,from,fromEventPattern,interval,timer,defer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[RxJS] 建立類型 Operators (2) - from &#x2F; fromEvent &#x2F; fromEventPattern &#x2F; interval &#x2F; timer &#x2F; defer">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2020/09/30/mastering-rxjs-15-from-fromevent-fromeventpattern-interval-timer-defer/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="今天我們來介紹更多建立類型的 operators，分別是 fromXXXX 系列，和一些跟時間操作有關的 operators。">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.364Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[RxJS] 建立類型 Operators (2) - from &#x2F; fromEvent &#x2F; fromEventPattern &#x2F; interval &#x2F; timer &#x2F; defer">
+<meta name="twitter:description" content="今天我們來介紹更多建立類型的 operators，分別是 fromXXXX 系列，和一些跟時間操作有關的 operators。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2020/09/30/mastering-rxjs-15-from-fromevent-fromeventpattern-interval-timer-defer/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[RxJS] 建立類型 Operators (2) - from / fromEvent / fromEventPattern / interval / timer / defer | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2020/09/30/mastering-rxjs-15-from-fromevent-fromeventpattern-interval-timer-defer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[RxJS] 建立類型 Operators (2) - from / fromEvent / fromEventPattern / interval / timer / defer</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-09-30T18:00:00+00:00">
+                2020-09-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/" itemprop="url" rel="index">
+                    <span itemprop="name">打通 RxJS 任督二脈</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/第-12-屆鐵人賽/" itemprop="url" rel="index">
+                    <span itemprop="name">第 12 屆鐵人賽</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2020/09/30/mastering-rxjs-15-from-fromevent-fromeventpattern-interval-timer-defer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/09/30/mastering-rxjs-15-from-fromevent-fromeventpattern-interval-timer-defer/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天我們來介紹更多建立類型的 operators，分別是 fromXXXX 系列，和一些跟時間操作有關的 operators。</p>
+<a id="more"></a>
+<p>實作範例程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-15-creation-operators-02" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-15-creation-operators-02</a></p>
+<h1 id="from"><a href="#from" class="headerlink" title="from"></a>from</h1><p><code>from</code> 算是使用機會不低的 operator，它可以接受的參數類型包含陣列、可疊代的物件 (iterable)、Promise 和「其他 Observable 實作」 等等，<code>from</code> 會根據傳遞進來的參數決定要如何建立一個新的 Observable。</p>
+<h2 id="傳遞陣列當參數"><a href="#傳遞陣列當參數" class="headerlink" title="傳遞陣列當參數"></a>傳遞陣列當參數</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="keyword">from</span> &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]).subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`from 示範 (1): <span class="subst">$&#123;data&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// from 示範 (1): 1</span></span><br><span class="line"><span class="comment">// from 示範 (1): 2</span></span><br><span class="line"><span class="comment">// from 示範 (1): 3</span></span><br><span class="line"><span class="comment">// from 示範 (1): 4</span></span><br></pre></td></tr></table></figure>
+<p>跟前一天介紹的 <code>of</code> 非常的像，差別在只是 <code>from</code> 會將陣列內的內容一個一個傳遞給訂閱的觀察者。</p>
+<p>彈珠圖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(1234|)</span><br></pre></td></tr></table></figure>
+<h2 id="傳遞可迭代的物件當參數"><a href="#傳遞可迭代的物件當參數" class="headerlink" title="傳遞可迭代的物件當參數"></a>傳遞可迭代的物件當參數</h2><p>在之前的文章中我們介紹過 Iterator Pattern，JavaScript 原生也支援讓 <code>for</code> 語法等支援的迭代器寫法，只要支援疊代器的物件，也可以直接傳入 <code>from</code> 中，結果和傳入一般的陣列相同，把陣列中所有的內容作為事件傳遞給訂閱的觀察者。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 generator 建立 iterable</span></span><br><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">range</span>(<span class="params">start, end</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> i = start; i &lt;= end; ++i)&#123;</span><br><span class="line">    <span class="keyword">yield</span> i;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span>(range(<span class="number">1</span>, <span class="number">4</span>)).subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`from 示範 (2): <span class="subst">$&#123;data&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// from 示範 (2): 1</span></span><br><span class="line"><span class="comment">// from 示範 (2): 2</span></span><br><span class="line"><span class="comment">// from 示範 (2): 3</span></span><br><span class="line"><span class="comment">// from 示範 (2): 4</span></span><br></pre></td></tr></table></figure>
+<p>我們可以輕易地依照自己的規則來撰寫 generator，或使用其它套件時，若該套件回傳的資料支援，就能輕易地透過 <code>from</code> 轉成 Observable。</p>
+<h2 id="傳遞-Promise-當參數"><a href="#傳遞-Promise-當參數" class="headerlink" title="傳遞 Promise 當參數"></a>傳遞 Promise 當參數</h2><p>Promise 是前端處理非同步最常見的手段，如 fetch API 本身也是回傳一個 Promise 物件，有了 <code>from</code> 我們也能輕易將一個 Promise 物件建立為新的 Observable:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 傳入 Promise 當參數</span></span><br><span class="line"><span class="keyword">from</span>(<span class="built_in">Promise</span>.resolve(<span class="number">1</span>)).subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`from 示範 (3): <span class="subst">$&#123;data&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// from 示範 (3): 1</span></span><br></pre></td></tr></table></figure>
+<p>許多 JavaScript 的非同步 API，或網路上的套件並不會特地回傳 Observable，但回傳 Promise 已經是非常常見了，我自己在使用這些 API 時，基本上都是二話不說用 <code>from</code> 包起來，好處是未來可以統一都使用 <code>pipe</code> 來調整或組合其他 Observable，也可以統一使用 <code>subscribe</code> 來得到資料，一致性會更高！</p>
+<p>當然，此時的 Observable 也會是非同步的囉。</p>
+<h2 id="傳遞-Observable-當參數"><a href="#傳遞-Observable-當參數" class="headerlink" title="傳遞 Observable 當參數"></a>傳遞 Observable 當參數</h2><p><code>from</code> 也可以把一個 Observable 當作參數，此時 <code>from</code> 會幫我們訂閱裡面的資料，重新組成新的 Observable：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span>(of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)).subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`from 示範 (4): <span class="subst">$&#123;data&#125;</span>`</span>)</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// from 示範 (4): 1</span></span><br><span class="line"><span class="comment">// from 示範 (4): 2</span></span><br><span class="line"><span class="comment">// from 示範 (4): 3</span></span><br><span class="line"><span class="comment">// from 示範 (4): 4</span></span><br></pre></td></tr></table></figure>
+<p>其實 Observable 觀念本身也是 <a href="https://github.com/tc39/proposal-observable" target="_blank" rel="noopener">ECMAScript 一個尚未推出規範</a>，因此也有一些套件根據此規範進行實作(RxJS 也是其中之一)，只要這些實作也是用一樣的 <code>subscribe</code> 方法，都可以透過 <code>from</code> 包成 RxJS 的 Observable，享用 RxJS 豐富的 operators。</p>
+<p>目前瀏覽器基本上也還沒實作 Observable 這功能(畢竟尚未正式推出)，但若未來推出了，瀏覽器也我們也能將原生的 Observable 包裝成 RxJS 的 Observable，然後透過 <code>pipe</code> 享受各種便利的 operators 啦！</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-from" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-from</a></p>
+<h1 id="fromEvent"><a href="#fromEvent" class="headerlink" title="fromEvent"></a>fromEvent</h1><p><code>fromEvent</code> 是能將瀏覽器事件包裝成 Observable，參數有兩個：</p>
+<ul>
+<li>target：實際上要監聽事件的 DOM 元素</li>
+<li>eventName：事件名稱</li>
+</ul>
+<p>使用方式也很簡單：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fromEvent(<span class="built_in">document</span>, <span class="string">'click'</span>).subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'fromEvent 示範: 滑鼠事件觸發了'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>瀏覽器上許多的事件本身也就是一種資料流的概念，把它們包裝成 Observable 也是剛剛好而已啦！</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-fromevent" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-fromevent</a></p>
+<h1 id="fromEventPattern"><a href="#fromEventPattern" class="headerlink" title="fromEventPattern"></a>fromEventPattern</h1><p><code>fromEventPattern</code> 可以根據自訂的邏輯決定事件發生，只要我們將邏輯寫好就好；<code>fromEventPattern</code> 需要傳入兩個參數：</p>
+<ul>
+<li>addHandler：當 subscribe 時，呼叫此方法決定如何處理事件邏輯</li>
+<li>removeHandler：當 unsubscribe 時，呼叫次方法將原來的事件邏輯取消</li>
+</ul>
+<p><code>addHandler</code> 和 <code>removeHandler</code> 都是一個 function，串入一個 handler 物件，這個物件其實就是一個被用來呼叫的方法，直接看例子：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> addClickHandler = <span class="function">(<span class="params">handler</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'fromEventPattern 示範: 自定義註冊滑鼠事件'</span>)</span><br><span class="line">  <span class="built_in">document</span>.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="params">event</span> =&gt;</span> handler(event));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> removeClickHandler = <span class="function">(<span class="params">handler</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'fromEventPattern 示範: 自定義取消滑鼠事件'</span>)</span><br><span class="line">  <span class="built_in">document</span>.removeEventListener(<span class="string">'click'</span>, handler);</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">const</span> source$ = fromEventPattern(</span><br><span class="line">  addClickHandler,</span><br><span class="line">  removeClickHandler</span><br><span class="line">);</span><br><span class="line">  </span><br><span class="line"><span class="keyword">const</span> subscription = source$</span><br><span class="line">  .subscribe(<span class="function"><span class="params">event</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'fromEventPattern 示範: 滑鼠事件發生了'</span>, event));</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  subscription.unsubscribe();</span><br><span class="line">&#125;, <span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
+<p>上面程式中，我們宣告了兩個 function，並傳入 <code>handler</code> 參數， 這兩個 function 可以透過這個 handler (其實就是個 callback function) 來決定事件發生處理時要呼叫它，或以它為依據來取消事件。</p>
+<p>之後使用 <code>fromEventPattern</code> 傳入這兩個 function，來完成一個 Observable；當訂閱 (subscribe) 產生時，會產生 <code>handler</code> 並呼叫 <code>addClickHandler</code>，這裡面的程式則是註冊 document 的 click，並在事件發生時呼叫 <code>handler</code> callback function。</p>
+<p>接著三秒後呼叫 <code>unsubscribe</code> 來取消訂閱，此時就會呼叫 <code>removeClickHandler</code> 處理取消事件監聽的行為。</p>
+<p>以上面的例子來說其實用 <code>fromEvent</code> 就可以解決了，但當我們有比較複雜的監聽事件及取消事件邏輯時，就可以使用 <code>fromEventPattern</code> 囉。</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-fromeventpattern" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-fromeventpattern</a></p>
+<h1 id="interval"><a href="#interval" class="headerlink" title="interval"></a>interval</h1><p><code>interval</code> 會依照的參數設定的時間 (毫秒) 來建議 Observable，當被訂閱時，就會每隔一段指定的時間發生一次資料流，資料流的值就是為事件是第幾次發生的 (從 0 開始)，以下程式建立一個每一秒發生一次的資料流：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">interval(<span class="number">1000</span>).subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`interval 示範: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br></pre></td></tr></table></figure>
+<p>在取消訂閱前，事件都會持續發生，因此彈珠圖看起來像這樣：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">---<span class="number">-0</span>---<span class="number">-1</span>---<span class="number">-2</span>---<span class="number">-3</span>----.......</span><br></pre></td></tr></table></figure>
+<p>當然我們可以在一段時間後把它取消訂閱來結束 Observable：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> subscription = interval(<span class="number">1000</span>)</span><br><span class="line">  .subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`interval 示範: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  subscription.unsubscribe();</span><br><span class="line">&#125;, <span class="number">5500</span>);</span><br></pre></td></tr></table></figure>
+<p>彈珠圖：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">---<span class="number">-0</span>---<span class="number">-1</span>---<span class="number">-2</span>---<span class="number">-3</span>---<span class="number">-4</span>--|</span><br></pre></td></tr></table></figure>
+<p>當然還可以搭配更多的 operators 來協助我們取消訂閱，之後再慢慢來節紹。</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-interval" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-interval</a></p>
+<h1 id="timer"><a href="#timer" class="headerlink" title="timer"></a>timer</h1><p><code>timer</code> 跟 <code>interval</code> 有點類似，但它多一個參數，用來設定經過多久時間後開始依照指定的間隔時間計時。</p>
+<p>以下範例會在 3000 毫秒後開始以每 1000 毫秒一個新事件的頻率計時：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">timer(<span class="number">3000</span>, <span class="number">1000</span>)</span><br><span class="line">  .subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`timer 示範 (1): <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line"><span class="comment">// timer 示範 (1): 0</span></span><br><span class="line"><span class="comment">// timer 示範 (1): 1</span></span><br><span class="line"><span class="comment">// timer 示範 (1): 2</span></span><br><span class="line"><span class="comment">// timer 示範 (1): 3</span></span><br><span class="line"><span class="comment">// ....</span></span><br></pre></td></tr></table></figure>
+<p>彈珠圖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--------------------0-----1-----2--......</span><br><span class="line">＾ 經過 3000 毫秒</span><br></pre></td></tr></table></figure>
+<p><code>interval</code> 有個小缺點，就是一開始一定會先等待一個指定時間，才會發生第一個事件，但有時候我們會希望一開始就發生事件，這個問題可以透過 <code>timer</code> 解決，只要等待時間設為 <code>0</code> 即可：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">timer(<span class="number">0</span>, <span class="number">10000</span>).subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`timer 示範: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br></pre></td></tr></table></figure>
+<p>彈珠圖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0----1----2----3----......</span><br></pre></td></tr></table></figure>
+<p>還有一個重點，<code>timer</code> 如果沒有設定第二個參數，代表在指定的時間發生第一次事件後，就不會再發生任何事件了。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">timer(<span class="number">3000</span>).subscribe(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`timer 示範 (2): <span class="subst">$&#123;data&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// timer 示範 (2): 0</span></span><br></pre></td></tr></table></figure>
+<p>彈珠圖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--------------------0|</span><br></pre></td></tr></table></figure>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-timer" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-timer</a></p>
+<h1 id="defer"><a href="#defer" class="headerlink" title="defer"></a>defer</h1><p><code>defer</code> 會將建立 Observable 的邏輯包裝起來，提供更一致的使用感覺，使用 <code>defer</code> 時需要傳入一個 factroy function 當作參數，這個 function 裡面需要回傳一個 Observable (或 Promise 也行)，當 <code>defer</code> 建立的 Observable 被訂閱時，會呼叫這個 factroy function，並以裡面回傳的 Observer 當作資料流：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> factory = <span class="function"><span class="params">()</span> =&gt;</span> of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">const</span> source$ = defer(factory);</span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`defer 示範: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br></pre></td></tr></table></figure>
+<p><code>source$</code> 每次被訂閱時才會去呼叫裡面 factroy function，這麼做的好處是建立 Observable 的邏輯被包裝起來了，同時也可以達成<strong>延遲執行的目標</strong>。</p>
+<p>以上面的程式碼，其實不使用 <code>defer</code> 也沒什麼問題：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> factory = <span class="function"><span class="params">()</span> =&gt;</span> of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line">factory().subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`defer 示範: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br></pre></td></tr></table></figure>
+<p>那麼為什麼還要用 <code>defer</code> 呢？如同剛才所說的，有一個很重要的目標是「延遲執行」，如果今天產生 Observable 的邏輯希望在「訂閱」時才去執行的話，就很適合使用 <code>defer</code>，最常見的例子應該非 <code>Promise</code> 莫屬了！<code>Promise</code> 雖然是非同步執行程式，但在 Promise 產生的一瞬間相關程式就已經在運作了：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Promise 內被執行了'</span>);</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    resolve(<span class="number">100</span>);</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// Promise 內被執行了</span></span><br><span class="line"><span class="comment">// (就算還沒呼叫 .then，程式依然會被執行)</span></span><br><span class="line"></span><br><span class="line">p.then(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`Promise 處理結果: <span class="subst">$&#123;result&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>就算用 <code>from</code> 包起來變成 Observable，已經執行的程式依然已經被執行了，呼叫 <code>.then()</code> 不過是再把 <code>resolve()</code> 的結果拿出來而已；在設計 Observable 時如果可以延遲執行，直到被訂閱時才真的去執行相關邏輯，通常會比較好釐清整個流程，此時 <code>defer</code> 就可以幫我們達到這個目標：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 將 Promise 包成起來</span></span><br><span class="line"><span class="comment">// 因此在此 function 被呼叫前，都不會執行 Promise 內的程式</span></span><br><span class="line"><span class="keyword">const</span> promiseFactory = <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Promise 內被執行了'</span>);</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    resolve(<span class="number">100</span>);</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">const</span> deferSource$ = defer(promiseFactory);</span><br><span class="line"><span class="comment">// 此時 Promise 內程式依然不會被呼叫</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'示範用 defer 解決 Promise 的問題:'</span>);</span><br><span class="line"><span class="comment">// 直到被訂閱了，才會呼叫裡面的 Promise 內的程式</span></span><br><span class="line">deferSource$.subscribe(<span class="function"><span class="params">result</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`Promise 結果: <span class="subst">$&#123;result&#125;</span>`</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>可以看到用了 <code>defer</code>，整體了運作順序就非常流暢囉！</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-operator-defer" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-operator-defer</a></p>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>這兩天我們把幾個常用的「建立類型」的 operators 給介紹了一輪，透過這些 operators 可以幫助我們快速建立各種類型的 Observable，下一篇文章我們來介紹一下同樣是「建立」，但多加了「組合」功能的一些 operators。</p>
+<ul>
+<li><code>from</code>：使用陣列、Promoise、Observable 等來源建立新的 Observable。</li>
+<li><code>fromEvent</code>：封裝 DOM 的 <code>addEventListener</code> 事件處理來建立 Observable。</li>
+<li><code>fromEvenPattern</code>：可依照自行定義的事件來建立 Observable。</li>
+<li><code>interval</code>：每隔指定的時間發出一次事件值。</li>
+<li><code>timer</code>：與 <code>interval</code> 相同，但可以設定起始的等待時間。</li>
+<li><code>defer</code>：用來延遲執行內部的 Observable。</li>
+</ul>
+<h1 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h1><ul>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/function/from" target="_blank" rel="noopener">Operator - from</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/function/fromEvent" target="_blank" rel="noopener">Operator - fromEvent</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/function/fromEventPattern" target="_blank" rel="noopener">Operator - fromEventPattern</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/function/interval" target="_blank" rel="noopener">Operator - interval</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/function/timer" target="_blank" rel="noopener">Operator - timer</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/function/defer" target="_blank" rel="noopener">Operator - defer</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/RxJS/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> RxJS</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/fromEvent/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> fromEvent</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/from/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> from</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/fromEventPattern/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> fromEventPattern</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/interval/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> interval</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/timer/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> timer</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/defer/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> defer</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2020/09/29/mastering-rxjs-14-creatoin-operators-of-empty-range-iif-throwerror-ajax/" rel="next" title="[RxJS] 建立類型 Operators (1) - EMPTY / of / range / iif / throwError / ajax">
+                <i class="fa fa-chevron-left"></i> [RxJS] 建立類型 Operators (1) - EMPTY / of / range / iif / throwError / ajax
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2020/10/01/mastering-rxjs-16-concat-merge-partition-zip/" rel="prev" title="[RxJS] 組合/建立類型 Operators (1) - concat / merge / zip / partition">
+                [RxJS] 組合/建立類型 Operators (1) - concat / merge / zip / partition <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#from"><span class="nav-number">1.</span> <span class="nav-text">from</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#傳遞陣列當參數"><span class="nav-number">1.1.</span> <span class="nav-text">傳遞陣列當參數</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#傳遞可迭代的物件當參數"><span class="nav-number">1.2.</span> <span class="nav-text">傳遞可迭代的物件當參數</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#傳遞-Promise-當參數"><span class="nav-number">1.3.</span> <span class="nav-text">傳遞 Promise 當參數</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#傳遞-Observable-當參數"><span class="nav-number">1.4.</span> <span class="nav-text">傳遞 Observable 當參數</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fromEvent"><span class="nav-number">2.</span> <span class="nav-text">fromEvent</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fromEventPattern"><span class="nav-number">3.</span> <span class="nav-text">fromEventPattern</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#interval"><span class="nav-number">4.</span> <span class="nav-text">interval</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#timer"><span class="nav-number">5.</span> <span class="nav-text">timer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#defer"><span class="nav-number">6.</span> <span class="nav-text">defer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">7.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相關資源"><span class="nav-number">8.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2020/09/30/mastering-rxjs-15-from-fromevent-fromeventpattern-interval-timer-defer/';
+          this.page.identifier = '2020/09/30/mastering-rxjs-15-from-fromevent-fromeventpattern-interval-timer-defer/';
+          this.page.title = '[RxJS] 建立類型 Operators (2) - from / fromEvent / fromEventPattern / interval / timer / defer';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="RxJS,shareReplay,map,BehaviorSubject,of,from,concat,delay,Flux,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="使用 React 作為前端架構的朋友對於 Flux 應該都不陌生，React 也內建了 Flux 讓我們可以直接使用，同時也有許多其他的 library 以這個架構為基礎設計，並應用在各種前端框架下，如 Redux (for React)、NgRx (for Angular) 和 Vuex (for Vue) 等等。可以見得它是多麽重要的東西，今天我們來嘗試實際使用 RxJS 來實作一下這種架構，">
+<meta name="keywords" content="RxJS,shareReplay,map,BehaviorSubject,of,from,concat,delay,Flux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[RxJS] 實戰練習 - 使用 RxJS 實作 Flux Pattern">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="使用 React 作為前端架構的朋友對於 Flux 應該都不陌生，React 也內建了 Flux 讓我們可以直接使用，同時也有許多其他的 library 以這個架構為基礎設計，並應用在各種前端框架下，如 Redux (for React)、NgRx (for Angular) 和 Vuex (for Vue) 等等。可以見得它是多麽重要的東西，今天我們來嘗試實際使用 RxJS 來實作一下這種架構，">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/01.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/02.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/03.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/04.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/05.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/06.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/07.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/08.jpg">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.376Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[RxJS] 實戰練習 - 使用 RxJS 實作 Flux Pattern">
+<meta name="twitter:description" content="使用 React 作為前端架構的朋友對於 Flux 應該都不陌生，React 也內建了 Flux 讓我們可以直接使用，同時也有許多其他的 library 以這個架構為基礎設計，並應用在各種前端框架下，如 Redux (for React)、NgRx (for Angular) 和 Vuex (for Vue) 等等。可以見得它是多麽重要的東西，今天我們來嘗試實際使用 RxJS 來實作一下這種架構，">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[RxJS] 實戰練習 - 使用 RxJS 實作 Flux Pattern | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[RxJS] 實戰練習 - 使用 RxJS 實作 Flux Pattern</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-10-17T18:00:00+00:00">
+                2020-10-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/" itemprop="url" rel="index">
+                    <span itemprop="name">打通 RxJS 任督二脈</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/第-12-屆鐵人賽/" itemprop="url" rel="index">
+                    <span itemprop="name">第 12 屆鐵人賽</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>使用 React 作為前端架構的朋友對於 Flux 應該都不陌生，React 也內建了 Flux 讓我們可以直接使用，同時也有許多其他的 library 以這個架構為基礎設計，並應用在各種前端框架下，如 <a href="https://redux.js.org/" target="_blank" rel="noopener">Redux</a> (for React)、<a href="https://ngrx.io/" target="_blank" rel="noopener">NgRx</a> (for Angular) 和 <a href="https://vuex.vuejs.org/" target="_blank" rel="noopener">Vuex</a> (for Vue) 等等。可以見得它是多麽重要的東西，今天我們來嘗試實際使用 RxJS 來實作一下這種架構，也藉此多認識一下 Flux Pattern 的重要觀念。</p>
+<a id="more"></a>
+<h1 id="簡介-Flux-Pattern"><a href="#簡介-Flux-Pattern" class="headerlink" title="簡介 Flux Pattern"></a>簡介 Flux Pattern</h1><p>在現代化的網頁 SPA 架構下，我們已經非常習慣將畫面上的眾多內容拆成許多小的元件，讓它們可以各司其職，最後再組合起來，也因此不論是 Angular、React 還是 Vue 這些目前當紅的前端架構都以元件化設計為基礎，然而當畫面越來越複雜時，元件跟元件之間的溝通就成為了一個問題；負責處理資料的元件可能需要將資料一路傳到下面好幾層負責顯示內容的元件，讓管理上變得更加麻煩且複雜。</p>
+<img src="/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/01.jpg">
+<p>因此 Facebook 提出了 Flux 架構，並內建在 React 內，統一了資料的來源，及資料處理流向，讓我們能用更加一致的方法去變更資料，以及得知資料變更的結果，並更新在畫面上。</p>
+<h2 id="Flux-Pattern-重要角色"><a href="#Flux-Pattern-重要角色" class="headerlink" title="Flux Pattern 重要角色"></a>Flux Pattern 重要角色</h2><p>下圖是 Flux 的基本資料流程：</p>
+<img src="/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/02.png">
+<p>資料來源：<a href="https://facebook.github.io/flux/docs/in-depth-overview" target="_blank" rel="noopener">https://facebook.github.io/flux/docs/in-depth-overview</a></p>
+<p>Flux Pattern 包含幾個重要角色：</p>
+<ul>
+<li><strong>View</strong>：負責畫面顯示，也就是網頁上的各個元件。</li>
+<li><strong>Action</strong>：負責定義要執行的行為，Action 只負責定義行為類型 (type) 和所需的資料 (payload)，但不會參與實際變更資料的實作，通常由 View 或其他邏輯程式負責發起這個 Action。</li>
+<li><strong>Dispatcher</strong>：負責分配行為變更資料的方法，Dispatcher 會根據 Action 的內容來對資料進行變更，也就是實際負責讓資料被改變的角色。</li>
+<li><strong>Store</strong>：資料來源，也就是 Dispatcher 實際要變更的目標，當 Store 資料被變更時，也需要負責告知 View 資料被異動了，View 才會知道需要更新畫面。實際上不止 View 需要知道 Store 內容異動，只要使用到 Store 資料的程式，都應該需要知道資料被改變了，以便進行對應處理。</li>
+</ul>
+<h2 id="Flux-Pattern-資料流向"><a href="#Flux-Pattern-資料流向" class="headerlink" title="Flux Pattern 資料流向"></a>Flux Pattern 資料流向</h2><p>從圖片中我們也可以看到，資料的流向是單向的。</p>
+<p>首先由 View 或其他程式邏輯負責發起 Action 給 Dispatcher</p>
+<img src="/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/03.jpg">
+<p>Dispatcher 收到 <strong>Action</strong> 後，再針對 Action 提供的資訊來決定如何更新 <strong>Store</strong> 資料來源</p>
+<img src="/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/04.jpg">
+<p>當 Store 資料更新後，所有使用到 Store 資料的程式都需要知道資料被更新了，以便進行其他操作</p>
+<img src="/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/05.jpg">
+<p>透過這樣單向資料流的方式，我們能更容易理解資料的流向，而每個角色也只需要負責自己該做的事情：</p>
+<ul>
+<li>View 只需要負責發起 Action 就好，不用擔心資料變更的邏輯，而資料變更後也會由 Store 通知。</li>
+<li>Action 不用也不用負責資料變更的邏輯，只負責定義提供給 Dispatcher 的資料就好。</li>
+<li>Dispatcher 只專注在如何根據 Action 類型的不同來更新 Store 資料。</li>
+<li>Store 專注在提供資料給需要的程式。</li>
+</ul>
+<p>乍看之下拆出了很多角色讓程式變得更加複雜，但實際上在越來越複雜的邏輯時，各自處理各自的事情在閱讀和維護上都會更加容易；另外一種應用是：在程式開發的初期，我們也可以先思考好要處理哪些 Action，以及如何從 Store 取得資料，而不用擔心資料該如何變更，可以更快速的先開始工作，等到資料變更的邏輯明確後，再進入 Dispatcher 的開發。</p>
+<p>使用 Flux Pattern 的另一個好處是，由於資料來源統一放在 Store 內了，這代表當元件很複雜時，我們可以不用考慮元件跟元件之間該如何傳遞資訊，只需要統一跟 Store 溝通就好，管理上會更加容易。</p>
+<img src="/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/06.jpg">
+<p>有了基本觀念後，就來看看使用 RxJS 如何實作一個簡單的 Flux Pattern 吧！</p>
+<h1 id="使用-RxJS-實作-Flux-Pattern-與-Todo-List-App"><a href="#使用-RxJS-實作-Flux-Pattern-與-Todo-List-App" class="headerlink" title="使用 RxJS 實作 Flux Pattern 與 Todo List App"></a>使用 RxJS 實作 Flux Pattern 與 Todo List App</h1><p>首先先看一下我們預計實作的結果：</p>
+<img src="/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/07.jpg">
+<p>我們要練習的是 RxJS 的實作，因此關於 HTML 與 DOM 物件的操作，已經先準備好了，可以先到以下網址練習：</p>
+<p><a href="https://stackblitz.com/edit/mastering-rxjs-flux-pattern-starter" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-flux-pattern-starter</a></p>
+<p>完整的程式碼：</p>
+<p><a href="https://stackblitz.com/edit/mastering-rxjs-flux-pattern-finished" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-flux-pattern-finished</a></p>
+<p>在 <code>index.ts</code> 內已經先填好一些程式並註解掉跟 Flux Pattern 有關的操作了，當相關程式完成後，只需要取消註解就可以看到相關的行為。</p>
+<p>之後大部分的程式都會在 <code>todo-store</code> 這個目錄內實作。</p>
+<h2 id="虛擬的元件架構"><a href="#虛擬的元件架構" class="headerlink" title="虛擬的元件架構"></a>虛擬的元件架構</h2><p>雖然沒有使用如 Angular 等前端框架，但我們依然可以虛擬的想像成有幾個元件，讓這些元件各自處理各自的事情：</p>
+<img src="/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/08.jpg">
+<h2 id="實作資料來源-Store"><a href="#實作資料來源-Store" class="headerlink" title="實作資料來源 - Store"></a>實作資料來源 - Store</h2><p>首先我們先開始實作一個資料來源 Store，在 RxJs 內，要得知資料改變再容易不過了，只要建立一個 Observable，之後在需要時就可以直接訂閱這個 Observable 來得知內容改變，至於要選用哪種類型的 Observable 呢？</p>
+<p>考量到未來 Dispatcher 要更新資料時，我們會需要 Store 內的資料，因此使用 <code>BehaviorSubject</code>，這麼一來不僅可以立刻給予一個初始內容，也可以使用 <code>value</code> 屬性隨時得知目前資料的內容。因此在練習專案內我們打開 <code>todo-store/todo-store.ts</code> 建立一個 <code>BehaviorSubject</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; BehaviorSubject &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> TodoState &#123;</span><br><span class="line">  loading: <span class="built_in">boolean</span>;</span><br><span class="line">  todos: &#123;</span><br><span class="line">    id: <span class="built_in">number</span>;</span><br><span class="line">    name: <span class="built_in">string</span>;</span><br><span class="line">    done: <span class="built_in">boolean</span>;</span><br><span class="line">  &#125;[]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> store$ = <span class="keyword">new</span> BehaviorSubject&lt;TodoState&gt;(&#123;</span><br><span class="line">  loading: <span class="literal">false</span>,</span><br><span class="line">  todos: []</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><code>interface</code> 部分是 TypeScript 語法，讓我們先定義好想要的資料模型。</p>
+<p>在元件部分，考量到元件產生的時機點不同，訂閱 Observable 的時機也不同，如果想要在元件產生的訂閱就能取得最新的資料，使用 <code>ReplaySubject</code> 是一個比較好的選擇，但在 Store 內使用 <code>BehaviorSubject</code> 比較方便，該怎麼辦呢？由於 Strore 外的目標是使用 Observable，而不會直接改變狀態，因此我們可以先使用 <code>asObservable()</code> 讓 Subject 的 <code>next()</code> 等實作隱藏起來，再搭配 <code>shareReplay()</code> operator 來讓外部程式訂閱時能得到最新的 store 資料，因此我們打開 <code>todo-store/index.ts</code> 設定外部程式可以使用的內容：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shareReplay &#125; <span class="keyword">from</span> <span class="string">'rxjs/operators'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; store$ <span class="keyword">as</span> storeSubject$ &#125; <span class="keyword">from</span> <span class="string">'./todo-store'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> store$ = storeSubject$.asObservable().pipe(shareReplay(<span class="number">1</span>));</span><br></pre></td></tr></table></figure>
+<p>透過這種方式外部程式在使用 <code>store$</code> 時，就不用擔心呼叫到 <code>next()</code> 來變更資料，也可以在訂閱時取得最近一次的事件資料內容囉，例如以下程式 (<code>index.ts</code>)：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; store$ &#125; <span class="keyword">from</span> <span class="string">'./todo-store'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 訂閱 store$ Observable，當資料改變時可即時收到通知</span></span><br><span class="line"><span class="comment">// 透過 map operator，可以只專注在想要的資料上</span></span><br><span class="line">store$.pipe(map(<span class="function"><span class="params">store</span> =&gt;</span> store.todos)).subscribe(<span class="function"><span class="params">todos</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 當 store$ 資料變更後，在此更新畫面</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="實作執行動作-Actions"><a href="#實作執行動作-Actions" class="headerlink" title="實作執行動作 - Actions"></a>實作執行動作 - Actions</h2><p>接著來設計要更新資料的行為，這裡預定有三個行為要處理，包含</p>
+<ul>
+<li>設定預設的 todo list</li>
+<li>新增 todo item 到 todo list 內</li>
+<li>變更 todo item 完成狀態</li>
+</ul>
+<p>我們先打開 <code>todo-store/todo-action-types.ts</code> 設定好要處理的 Action 類型：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> TodoActionTypes &#123;</span><br><span class="line">  <span class="keyword">static</span> LoadTodoItems = <span class="string">'[Todo List] Load Todo Items'</span>;</span><br><span class="line">  <span class="keyword">static</span> AddTodoItem = <span class="string">'[Todo List] Add Todo Item'</span>;</span><br><span class="line">  <span class="keyword">static</span> ToggleTodoItem = <span class="string">'[Todo List] Toogle Todo Item'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>TodoActionTypes</code> 主要是用來定義有哪些 Action 類型可用，以便之後 Dispatcher 透過這些資訊決定要怎麼更新內容。</p>
+<p>接著打開 <code>todo-store/todo-actions.ts</code> 來建立幾個產生這些 Action 的方法：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; TodoActionTypes &#125; <span class="keyword">from</span> <span class="string">"./todo-action-types"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> loadTodoItemsAction = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="keyword">type</span>: TodoActionTypes.LoadTodoItems,</span><br><span class="line">    payload: <span class="literal">null</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> addTodoItemAction = <span class="function">(<span class="params">payload</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="keyword">type</span>: TodoActionTypes.AddTodoItem,</span><br><span class="line">    payload</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> toggleTodoItemAction = <span class="function">(<span class="params">payload</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="keyword">type</span>:TodoActionTypes.ToggleTodoItem,</span><br><span class="line">    payload</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每個方法都會設定目前 Action 的類型，同時提供要傳入的資訊 (payload)，之後 Dispatcher 可以針對這個 payload 內容來改變 Store 的資料，例如 <code>addTodoItemAction()</code> 可以傳入要新增的 todo item 文字，之後 Dispatcher 得知 Action 類型是 <code>TodoActionTypes.AddTodoItem</code> 時，就可以將 payload 設定為新的 todo item 的文字內容。</p>
+<p>最後再 <code>todo-store/index.ts</code> 內設定讓外部程式可以使用這些建立 Action 的方法：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> * <span class="keyword">from</span> <span class="string">'./todo-actions'</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="變更資料的實際邏輯-Dispatcher"><a href="#變更資料的實際邏輯-Dispatcher" class="headerlink" title="變更資料的實際邏輯 - Dispatcher"></a>變更資料的實際邏輯 - Dispatcher</h2><p>在 Dispatcher 這邊，我們稍微複製一點 Redux 的概念，加入一個 Reducer 的角色，Dispatcher 會將目前資料以及 Action 傳給 Reducer，而 Reducer 負責回傳一個新的結果，Dispatcher 再將得到的新結果更新成目前的資料內容。</p>
+<h3 id="Reducer-邏輯"><a href="#Reducer-邏輯" class="headerlink" title="Reducer 邏輯"></a>Reducer 邏輯</h3><p>先打開 <code>todos-store/todo-reducer.ts</code> 加入預設處理內容：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; of &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; TodoActionTypes &#125; <span class="keyword">from</span> <span class="string">'./todo-action-types'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// currentState: 目前 store 內的資料</span></span><br><span class="line"><span class="comment">// action: 要執行的 Action</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> todoReducer = <span class="function">(<span class="params">currentState, action</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="comment">// <span class="doctag">TODO:</span> 針對 action.types 來決定要如何更新資料</span></span><br><span class="line">    <span class="comment">// case TodoActionTypes.X<span class="doctag">XXX:</span> &#123;</span></span><br><span class="line">    <span class="comment">//   return</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 如果沒有可以處理的 action type，直接回傳原來的內容</span></span><br><span class="line">  <span class="keyword">return</span> of(currentState);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在這裡我們設定 <code>todoReducer</code> 需要回傳一個 Observable，以便充分利用 RxJS 的特性，在 <code>todoReducer</code> 內，我們需要針對不同的 Action 來決定要怎麼改變目前的資料，例如當 Action type 為 <code>TodoActionTypes.AddTodoItem</code> 時，將目前資料加入一筆新的 todo item，並包裝成 Observable 回傳：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; concat, of &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; delay &#125; <span class="keyword">from</span> <span class="string">'rxjs/operators'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; TodoActionTypes &#125; <span class="keyword">from</span> <span class="string">'./todo-action-types'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> todoReducer = <span class="function">(<span class="params">currentState, action</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="comment">// action.type 為 TodoActionTypes.AddTodoItem</span></span><br><span class="line">    <span class="keyword">case</span> TodoActionTypes.AddTodoItem:</span><br><span class="line">      <span class="keyword">const</span> newState = &#123;</span><br><span class="line">        ...currentState,</span><br><span class="line">        todos: [</span><br><span class="line">          ...currentState.todos,</span><br><span class="line">          &#123;</span><br><span class="line">            id: currentState.todos.length + <span class="number">1</span>,</span><br><span class="line">            <span class="comment">// todo item 的 name 屬性就是 action.payload</span></span><br><span class="line">            name: action.payload,</span><br><span class="line">            done: <span class="literal">false</span></span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="keyword">return</span> of(newState);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 如果沒有可以處理的 action type，直接回傳原來的內容</span></span><br><span class="line">  <span class="keyword">return</span> of(currentState);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>包裝成 Observable 的好處是除了單純回傳新的資料外，也可以組合成複雜的資料流，例如使用 <code>ajax</code> 呼叫 API，或是先改變 <code>loading</code> 屬性當作一次事件，再以新的資料當作第二次事件：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; concat, of &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; delay &#125; <span class="keyword">from</span> <span class="string">'rxjs/operators'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; TodoActionTypes &#125; <span class="keyword">from</span> <span class="string">'./todo-action-types'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> todoReducer = <span class="function">(<span class="params">currentState, action</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> TodoActionTypes.AddTodoItem:</span><br><span class="line">      <span class="keyword">const</span> loadingState = &#123; ...currentState, loading: <span class="literal">true</span> &#125;;</span><br><span class="line">      <span class="comment">// 第一個事件，設定 loading 為 true</span></span><br><span class="line">      <span class="keyword">const</span> loadingState$ = of(loadingState);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> newState = &#123;</span><br><span class="line">        ...currentState,</span><br><span class="line">        todos: [</span><br><span class="line">          ...currentState.todos,</span><br><span class="line">          &#123;</span><br><span class="line">            id: currentState.todos.length + <span class="number">1</span>,</span><br><span class="line">            name: action.payload,</span><br><span class="line">            done: <span class="literal">false</span></span><br><span class="line">          &#125;</span><br><span class="line">        ],</span><br><span class="line">        loading: <span class="literal">false</span></span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="comment">// 第二個事件，設定 todos 屬性，以及設定 loading 為 false</span></span><br><span class="line">      <span class="comment">// 這裡加上 delay(500) 以模擬呼叫 API 的延遲</span></span><br><span class="line">      <span class="keyword">const</span> newState$ = of(newState).pipe(delay(<span class="number">500</span>));</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 最後使用 concat 組合成一個新的資料流</span></span><br><span class="line">      <span class="keyword">return</span> concat(loadingState$, newState$);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 如果沒有可以處理的 action type，直接回傳原來的內容</span></span><br><span class="line">  <span class="keyword">return</span> of(currentState);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其他兩個 Action 也是一樣，都是針對資料做處理，就不浪費篇幅，完成程式碼在這裡：</p>
+<p><a href="https://stackblitz.com/edit/mastering-rxjs-flux-pattern-finished" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-flux-pattern-finished</a></p>
+<h3 id="Dispatcher-邏輯"><a href="#Dispatcher-邏輯" class="headerlink" title="Dispatcher 邏輯"></a>Dispatcher 邏輯</h3><p>Reducer 只是負責決定新的資料為何，最終變動資料的依然是 Dispatcher 的責任，我們繼續把 <code>todo-store/todo-dispather.ts</code> 內容補起來：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> todoDispatcher = <span class="function"><span class="params">action</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">from</span>(todoReducer(store$.value, action)).subscribe(&#123;</span><br><span class="line">    next: <span class="function">(<span class="params">data: <span class="built_in">any</span></span>) =&gt;</span> store$.next(data),</span><br><span class="line">    error: <span class="function"><span class="params">data</span> =&gt;</span> store$.error(data)</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>todoDispatcher</code> 邏輯很簡單，先將 <code>store$</code> 的資料和 Action 傳入 <code>todoReducer</code> 來決定新的資料內容，最終使用 <code>from</code> 包起來可以讓 <code>todoReducer</code> 不一定非要回傳 Observable 不可，如果沒有複雜邏輯，直接回傳新的資料也可，但在 <code>todoDispatcher</code> 內用 <code>from</code> 包起來了，所以可以統一使用 Observable 的流程處理資料；得到新的 store 資料後，呼叫 <code>store$.next()</code> 來產生新的 Observable 事件。如此一來只要有訂閱 <code>store$</code> 就可以得知資料的變化啦！</p>
+<h2 id="實際使用"><a href="#實際使用" class="headerlink" title="實際使用"></a>實際使用</h2><p>我們已經把 Flux Pattern 的 Store、Action 和 Dispatcher 角色相關程式碼都完成了，接著就是用 View 的角色實際使用啦！我們可以把 範例專案內 <code>index.ts</code> 的相關註解取消，來看看實際成果。以下舉幾個使用的例子：</p>
+<p>使用 <code>loadTodoItemsAction()</code> 建立取得起始資料的 Action 接著傳入給 <code>todoDispatcher</code>，即可將目前 store 資料更新成包含預設資料的內容：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">todoDispatcher(loadTodoItemsAction());</span><br></pre></td></tr></table></figure>
+<p>當我們要新增一個新的 todo items 時，可以使用 <code>addTodoItemAction()</code> 傳入一個文字當作 payload 來建立 Action，然後將此 Action 傳入給 <code>todoDispatcher</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> todoItemValue = <span class="string">'Hello World'</span>;</span><br><span class="line">todoDispatcher(addTodoItemAction());</span><br></pre></td></tr></table></figure>
+<p>要得知目前有所有的 todo items，只需要訂閱 <code>todo-store</code> 的 <code>store$</code> 即可：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">store$.pipe(map(<span class="function"><span class="params">store</span> =&gt;</span> store.todos)).subscribe(<span class="function"><span class="params">todos</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 更新畫面</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>如果要顯示 loading 呢？一樣訂閱 <code>store$</code> 並專注在 <code>loading</code> 屬性就好：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">loading$.subscribe(<span class="function"><span class="params">loading</span> =&gt;</span> &#123;</span><br><span class="line">	<span class="comment">// 根據 loading 狀態顯示或隱藏</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>除此一來我們就可以把「讀取資料」和「更新資料」各自拆開來處理囉。</p>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>今天我們學會了 Flux Pattern 的基本知識，並使用 RxJS 完成了一個簡易的 Flux Pattern 實作，透過 RxJS 我們可以很容易的把讀取資料和更新資料的流程拆開，並且各自處理各自該做的事情。</p>
+<p>許多其他前端架構提供的相關 library，概念上也是大同小異，只是讓設計方式更加一致而已，因此今天的內容可以多練習幾次，把每個行為的資料流向畫出來好好理解，未來在使用時，應該就能更加容易上手啦！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/RxJS/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> RxJS</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/shareReplay/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> shareReplay</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/map/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> map</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/BehaviorSubject/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> BehaviorSubject</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/of/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> of</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/from/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> from</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/concat/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> concat</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/delay/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> delay</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Flux/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Flux</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2020/10/16/mastering-rxjs-31-practicing-autocomplete-search-sort-pagination/" rel="next" title="[RxJS] 實戰練習 - 自動完成 / 搜尋 / 排序 / 分頁">
+                <i class="fa fa-chevron-left"></i> [RxJS] 實戰練習 - 自動完成 / 搜尋 / 排序 / 分頁
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2020/10/18/mastering-rxjs-33-how-to-customize-operators/" rel="prev" title="[RxJS] 如何設計自己的 RxJS Operators">
+                [RxJS] 如何設計自己的 RxJS Operators <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#簡介-Flux-Pattern"><span class="nav-number">1.</span> <span class="nav-text">簡介 Flux Pattern</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Flux-Pattern-重要角色"><span class="nav-number">1.1.</span> <span class="nav-text">Flux Pattern 重要角色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flux-Pattern-資料流向"><span class="nav-number">1.2.</span> <span class="nav-text">Flux Pattern 資料流向</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-RxJS-實作-Flux-Pattern-與-Todo-List-App"><span class="nav-number">2.</span> <span class="nav-text">使用 RxJS 實作 Flux Pattern 與 Todo List App</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#虛擬的元件架構"><span class="nav-number">2.1.</span> <span class="nav-text">虛擬的元件架構</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#實作資料來源-Store"><span class="nav-number">2.2.</span> <span class="nav-text">實作資料來源 - Store</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#實作執行動作-Actions"><span class="nav-number">2.3.</span> <span class="nav-text">實作執行動作 - Actions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#變更資料的實際邏輯-Dispatcher"><span class="nav-number">2.4.</span> <span class="nav-text">變更資料的實際邏輯 - Dispatcher</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Reducer-邏輯"><span class="nav-number">2.4.1.</span> <span class="nav-text">Reducer 邏輯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dispatcher-邏輯"><span class="nav-number">2.4.2.</span> <span class="nav-text">Dispatcher 邏輯</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#實際使用"><span class="nav-number">2.5.</span> <span class="nav-text">實際使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">3.</span> <span class="nav-text">本日小結</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/';
+          this.page.identifier = '2020/10/17/mastering-rxjs-32-implement-flux-pattern-with-rxjs/';
+          this.page.title = '[RxJS] 實戰練習 - 使用 RxJS 實作 Flux Pattern';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

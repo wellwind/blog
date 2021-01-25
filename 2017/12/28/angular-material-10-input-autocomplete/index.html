@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Angular Material,Material Design,MatInput,MatAutocomplete,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="接下我們要來介紹幾個在Material Design中屬於Input，也就是文字輸入欄位相關的功能，文字輸入也可以說是表單裡面最常使用到的欄位！接下來就來看看Angular Material的Input、Autocomplete！！">
+<meta name="keywords" content="Angular Material,Material Design,MatInput,MatAutocomplete">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Angular Material完全攻略]打造問卷頁面(2) - Input、Autocomplete">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="接下我們要來介紹幾個在Material Design中屬於Input，也就是文字輸入欄位相關的功能，文字輸入也可以說是表單裡面最常使用到的欄位！接下來就來看看Angular Material的Input、Autocomplete！！">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/01-mat-input-basic.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/02-mat-input-type-date.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/03-mat-hint.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/04-mat-error.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/05-mat-error-with-ngif.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/06-custom-error-state-macher.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/07-autosize-textarea.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/08-autocomplete-sample.png">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/09-basic-autocomplete-demo.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/10-filtered-autocomplete.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/11-display-with.gif">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/12-mat-optgroup.gif">
+<meta property="og:updated_time" content="2021-01-25T02:06:09.844Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Angular Material完全攻略]打造問卷頁面(2) - Input、Autocomplete">
+<meta name="twitter:description" content="接下我們要來介紹幾個在Material Design中屬於Input，也就是文字輸入欄位相關的功能，文字輸入也可以說是表單裡面最常使用到的欄位！接下來就來看看Angular Material的Input、Autocomplete！！">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/01-mat-input-basic.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[Angular Material完全攻略]打造問卷頁面(2) - Input、Autocomplete | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2017/12/28/angular-material-10-input-autocomplete/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Angular Material完全攻略]打造問卷頁面(2) - Input、Autocomplete</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-12-28T20:10:48+00:00">
+                2017-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Angular-Material完全攻略/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular Material完全攻略</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2017/12/28/angular-material-10-input-autocomplete/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/28/angular-material-10-input-autocomplete/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>接下我們要來介紹幾個在Material Design中屬於Input，也就是文字輸入欄位相關的功能，文字輸入也可以說是表單裡面最常使用到的欄位！接下來就來看看Angular Material的Input、Autocomplete！！</p>
+<a id="more"></a>
+<h2 id="Material-Design中的文字輸入欄位"><a href="#Material-Design中的文字輸入欄位" class="headerlink" title="Material Design中的文字輸入欄位"></a>Material Design中的文字輸入欄位</h2><p>在<a href="https://material.io/guidelines/components/text-fields.html#" target="_blank" rel="noopener">Material Design的文字欄位設計指南</a>中，文字欄位就是提供使用者輸入文字的一個空間，通常在表單中最常被使用，當然像是其他一些如搜尋功能等也很會出現，文字欄位必須要能提供驗證使用者輸入的資訊的功能，來幫助使用者修正問題，另外也能提供一些自動完成的功能，以提供使用者相關的建議。</p>
+<p>文字欄位可以是單行或是多行，如果需要的話也要提供能隨著行數增加和自動增加的功能。</p>
+<p>另外，文字欄位也要能限制輸入的格式，或是提供選項來選擇。</p>
+<h2 id="開始使用Angular-Material的Input"><a href="#開始使用Angular-Material的Input" class="headerlink" title="開始使用Angular Material的Input"></a>開始使用Angular Material的Input</h2><p>要使用Input相關的功能，首先得先加入<code>MatInputModule</code>。另外，部分的表單控制項，都需要搭配另一個元件－FormField來使用，因此我們也要加入<code>MatFormFieldModule</code>。關於FormField元件，目前只需要簡單使用就好，細節的操作會在後續的文章做詳細的說明。</p>
+<h3 id="使用matInput"><a href="#使用matInput" class="headerlink" title="使用matInput"></a>使用matInput</h3><p><code>matInput</code>是一個依附於input和text的表單基本元件上的directive，因此我們只需要在input或textarea中加入<code>matInput</code>這個directive，即可替元件加上基本的Material Design樣式，不過為了讓input和textarea能更加具有意義，我們會在外面用<code>&lt;mat-form-field&gt;</code>包起來，這個<code>&lt;mat-form-field&gt;</code>可以替input和textarea等元件加上更有意義的訊息，讓操作上更加容易。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"nickname"</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"暱稱"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">textarea</span> <span class="attr">name</span>=<span class="string">"intro_self"</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"自我介紹"</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<img src="/blog/2017/12/28/angular-material-10-input-autocomplete/01-mat-input-basic.gif">
+<p>可以看到我們的<code>placeholder</code>在這邊扮演了<code>label</code>的效果，而且預設會直接在輸入框裡面(就跟一般的placeholder一樣)，但是當focus到裡面時，placeholder的內容就往上浮動成了一個label。</p>
+<h3 id="matInput支援的input-type"><a href="#matInput支援的input-type" class="headerlink" title="matInput支援的input type"></a>matInput支援的input type</h3><p>由於<code>matInput</code>只是個directive，使用上是直接加到相關的input或textarea元素中，因此我們依然可以使用所有已知的input或textarea的屬性，來設定我們的輸入欄位。</p>
+<p>也因此，瀏覽器原生的input type基本上也都支援，例如：</p>
+<ul>
+<li>date</li>
+<li>datetime-local</li>
+<li>email</li>
+<li>month</li>
+<li>number</li>
+<li>password</li>
+<li>search</li>
+<li>tel</li>
+<li>text</li>
+<li>time</li>
+<li>url</li>
+<li>week</li>
+</ul>
+<p>舉例來說，我們可以使用<code>&lt;input type=&quot;date&quot; …/&gt;</code>，來產生一個輸入日期的文字欄位：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"date"</span> <span class="attr">name</span>=<span class="string">"birthday"</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"生日"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/28/angular-material-10-input-autocomplete/02-mat-input-type-date.png">
+<p>如此即可為input加入日期選擇的功能，如圖這是Macbook的Google Chrome上顯示的結果，但實際結果可能會因為作業系統和瀏覽器的不同而不同，有些瀏覽器可能甚至不支援這樣的功能，這在現代的網頁設計上是一個稍微扣分的部分，也就是在<strong>不同瀏覽器呈現效果可能會有極大差異的問題</strong>；不過若是設計出來的網頁能確定在某個系統和瀏覽器上顯示，這也不失為一種簡單有效的做法！</p>
+<div class="note info"><p>關於範例中的日期選擇功能，在Angular Material中有一個強大且持續在進步的Datepicker元件，明天會仔細介紹。</p></div>
+<h3 id="使用mat-hint加上提示說明"><a href="#使用mat-hint加上提示說明" class="headerlink" title="使用mat-hint加上提示說明"></a>使用mat-hint加上提示說明</h3><p>有時候單是使用placeholder屬性可能會無法說明欄位的意義，這時候我們可以使用<code>&lt;mat-hint&gt;</code>替欄位加上比較仔細地說明，例如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">textarea</span> <span class="attr">name</span>=<span class="string">"intro_self"</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"自我介紹"</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-hint</span>&gt;</span>簡單介紹一下你的興趣吧！<span class="tag">&lt;/<span class="name">mat-hint</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2017/12/28/angular-material-10-input-autocomplete/03-mat-hint.png">
+<h3 id="使用mat-error加上錯誤訊息提示"><a href="#使用mat-error加上錯誤訊息提示" class="headerlink" title="使用mat-error加上錯誤訊息提示"></a>使用mat-error加上錯誤訊息提示</h3><p>當文字欄位資料有問題時，需要提示錯誤訊息是很常見的事情，關於這點我們可以用<code>&lt;mat-error&gt;</code>來顯示錯誤的訊息，程式如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">textarea</span> <span class="attr">name</span>=<span class="string">"intro_self"</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"自我介紹"</span> <span class="attr">required</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-hint</span>&gt;</span>簡單介紹一下你的興趣吧！<span class="tag">&lt;/<span class="name">mat-hint</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-error</span>&gt;</span>請記得輸入自我介紹喔！<span class="tag">&lt;/<span class="name">mat-error</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/28/angular-material-10-input-autocomplete/04-mat-error.gif">
+<p>只要同一個<code>&lt;mat-form-field&gt;</code>區間裡面的輸入欄位有錯誤，這個錯誤訊息就會跳出來。</p>
+<p>假如我們希望針對不同的錯誤跳出不同的訊息，只需要使用<code>ngIf</code>或<code>ngSwitch</code>來依照錯誤類型來決定顯示與否即可：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">textarea</span> <span class="attr">name</span>=<span class="string">"intro_self"</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"自我介紹"</span> <span class="attr">formControlName</span>=<span class="string">"intro"</span> <span class="attr">required</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-hint</span>&gt;</span>簡單介紹一下你的興趣吧！<span class="tag">&lt;/<span class="name">mat-hint</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-error</span> *<span class="attr">ngIf</span>=<span class="string">"surveyForm.get('basicQuestions').get('intro').hasError('required')"</span>&gt;</span>請記得輸入自我介紹喔！<span class="tag">&lt;/<span class="name">mat-error</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-error</span> *<span class="attr">ngIf</span>=<span class="string">"surveyForm.get('basicQuestions').get('intro').hasError('minlength')"</span>&gt;</span>至少輸入10個字吧！<span class="tag">&lt;/<span class="name">mat-error</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2017/12/28/angular-material-10-input-autocomplete/05-mat-error-with-ngif.gif">
+<h3 id="自己控制錯誤顯示的時機"><a href="#自己控制錯誤顯示的時機" class="headerlink" title="自己控制錯誤顯示的時機"></a>自己控制錯誤顯示的時機</h3><p>預設情境下，<strong>錯誤顯示的時機必須符合dirty、touched和invalid的狀態，才會顯示錯誤訊息</strong>，因此以剛剛的狀況來說，我們在一開始輸入文字時，由於符合dirty和invalid的狀態，但是因為第一次進入不會是touched狀態，因此一開始不會立刻顯示錯誤訊息，而是在離開欄位後，狀態也變更為touched後，才會顯示錯誤。</p>
+<p>如果希望自己決定錯誤顯示的時機，可以實作<code>ErrorStateMatcher</code>這個介面的<code>isErrorState</code>方法，來決定何時該顯示，為傳true代表要顯示錯誤；並在input的<code>errorStateMatcher</code>(加上<code>matInput</code>後擴充的功能)指定我們自訂的matcher即可，實際來寫點程式看看吧，我們先在component.ts實作這個matcher</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 調整時機為invalid + dirty即顯示錯誤訊息</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> EarlyErrorStateMatcher <span class="keyword">implements</span> ErrorStateMatcher &#123;</span><br><span class="line">  isErrorState(control: FormControl | <span class="literal">null</span>, form: FormGroupDirective | NgForm | <span class="literal">null</span>): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> isSubmitted = form &amp;&amp; form.submitted;</span><br><span class="line">    <span class="keyword">return</span> !!(control &amp;&amp; control.invalid &amp;&amp; control.dirty);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> SurveyComponent &#123;</span><br><span class="line">  surveyForm: FormGroup;</span><br><span class="line">  earlyErrorStateMatcher = <span class="keyword">new</span> EarlyErrorStateMatcher();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接著在input中加入這個matcher</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">textarea</span> <span class="attr">name</span>=<span class="string">"intro_self"</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"自我介紹"</span> <span class="attr">formControlName</span>=<span class="string">"intro"</span> <span class="attr">required</span> [<span class="attr">errorStateMatcher</span>]=<span class="string">"earlyErrorStateMatcher"</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-hint</span>&gt;</span>簡單介紹一下你的興趣吧！<span class="tag">&lt;/<span class="name">mat-hint</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-error</span> *<span class="attr">ngIf</span>=<span class="string">"surveyForm.get('basicQuestions').get('intro').hasError('required')"</span>&gt;</span>請記得輸入自我介紹喔！<span class="tag">&lt;/<span class="name">mat-error</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-error</span> *<span class="attr">ngIf</span>=<span class="string">"surveyForm.get('basicQuestions').get('intro').hasError('minlength')"</span>&gt;</span>至少輸入10個字吧！<span class="tag">&lt;/<span class="name">mat-error</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<p>當我們一進入文字欄位並輸入內容時，立即符合了我們自訂的matcher規則，所以不用等到移出焦點後變成touched狀態，就會提早顯示錯誤啦！</p>
+<img src="/blog/2017/12/28/angular-material-10-input-autocomplete/06-custom-error-state-macher.gif">
+<p>如果要在全域的範圍套用這個規則，可以在providers中注入這個matcher</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">providers: [</span><br><span class="line">  &#123;provide: ErrorStateMatcher, useClass: EarlyErrorStateMatcher&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>就能夠為注入範圍內的輸入欄位套上規則囉。</p>
+<h3 id="使用matTextareaAutosize自動調整大小的textarea"><a href="#使用matTextareaAutosize自動調整大小的textarea" class="headerlink" title="使用matTextareaAutosize自動調整大小的textarea"></a>使用matTextareaAutosize自動調整大小的textarea</h3><p>我們可以為textarea加上自動調整大小功能，只需要加入<code>matTextareaAutosize</code>這個directive即可：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">textarea</span> <span class="attr">name</span>=<span class="string">"intro_self"</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"自我介紹"</span> <span class="attr">formControlName</span>=<span class="string">"intro"</span> <span class="attr">required</span> <span class="attr">matTextareaAutosize</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<p>當我們文字超過原本textarea的高度時，就會開始自動放大，當文字減少時，就會自動縮小，很有趣吧！</p>
+<img src="/blog/2017/12/28/angular-material-10-input-autocomplete/07-autosize-textarea.gif">
+<h2 id="開始使用Angular-Material的Autocomplete"><a href="#開始使用Angular-Material的Autocomplete" class="headerlink" title="開始使用Angular Material的Autocomplete"></a>開始使用Angular Material的Autocomplete</h2><p>要使用Input的Autoomplete相關功能，首先得先加入<code>MatAutocompleteModule</code>。</p>
+<h3 id="使用mat-autocomplete"><a href="#使用mat-autocomplete" class="headerlink" title="使用mat-autocomplete"></a>使用mat-autocomplete</h3><p>接下來我們來學習使用Autocomplete的功能，在這邊我們希望能完成一個「國家」的輸入欄位，並且能夠依照輸入的內容選擇自動完成的清單，大致畫面如下：</p>
+<img src="/blog/2017/12/28/angular-material-10-input-autocomplete/08-autocomplete-sample.png">
+<p>從畫面上來看，我們需要兩樣東西，一個是單純的文字輸入欄位，另一個是可以選擇的國家清單；文字輸入欄位我們已經會了，就是一個簡單的input：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"country"</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"國家"</span> <span class="attr">formControlName</span>=<span class="string">"country"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>而autocomplete的清單，我們可以使用<code>&lt;mat-autocomplete&gt;</code>以及<code>&lt;mat-option&gt;</code>的組合來建立這組清單：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-autocomplete</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-option</span> *<span class="attr">ngFor</span>=<span class="string">"let country of countries$ | async"</span> [<span class="attr">value</span>]=<span class="string">"country.name"</span>&gt;</span></span><br><span class="line">    &#123;&#123; country.name &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-option</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-autocomplete</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>國家的json檔資料來源：<a href="https://gist.github.com/keeguon/2310008" target="_blank" rel="noopener">https://gist.github.com/keeguon/2310008</a></p>
+<p>我們把這個清單存到<code>asset/countries.json</code>中，然後在component直接使用<code>HttpClient</code>抓取這個清單的資料：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ngOnInit() &#123;</span><br><span class="line">  <span class="keyword">this</span>.countries$ = <span class="keyword">this</span>.httpClient.get&lt;any[]&gt;(<span class="string">'assets/countries.json'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這時候畫面上還不會看到任何資料，因為我們的input還不知道要顯示autocomplete的來源在哪裡，我們可以在input中設定<code>matAutocomplete</code>屬性，指定autocomplete的來源，整個段畫面程式碼看起來如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"country"</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"國家"</span> <span class="attr">formControlName</span>=<span class="string">"country"</span> [<span class="attr">matAutocomplete</span>]=<span class="string">"countries"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-autocomplete</span> #<span class="attr">countries</span>=<span class="string">"matAutocomplete"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-option</span> *<span class="attr">ngFor</span>=<span class="string">"let country of countries$ | async"</span> [<span class="attr">value</span>]=<span class="string">"country.name"</span>&gt;</span></span><br><span class="line">    &#123;&#123; country.name &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-option</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-autocomplete</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>接著再回到畫面上點選國家輸入欄位，就能選擇國家的清單啦！</p>
+<img src="/blog/2017/12/28/angular-material-10-input-autocomplete/09-basic-autocomplete-demo.gif">
+<p>我們可以透過方向上下鍵來移動選單，然後按下Enter選擇想要的國家。</p>
+<h3 id="過濾資料來源"><a href="#過濾資料來源" class="headerlink" title="過濾資料來源"></a>過濾資料來源</h3><p>我們已經有了一個autocomplete的清單，但這樣還不太夠，我們可能會希望過濾已經輸入的內容，避免從冗長的清單中選取，由於我們目前使用的是ReactiveForm，因此我們可以使用<code>valueChanges</code>，在資料變更時重新篩選要列出的清單：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ngOnInit() &#123;</span><br><span class="line">  <span class="keyword">this</span>.surveyForm</span><br><span class="line">    .get(<span class="string">'basicQuestions'</span>)</span><br><span class="line">    .get(<span class="string">'country'</span>)</span><br><span class="line">    .valueChanges.debounceTime(<span class="number">300</span>)</span><br><span class="line">    .subscribe(<span class="function"><span class="params">inputCountry</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.countries$ = <span class="keyword">this</span>.httpClient.get&lt;<span class="built_in">any</span>[]&gt;(<span class="string">'assets/countries.json'</span>).map(<span class="function"><span class="params">countries</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> countries.filter(<span class="function"><span class="params">country</span> =&gt;</span> country.name.indexOf(inputCountry) &gt;= <span class="number">0</span>);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另外，我們也可以把已經過濾的資料內容做一點修飾，依照我們輸入的內容變成粗體顯示，這邊先加入一個</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">highlightFiltered(countryName: <span class="built_in">string</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> inputCountry = <span class="keyword">this</span>.surveyForm.get(<span class="string">'basicQuestions'</span>).get(<span class="string">'country'</span>).value;</span><br><span class="line">  <span class="keyword">return</span> countryName.replace(inputCountry, <span class="string">`&lt;span class="autocomplete-highlight"&gt;<span class="subst">$&#123;inputCountry&#125;</span>&lt;/span&gt;`</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接著在style.css中加入這個樣式：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.autocomplete-highlight</span> &#123;</span><br><span class="line">  <span class="attribute">font-weight</span>: bold;</span><br><span class="line">  <span class="attribute">background</span>: yellow;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最後把畫面稍微做個調整：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-autocomplete</span> #<span class="attr">countries</span>=<span class="string">"matAutocomplete"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-option</span> *<span class="attr">ngFor</span>=<span class="string">"let country of countries$ | async"</span> [<span class="attr">value</span>]=<span class="string">"country.name"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> [<span class="attr">innerHTML</span>]=<span class="string">"highlightFiltered(country.name)"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-option</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-autocomplete</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>再來看看結果：</p>
+<img src="/blog/2017/12/28/angular-material-10-input-autocomplete/10-filtered-autocomplete.gif">
+<p>可以看到清單依據我們輸入的內容自動篩選出符合的項目，而且還有highlight提示，是不是很好玩啊！</p>
+<h3 id="透過displayWith決定最終顯示內容"><a href="#透過displayWith決定最終顯示內容" class="headerlink" title="透過displayWith決定最終顯示內容"></a>透過displayWith決定最終顯示內容</h3><p>我們可以透過設定<code>&lt;mat-autocomplete&gt;</code>的<code>displayWith</code>屬性來指定一個function，這個function可以改變要顯示的內容：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-autocomplete</span> #<span class="attr">countries</span>=<span class="string">"matAutocomplete"</span> [<span class="attr">displayWith</span>]=<span class="string">"displayCountry"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-option</span> *<span class="attr">ngFor</span>=<span class="string">"let country of countries$ | async"</span> [<span class="attr">value</span>]=<span class="string">"country"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> [<span class="attr">innerHTML</span>]=<span class="string">"highlightFiltered(country.name)"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-option</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-autocomplete</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>這裡我們把原來的<code>[value]</code>改為傳入整個country物件，好讓<code>displayWith</code>指定的function可以透過選擇的物件決定文字呈現的內容：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">displayCountry(country: <span class="built_in">any</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (country) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;country.name&#125;</span> / <span class="subst">$&#123;country.code&#125;</span>`</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>成果如下：</p>
+<img src="/blog/2017/12/28/angular-material-10-input-autocomplete/11-display-with.gif">
+<p>可以看到在選擇完國家後，透過<code>displayWith</code>，我們自動為選擇的內容加上了國家的編碼。</p>
+<h3 id="使用mat-optgroup顯示群組資料"><a href="#使用mat-optgroup顯示群組資料" class="headerlink" title="使用mat-optgroup顯示群組資料"></a>使用mat-optgroup顯示群組資料</h3><p><code>&lt;mat-option&gt;</code>既然是清單型的選項資料，有個<code>&lt;mat-optgroup&gt;</code>作為群組好像也是很合理的一件事情，Angular Material也替我們想好了，要使用一點都不難，跟在設計select的optgroup大同小異，假設我們有一組資料如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.majorTechList = [</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">'前端'</span>,</span><br><span class="line">    items: [<span class="string">'HTML'</span>, <span class="string">'CSS'</span>, <span class="string">'JavaScript'</span>]</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">'後端'</span>,</span><br><span class="line">    items: [<span class="string">'C#'</span>, <span class="string">'NodeJs'</span>, <span class="string">'Go'</span>]</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>在畫面上我們可以透過<code>mat-optgroup</code>來顯示這些群組：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"majorTech"</span> <span class="attr">matInput</span> <span class="attr">placeholder</span>=<span class="string">"代表技術"</span> <span class="attr">formControlName</span>=<span class="string">"majorTech"</span> [<span class="attr">matAutocomplete</span>]=<span class="string">"majorTechs"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-form-field</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">mat-autocomplete</span> #<span class="attr">majorTechs</span>=<span class="string">"matAutocomplete"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mat-optgroup</span> *<span class="attr">ngFor</span>=<span class="string">"let techList of majorTechList"</span> [<span class="attr">label</span>]=<span class="string">"techList.name"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mat-option</span> *<span class="attr">ngFor</span>=<span class="string">"let tech of techList.items"</span> [<span class="attr">value</span>]=<span class="string">"tech"</span>&gt;</span></span><br><span class="line">      &#123;&#123; tech &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">mat-option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mat-optgroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mat-autocomplete</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>再來看看結果：</p>
+<img src="/blog/2017/12/28/angular-material-10-input-autocomplete/12-mat-optgroup.gif">
+<p>連這種細節都想好了，真不愧是高品質的Angular Material啊！</p>
+<h2 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h2><p>今天我們介紹了兩個輸入欄位的功能，Input與Autocomplete。</p>
+<p>Input賦予一般的文字輸入欄位新的活力！搭配MatFormField在顯示資訊上也非常清楚，另外Angular Material也讓我們對於錯誤訊息的提示時機能夠有很靈活的機會去調整，可以說是非常的方便。</p>
+<p>Autocomplete其實只是Input的延伸，但加上了一個mat-autocomplete元件，來讓Input輸入時能有個參考依據，Autocomplete是前端非常經典的功能，Angular Material也為這個功能做了很好的詮釋，使用上也非常好上手！</p>
+<p>文字欄位的元件其實還有一個很常用的功能，就是選擇日期的功能－Datepicker，Datepicker有不少東西可以介紹，就留到明天再來聊吧！</p>
+<p>本日的程式碼GitHub</p>
+<h2 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h2><ul>
+<li><a href="https://material.io/guidelines/components/text-fields.html#" target="_blank" rel="noopener">Material Design - Text Fields</a></li>
+<li><a href="https://material.angular.io/components/input/overview" target="_blank" rel="noopener">Angular Material - Input</a></li>
+<li><a href="https://material.angular.io/components/autocomplete/overview" target="_blank" rel="noopener">Angular Material - Autocomplete</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Angular-Material/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Angular Material</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Material-Design/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Material Design</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/MatInput/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> MatInput</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/MatAutocomplete/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> MatAutocomplete</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/12/27/angular-material-09-stepper/" rel="next" title="[Angular Material完全攻略]打造問卷頁面(1) - Stepper">
+                <i class="fa fa-chevron-left"></i> [Angular Material完全攻略]打造問卷頁面(1) - Stepper
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/12/29/angular-material-11-datepicker/" rel="prev" title="[Angular Material完全攻略]打造問卷頁面(3) - Datepicker">
+                [Angular Material完全攻略]打造問卷頁面(3) - Datepicker <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Material-Design中的文字輸入欄位"><span class="nav-number">1.</span> <span class="nav-text">Material Design中的文字輸入欄位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#開始使用Angular-Material的Input"><span class="nav-number">2.</span> <span class="nav-text">開始使用Angular Material的Input</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用matInput"><span class="nav-number">2.1.</span> <span class="nav-text">使用matInput</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#matInput支援的input-type"><span class="nav-number">2.2.</span> <span class="nav-text">matInput支援的input type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-hint加上提示說明"><span class="nav-number">2.3.</span> <span class="nav-text">使用mat-hint加上提示說明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-error加上錯誤訊息提示"><span class="nav-number">2.4.</span> <span class="nav-text">使用mat-error加上錯誤訊息提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自己控制錯誤顯示的時機"><span class="nav-number">2.5.</span> <span class="nav-text">自己控制錯誤顯示的時機</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用matTextareaAutosize自動調整大小的textarea"><span class="nav-number">2.6.</span> <span class="nav-text">使用matTextareaAutosize自動調整大小的textarea</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#開始使用Angular-Material的Autocomplete"><span class="nav-number">3.</span> <span class="nav-text">開始使用Angular Material的Autocomplete</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-autocomplete"><span class="nav-number">3.1.</span> <span class="nav-text">使用mat-autocomplete</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#過濾資料來源"><span class="nav-number">3.2.</span> <span class="nav-text">過濾資料來源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#透過displayWith決定最終顯示內容"><span class="nav-number">3.3.</span> <span class="nav-text">透過displayWith決定最終顯示內容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用mat-optgroup顯示群組資料"><span class="nav-number">3.4.</span> <span class="nav-text">使用mat-optgroup顯示群組資料</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本日小結"><span class="nav-number">4.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相關資源"><span class="nav-number">5.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2017/12/28/angular-material-10-input-autocomplete/';
+          this.page.identifier = '2017/12/28/angular-material-10-input-autocomplete/';
+          this.page.title = '[Angular Material完全攻略]打造問卷頁面(2) - Input、Autocomplete';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>

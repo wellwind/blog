@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <link rel="canonical" href>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#3F51B5">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="RxJS,Subject,BehaviorSubject,ReplaySubject,AsyncSubject,Observable,">
+
+
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="全端開發人員天梯" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="今天我們來介紹一下幾種最基本建立 observable 的方式。">
+<meta name="keywords" content="RxJS,Subject,BehaviorSubject,ReplaySubject,AsyncSubject,Observable">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[RxJS] 建立 Observable 的基礎 - Observable &#x2F; Subject &#x2F; BehaviorSubject &#x2F; ReplaySubject &#x2F; AsyncSubject">
+<meta property="og:url" content="https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/index.html">
+<meta property="og:site_name" content="全端開發人員天梯">
+<meta property="og:description" content="今天我們來介紹一下幾種最基本建立 observable 的方式。">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/01.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/02.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/03.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/04.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/05.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/06.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/07.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/08.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/09.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/10.jpg">
+<meta property="og:image" content="https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/11.jpg">
+<meta property="og:updated_time" content="2021-01-25T02:06:11.360Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[RxJS] 建立 Observable 的基礎 - Observable &#x2F; Subject &#x2F; BehaviorSubject &#x2F; ReplaySubject &#x2F; AsyncSubject">
+<meta name="twitter:description" content="今天我們來介紹一下幾種最基本建立 observable 的方式。">
+<meta name="twitter:image" content="https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"letf","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css">
+<style>
+    html, body {
+        font-family: lato,noto sans tc,microsoft yahei,sans-serif;
+    }
+</style>
+
+  <title>[RxJS] 建立 Observable 的基礎 - Observable / Subject / BehaviorSubject / ReplaySubject / AsyncSubject | 全端開發人員天梯</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104488277-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    var host = "wellwind.idv.tw";
+    if ((host == window.location.host) && (window.location.protocol != "https:")) {
+      window.location.protocol = "https";
+    }
+  </script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-letf page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">全端開發人員天梯</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">軟體開發學不完，就像爬不完的天梯，只好多紀錄寫筆記</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wellwind.idv.tw/blog/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mike Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/blog/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="全端開發人員天梯">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[RxJS] 建立 Observable 的基礎 - Observable / Subject / BehaviorSubject / ReplaySubject / AsyncSubject</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-09-27T18:00:00+00:00">
+                2020-09-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/" itemprop="url" rel="index">
+                    <span itemprop="name">打通 RxJS 任督二脈</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/打通-RxJS-任督二脈/第-12-屆鐵人賽/" itemprop="url" rel="index">
+                    <span itemprop="name">第 12 屆鐵人賽</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天我們來介紹一下幾種最基本建立 observable 的方式。</p>
+<a id="more"></a>
+<h1 id="Observable"><a href="#Observable" class="headerlink" title="Observable"></a>Observable</h1><p><code>Observable</code> 是 RxJS 中建立串流最基本的方式之一，我們可以透過 <code>Observable</code> 類別來建立一個「可被觀察的」物件，我們會在這個物件內先寫好整個資料流的流程，以便未來訂閱 (subscribe) 時可以依照這資料流程進行處理：</p>
+<h2 id="建立-Observable"><a href="#建立-Observable" class="headerlink" title="建立 Observable"></a>建立 Observable</h2><p>因為 <code>Observable</code> 是一個類別，所以最簡單的建立方式自然是直接 <code>new</code> 它：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Observable &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"><span class="keyword">const</span> source$ = <span class="keyword">new</span> Observable();</span><br></pre></td></tr></table></figure>
+<div class="note info"><p>另外一種建立方式是 <code>Observable.create()</code> 不過這種方式在 RxJS 6 之後已被標示為棄用，在這裡提出來純粹是說明，以免未來接手別人舊程式時有用到看不懂。</p></div>
+<h2 id="建立資料流"><a href="#建立資料流" class="headerlink" title="建立資料流"></a>建立資料流</h2><p>使用 <code>Observable</code> 建立資料流時，可以傳入一個 callback function，function 內只有一個物件參數，我們稱為訂閱者 (Subscriber)，這個訂閱者就是處理資料流程的人，也就是負責呼叫 <code>next()</code>、<code>complete()</code>和 <code>error()</code> 的物件，我們可以透過這個物件先設計好資料流的流程，例如發送 1、2、3、4 然後結束：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> source$ = <span class="keyword">new</span> Observable(<span class="function"><span class="params">subscriber</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'stream 開始'</span>);</span><br><span class="line">  subscriber.next(<span class="number">1</span>);</span><br><span class="line">  subscriber.next(<span class="number">2</span>);</span><br><span class="line">  subscriber.next(<span class="number">3</span>);</span><br><span class="line">  subscriber.next(<span class="number">4</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'stream 結束'</span>);</span><br><span class="line">  subscriber.complete();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="訂閱-Observable"><a href="#訂閱-Observable" class="headerlink" title="訂閱 Observable"></a>訂閱 Observable</h2><p>有了這個資料流後，就可以開始進行訂閱啦！</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">source$.subscribe(&#123;</span><br><span class="line">  next: <span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`Observable 第一次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>),</span><br><span class="line">  complete:<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'第一次訂閱完成'</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>之後就會看到如下圖結果：</p>
+<img src="/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/01.jpg">
+<p>每次訂閱發生時，就會呼叫 <code>new Observable()</code> 內的 callback function，以上面的例子來說，這樣的呼叫是<strong>同步</strong>的，也就是發生兩次訂閱時，會依序等前一次訂閱全部執行完畢才會執行下一次訂閱，例如：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">source$.subscribe(&#123;</span><br><span class="line">  next: <span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`Observable 第一次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>),</span><br><span class="line">  complete:<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'第一次訂閱完成'</span>)</span><br><span class="line">&#125;);</span><br><span class="line">source$.subscribe(&#123;</span><br><span class="line">  next: <span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`Observable 第二次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>),</span><br><span class="line">  complete:<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'第二次訂閱完成'</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>實際上的執行順序是第一次訂閱全部跑完，才跑第二次訂閱：</p>
+<img src="/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/02.jpg">
+<div class="note warning"><p>許多新手 (包含過去的我自己) 會聽說 RxJS 很適合用來處理非同步，就認為所有 Observable 都是非同步執行的，實際上並不是這麼一回事，上面的例子已經說明的很清楚了。</p></div>
+<p>那麼有沒有辦法讓它已非同步執行呢？非常簡單，只要在一個非同步方法內呼叫 <code>next()</code> 即可：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> source$ = <span class="keyword">new</span> Observable(<span class="function"><span class="params">subscriber</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'stream 開始'</span>);</span><br><span class="line">  subscriber.next(<span class="number">1</span>);</span><br><span class="line">  subscriber.next(<span class="number">2</span>);</span><br><span class="line">  subscriber.next(<span class="number">3</span>);</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    subscriber.next(<span class="number">4</span>);</span><br><span class="line">    subscriber.complete();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'stream 結束'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>此時原來的訂閱例子執行結果為：</p>
+<img src="/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/03.jpg">
+<p>1、2、3 發出後，4 和 complete 放到 <code>setTimeout()</code> 內變成非同步執行，因此會在兩次訂閱都收到 1、2 和 3 後，才會收到 4 和完成；另外要小心的是，使用非同步處理時， <code>complete()</code> 一定也會是非同步，而且要想辦法在整個非同步處理程式中最後呼叫，以免提早結束而收不到後續 <code>next()</code> 的資料。</p>
+<p><code>Observable</code> 非常適合在有<strong>固定資料流程</strong>的情境，先把流程建立好，之後每次訂閱都會照這個流程走囉。</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-observable" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-observable</a></p>
+<h1 id="Subject"><a href="#Subject" class="headerlink" title="Subject"></a>Subject</h1><p><code>Subject</code> 系列繼承了 <code>Observable</code> 類別，並給予了更多不同的特性，因此我們會說 <code>Subject</code> 也是一種 <code>Observable</code>；而 <code>Subject</code> 與 <code>Observable</code> 有兩個明顯不同的地方：</p>
+<ol>
+<li><code>Observable</code> 在建立物件同時就決定好資料流向了，而 <code>Subject</code> 是在產生物件後才決定資料的流向。</li>
+<li><code>Observable</code> 每個訂閱者都會得到獨立的資料流，又稱為 unicast；而 <code>Subject</code> 則是每次事件發生時就會同步傳遞給所有訂閱者 (Observer)，又稱為 multicast。</li>
+</ol>
+<p>由於 <code>Subject</code> 是在產生物件後才決定資料流向，因此比較適合在程式互動過程中動態決定資料流向，也就是 <code>Subjct</code> 建立好後，將這個 <code>Subject</code> 物件傳出去，讓其它程式來透過呼叫該物件的 <code>next()</code> 等方法來決定資料流向。</p>
+<p>另外，同樣是訂閱，<code>Subject</code> 的訂閱與 Observer 的關係是一對多的，而 <code>Observable</code> 的訂閱與 Observer 則是一對一關係。</p>
+<div class="note info"><p>關於這兩種的差別與關係，我們明天會再更詳細的說明</p></div>
+<p>接著讓我們用之前就學過最基礎的 <code>Subject</code> 為例。</p>
+<h2 id="Subject-1"><a href="#Subject-1" class="headerlink" title="Subject"></a>Subject</h2><p>參考以下程式碼：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> source$ = <span class="keyword">new</span> Subject();</span><br><span class="line"></span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`Subject 第一次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line">  </span><br><span class="line">source$.next(<span class="number">1</span>);</span><br><span class="line">source$.next(<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<p>由於 <code>Subject</code> 是在產生後才決定資料流，因此需要先訂閱，才收得到資料流事件，上述程式執行結果如下：</p>
+<img src="/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/04.jpg">
+<p>之後再加上更多事件及訂閱：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`Subject 第二次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line"></span><br><span class="line">source$.next(<span class="number">3</span>);</span><br><span class="line">source$.next(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`Subject 第三次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line"></span><br><span class="line">source$.complete();</span><br></pre></td></tr></table></figure>
+<p>最終結果如下：</p>
+<img src="/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/05.jpg">
+<p>可以看到每次訂閱後，都會在有新的事件時才會收到新事件的資料。每次訂閱都識直接訂閱這條執行中的資料流，這就是跟 <code>Observable</code> 最大不同的地方。</p>
+<p>關於這種特性，我們會在明天的 <strong>Cold Observable v.s Hot Observable</strong> 說明。</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-subject" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-subject</a></p>
+<h2 id="BehaviorSubject"><a href="#BehaviorSubject" class="headerlink" title="BehaviorSubject"></a>BehaviorSubject</h2><p><code>Subject</code> 產生的物件在訂閱時若沒有事件發生，會一直收不到資料，如果希望在一開始訂閱時會先收到一個預設值，且有事件發生後才訂閱的行為也可以收到最近一次發生過的事件資料，則可以使用 <code>BehaviorSubject</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> source$ = <span class="keyword">new</span> BehaviorSubject(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`BehaviorSubject 第一次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line"><span class="comment">// BehaviorSubject 第一次訂閱: 0</span></span><br></pre></td></tr></table></figure>
+<p>在 <code>new BehaviorSubject()</code> 時必須給予一個參數做為預設值，上面程式我們給 <code>0</code> 當作預設值，因此建立後在還沒任何訂閱時即可收到一次預設值資料。</p>
+<p>當持續有事件發生時，當然會繼續收到資料：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source$.next(<span class="number">1</span>);</span><br><span class="line">source$.next(<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<p>執行結果如下：</p>
+<img src="/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/06.jpg">
+<p>此時若有一個新的訂閱進來呢？</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`BehaviorSubject 第二次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br></pre></td></tr></table></figure>
+<p>這時候會立刻收到「最近一次發生過的事件資料」：</p>
+<img src="/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/07.jpg">
+<p><code>BehaviorSubject</code> 產生的物件，有一個 <code>value</code> 屬性，可以得知前面提到的「最近一次事件的資料」：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">source$.next(<span class="number">3</span>);</span><br><span class="line">source$.next(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">`目前 BehaviorSubject 的內容為: <span class="subst">$&#123;source$.value&#125;</span>`</span>);</span><br></pre></td></tr></table></figure>
+<p>這時的結果如下圖：</p>
+<img src="/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/08.jpg">
+<p>對於需要保留最近一次資料狀態的情境來說，BehaviorSubject 就非常好用囉！</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-behavior-subject" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-behavior-subject</a></p>
+<h2 id="ReplaySubject"><a href="#ReplaySubject" class="headerlink" title="ReplaySubject"></a>ReplaySubject</h2><p><code>ReplaySubject</code> 有「重播」的意思，<code>ReplaySubject</code> 會幫我們保留最近 N 次的事件資料，並在訂閱時重播這些發生過的事件資料給訂閱者，跟 BehaviorSubject 類似，都有 cache 的概念，只是更有彈性。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 設定「重播」最近 3 次資料給訂閱者</span></span><br><span class="line"><span class="keyword">const</span> source$ = <span class="keyword">new</span> ReplaySubject(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`ReplaySubject 第一次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line">  </span><br><span class="line">source$.next(<span class="number">1</span>);</span><br><span class="line">source$.next(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`ReplaySubject 第二次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br></pre></td></tr></table></figure>
+<p>結果如下：</p>
+<img src="/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/09.jpg">
+<p>第二次訂閱後還沒有任何事件發生，此時單純是靠 <code>BehaviorSubject</code> 把最近三次的資料重播，但目前只有兩次事件，所以只會收到兩次事件的資料；當事件繼續發生超過三次時，這時再訂閱就會收到完整 cache 的最近三次資料囉。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">source$.next(<span class="number">3</span>);</span><br><span class="line">source$.next(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`ReplaySubject 第三次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br></pre></td></tr></table></figure>
+<p>執行結果如下：</p>
+<img src="/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/10.jpg">
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-replay-subject" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-replay-subject</a></p>
+<h2 id="AsyncSubject"><a href="#AsyncSubject" class="headerlink" title="AsyncSubject"></a>AsyncSubject</h2><p><code>AsyncSubject</code> 比較特殊一點，當 <code>AsyncSubject</code> 物件被建立後，過程中發生任何事件都不會收到資料，直到 <code>complete()</code> 被呼叫後，才會收到「最後一次事件資料」，例如以下程式：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> source$ = <span class="keyword">new</span> AsyncSubject();</span><br><span class="line"></span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`AsyncSubject 第一次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line">  </span><br><span class="line">source$.next(<span class="number">1</span>);</span><br><span class="line">source$.next(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`AsyncSubject 第二次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line"></span><br><span class="line">source$.next(<span class="number">3</span>);</span><br><span class="line">source$.next(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">source$.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`AsyncSubject 第三次訂閱: <span class="subst">$&#123;data&#125;</span>`</span>));</span><br><span class="line"></span><br><span class="line">source$.complete();</span><br></pre></td></tr></table></figure>
+<p>執行結果為：</p>
+<img src="/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/11.jpg">
+<p>如果用彈珠圖來理解的話，原來發送 <code>next()</code> 的過程可能是這樣：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">----1----2----3----4----|</span><br></pre></td></tr></table></figure>
+<p>而實際訂閱時，收到的資料變成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-----------------------(4|)</span><br></pre></td></tr></table></figure>
+<p>如果希望訂閱的 Observer 只關注在結束前的最後資料就好，可以考慮使用 <code>AsyncSubject</code>。</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-async-subject" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-async-subject</a></p>
+<h2 id="共用-API-asObservable"><a href="#共用-API-asObservable" class="headerlink" title="共用 API - asObservable"></a>共用 API - asObservable</h2><p>所有的 <code>Subject</code> 系列都有一個共用且常用的 API，稱為 <code>asObservable</code>，它的用途是將 <code>Subject</code> 當作 <code>Observable</code> 回傳，這樣有什麼好處呢？由於 <code>Observable</code> 並沒有 <code>next()</code>、<code>complete()</code> 和 <code>error()</code> 這樣的 API，因此可以讓得到這個 <code>Observable</code> 物件的程式專注在資料流訂閱相關的處理就好，而不被允許發送新的事件，就可以將發送新事件等行為封裝起來不被外界看到啦！</p>
+<p>以下程式簡單說明了 <code>asObservable</code> 的使用情境：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Student &#123;</span><br><span class="line">  <span class="keyword">private</span> _score$ = <span class="keyword">new</span> Subject();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> score$() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._score$.asObservable();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  updateScore(score) &#123;</span><br><span class="line">    <span class="comment">// 大於 60 分才允許推送成績事件</span></span><br><span class="line">    <span class="keyword">if</span>(score &gt; <span class="number">60</span>)&#123;</span><br><span class="line">      <span class="keyword">this</span>._score$.next(score);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> mike = <span class="keyword">new</span> Student();</span><br><span class="line"></span><br><span class="line">mike.score$.subscribe(<span class="function"><span class="params">score</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`目前成績：<span class="subst">$&#123;score&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">mike.updateScore(<span class="number">70</span>); <span class="comment">// 目前成績: 70</span></span><br><span class="line">mike.updateScore(<span class="number">50</span>); <span class="comment">// (沒有任何反應)</span></span><br><span class="line">mike.updateScore(<span class="number">80</span>); <span class="comment">// 目前成績: 80</span></span><br><span class="line">mike.score$.next(<span class="number">50</span>); <span class="comment">// (錯誤：next is not a function)</span></span><br></pre></td></tr></table></figure>
+<p>透過 <code>asObservable</code> 我們就可以把資料流傳出去，又能不讓產生新事件囉。</p>
+<p>程式碼：<a href="https://stackblitz.com/edit/mastering-rxjs-as-observable" target="_blank" rel="noopener">https://stackblitz.com/edit/mastering-rxjs-as-observable</a></p>
+<h1 id="本日小結"><a href="#本日小結" class="headerlink" title="本日小結"></a>本日小結</h1><p>今天我們介紹了幾種基本的建立 Observable 的方法，這些方法各有不同的使用情境，可以針對需要的情況使用。</p>
+<p><code>Subject</code> 系列類別繼承了 <code>Observable</code> 類別，並給予更多的彈性，同時 <code>Subject</code> 和 <code>Observable</code> 對於觀察者 (Observer) 的處理方式也有所不同，這部分我們在明天的文章再來介紹 Cold Observable 和 Hot Observable 的區別。</p>
+<h1 id="相關資源"><a href="#相關資源" class="headerlink" title="相關資源"></a>相關資源</h1><ul>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/class/Observable" target="_blank" rel="noopener">Observable</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/class/Subject" target="_blank" rel="noopener">Subject</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/class/BehaviorSubject" target="_blank" rel="noopener">BehaviorSubject</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/class/ReplaySubject" target="_blank" rel="noopener">ReplaySubject</a></li>
+<li><a href="https://rxjs-dev.firebaseapp.com/api/index/class/AsyncSubject" target="_blank" rel="noopener">AsyncSubject</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div>如果您覺得我的文章有幫助，歡迎免費成為 LikeCoin 會員，幫我的文章拍手 5 次表示支持！</div>
+        <div class="like-coin">
+          <script type="text/javascript">
+            document.write(
+              "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/wellwind/button?referrer=" +
+              encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+            </script>
+        <div>
+      
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/RxJS/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> RxJS</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Subject/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Subject</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/BehaviorSubject/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> BehaviorSubject</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/ReplaySubject/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> ReplaySubject</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/AsyncSubject/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> AsyncSubject</span>
+              </span>
+            </a>
+          
+            <a href="/blog/tags/Observable/" rel="tag">
+              <span class="mdl-chip mdl-color--light-blue-500">
+                  <span class="mdl-chip__text mdl-color-text--white"><i class="fa fa-tag"></i> Observable</span>
+              </span>
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2020/09/26/mastering-rxjs-11-marble-diagram/" rel="next" title="[RxJS] 認識彈珠圖 Marble Diagram">
+                <i class="fa fa-chevron-left"></i> [RxJS] 認識彈珠圖 Marble Diagram
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2020/09/28/mastering-rxjs-13-cold-observable-hot-observable/" rel="prev" title="[RxJS] Cold Observable v.s Hot Observable">
+                [RxJS] Cold Observable v.s Hot Observable <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div></div></footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59906215af0a7741" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/blog/avatar.png" alt="Mike Huang">
+          <p class="site-author-name" itemprop="name">Mike Huang</p>
+           
+              <p class="site-description motion-element" itemprop="description">個人學習程式設計、系統開發和讀書的經驗及心得。</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives/">
+                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-name">文章</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">304</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/blog/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wellwind" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/wellwind" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                    
+                      Facebook
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              推薦網站
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.kevinyang.net/" title="CK's Notepad" target="_blank">CK's Notepad</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://blog.miniasp.com/" title="The Will Will Web" target="_blank">The Will Will Web</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://oomusou.io/" title="點燈坊" target="_blank">點燈坊</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 38px; padding-bottom: 38px;border-top: 1px dotted #ccc; border-bottom: 1px dotted #ccc; text-align: center;">
+    <a href="https://mvp.microsoft.com/zh-tw/PublicProfile/5003734">
+        <div>
+            <img src="https://wellwind.idv.tw/blog/mvp-logo.png" alt="微軟最有價值專家 2020-2021">
+        </div>
+        <div>
+            <strong>微軟最有價值專家 2020-2021</strong>
+        </div>
+    </a>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Observable"><span class="nav-number">1.</span> <span class="nav-text">Observable</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#建立-Observable"><span class="nav-number">1.1.</span> <span class="nav-text">建立 Observable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立資料流"><span class="nav-number">1.2.</span> <span class="nav-text">建立資料流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#訂閱-Observable"><span class="nav-number">1.3.</span> <span class="nav-text">訂閱 Observable</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Subject"><span class="nav-number">2.</span> <span class="nav-text">Subject</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Subject-1"><span class="nav-number">2.1.</span> <span class="nav-text">Subject</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BehaviorSubject"><span class="nav-number">2.2.</span> <span class="nav-text">BehaviorSubject</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ReplaySubject"><span class="nav-number">2.3.</span> <span class="nav-text">ReplaySubject</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AsyncSubject"><span class="nav-number">2.4.</span> <span class="nav-text">AsyncSubject</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共用-API-asObservable"><span class="nav-number">2.5.</span> <span class="nav-text">共用 API - asObservable</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本日小結"><span class="nav-number">3.</span> <span class="nav-text">本日小結</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相關資源"><span class="nav-number">4.</span> <span class="nav-text">相關資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+  
+      <div class="fb-page" data-href="https://www.facebook.com/fullstackledder" data-tabs="timeline" data-width="240" data-height="450" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/fullstackledder" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/fullstackledder">全端開發人員天梯</a></blockquote></div>
+
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mike Huang</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  (With Material Design)
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://wellwind.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://wellwind.idv.tw/blog/2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/';
+          this.page.identifier = '2020/09/27/mastering-rxjs-12-observable-subject-behaviorsubject-replaysubject-asyncsubject/';
+          this.page.title = '[RxJS] 建立 Observable 的基礎 - Observable / Subject / BehaviorSubject / ReplaySubject / AsyncSubject';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://wellwind.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script>
+    (function displayCourses() {
+      if($('.post-body').length === 1) {
+        // var content = '<section id="displayCourses"><h1 id="工商服務"><a href="#工商服務" title="工商服務"></a>工商服務</h1><p>對 Angular 已經有點經驗，但總覺得寫得不夠漂亮；或是沒什麼練功機會嗎？歡迎參加 「<a href="https://www.accupass.com/event/1902210115431858444097" target="_blank">Angular 7 開發實戰：進階開發篇</a>」，學習更進一步的 Angular 知識；也可以參加「<a href="" target="_blank">Angular 7 開發實戰：進階實作篇</a>」，透過一個實際專案學習更多的實務經驗！！</p><p><a href="https://www.accupass.com/event/1902210115431858444097" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/a4147fbf9de44b7a82d5b7bcd1013e4d.jpg" /></a></p><p><a href="https://www.accupass.com/event/1902210116001899039507" target="_blank"><img src="https://az796311.vo.msecnd.net/userupload/f6d314c5d01f4fbeae05ae86a87aaa20.jpg" /></a></p></section>';
+        var content = '';
+        $('.post-body').append(content);
+        setTimeout(function() {
+          $('#displayCourses a').removeClass('fancybox');
+          $('#displayCourses a').removeClass('fancybox.image');
+        }, 1000)
+      }
+    })();
+  </script>
+</body>
+</html>
