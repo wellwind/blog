@@ -29,9 +29,9 @@ tags:
 
 ## 建立新的 Observable
 
-要建立一個新的 Observable 基本上分成兩種方式，第二種則是自己從頭開始建立新的資料流，第二種是透過現有的資料或事件來建立。
+要建立一個新的 Observable 基本上分成兩種方式，第一種是自己從頭開始建立新的資料流，第二種則是透過現有的資料或事件來建立。
 
-而大多數建立 Observable 的 API 都在 `rxjs` 這個 namespace 裡並遵循 ES 6 的模組化方式管理，例如要使用上篇文章 `fromEvent`，則可以透過以下語法：
+而大多數建立 Observable 的 API 都在 `rxjs` 這個 namespace 裡並遵循 ES6 的模組化方式管理，例如要使用上篇文章 `fromEvent`，則可以透過以下語法：
 
 ```typescript
 import { fromEvent } from 'rxjs';
