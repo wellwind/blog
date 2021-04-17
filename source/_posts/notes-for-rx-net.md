@@ -34,7 +34,7 @@ Install-Package System.Reactive
 
 ```csharp
 var subscription = source
-    .Where(user => user.Age >= 18
+    .Where(user => user.Age >= 18)
     .Select(data => data.Name)
     .Subscribe(data => { Console.WriteLine(data.Name) });
 ```
