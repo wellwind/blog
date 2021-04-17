@@ -127,7 +127,7 @@ var behaviorSubject = new BehaviorSubject<int>("test");
 var replaySubject = new ReplaySubject<int>(1);
 ```
 
-有一個很大的重點是一定要指定行別，因為 C# 是強行別語言，直接 `new Subject()` 不指定型別的話編譯是不會過的。
+有一個很大的重點是一定要指定型別，因為 C# 是強型別語言，直接 `new Subject()` 不指定型別的話編譯是不會過的。
 
 當有新的事件要送出時，使用 `OnNext`、`OnError` 和 `OnCompleted`。
 
