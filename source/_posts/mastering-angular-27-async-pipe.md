@@ -25,7 +25,7 @@ tags:
 
 ```typescript
 @Component({
-  selector: 'myㄦapp',
+  selector: 'my-app',
   template: `
   <ul>
     <li *ngFor="let todo of todos">{{ todo.title }}</li>
