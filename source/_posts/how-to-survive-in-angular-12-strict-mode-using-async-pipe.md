@@ -28,15 +28,15 @@ let user;
 console.log(user.name);
 ```
 
-由於 `user` 還沒給予任何值，因此直接存取它的 `name` 屬性肯定是錯誤的，使用 TypeScript 開發時就會得到以下錯誤：
+由於 `user` 還沒給予任何值，直接存取它的 `name` 屬性肯定是錯誤的，使用 TypeScript 開發時就會得到以下錯誤：
 
 {% asset_img 01.png %}
 
-也就是我們可能存取到的一個會是 `undefined` 的物件，如果不管這個錯誤直接執行，就會看到這個知名的錯誤訊息：
+也就是我們存取到的一個可能會是 `undefined` 的物件，如果不管這個錯誤直接執行，就會看到知名的錯誤訊息：
 
 {% asset_img 02.png %}
 
-有非常多的新手開發人員看到這個錯誤訊息都會解讀成 `name` 是 `undefined`，導致在查找問題時根本就找錯方向，因為 `undefined` 的是 `user` 而不是 `user.name`！去追查為什麼 `user.name` 是 `undefined` 完群沒有意義，因為真正 `undefined` 的是 `user` 本身。
+有非常多的新手開發人員看到這個錯誤訊息都會解讀成 `name` 是 `undefined`，導致在查找問題時根本就找錯方向，`undefined` 的是 `user` 而不是 `user.name`，去追查為什麼 `user.name` 是 `undefined` 完全沒有意義，因為真正 `undefined` 的是 `user` 本身。
 
 這種的解決方式很簡單，確定有賦予變數資料即可：
 
@@ -79,7 +79,7 @@ if(result) {
 console.log(result?.name);
 ```
 
-這其實也是一種檢查，不過要注意的是這裡的寫法如果真的是回傳 `undefined`，則會因出 `undefined` 當作結果。
+這其實也是一種檢查，不過要注意的是這裡的寫法如果真的是回傳 `undefined`，則會輸出 `undefined` 當作結果。
 
 第三種是使用 TypeScript 的 [Non-null assertion operator](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#non-null-assertion-operator)，也就是 `result!.name`，這種寫法是告訴 TypeScript 說「我可以肯定不會出現 `null` 或 `undefined` 的狀況，因此不用特別提醒我」：
 
@@ -87,7 +87,7 @@ console.log(result?.name);
 console.log(result!.name);
 ```
 
-不過要特別注意的是，這只是我們主動斷言 `result` 不會是 `null` 或 `undefined`，因此不代表「絕對不會發生」，也就是當執行階段發生錯誤時，我們必須自行負責判斷問題，所以請在真的有信心時才使用這種寫法。
+不過要特別注意的是，這只是我們主動斷言 `result` 不會是 `null` 或 `undefined`，不代表「絕對不會發生」，也就是當執行階段發生錯誤時，我們必須自行負責判斷問題，所以請在真的有信心時才使用這種寫法。
 
 # noImplictAny
 
@@ -159,7 +159,7 @@ export class TodoListTableComponent {
 }
 ```
 
-當然還有一招，但不常用，就是宣告屬性時說明這個屬性是有可能 `undefined` 或 `null` 的，那麼不給初始職也是很合理的一件事情：
+當然還有一招，但不常用，就是宣告屬性時說明這個屬性是有可能 `undefined` 或 `null` 的，那麼不給初始值也是很合理的一件事情：
 
 ```typescript
 export class TodoListTableComponent {
@@ -194,11 +194,11 @@ export class MyAppComponent {
 }
 ```
 
-由於 `TodoListComponent` 有明確定義 `@Input todosList` 必須是 `TodoList[]` 型別，但在使用元件時，卻傳入一個可能會是 `undefined` 的物件，因此也會造成型別檢查的錯誤：
+由於 `TodoListComponent` 有明確定義 `@Input() todosList` 必須是 `TodoList[]` 型別，但在使用元件時，卻傳入一個可能會是 `undefined` 的物件，因此也會造成型別檢查的錯誤：
 
 {% asset_img 07.png %}
 
-這時候又看要由哪個元件要修改成配合另一個元件的型別定義了，由於 `TodoListComponent` 是共用的元件，且定義了 `@Input todoList` 不可以傳入可能是 `undefined` 的物件，因此建議配合這些共用元件修改，養成這個習慣後，就算使用第三方元件也比較不會有問題(畢竟不會一有型別衝突就要第三方元件修改吧？)。
+這時候又看要由哪個元件要修改成配合另一個元件的型別定義了，由於 `TodoListComponent` 是共用的元件，且定義了 `@Input() todoList` 不可以傳入可能是 `undefined` 的物件，因此建議配合這些共用元件修改，養成這個習慣後，就算使用第三方元件也比較不會有問題(畢竟不會一有型別衝突就要第三方元件修改吧？)。
 
 ```typescript
 @Component({
@@ -214,7 +214,7 @@ export class MyAppComponent {
 
 這邊將使用 `TodoListComponent` 的元件屬性配合改成不會 `undefined` 的情況，且明確給予預設值，即可避免出錯。
 
-`strictTemplates` 檢查會讓過去很多沒使用 strict mode 時的開發習慣變成錯誤，剛開始會不太習慣，但理解原理，並保持明確的定義好各種型別，就能夠保持優雅的解決各種型別檢查問題，同時 bug 也會越來越少！
+`strictTemplates` 檢查會讓過去很多沒使用 strict mode 時的開發習慣變成錯誤，剛開始會不太習慣，但理解原理，並保持明確的定義好各種型別，就能夠保持優雅步調的解決各種型別檢查問題，同時 bug 也會越來越少！
 
 # strictTemplates 檢查下使用 async pipe
 
@@ -301,6 +301,16 @@ todoList$ = this.getTodoList()
 思維模式懶人包：物件屬性要給予初始值，以 Observable 這種 stream 思考時有一個初始事件也是很合理的！
 
 {% endnote %}
+
+另外一種簡單易懂的處理方式是，用 `ngIf` 來檢查資料是否為 `null` 或 `undefined`：
+
+```html
+<ng-container *ngIf="data$ | async as data">
+  <my-component [data]="data"></my-component>
+</ng-container>
+```
+
+這種寫法就如同我們在 TypeScript 會自己寫 `if` 判斷資料是否為 `null` 或 `undefined` 一樣，更加簡單；不過要注意的是，如果元件有很多屬性都會用到 Observable + async pipe 的話，就會出現巢狀的 `ngIf`。
 
 # 本日小結
 
