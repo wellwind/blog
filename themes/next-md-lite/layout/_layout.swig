@@ -104,8 +104,7 @@
   function parseCodeArgs(settingString) {
     const result = {
       lang: '',
-      highlightLines: null,
-      highlightWholeLine: null
+      highlightLines: []
     };
 
     const settings = settingString.split(';');
@@ -119,15 +118,14 @@
       const [key, value] = setting.split('=');
 
       if(key === 'highlightLines') {
-        const [ startLineNumber, startColumn, endLineNumber, endColumn ] = value.split(':');
-        result.highlightLines = {
+        const [ startLineNumber, startColumn, endLineNumber, endColumn, wholeLine ] = value.split(':');
+        result.highlightLines.push({
           startLineNumber: +startLineNumber,
           startColumn: +startColumn,
           endLineNumber: +endLineNumber,
-          endColumn: +endColumn
-        }
-      } else if(key === 'highlightWholeLine') {
-        result.highlightWholeLine = value === 'true';
+          endColumn: +endColumn,
+          wholeLine: wholeLine === 'true'
+        });
       }
     }
     return result;
@@ -170,23 +168,20 @@
         }
       });
 
-      if(codeSettings.highlightLines) {
-        console.log(codeSettings);
-        const highlightLines = codeSettings.highlightLines;
-        instance.deltaDecorations([], [
-          {
+      if(codeSettings.highlightLines.length > 0) {
+        const decorations = codeSettings.highlightLines.map(setting => ({
             range: new monaco.Range(
-              highlightLines.startLineNumber,
-              highlightLines.startColumn,
-              highlightLines.endLineNumber,
-              highlightLines.endColumn
+              setting.startLineNumber,
+              setting.startColumn,
+              setting.endLineNumber,
+              setting.endColumn
             ),
             options: {
-              isWholeLine: codeSettings.highlightWholeLine,
+              isWholeLine: setting.wholeLine,
               className: 'monaco-theme-highlight-code'
             }
-          }
-        ]);
+          }));
+        instance.deltaDecorations([], decorations);
       }
     });
   });

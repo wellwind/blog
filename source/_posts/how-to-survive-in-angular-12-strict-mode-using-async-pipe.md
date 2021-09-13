@@ -40,7 +40,7 @@ console.log(user.name);
 
 這種的解決方式很簡單，確定有賦予變數資料即可：
 
-```typescript;highlightLines=1:1:1:1;highlightWholeLine=true
+```typescript;highlightLines=1:1:1:1:true
 let user = { name: 'Mike' };
 consoe.log(user.name);
 ```
