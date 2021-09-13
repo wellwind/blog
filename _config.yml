@@ -39,10 +39,7 @@ post_asset_folder: true
 relative_link: false
 future: true
 highlight:
-  enable: true
-  line_number: true
-  auto_detect: false
-  tab_replace:
+  enable: false
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')

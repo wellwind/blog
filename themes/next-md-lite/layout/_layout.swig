@@ -19,6 +19,13 @@
   </script>
   <div id="fb-root"></div>
   <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
+  <style>
+  .monaco-theme-highlight-code {
+    opacity: 0.4;
+    background: skyblue;
+    border-radius: 2px;
+  }
+  </style>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="{{ page.lang || page.language || config.language }}">
@@ -91,6 +98,100 @@
   {% include '_third-party/mathjax.swig' %}
   {% include '_third-party/scroll-cookie.swig' %}
   {% include '_third-party/exturl.swig' %}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.27.0/min/vs/loader.min.js"></script>
+  <script>
+  function parseCodeArgs(settingString) {
+    const result = {
+      lang: '',
+      highlightLines: null,
+      highlightWholeLine: null
+    };
+
+    const settings = settingString.split(';');
+
+    // language
+    result.lang = settings[0];
+
+    // another arguments
+    for(let i = 1; i < settings.length; ++i) {
+      const setting = settings[i];
+      const [key, value] = setting.split('=');
+
+      if(key === 'highlightLines') {
+        const [ startLineNumber, startColumn, endLineNumber, endColumn ] = value.split(':');
+        result.highlightLines = {
+          startLineNumber: +startLineNumber,
+          startColumn: +startColumn,
+          endLineNumber: +endLineNumber,
+          endColumn: +endColumn
+        }
+      } else if(key === 'highlightWholeLine') {
+        result.highlightWholeLine = value === 'true';
+      }
+    }
+    return result;
+  }
+
+  require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.27.0/min/vs' }});
+
+  window.MonacoEnvironment = {
+    getWorkerUrl: function(workerId, label) {
+      return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+        self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.27.0/min/'
+        };
+        importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.27.0/min/vs/base/worker/workerMain.js');`
+      )}`;
+    }
+  };
+
+  require(["vs/editor/editor.main"], function () {
+    const fontSize = 19;
+    document.querySelectorAll('pre code').forEach(code => {
+      var codeSettings = parseCodeArgs(code.classList[0]);
+
+      code.parentElement.style.overflow = 'hidden';
+    
+      const codeText = code.innerText;
+      code.innerText = '';
+      code.style.height = `${(codeText.split('\n').length + 1) * fontSize}px`;
+      code.style.display = 'block';
+          
+      const instance = monaco.editor.create(code, {
+        value: codeText,
+        theme: 'vs-dark',
+        language: codeSettings.lang,
+        glyphMargin: true,
+        scrollBeyondLastLine: false,
+        readOnly: true,
+          minimap: {
+            enabled: false
+        }
+      });
+
+      if(codeSettings.highlightLines) {
+        console.log(codeSettings);
+        const highlightLines = codeSettings.highlightLines;
+        instance.deltaDecorations([], [
+          {
+            range: new monaco.Range(
+              highlightLines.startLineNumber,
+              highlightLines.startColumn,
+              highlightLines.endLineNumber,
+              highlightLines.endColumn
+            ),
+            options: {
+              isWholeLine: codeSettings.highlightWholeLine,
+              className: 'monaco-theme-highlight-code'
+            }
+          }
+        ]);
+      }
+    });
+  });
+  </script>
+
   <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
   <script>
