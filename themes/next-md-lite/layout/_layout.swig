@@ -21,8 +21,7 @@
   <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.3&appId=1148471878668114&autoLogAppEvents=1"></script>
   <style>
   .monaco-theme-highlight-code {
-    opacity: 0.4;
-    background: skyblue;
+    border: 1px solid white;
     border-radius: 2px;
   }
   </style>
@@ -162,6 +161,9 @@
         language: codeSettings.lang,
         glyphMargin: true,
         scrollBeyondLastLine: false,
+        scrollbar: {
+          alwaysConsumeMouseWheel: false
+        },
         readOnly: true,
           minimap: {
             enabled: false
