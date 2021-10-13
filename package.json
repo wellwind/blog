@@ -12,7 +12,7 @@
     "dev:ssr": "ng run blog:serve-ssr",
     "serve:ssr": "node dist/blog/server/main.js",
     "build:ssr": "ng build && ng run blog:server",
-    "dist:serve": "ts-node --project tsconfig.dist-server.json dist-server.ts"
+    "serve:assets": "ts-node --project tsconfig.assets-server.json assets-server.ts"
   },
   "private": true,
   "dependencies": {
