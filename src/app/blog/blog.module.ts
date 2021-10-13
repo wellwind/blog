@@ -5,7 +5,6 @@ import { BlogRoutingModule } from './blog-routing.module';
 import { BlogLayoutComponent } from './blog-layout/blog-layout.component';
 import { BlogPostComponent } from './blog-post/blog-post.component';
 
-
 @NgModule({
   declarations: [
     BlogLayoutComponent,

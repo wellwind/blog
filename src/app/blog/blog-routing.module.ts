@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule, Routes } from '@angular/router';
-import { BlogContentResolve } from '../blog-content-resolve.service';
+import { BlogContentResolve } from './blog-content-resolve';
 import { BlogLayoutComponent } from './blog-layout/blog-layout.component';
 import { BlogPostComponent } from './blog-post/blog-post.component';
 
@@ -15,7 +15,7 @@ const postRoute: Route = {
           children: [
             {
               path: ':slug',
-              // resolve: { content: BlogContentResolve },
+              resolve: { content: BlogContentResolve },
               component: BlogPostComponent
             }
           ]
