@@ -64,6 +64,27 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "static": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.static.ts"
+                }
+              ],
+              "outputHashing": "all"
             }
           },
           "defaultConfiguration": "production"
@@ -126,6 +147,15 @@
               "optimization": false,
               "sourceMap": true,
               "extractLicenses": false
+            },
+            "static": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.static.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -160,6 +190,10 @@
             "development": {
               "browserTarget": "blog:build:development",
               "serverTarget": "blog:server:development"
+            },
+            "static": {
+              "browserTarget": "blog:build:static",
+              "serverTarget": "blog:server:static"
             }
           },
           "defaultConfiguration": "production"
