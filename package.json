@@ -12,8 +12,9 @@
     "dev:ssr": "ng run blog:serve-ssr",
     "serve:ssr": "node dist/blog/server/main.js",
     "build:ssr": "ng build && ng run blog:server",
-    "serve:assets": "ts-node --project tsconfig.static-server.json static-server.ts",
-    "serve:blog": "ts-node --project tsconfig.blog-server.json blog-server.ts"
+    "build:blog-posts:json": "ts-node --project scripts/tsconfig.scripts.json scripts/generate-blog-posts-json.ts",
+    "serve:assets": "ts-node --project scripts/tsconfig.scripts.json scripts/static-server.ts",
+    "serve:blog": "ts-node --project scripts/tsconfig.scripts.json scripts/blog-server.ts"
   },
   "private": true,
   "dependencies": {
@@ -41,6 +42,7 @@
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jasmine": "~3.8.0",
+    "@types/js-yaml": "^4.0.3",
     "@types/markdown-it": "^12.2.3",
     "@types/node": "^12.11.1",
     "@types/puppeteer": "^5.4.4",
@@ -49,6 +51,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jasmine-core": "~3.8.0",
+    "js-yaml": "^4.1.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.0.3",
