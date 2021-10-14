@@ -33,6 +33,7 @@ export const parseMarkdownMeta = (markdownContent: string, slug: string) => {
     }
 
     return <MarkdownMeta>{
+      slug: slug,
       title: yamlMeta.title,
       date: yamlMeta.date,
       categories: typeof yamlMeta.category === 'string' ? [yamlMeta.category] : yamlMeta.category,

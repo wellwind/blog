@@ -19,13 +19,16 @@ const posts = fs.readdirSync(postsPath, { withFileTypes: true })
   .map(dirName => getMarkdownMeta(dirName))
   .filter(markdownMeta => !!markdownMeta)
   .filter(markdownMeta => !markdownMeta?.draft)
-  .map(markdownMeta => ({
-    title: markdownMeta!.title,
-    date: markdownMeta!.date,
-    categories: markdownMeta!.categories,
-    tags: markdownMeta!.tags,
-    summary: markdownMeta!.summary
-  }));
+  .reduce((prev, markdownMeta) => ({
+    ...prev,
+    [markdownMeta!.slug]: {
+      title: markdownMeta!.title,
+      date: markdownMeta!.date,
+      categories: markdownMeta!.categories,
+      tags: markdownMeta!.tags,
+      summary: markdownMeta!.summary
+    }
+  }), {} as any)
 
 fs.writeFileSync(join(postsPath, 'blog-posts.json'), JSON.stringify(posts));
 console.log('done');
